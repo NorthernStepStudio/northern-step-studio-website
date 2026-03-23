@@ -1,0 +1,37 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "northern-step-studio-website",
+	"main": "./src/worker/index.ts",
+	"compatibility_date": "2025-06-17",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"observability": {
+		"enabled": true
+	},
+	"upload_source_maps": true,
+	"assets": {
+		"not_found_handling": "single-page-application"
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "northern-step-studio-db",
+			"database_id": "c0a3fcad-8e05-4e6a-b1ad-a35f330bb886"
+		}
+	],
+	"services": [],
+	"routes": [
+		{
+			"pattern": "northernstepstudio.com",
+			"zone_name": "northernstepstudio.com",
+			"custom_domain": true
+		},
+		{
+			"pattern": "www.northernstepstudio.com",
+			"zone_name": "northernstepstudio.com",
+			"custom_domain": true
+		}
+	],
+	"workers_dev": true
+}
