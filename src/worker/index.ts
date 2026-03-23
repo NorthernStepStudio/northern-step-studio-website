@@ -1,5 +1,5 @@
 import { Hono, type Context } from "hono";
-import { handle } from "@hono/vercel-edge";
+import { handle } from "hono/vercel";
 import Stripe from "stripe";
 import community from "./community";
 import featureToggles from "./feature-toggles";
@@ -1711,14 +1711,14 @@ app.get("/api/analytics", authMiddleware, async (c) => {
 
   // Total events
   const [totalEventsResult] = await sql<{ count: number }[]>`
-    SELECT COUNT(*) as count FROM analytics WHERE timestamp >= CURRENT_TIMESTAMP - interval '${sql.raw(days.toString())} days'
+    SELECT COUNT(*) as count FROM analytics WHERE timestamp >= CURRENT_TIMESTAMP - (interval '1 day' * ${days})
   `;
   const totalEvents = totalEventsResult?.count || 0;
 
   // Unique users
   const [uniqueUsersResult] = await sql<{ count: number }[]>`
     SELECT COUNT(DISTINCT user_id) as count FROM analytics 
-    WHERE timestamp >= CURRENT_TIMESTAMP - interval '${sql.raw(days.toString())} days' AND user_id IS NOT NULL
+    WHERE timestamp >= CURRENT_TIMESTAMP - (interval '1 day' * ${days}) AND user_id IS NOT NULL
   `;
   const uniqueUsers = uniqueUsersResult?.count || 0;
 
@@ -1728,7 +1728,7 @@ app.get("/api/analytics", authMiddleware, async (c) => {
      FROM analytics 
      LEFT JOIN apps ON (analytics.app_uuid IS NOT NULL AND analytics.app_uuid = apps.uuid) 
                     OR (analytics.app_uuid IS NULL AND analytics.app_id = apps.id)
-     WHERE analytics.timestamp >= CURRENT_TIMESTAMP - interval '${sql.raw(days.toString())} days'
+     WHERE analytics.timestamp >= CURRENT_TIMESTAMP - (interval '1 day' * ${days})
        AND apps.name IS NOT NULL
      GROUP BY apps.uuid, apps.name 
      ORDER BY count DESC 
@@ -1739,7 +1739,7 @@ app.get("/api/analytics", authMiddleware, async (c) => {
   const eventsByType = await sql`
     SELECT event as name, COUNT(*) as value 
      FROM analytics 
-     WHERE timestamp >= CURRENT_TIMESTAMP - interval '${sql.raw(days.toString())} days'
+     WHERE timestamp >= CURRENT_TIMESTAMP - (interval '1 day' * ${days})
      GROUP BY event 
      ORDER BY value DESC
   `;
@@ -1748,7 +1748,7 @@ app.get("/api/analytics", authMiddleware, async (c) => {
   const dailyVisits = await sql`
     SELECT date(timestamp) as date, COUNT(*) as visits 
      FROM analytics 
-     WHERE timestamp >= CURRENT_TIMESTAMP - interval '${sql.raw(days.toString())} days'
+     WHERE timestamp >= CURRENT_TIMESTAMP - (interval '1 day' * ${days})
      GROUP BY date(timestamp) 
      ORDER BY date(timestamp) ASC
   `;

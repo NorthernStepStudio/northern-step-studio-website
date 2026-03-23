@@ -8,11 +8,9 @@ export type EmailMessage = {
   broadcast?: boolean;
 };
 
-export async function sendEmail(env: Env, message: EmailMessage) {
-  // If Cloudflare Email Service is available, use it
-  if (env.EMAILS && typeof env.EMAILS.send === "function") {
-    return env.EMAILS.send(message);
-  }
+export async function sendEmail(_env: Env, message: EmailMessage) {
+  // Cloudflare Email Service is no longer available in the Vercel architecture.
+  // Fallback for Vercel/Local: Log to console or integrate with a future service (SendGrid/Postmark).
 
   // Fallback for Vercel/Local: Log to console or use an environment-configured service
   console.log("--- EMAIL MOCK ---");
@@ -21,5 +19,5 @@ export async function sendEmail(env: Env, message: EmailMessage) {
   console.log(`Body: ${message.html_body || message.text_body}`);
   console.log("------------------");
 
-  return { success: true, message_id: "mock-id-" + Date.now() };
+  return { success: true, message_id: "mock-id-" + Date.now(), error: undefined as string | undefined };
 }
