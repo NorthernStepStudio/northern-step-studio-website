@@ -4,6 +4,7 @@ import { spawnSync } from "node:child_process";
 import { sanitizeDist } from "./sanitize-dist.mjs";
 
 const distDir = path.resolve("dist");
+const rootWranglerConfig = path.resolve("wrangler.json");
 
 function findGeneratedWranglerConfig(rootDir) {
   const entries = readdirSync(rootDir, { withFileTypes: true });
@@ -27,7 +28,14 @@ function findGeneratedWranglerConfig(rootDir) {
   throw new Error("Could not find generated wrangler.json under dist");
 }
 
-const configPath = findGeneratedWranglerConfig(distDir);
+let configPath;
+
+try {
+  configPath = findGeneratedWranglerConfig(distDir);
+} catch {
+  configPath = rootWranglerConfig;
+}
+
 const command =
   process.platform === "win32"
     ? `npx wrangler deploy --dry-run --config "${configPath}"`

@@ -53,7 +53,7 @@
     "dev": "vite",
     "knip": "knip",
     "lint": "eslint .",
-    "deploy": "npm run build && npx wrangler publish",
+    "deploy": "npm run build && npx wrangler deploy --config wrangler.json",
     "auto-deploy-node": "node ./scripts/auto-deploy.js"
   }
 }
