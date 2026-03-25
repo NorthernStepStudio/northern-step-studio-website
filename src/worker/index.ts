@@ -1327,7 +1327,7 @@ app.get("/api/apps", async (c) => {
   const sql = getDb(c.env);
   const results = includeDrafts
     ? await sql`SELECT * FROM apps ORDER BY created_at DESC`
-    : await sql`SELECT * FROM apps WHERE visibility = 'published' ORDER BY created_at DESC`;
+    : await sql`SELECT * FROM apps WHERE visibility != 'hidden' ORDER BY created_at DESC`;
 
   const apps = (results as any[]).map((app: any) => mapAppRecord(app as AppRecord));
 
@@ -1398,7 +1398,7 @@ app.get("/api/apps/:slug", async (c) => {
   }
 
   const app = mapAppRecord(result);
-  if (app.visibility !== "published") {
+  if (app.visibility === "hidden") {
     try {
       const user = await getAuthenticatedUser(c);
       if (!user || !isElevatedRole(user.role)) {
@@ -1652,7 +1652,7 @@ app.get("/api/apps/:slugOrUuid/media", async (c) => {
     return c.json({ error: "App not found" }, 404);
   }
 
-  if (normalizeVisibility(app.visibility) !== "published") {
+  if (normalizeVisibility(app.visibility) === "hidden") {
     try {
       const user = await getAuthenticatedUser(c);
       if (!user || !isElevatedRole(user.role)) {

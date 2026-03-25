@@ -12,6 +12,7 @@ export default function AppHub() {
   const { t } = useTranslation();
   const { apps, isLoading } = useApps();
   const [activeFilter, setActiveFilter] = useState("ALL");
+  const [activeStatus, setActiveStatus] = useState<"ALL" | "BETA" | "LIVE">("ALL");
   const [searchQuery, setSearchQuery] = useState("");
 
   const filters = [
@@ -19,7 +20,7 @@ export default function AppHub() {
     ...Array.from(
       new Set(
         apps
-          .filter((app) => app.visibility === "published")
+          .filter((app) => app.visibility !== "hidden")
           .map((app) => app.category)
       )
     ).map((category) => ({
@@ -29,15 +30,20 @@ export default function AppHub() {
   ];
 
   const filteredApps = apps.filter(app => {
-    if (app.visibility !== "published") {
+    if (app.visibility === "hidden") {
       return false;
     }
 
+    const status = (app.status || "").toUpperCase();
+    const matchesStatus =
+      activeStatus === "ALL" ||
+      (activeStatus === "BETA" && status === "BETA") ||
+      (activeStatus === "LIVE" && status === "LIVE");
     const matchesCategory = activeFilter === "ALL" || app.category === activeFilter;
     const matchesSearch = searchQuery === "" || 
       app.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (app.description?.toLowerCase().includes(searchQuery.toLowerCase()));
-    return matchesCategory && matchesSearch;
+    return matchesStatus && matchesCategory && matchesSearch;
   });
 
   return (
@@ -87,6 +93,27 @@ export default function AppHub() {
               key={filter.key}
               className={`text-xs sm:text-sm px-3 sm:px-6 py-2 sm:py-3 ${activeFilter === filter.key ? "btn-pill-primary" : "btn-pill-ghost"}`}
               onClick={() => setActiveFilter(filter.key)}
+            >
+              {filter.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="mb-6 flex flex-wrap items-center gap-2">
+          {[
+            { key: "ALL", label: "All Apps" },
+            { key: "BETA", label: "Beta" },
+            { key: "LIVE", label: "Live" },
+          ].map((filter) => (
+            <button
+              key={filter.key}
+              type="button"
+              onClick={() => setActiveStatus(filter.key as "ALL" | "BETA" | "LIVE")}
+              className={`rounded-full px-4 py-2 text-xs sm:text-sm font-black uppercase tracking-wide transition-all ${
+                activeStatus === filter.key
+                  ? "bg-accent text-accent-foreground"
+                  : "border border-border bg-background text-muted-foreground hover:border-accent/40 hover:text-accent"
+              }`}
             >
               {filter.label}
             </button>
