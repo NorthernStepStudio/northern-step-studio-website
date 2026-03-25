@@ -5,6 +5,7 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  envPrefix: ["VITE_", "SUPABASE_URL", "SUPABASE_ANON_KEY"],
   plugins: [
     react(),
     {

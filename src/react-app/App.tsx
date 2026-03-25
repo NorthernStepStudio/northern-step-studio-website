@@ -48,46 +48,38 @@ import MaintenancePage from "@/react-app/pages/MaintenancePage";
 import NSSWorkspaceAI from "@/react-app/pages/NSSWorkspaceAI";
 import NotFound from "@/react-app/pages/NotFound";
 import { useState, useEffect } from "react";
+import { useAuth } from "@/react-app/lib/auth";
 import { isElevatedRole } from "@/shared/auth";
 
 function MaintenanceCheck({ children }: { children: React.ReactNode }) {
+  const { user } = useAuth();
   const [maintenanceActive, setMaintenanceActive] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [canBypassMaintenance, setCanBypassMaintenance] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
-    
+
     const checkMaintenance = async () => {
       try {
         const res = await fetch("/api/maintenance");
         const data = await res.json();
-        
-        if (!isMounted) return;
-        
-        setMaintenanceActive(data.is_active === 1 || data.is_active === true);
 
-        // Try to check user role, but don't block on it
-        try {
-          const roleRes = await fetch("/api/user/role");
-          if (roleRes.ok && isMounted) {
-            const roleData = await roleRes.json();
-            setCanBypassMaintenance(isElevatedRole(roleData.role));
-          }
-        } catch {
-          // User not logged in or role check failed - that's okay
-        }
+        if (!isMounted) return;
+
+        setMaintenanceActive(data.is_active === 1 || data.is_active === true);
       } catch (err) {
-        console.error("Failed to check maintenance:", err);
+        if (isMounted) {
+          console.error("Failed to check maintenance:", err);
+        }
       } finally {
         if (isMounted) {
           setLoading(false);
         }
       }
     };
-    
-    checkMaintenance();
-    
+
+    void checkMaintenance();
+
     return () => {
       isMounted = false;
     };
@@ -101,8 +93,7 @@ function MaintenanceCheck({ children }: { children: React.ReactNode }) {
     );
   }
 
-  // Show maintenance page if active and user is not owner/admin
-  if (maintenanceActive && !canBypassMaintenance) {
+  if (maintenanceActive && !isElevatedRole(user?.role)) {
     return <MaintenancePage />;
   }
 

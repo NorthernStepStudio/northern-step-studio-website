@@ -1,4 +1,6 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { supabase, getSupabaseOrigin, type SupabaseUser } from "@/react-app/lib/supabase";
+import { OWNER_EMAIL, isAdminDomainEmail, isElevatedRole } from "@/shared/auth";
 
 export type AppUser = {
   id?: string;
@@ -39,22 +41,70 @@ type AuthContextValue = {
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
-async function parseResponse(response: Response) {
-  return response.json().catch(() => null);
+function inferRole(email: string, supabaseUser?: SupabaseUser | null) {
+  const metadataRole =
+    typeof supabaseUser?.app_metadata?.role === "string"
+      ? supabaseUser.app_metadata.role
+      : typeof supabaseUser?.user_metadata?.role === "string"
+        ? supabaseUser.user_metadata.role
+        : null;
+
+  if (metadataRole) {
+    return metadataRole;
+  }
+
+  if (email === OWNER_EMAIL) {
+    return "owner";
+  }
+
+  if (isAdminDomainEmail(email)) {
+    return "admin";
+  }
+
+  return "user";
 }
 
-async function requestCurrentUser() {
-  const response = await fetch("/api/users/me");
+function mapSupabaseUser(user: SupabaseUser): AppUser {
+  const email = user.email ?? "";
+  const role = inferRole(email, user);
+  const provider = user.app_metadata?.provider || user.identities?.[0]?.provider || "email";
+  const displayName =
+    (typeof user.user_metadata?.display_name === "string" && user.user_metadata.display_name.trim()) ||
+    (typeof user.user_metadata?.full_name === "string" && user.user_metadata.full_name.trim()) ||
+    (typeof user.user_metadata?.name === "string" && user.user_metadata.name.trim()) ||
+    email.split("@")[0] ||
+    null;
 
-  if (response.status === 401) {
-    return null;
+  return {
+    id: user.id,
+    id_token: user.id,
+    email,
+    auth_method: provider === "google" ? "google" : "local",
+    role,
+    display_name: displayName,
+    bio:
+      typeof user.user_metadata?.bio === "string" && user.user_metadata.bio.trim()
+        ? user.user_metadata.bio.trim()
+        : null,
+    avatar_url:
+      typeof user.user_metadata?.avatar_url === "string"
+        ? user.user_metadata.avatar_url
+        : typeof user.user_metadata?.picture === "string"
+          ? user.user_metadata.picture
+          : null,
+    has_password: provider !== "google",
+    db_user_id: Number(user.user_metadata?.db_user_id ?? 0) || 0,
+  };
+}
+
+function requireSupabase() {
+  if (!supabase) {
+    throw new Error(
+      "Supabase is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY before using auth.",
+    );
   }
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch current user");
-  }
-
-  return (await parseResponse(response)) as AppUser;
+  return supabase;
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -62,94 +112,144 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isPending, setIsPending] = useState(true);
   const [isFetching, setIsFetching] = useState(false);
 
-  const fetchUser = async () => {
+  const syncUserFromSession = useCallback(async () => {
+    const client = requireSupabase();
+    const { data, error } = await client.auth.getSession();
+
+    if (error) {
+      throw error;
+    }
+
+    const nextUser = data.session?.user ? mapSupabaseUser(data.session.user) : null;
+    setUser(nextUser);
+    return nextUser;
+  }, []);
+
+  const fetchUser = useCallback(async () => {
     setIsFetching(true);
 
     try {
-      const data = await requestCurrentUser();
-      setUser(data);
-      return data;
+      return await syncUserFromSession();
     } finally {
       setIsFetching(false);
     }
-  };
+  }, [syncUserFromSession]);
 
   useEffect(() => {
-    let cancelled = false;
+    let active = true;
+    const client = supabase;
 
-    const loadUser = async () => {
+    const initialize = async () => {
+      if (!client) {
+        if (active) {
+          setUser(null);
+          setIsFetching(false);
+          setIsPending(false);
+        }
+        return;
+      }
+
       setIsFetching(true);
-
       try {
-        const currentUser = await requestCurrentUser();
-        if (!cancelled) {
-          setUser(currentUser);
+        const { data, error } = await client.auth.getSession();
+        if (error) {
+          throw error;
+        }
+
+        if (active) {
+          setUser(data.session?.user ? mapSupabaseUser(data.session.user) : null);
         }
       } catch (error) {
-        if (!cancelled) {
+        if (active) {
           console.error("Failed to initialize auth state:", error);
           setUser(null);
         }
       } finally {
-        if (!cancelled) {
+        if (active) {
           setIsFetching(false);
           setIsPending(false);
         }
       }
     };
 
-    void loadUser();
+    void initialize();
+
+    const subscription = client?.auth.onAuthStateChange((_event, session) => {
+      if (!active) {
+        return;
+      }
+
+      setUser(session?.user ? mapSupabaseUser(session.user) : null);
+      setIsFetching(false);
+      setIsPending(false);
+    });
 
     return () => {
-      cancelled = true;
+      active = false;
+      subscription?.data.subscription.unsubscribe();
     };
   }, []);
 
-  const redirectToLogin = async () => {
-    const response = await fetch("/api/oauth/google/redirect_url");
-    const data = await parseResponse(response);
+  const redirectToLogin = useCallback(async () => {
+    const client = requireSupabase();
+    const redirectTo = `${getSupabaseOrigin()}/auth/callback`;
+    const { data, error } = await client.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo,
+      },
+    });
 
-    if (!response.ok || !data?.redirectUrl) {
-      throw new Error(data?.error || "Unable to start Google sign in right now.");
+    if (error) {
+      throw error;
     }
 
-    window.location.assign(data.redirectUrl);
-  };
+    if (!data?.url) {
+      throw new Error("Unable to start Google sign in right now.");
+    }
 
-  const exchangeCodeForSessionToken = async () => {
+    window.location.assign(data.url);
+  }, []);
+
+  const exchangeCodeForSessionToken = useCallback(async () => {
+    const client = requireSupabase();
     const code = new URLSearchParams(window.location.search).get("code");
 
     if (!code) {
       throw new Error("Missing authorization code");
     }
 
-    const response = await fetch("/api/sessions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ code }),
-    });
-
-    const data = await parseResponse(response);
-    if (!response.ok) {
-      throw new Error(data?.error || "Failed to create session");
+    const { data, error } = await client.auth.exchangeCodeForSession(code);
+    if (error) {
+      throw error;
     }
 
-    return fetchUser();
-  };
+    const nextUser = data.session?.user ? mapSupabaseUser(data.session.user) : null;
+    setUser(nextUser);
+    return nextUser;
+  }, []);
 
-  const loginWithPassword = async (email: string, password: string, options: PasswordLoginOptions = {}) => {
-    const response = await fetch(options.admin ? "/api/auth/admin-login" : "/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+  const loginWithPassword = useCallback(
+    async (email: string, password: string, options: PasswordLoginOptions = {}) => {
+    const client = requireSupabase();
 
-    const data = await parseResponse(response);
-    if (!response.ok) {
-      throw new Error(data?.error || "Unable to sign in right now.");
+    if (options.admin) {
+      const inferredRole = inferRole(email);
+      if (!isElevatedRole(inferredRole)) {
+        throw new Error("Admin access required for this account.");
+      }
     }
 
-    const authenticatedUser = data?.user as AppUser | undefined;
+    const { data, error } = await client.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      throw error;
+    }
+
+    const authenticatedUser = data.user ? mapSupabaseUser(data.user) : null;
     if (authenticatedUser) {
       setUser(authenticatedUser);
       return authenticatedUser;
@@ -161,69 +261,73 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     return refreshedUser;
-  };
+    },
+    [fetchUser],
+  );
 
-  const registerWithPassword = async (
-    email: string,
-    password: string,
-    options: PasswordRegistrationOptions = {},
-  ) => {
-    const response = await fetch("/api/auth/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email,
-        password,
-        displayName: options.displayName,
-      }),
+  const registerWithPassword = useCallback(
+    async (email: string, password: string, options: PasswordRegistrationOptions = {}) => {
+    const client = requireSupabase();
+    const { data, error } = await client.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          display_name: options.displayName?.trim() || undefined,
+          role: "user",
+        },
+        emailRedirectTo: `${getSupabaseOrigin()}/auth/callback`,
+      },
     });
 
-    const data = await parseResponse(response);
-    if (!response.ok) {
-      throw new Error(data?.error || "Unable to create your account right now.");
+    if (error) {
+      throw error;
     }
 
-    const authenticatedUser = data?.user as AppUser | undefined;
-    if (authenticatedUser) {
+    if (data.session?.user) {
+      const authenticatedUser = mapSupabaseUser(data.session.user);
       setUser(authenticatedUser);
       return authenticatedUser;
     }
 
-    const refreshedUser = await fetchUser();
-    if (!refreshedUser) {
-      throw new Error("Unable to load your account after sign up.");
+    if (data.user) {
+      throw new Error("Account created. Check your email to confirm the sign-up before signing in.");
     }
 
-    return refreshedUser;
-  };
+    throw new Error("Unable to create your account right now.");
+    },
+    [],
+  );
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     try {
-      await fetch("/api/logout");
+      const client = supabase;
+      if (client) {
+        await client.auth.signOut();
+      }
     } catch (error) {
       console.error("Logout failed:", error);
     } finally {
       setUser(null);
     }
-  };
+  }, []);
 
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        isPending,
-        isFetching,
-        fetchUser,
-        redirectToLogin,
-        exchangeCodeForSessionToken,
-        loginWithPassword,
-        registerWithPassword,
-        logout,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo<AuthContextValue>(
+    () => ({
+      user,
+      isPending,
+      isFetching,
+      fetchUser,
+      redirectToLogin,
+      exchangeCodeForSessionToken,
+      loginWithPassword,
+      registerWithPassword,
+      logout,
+    }),
+    [user, isPending, isFetching, fetchUser, redirectToLogin, exchangeCodeForSessionToken, loginWithPassword, registerWithPassword, logout],
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
