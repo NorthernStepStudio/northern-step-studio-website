@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import {
   ArrowRight,
@@ -11,51 +10,10 @@ import {
   Check,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useApps, type App } from "@/react-app/hooks/useApps";
 import SEO from "@/react-app/components/SEO";
 import { BRAND_ASSETS } from "@/react-app/lib/site";
 import { useSiteContent } from "@/react-app/hooks/useSiteContent";
 import type { LucideIcon } from "lucide-react";
-
-const getCategoryIcon = (category: string | null | undefined) => {
-  switch (category?.toLowerCase()) {
-    case "tool":
-      return Zap;
-    case "ai tool":
-      return Cpu;
-    case "education":
-      return Sparkles;
-    case "finance":
-      return Target;
-    case "home":
-      return Smartphone;
-    case "therapy":
-      return Check;
-    case "game":
-      return Gamepad2;
-    default:
-      return Cpu;
-  }
-};
-
-const getStatusColor = (statusLabel: string) => {
-  switch (statusLabel?.toLowerCase()) {
-    case "alpha":
-      return "bg-blue-500/10 text-blue-400 border-blue-500/30";
-    case "prototype":
-      return "bg-accent/10 text-accent border-accent/30";
-    case "design":
-      return "bg-purple-500/10 text-purple-400 border-purple-500/30";
-    case "concept":
-      return "bg-muted/20 text-muted-foreground border-border";
-    case "beta":
-      return "bg-amber-500/10 text-amber-400 border-amber-500/30";
-    case "live":
-      return "bg-success/10 text-success border-success/30";
-    default:
-      return "bg-muted/10 text-muted-foreground border-border";
-  }
-};
 
 type FocusArea = {
   icon: LucideIcon;
@@ -145,78 +103,42 @@ const PROOF_LOGOS = [
   { src: BRAND_ASSETS.neuromoves, alt: "Neuromoves" },
   { src: BRAND_ASSETS.pasoscore, alt: "PasoScore" },
 ];
-
-type FeatureToggle = {
-  feature_key: string;
-  is_enabled: boolean | number;
+type PortfolioItem = {
+  nameKey: string;
+  descriptionKey: string;
+  outcomeKey: string;
+  link: string;
+  badge: string;
 };
 
-function PortfolioCard({ app }: { app: App }) {
-  const { t } = useTranslation();
-  const IconComponent = getCategoryIcon(app.category);
-  const summary = app.tagline || app.description || t("home.portfolio_default_description");
-
-  return (
-    <Link
-      to={`/apps/${app.slug}`}
-      className="card-dark-wise flex flex-col gap-3 border border-border bg-card hover:border-accent/60 hover:shadow-[0_18px_35px_rgba(88,171,255,0.25)] transition-all"
-    >
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-border bg-secondary/40">
-            {app.logo ? (
-              <img src={app.logo} alt={app.name} className="h-8 w-8 object-contain" />
-            ) : (
-              <IconComponent className="h-6 w-6 text-accent" />
-            )}
-          </div>
-          <h3 className="text-lg font-black tracking-tight text-foreground">{app.name}</h3>
-        </div>
-        <span
-          className={`text-[10px] font-bold uppercase tracking-[0.2em] rounded-full border px-3 py-1 ${getStatusColor(
-            app.statusLabel,
-          )}`}
-        >
-          {app.statusLabel}
-        </span>
-      </div>
-      <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">{summary}</p>
-    </Link>
-  );
-}
+const PORTFOLIO_ITEMS: PortfolioItem[] = [
+  {
+    nameKey: "home.portfolio_nexus_title",
+    descriptionKey: "home.portfolio_nexus_desc",
+    outcomeKey: "home.portfolio_nexus_outcome",
+    link: "/apps/nexusbuild",
+    badge: "NexusBuild | Live",
+  },
+  {
+    nameKey: "home.portfolio_provly_title",
+    descriptionKey: "home.portfolio_provly_desc",
+    outcomeKey: "home.portfolio_provly_outcome",
+    link: "/apps/provly",
+    badge: "ProvLy | Operational",
+  },
+  {
+    nameKey: "home.portfolio_lead_title",
+    descriptionKey: "home.portfolio_lead_desc",
+    outcomeKey: "home.portfolio_lead_outcome",
+    link: "/missed-call-text-back",
+    badge: "Lead Recovery | Automation",
+  },
+];
 
 export default function HomePage() {
   const { t } = useTranslation();
-  const { apps: allApps, isLoading } = useApps();
   const { content: dynamicHeroTitle } = useSiteContent("home_hero_title");
   const { content: dynamicHeroSubtitle } = useSiteContent("home_hero_subtitle");
-  const apps = allApps.filter((app) => app.visibility === "published");
-  const [appsFeatureEnabled, setAppsFeatureEnabled] = useState(true);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    const checkAppsFeature = async () => {
-      try {
-        const res = await fetch("/api/feature-toggles");
-        const data = await res.json();
-        const features: FeatureToggle[] = Array.isArray(data) ? data : [];
-        const appsFeature = features.find((feature) => feature.feature_key === "apps");
-        if (isMounted) {
-          setAppsFeatureEnabled(appsFeature?.is_enabled !== false);
-        }
-      } catch (err) {
-        console.error("Failed to check apps feature:", err);
-      }
-    };
-
-    checkAppsFeature();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
   const heroTitle = dynamicHeroTitle
     ? dynamicHeroTitle
     : `${t("home.hero_line_1")} ${t("home.hero_line_2")}`;
@@ -286,19 +208,22 @@ export default function HomePage() {
             <p className="text-sm sm:text-base text-muted-foreground">{t("home.portfolio_subtitle")}</p>
           </div>
 
-          {appsFeatureEnabled ? (
-            <div className="grid gap-5 md:grid-cols-2">
-              {isLoading ? (
-                [1, 2].map((card) => <div key={card} className="card-dark-wise animate-pulse h-52" />)
-              ) : apps.length > 0 ? (
-                apps.map((app) => <PortfolioCard key={app.id} app={app} />)
-              ) : (
-                <p className="text-center text-muted-foreground">{t("home.portfolio_empty")}</p>
-              )}
-            </div>
-          ) : (
-            <p className="text-center text-muted-foreground">{t("home.portfolio_disabled")}</p>
-          )}
+          <div className="grid gap-5 md:grid-cols-2">
+            {PORTFOLIO_ITEMS.map((item) => (
+              <Link
+                key={item.nameKey}
+                to={item.link}
+                className="card-dark-wise flex flex-col gap-3 border border-border bg-card hover:border-accent/60 hover:shadow-[0_18px_35px_rgba(88,171,255,0.25)] transition-all"
+              >
+                <div className="flex items-center justify-between gap-4">
+                  <h3 className="text-lg font-black tracking-tight text-foreground">{t(item.nameKey)}</h3>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">{item.badge}</span>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">{t(item.descriptionKey)}</p>
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">{t(item.outcomeKey)}</p>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
