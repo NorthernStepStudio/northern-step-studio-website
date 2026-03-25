@@ -140,7 +140,7 @@ export default function About() {
         {/* Hero */}
         <div className="text-center mb-10 sm:mb-14">
           <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-accent/10 border border-accent/30 mb-5">
-            <img src={BRAND_ASSETS.studioMark} alt="Northern Step Studio" className="w-12 h-12 sm:w-16 sm:h-16 dark:invert-0 invert" />
+            <img src={BRAND_ASSETS.studioMark} alt="Northern Step Studio" className="w-12 h-12 sm:w-16 sm:h-16" />
           </div>
           <span className="text-label text-accent mb-2 block text-xs sm:text-sm">{pageLabel}</span>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-normal mb-4 leading-tight">

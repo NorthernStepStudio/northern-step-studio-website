@@ -15,7 +15,8 @@
     "preferences": "Preferences",
     "logout": "Logout",
     "console": "Console",
-    "profile": "Profile"
+    "profile": "Profile",
+    "lead_recovery": "Lead Recovery"
   },
   "hero": {
     "label": "Indie Studio",
@@ -60,7 +61,10 @@
     "missed_call": "Missed Call Text Back",
     "updates": "Updates",
     "community": "Community",
-    "docs": "Docs"
+    "docs": "Docs",
+    "lead_recovery_badge": "Live Lead Recovery",
+    "lead_recovery_title": "Turn missed calls into live conversations.",
+    "lead_recovery_desc": "If your business loses jobs when the phone is missed, Northern Step Studio can set up an intake and response flow that keeps the lead engaged until you call back."
   },
   "apps": {
     "label": "Product Catalog",
@@ -156,7 +160,8 @@
     "coming_soon": "Coming Soon",
     "view": "View",
     "notify_me": "Notify Me",
-    "more": "More"
+    "more": "More",
+    "setup_review": "Request Setup Review"
   },
   "building": {
     "label": "Products in Motion",
@@ -658,10 +663,13 @@
     "workspace_keywords": "Northern Step Studio, technology, software development, AI, ProvLy, NexusBuild, NooBS Investing, NeuroMoves, PasoScore, Missed Call Text Back"
   },
   "home": {
+    "hero_title": "Simple, focused software.",
     "hero_line_1": "Building Focused Software",
     "hero_line_2": "That Solves Real Problems",
-    "hero_subtitle": "Northern Step Studio develops practical applications across productivity, learning, finance, and automation—helping individuals and businesses move from ideas to action.",
-    "hero_pitch": "Creative studio building mobile apps, games, and AI tools that grow your business.",
+    "hero_subtitle": "Northern Step Studio builds practical products with clean design and a clear purpose.",
+    "hero_pitch": "Mobile apps, games, and AI tools that help your business grow.",
+    "hero_primary": "View Portfolio",
+    "hero_secondary": "Contact",
     "lead_recovery": "Lead Recovery",
     "studio_ai": "Studio AI",
     "focus_areas_count": 6,
@@ -678,59 +686,36 @@
     "focus_area_systems_title": "Operations & Systems",
     "focus_area_systems_desc": "Workflow automation that reduces noise and keeps launches predictable.",
     "portfolio_title": "Portfolio",
-    "portfolio_subtitle": "Selected builds demonstrating measurable outcomes for clients and studio brands.",
+    "portfolio_subtitle": "Three apps nearing launch, plus the lead recovery system.",
+    "portfolio_status_almost_ready": "Almost finished",
+    "portfolio_status_service": "Service",
+    "portfolio_type_app": "App",
+    "portfolio_type_service": "Service",
     "portfolio_empty": "Nothing public is live right now.",
     "portfolio_disabled": "Portfolio access is coming soon.",
     "portfolio_default_description": "Outcome-driven next steps and measurable learnings.",
     "portfolio_nexus_title": "NexusBuild",
-    "portfolio_nexus_desc": "Unified training and go-to-market automation for builders and partners.",
+    "portfolio_nexus_desc": "A focused product for planning and building better systems.",
     "portfolio_nexus_outcome": "Multi-platform release in 3 months",
     "portfolio_provly_title": "ProvLy",
-    "portfolio_provly_desc": "Sales analytics reimagined as a live dashboard that guides every call.",
+    "portfolio_provly_desc": "A clear dashboard for sales analytics and day-to-day decisions.",
     "portfolio_provly_outcome": "Insights delivered in real time",
-    "portfolio_lead_title": "Lead Recovery Automation",
-    "portfolio_lead_desc": "Missed Call Text Back keeps revenue moving with conversational SMS workflows.",
-    "portfolio_lead_outcome": "Leads respond 2x faster than before",
-    "testimonials_title": "Proof & Outcomes",
-    "testimonials_subtitle": "Testimonials from the teams we serve and the launches we ship.",
-    "testimonials": {
-      "provly": {
-        "quote": "They turned our sales analytics into a dashboard we finally trust.",
-        "author": "Leah Morales",
-        "role": "Founder, Provly",
-        "highlight": "3-month dashboard relaunch"
-      },
-      "nexus": {
-        "quote": "Northern Step delivered a unified experience for training and go-to-market automation.",
-        "author": "Marco Silva",
-        "role": "Co-founder, NexusBuild",
-        "highlight": "Multi-platform release"
-      },
-      "paso": {
-        "quote": "Automation cut our manual follow-ups in half while improving clarity for operators.",
-        "author": "Tessa Reza",
-        "role": "Operations Lead, PasoScore",
-        "highlight": "Operational automation"
-      }
-    },
-    "process_title": "How we work",
-    "process_subtitle": "Simple rhythms and shared measurements.",
-    "process": {
-      "discovery": {
-        "title": "Plan with evidence",
-        "description": "Research, metrics, and wireframes align the team before a line of code is written."
-      },
-      "build": {
-        "title": "Build with intentional sprints",
-        "description": "Small, focused teams ship working software weekly and test the riskiest assumptions."
-      },
-      "launch": {
-        "title": "Launch & learn",
-        "description": "Release early, measure key signals, and iterate without redoing the foundation."
-      }
-    },
-    "final_cta_title": "Ready for less noise?",
-    "final_cta_subtitle": "Share the challenge you want to solve and we will propose a lean delivery path.",
+    "portfolio_noobs_title": "NooBS Investing",
+    "portfolio_noobs_desc": "A step-by-step investing companion built to feel clear and approachable.",
+    "portfolio_noobs_outcome": "Guided learning for first-time investors",
+    "portfolio_lead_title": "Lead Recovery Service",
+    "portfolio_lead_desc": "Missed Call Text Back keeps new leads moving with fast SMS follow-up.",
+    "portfolio_lead_outcome": "Faster response to missed calls",
+    "about_title": "What NSS builds",
+    "about_text": "Northern Step Studio is a product studio building focused software with a clean presentation and a clear purpose. We keep the public portfolio small, polished, and close to launch.",
+    "about_point_1_title": "Focused products",
+    "about_point_1_desc": "We keep scope tight so the product feels simple and deliberate.",
+    "about_point_2_title": "Clean execution",
+    "about_point_2_desc": "We value readable interfaces, stable behavior, and professional presentation.",
+    "about_point_3_title": "Real outcomes",
+    "about_point_3_desc": "We build tools that solve a job instead of adding noise.",
+    "final_cta_title": "Want a cleaner workflow?",
+    "final_cta_subtitle": "Reach out if you want a product, app, or automation system built with the same focus.",
     "final_cta_button": "Start a Project"
   },
   "mctb": {

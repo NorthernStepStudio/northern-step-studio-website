@@ -15,7 +15,8 @@
     "preferences": "Preferencias",
     "logout": "Cerrar Sesión",
     "console": "Consola",
-    "profile": "Perfil"
+    "profile": "Perfil",
+    "lead_recovery": "Recuperación de Prospectos"
   },
   "hero": {
     "label": "Estudio Indie",
@@ -60,7 +61,10 @@
     "missed_call": "Missed Call Text Back",
     "updates": "Actualizaciones",
     "community": "Comunidad",
-    "docs": "Documentación"
+    "docs": "Documentación",
+    "lead_recovery_badge": "Recuperación de prospectos en vivo",
+    "lead_recovery_title": "Convierte llamadas perdidas en conversaciones activas.",
+    "lead_recovery_desc": "Si tu negocio pierde trabajos cuando no contestan el teléfono, Northern Step Studio puede configurar un flujo de admisión y respuesta que mantenga al prospecto comprometido hasta que devuelvas la llamada."
   },
   "apps": {
     "label": "Catálogo de Productos",
@@ -155,7 +159,8 @@
     "web": "Web",
     "coming_soon": "Próximamente",
     "view": "Ver",
-    "notify_me": "Notificarme"
+    "notify_me": "Notificarme",
+    "setup_review": "Solicitar revisión de configuración"
   },
   "building": {
     "label": "Productos en Movimiento",
@@ -343,16 +348,37 @@
     },
     "values": {
       "title": "Nuestros Valores",
-      "quality": { "title": "Calidad Primero", "desc": "Nunca lanzamos algo que no usaríamos nosotros mismos. Cada detalle importa." },
-      "simplicity": { "title": "Simplicidad", "desc": "Problemas complejos merecen soluciones elegantes. Hacemos que herramientas poderosas se sientan sin esfuerzo." },
-      "innovation": { "title": "Innovación", "desc": "Abrazamos nuevas tecnologías y enfoques para mantenernos a la vanguardia." },
-      "craft": { "title": "Artesanía", "desc": "Nos enorgullecemos de nuestro trabajo. Cada línea de código, cada píxel, cada interacción." }
+      "quality": {
+        "title": "Calidad Primero",
+        "desc": "Nunca lanzamos algo que no usaríamos nosotros mismos. Cada detalle importa."
+      },
+      "simplicity": {
+        "title": "Simplicidad",
+        "desc": "Problemas complejos merecen soluciones elegantes. Hacemos que herramientas poderosas se sientan sin esfuerzo."
+      },
+      "innovation": {
+        "title": "Innovación",
+        "desc": "Abrazamos nuevas tecnologías y enfoques para mantenernos a la vanguardia."
+      },
+      "craft": {
+        "title": "Artesanía",
+        "desc": "Nos enorgullecemos de nuestro trabajo. Cada línea de código, cada píxel, cada interacción."
+      }
     },
     "focus": {
       "title": "Lo Que Construimos",
-      "games": { "title": "Juegos Móviles", "desc": "Juegos casuales divertidos, atractivos y perfectos para sesiones rápidas." },
-      "apps": { "title": "Apps de Productividad", "desc": "Herramientas inteligentes que ayudan a las personas a aprender, organizar y tomar mejores decisiones." },
-      "ai": { "title": "Herramientas con IA", "desc": "Asistentes inteligentes y automatización que amplifican las capacidades humanas." }
+      "games": {
+        "title": "Juegos Móviles",
+        "desc": "Juegos casuales divertidos, atractivos y perfectos para sesiones rápidas."
+      },
+      "apps": {
+        "title": "Apps de Productividad",
+        "desc": "Herramientas inteligentes que ayudan a las personas a aprender, organizar y tomar mejores decisiones."
+      },
+      "ai": {
+        "title": "Herramientas con IA",
+        "desc": "Asistentes inteligentes y automatización que amplifican las capacidades humanas."
+      }
     },
     "cta": {
       "title": "¿Listo para Explorar?",
@@ -378,7 +404,12 @@
       "send": "Enviar Mensaje",
       "sending": "Enviando..."
     },
-    "info": { "title": "Mejores Formas de Contactarnos", "email": "Email", "social": "Redes Sociales", "beta": "Beta Testing" },
+    "info": {
+      "title": "Mejores Formas de Contactarnos",
+      "email": "Email",
+      "social": "Redes Sociales",
+      "beta": "Beta Testing"
+    },
     "beta": {
       "title": "Interés en Acceso Anticipado",
       "desc": "Si quieres acceso anticipado a productos como ProvLy, NexusBuild, NeuroMoves, PasoScore, NooBS Investing o Missed Call Text Back, únete a la lista y cuéntanos qué producto o flujo de trabajo estás siguiendo.",
@@ -556,12 +587,29 @@
     "subtitle": "Documentación para los productos del estudio, flujos de cuenta, notas de lanzamiento y rutas de soporte.",
     "search_placeholder": "Buscar artículos de ayuda...",
     "browse_topics": "Explorar Temas",
-    "quick": { "download": "Apps", "privacy": "Privacidad", "updates": "Actualizaciones", "contact": "Contacto" },
+    "quick": {
+      "download": "Apps",
+      "privacy": "Privacidad",
+      "updates": "Actualizaciones",
+      "contact": "Contacto"
+    },
     "categories": {
-      "getting_started": { "title": "Primeros Pasos", "desc": "Aprende los conceptos básicos de los productos de Northern Step Studio." },
-      "apps": { "title": "Apps Móviles", "desc": "Guías y ayuda para nuestra gama de herramientas de productividad." },
-      "games": { "title": "Juegos Casuales", "desc": "Ayuda con jugabilidad, guardados y problemas técnicos." },
-      "ai": { "title": "Sistemas IA", "desc": "Todo sobre nuestro Studio AI y herramientas de automatización." }
+      "getting_started": {
+        "title": "Primeros Pasos",
+        "desc": "Aprende los conceptos básicos de los productos de Northern Step Studio."
+      },
+      "apps": {
+        "title": "Apps Móviles",
+        "desc": "Guías y ayuda para nuestra gama de herramientas de productividad."
+      },
+      "games": {
+        "title": "Juegos Casuales",
+        "desc": "Ayuda con jugabilidad, guardados y problemas técnicos."
+      },
+      "ai": {
+        "title": "Sistemas IA",
+        "desc": "Todo sobre nuestro Studio AI y herramientas de automatización."
+      }
     },
     "articles": {
       "welcome": "Bienvenido a Northern Step Studio",
@@ -614,80 +662,60 @@
     "workspace_keywords": "Northern Step Studio, tecnología, desarrollo de software, IA, ProvLy, NexusBuild, NooBS Investing, NeuroMoves, PasoScore, Missed Call Text Back"
   },
   "home": {
+    "hero_title": "Software simple y enfocado.",
     "hero_line_1": "Construyendo Software Enfocado",
     "hero_line_2": "Que Resuelve Problemas Reales",
-    "hero_subtitle": "Northern Step Studio desarrolla aplicaciones prácticas en productividad, aprendizaje, finanzas y automatización—ayudando a individuos y empresas a pasar de ideas a acción.",
-    "hero_pitch": "Estudio creativo que construye apps móviles, juegos y herramientas de IA para hacer crecer tu negocio.",
-    "lead_recovery": "Recuperación de Prospectos",
+    "hero_subtitle": "Northern Step Studio crea productos pr?cticos con dise?o limpio y un prop?sito claro.",
+    "hero_pitch": "Apps m?viles, juegos y herramientas de IA que ayudan a hacer crecer tu negocio.",
+    "hero_primary": "Ver portafolio",
+    "hero_secondary": "Contacto",
+    "lead_recovery": "Recuperaci?n de Prospectos",
     "studio_ai": "IA del Estudio",
     "focus_areas_count": 6,
     "cta_view_work": "Ver trabajo",
     "cta_get_quote": "Solicitar presupuesto",
     "focus_title": "Lo que hacemos mejor",
-    "focus_subtitle": "Capacidades seleccionadas entregadas por un único estudio de producto.",
+    "focus_subtitle": "Capacidades seleccionadas entregadas por un ?nico estudio de producto.",
     "focus_area_apps_title": "Apps y productos web",
-    "focus_area_apps_desc": "Estrategia, diseño de producto e ingeniería moderna para herramientas móviles y web.",
+    "focus_area_apps_desc": "Estrategia, dise?o de producto e ingenier?a moderna para herramientas m?viles y web.",
     "focus_area_gaming_title": "Juegos casuales",
-    "focus_area_gaming_desc": "Experiencias lúdicas guiadas por historias con servicios en vivo y comunidades.",
+    "focus_area_gaming_desc": "Experiencias l?dicas guiadas por historias con servicios en vivo y comunidades.",
     "focus_area_ai_title": "Herramientas e integraciones de IA",
     "focus_area_ai_desc": "Automatizaciones y copilotos que mantienen a los equipos en movimiento.",
     "focus_area_systems_title": "Operaciones y sistemas",
-    "focus_area_systems_desc": "Automatización de flujos que reduce el ruido y mantiene los lanzamientos predecibles.",
+    "focus_area_systems_desc": "Automatizaci?n de flujos que reduce el ruido y mantiene los lanzamientos predecibles.",
     "portfolio_title": "Portafolio",
-    "portfolio_subtitle": "Proyectos seleccionados que muestran resultados medibles para clientes y marcas del estudio.",
-    "portfolio_empty": "Nada público está disponible ahora mismo.",
-    "portfolio_disabled": "Acceso al portafolio próximamente.",
-    "portfolio_default_description": "Próximos pasos enfocados en resultados y aprendizajes.",
+    "portfolio_subtitle": "Tres apps casi listas, m?s el sistema de recuperaci?n de prospectos.",
+    "portfolio_status_almost_ready": "Casi listo",
+    "portfolio_status_service": "Servicio",
+    "portfolio_type_app": "App",
+    "portfolio_type_service": "Servicio",
+    "portfolio_empty": "Nada p?blico est? disponible ahora mismo.",
+    "portfolio_disabled": "Acceso al portafolio pr?ximamente.",
+    "portfolio_default_description": "Pr?ximos pasos enfocados en resultados y aprendizajes.",
     "portfolio_nexus_title": "NexusBuild",
-    "portfolio_nexus_desc": "Automatización de capacitación y lanzamiento para equipos que construyen nuevas experiencias.",
+    "portfolio_nexus_desc": "Un producto enfocado para planificar y construir mejores sistemas.",
     "portfolio_nexus_outcome": "Lanzamiento multiplataforma en 3 meses",
     "portfolio_provly_title": "ProvLy",
-    "portfolio_provly_desc": "Analítica de ventas convertida en un tablero activo que guía cada llamada.",
-    "portfolio_provly_outcome": "Información en tiempo real listo para la acción",
-    "portfolio_lead_title": "Automatización Lead Recovery",
-    "portfolio_lead_desc": "Missed Call Text Back mantiene los ingresos con flujos conversacionales de SMS.",
-    "portfolio_lead_outcome": "Leads responden el doble de rápido",
-    "testimonials_title": "Pruebas y resultados",
-    "testimonials_subtitle": "Testimonios de los equipos a los que servimos y los lanzamientos que realizamos.",
-    "testimonials": {
-      "provly": {
-        "quote": "Convirtieron nuestros análisis de ventas en un tablero que realmente usamos.",
-        "author": "Leah Morales",
-        "role": "Fundadora, Provly",
-        "highlight": "Re-lanzamiento en 3 meses"
-      },
-      "nexus": {
-        "quote": "Northern Step entregó una experiencia unificada para capacitación y automatización comercial.",
-        "author": "Marco Silva",
-        "role": "Co-fundador, NexusBuild",
-        "highlight": "Lanzamiento multiplataforma"
-      },
-      "paso": {
-        "quote": "La automatización redujo a la mitad nuestros seguimientos manuales y mejoró la claridad para los operadores.",
-        "author": "Tessa Reza",
-        "role": "Líder de Operaciones, PasoScore",
-        "highlight": "Automatización operativa"
-      }
-    },
-    "process_title": "Cómo trabajamos",
-    "process_subtitle": "Ritmos simples y métricas compartidas.",
-    "process": {
-      "discovery": {
-        "title": "Planificar con evidencia",
-        "description": "Investigación, métricas y wireframes alinean al equipo antes de escribir una línea de código."
-      },
-      "build": {
-        "title": "Construir con sprints intencionados",
-        "description": "Equipos pequeños entregan software funcional cada semana y prueban las suposiciones más arriesgadas."
-      },
-      "launch": {
-        "title": "Lanzar y aprender",
-        "description": "Publicar pronto, medir señales clave e iterar sin rehacer la base."
-      }
-    },
-    "final_cta_title": "¿Listo para menos ruido?",
-    "final_cta_subtitle": "Comparte el reto que quieres resolver y propondremos un camino de entrega ágil.",
-    "final_cta_button": "Iniciar un proyecto"
+    "portfolio_provly_desc": "Un panel claro para anal?tica de ventas y decisiones diarias.",
+    "portfolio_provly_outcome": "Informaci?n en tiempo real lista para la acci?n",
+    "portfolio_noobs_title": "NooBS Investing",
+    "portfolio_noobs_desc": "Un compa?ero de inversi?n paso a paso, claro y f?cil de seguir.",
+    "portfolio_noobs_outcome": "Gu?a para inversores primerizos",
+    "portfolio_lead_title": "Servicio de Recuperaci?n de Prospectos",
+    "portfolio_lead_desc": "Missed Call Text Back mantiene los prospectos avanzando con seguimiento r?pido por SMS.",
+    "portfolio_lead_outcome": "Respuesta m?s r?pida a llamadas perdidas",
+    "about_title": "Qu? construye NSS",
+    "about_text": "Northern Step Studio es un estudio de producto que crea software enfocado con una presentaci?n limpia y un prop?sito claro. Mantenemos el portafolio p?blico peque?o, pulido y cerca del lanzamiento.",
+    "about_point_1_title": "Productos enfocados",
+    "about_point_1_desc": "Mantenemos el alcance corto para que el producto se sienta simple y deliberado.",
+    "about_point_2_title": "Ejecuci?n limpia",
+    "about_point_2_desc": "Valoramos interfaces legibles, comportamiento estable y presentaci?n profesional.",
+    "about_point_3_title": "Resultados reales",
+    "about_point_3_desc": "Construimos herramientas que resuelven un trabajo en lugar de a?adir ruido.",
+    "final_cta_title": "?Quieres un flujo de trabajo m?s limpio?",
+    "final_cta_subtitle": "Escr?benos si quieres un producto, app o sistema de automatizaci?n hecho con el mismo enfoque.",
+    "final_cta_button": "Empezar proyecto"
   },
   "mctb": {
     "label": "Automatización de Servicios",

@@ -15,7 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/react-app/components/ui/dropdown-menu";
-import { BRAND_ASSETS } from "@/react-app/lib/site";
+import { BRAND_ASSETS, SITE_NAME } from "@/react-app/lib/site";
 
 interface MaintenanceSettings {
   scheduled_date: string | null;
@@ -92,19 +92,24 @@ export default function PublicLayout() {
           <Link to="/" className="flex items-center gap-2">
             <img
               src={BRAND_ASSETS.studioLogo}
-              alt="Northern Step Studio"
-              className="hidden sm:block h-10 md:h-11 lg:h-12 w-auto dark:invert-0 invert"
+              alt={SITE_NAME}
+              className="hidden sm:block h-10 w-auto max-w-[180px] shrink-0"
             />
             <img
               src={BRAND_ASSETS.studioMark}
-              alt="Northern Step Studio"
-              className="sm:hidden h-10 w-auto dark:invert-0 invert"
+              alt={SITE_NAME}
+              className="h-10 w-10 shrink-0 rounded-xl sm:hidden"
             />
+            <span className="flex flex-col leading-tight sm:hidden">
+              <span className="text-[10px] font-black uppercase tracking-[0.22em] text-foreground">
+                {SITE_NAME}
+              </span>
+            </span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-7">
             <Link to="/missed-call-text-back" className="text-sm text-yellow-500 hover:text-yellow-400 transition-colors uppercase font-black">
-              Lead Recovery
+              {t("nav.lead_recovery")}
             </Link>
             <Link to="/apps" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black">
               {t("nav.apps")}
@@ -149,7 +154,7 @@ export default function PublicLayout() {
 
             <div className="hidden md:flex items-center gap-3">
               <Link to={setupReviewHref} className="btn-pill-primary-compact">
-                Request Setup Review
+                {t("common.setup_review")}
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
               {user ? (
@@ -206,7 +211,7 @@ export default function PublicLayout() {
                 className="text-sm text-yellow-400 hover:text-yellow-300 transition-colors uppercase font-black py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Lead Recovery
+                {t("nav.lead_recovery")}
               </Link>
               <Link
                 to="/apps"
@@ -244,7 +249,7 @@ export default function PublicLayout() {
                 className="btn-pill-primary-compact mt-1"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Request Setup Review
+                {t("common.setup_review")}
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
 
@@ -312,17 +317,17 @@ export default function PublicLayout() {
               <div className="max-w-2xl">
                 <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-yellow-500/30 bg-yellow-500/10 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-yellow-400">
                   <PhoneCall className="h-3.5 w-3.5" />
-                  Live Lead Recovery
+                  {t("footer.lead_recovery_badge")}
                 </div>
                 <h3 className="text-xl font-black uppercase tracking-tight text-foreground">
-                  Turn missed calls into live conversations.
+                  {t("footer.lead_recovery_title")}
                 </h3>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  If your business loses jobs when the phone is missed, Northern Step Studio can set up an intake and response flow that keeps the lead engaged until you call back.
+                  {t("footer.lead_recovery_desc")}
                 </p>
               </div>
               <Link to={setupReviewHref} className="btn-pill-primary inline-flex items-center justify-center gap-2 whitespace-nowrap">
-                Request Setup Review
+                {t("common.setup_review")}
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
@@ -333,10 +338,13 @@ export default function PublicLayout() {
               <Link to="/" className="inline-block">
                 <img
                   src={BRAND_ASSETS.studioMark}
-                  alt="Northern Step Studio"
-                  className="h-10 w-auto opacity-80 hover:opacity-100 transition-opacity"
+                  alt={SITE_NAME}
+                  className="h-10 w-10 rounded-xl opacity-80 hover:opacity-100 transition-opacity"
                 />
               </Link>
+              <p className="mt-3 text-xs font-black uppercase tracking-[0.24em] text-foreground">
+                {SITE_NAME}
+              </p>
               <p className="mt-4 text-sm text-muted-foreground font-normal">
                 {t("footer.tagline")}
               </p>
