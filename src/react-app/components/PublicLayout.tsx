@@ -49,6 +49,7 @@ export default function PublicLayout() {
   const footerLinks = [
     { label: t("footer.updates"), to: "/updates" },
     { label: t("footer.community"), to: "/community" },
+    { label: t("nav.workspace_ai"), to: "/workspace-ai" },
     { label: t("footer.contact"), to: "/contact" },
     { label: t("footer.docs"), to: "/docs" },
   ];
@@ -114,8 +115,8 @@ export default function PublicLayout() {
             <Link to="/apps" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black">
               {t("nav.apps")}
             </Link>
-            <Link to="/workspace-ai" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black">
-              {t("nav.workspace_ai")}
+            <Link to="/contact" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black">
+              {t("nav.contact")}
             </Link>
 
             <DropdownMenu>
@@ -219,13 +220,6 @@ export default function PublicLayout() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t("nav.apps")}
-              </Link>
-              <Link
-                to="/workspace-ai"
-                className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {t("nav.workspace_ai")}
               </Link>
               <Link
                 to="/about"
@@ -363,6 +357,7 @@ export default function PublicLayout() {
               <h4 className="text-sm font-black uppercase mb-4">{t("footer.company")}</h4>
               <ul className="space-y-2">
                 <li><Link to="/about" className="text-sm text-muted-foreground hover:text-accent transition-colors font-normal">{t("footer.about")}</Link></li>
+                <li><Link to="/workspace-ai" className="text-sm text-muted-foreground hover:text-accent transition-colors font-normal">{t("nav.workspace_ai")}</Link></li>
                 <li><Link to="/contact" className="text-sm text-muted-foreground hover:text-accent transition-colors font-normal">{t("footer.contact")}</Link></li>
               </ul>
             </div>
