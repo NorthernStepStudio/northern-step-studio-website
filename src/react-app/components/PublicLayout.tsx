@@ -130,11 +130,6 @@ export default function PublicLayout() {
                     {t("nav.about")}
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/contact" className="uppercase font-black text-xs py-2.5">
-                    {t("nav.contact")}
-                  </Link>
-                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </nav>
