@@ -15,7 +15,6 @@ import BlogPost from "@/react-app/pages/BlogPost";
 import About from "@/react-app/pages/About";
 import Contact from "@/react-app/pages/Contact";
 import KnowledgeBase from "@/react-app/pages/KnowledgeBase";
-import PrivacyPolicy from "@/react-app/pages/PrivacyPolicy";
 import TermsOfService from "@/react-app/pages/TermsOfService";
 import NSSMissedCallTextBack from "@/react-app/pages/NSSMissedCallTextBack";
 import NSSMissedCallTextBackDemo from "@/react-app/pages/NSSMissedCallTextBackDemo";
@@ -44,9 +43,9 @@ import CommunityManager from "@/react-app/pages/admin/CommunityManager";
 import FeatureToggles from "@/react-app/pages/admin/FeatureToggles";
 import MaintenanceSettings from "@/react-app/pages/admin/MaintenanceSettings";
 import UpdatesManager from "@/react-app/pages/admin/UpdatesManager";
+import SiteEditor from "@/react-app/pages/admin/SiteEditor";
 import MaintenancePage from "@/react-app/pages/MaintenancePage";
 import NSSWorkspaceAI from "@/react-app/pages/NSSWorkspaceAI";
-import NexusBuild from "@/react-app/pages/NexusBuild";
 import NotFound from "@/react-app/pages/NotFound";
 import { useState, useEffect } from "react";
 import { isElevatedRole } from "@/shared/auth";
@@ -138,9 +137,8 @@ export default function App() {
             <Route path="/missed-call-text-back" element={<NSSMissedCallTextBack />} />
             <Route path="/missed-call-text-back/demo" element={<NSSMissedCallTextBackDemo />} />
             <Route path="/workspace-ai" element={<NSSWorkspaceAI />} />
-            <Route path="/apps/nexusbuild/app/*" element={<NexusBuild />} />
             <Route path="/updates" element={<Updates />} />
-            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/privacy" element={<TermsOfService />} />
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/maintenance-preview" element={<MaintenancePage />} />
             <Route path="*" element={<NotFound />} />
@@ -172,6 +170,7 @@ export default function App() {
             <Route path="studio" element={<StudioDashboard />} />
             <Route path="community" element={<CommunityManager />} />
             <Route path="settings" element={<FeatureToggles />} />
+            <Route path="site-editor" element={<SiteEditor />} />
             <Route path="maintenance" element={<MaintenanceSettings />} />
           </Route>
         </Routes>

@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
-import { ArrowLeft, KeyRound, Mail, Shield } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Mail,
+  ArrowLeft,
+  Shield,
+  KeyRound
+} from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/react-app/lib/auth";
 import { BRAND_ASSETS } from "@/react-app/lib/site";
-import { getRoleDisplayLabel } from "@/shared/auth";
 
 type LoginProps = {
   mode?: "user" | "admin";
@@ -113,22 +118,12 @@ export default function Login({ mode = "user" }: LoginProps) {
     return null;
   }
 
-  const title = isAdminMode ? "Admin Console Sign In" : t("login.title", "Sign In");
+  const title = isAdminMode ? t("auth.admin_title", "Admin Console") : t("auth.title", "Welcome Back");
   const subtitle = isAdminMode
-    ? `Use your studio account for password access to the admin console, or continue with Google if your admin account is already linked there.`
+    ? t("auth.admin_subtitle", "Secure access for Northern Step Studio administrators.")
     : isSignupMode
-      ? "Create a standard account with email and password, or continue with Google to start with a linked profile."
-      : "Sign in with your email and password or continue with Google to access your profile and studio tools.";
-  const passwordHeading = isAdminMode
-    ? "Studio Admin Login"
-    : isSignupMode
-      ? "Create Account"
-      : "Email and Password";
-  const passwordDescription = isAdminMode
-    ? `This form only accepts authorized studio email addresses with ${getRoleDisplayLabel("owner")}, admin, or moderator access.`
-    : isSignupMode
-      ? "This creates a standard user account. Admin access remains invite-only."
-      : "Use this if your account already has password login enabled.";
+      ? t("auth.register_subtitle", "Create your account to get started.")
+      : t("auth.login_subtitle", "Enter your credentials to access your dashboard.");
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -150,12 +145,24 @@ export default function Login({ mode = "user" }: LoginProps) {
               alt="Northern Step Studio"
               className="h-16 w-16 mx-auto mb-6"
             />
-            <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight mb-2">
-              {title}
-            </h1>
-            <p className="text-muted-foreground font-normal text-sm max-w-md mx-auto">
-              {subtitle}
-            </p>
+            <AnimatePresence mode="wait">
+                  <motion.div
+                    key={isAdminMode ? "admin" : "user"}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="space-y-6"
+                  >
+                    <div className="space-y-2 text-center pb-2">
+                      <h1 className="text-3xl font-bold tracking-tight text-white">
+                        {title}
+                      </h1>
+                      <div className="text-muted-foreground">
+                        {subtitle}
+                      </div>
+                    </div>
+                  </motion.div>
+            </AnimatePresence>
           </div>
 
           <div className="card-dark-wise space-y-6">
@@ -189,16 +196,19 @@ export default function Login({ mode = "user" }: LoginProps) {
             ) : null}
 
             <div className="rounded-2xl border border-border bg-secondary/30 p-4">
-              <div className="flex items-start gap-3">
+              <div className="flex items-center gap-3">
                 {isAdminMode ? (
-                  <Shield className="w-4 h-4 mt-0.5 text-accent" />
+                  <Shield className="w-4 h-4 text-accent" />
                 ) : (
-                  <Mail className="w-4 h-4 mt-0.5 text-accent" />
+                  <Mail className="w-4 h-4 text-accent" />
                 )}
-                <div>
-                  <h2 className="text-sm font-black uppercase mb-1">{passwordHeading}</h2>
-                  <p className="text-sm text-muted-foreground">{passwordDescription}</p>
-                </div>
+                <h2 className="text-sm font-black uppercase">
+                  {isAdminMode
+                    ? "Studio Admin Login"
+                    : isSignupMode
+                      ? "Create Account"
+                      : "Email and Password"}
+                </h2>
               </div>
             </div>
 
@@ -324,14 +334,6 @@ export default function Login({ mode = "user" }: LoginProps) {
                 : t("login.google", "Continue with Google")}
             </button>
 
-            <div className="rounded-2xl border border-border bg-secondary/50 p-4 text-sm text-muted-foreground">
-              <div className="flex items-start gap-3">
-                <Mail className="w-4 h-4 mt-0.5 text-accent" />
-                <p>
-                  Accounts that started on Google can add a password later from Preferences. That keeps both login methods available on the same account.
-                </p>
-              </div>
-            </div>
 
             {!isAdminMode ? (
               <div className="text-center text-sm text-muted-foreground">

@@ -41,7 +41,7 @@ export default function AppHub() {
   });
 
   return (
-    <div className="min-h-screen pt-24 px-4 sm:px-6">
+    <div className="min-h-screen px-4 pb-12 pt-16 sm:pt-20 sm:px-6">
       <SEO
         title={t("seo.apps_title")}
         description={t("seo.apps_description")}
@@ -51,7 +51,7 @@ export default function AppHub() {
       <div className="container mx-auto max-w-6xl">
         <div className="mb-8 sm:mb-12">
           <span className="text-label text-accent mb-2 block text-xs sm:text-sm">{t("apps.label")}</span>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tighter">
+          <h1 className="mb-4 text-2xl font-black uppercase tracking-tight sm:text-3xl lg:text-4xl leading-tight">
             <GlitchedText text={t("apps.title")} duration={600} />
           </h1>
           <p className="text-muted-foreground mt-4 font-normal text-sm sm:text-base max-w-2xl">
@@ -73,6 +73,8 @@ export default function AppHub() {
             <button
               onClick={() => setSearchQuery("")}
               className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+              aria-label="Clear search"
+              title="Clear search"
             >
               <X className="w-5 h-5" />
             </button>

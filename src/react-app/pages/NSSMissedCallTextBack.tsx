@@ -15,7 +15,6 @@ import {
 import { Link } from "react-router";
 import { useTranslation } from "react-i18next";
 import SEO from "@/react-app/components/SEO";
-import StudioHomeLink from "@/react-app/components/StudioHomeLink";
 
 export default function NSSMissedCallTextBack() {
   const { t } = useTranslation();
@@ -27,24 +26,21 @@ export default function NSSMissedCallTextBack() {
   const valueCards = [
     {
       icon: PhoneCall,
-      label: "What it is",
-      title: "A missed-call recovery system",
-      description:
-        "When a business misses a call, the system texts back immediately, starts the intake, and keeps the lead engaged until the owner calls back.",
+      label: t("mctb_page.value_cards.what_is.label"),
+      title: t("mctb_page.value_cards.what_is.title"),
+      description: t("mctb_page.value_cards.what_is.desc"),
     },
     {
       icon: ClipboardList,
-      label: "What it does",
-      title: "Qualifies the lead before you touch it",
-      description:
-        "It asks short service questions, checks urgency, captures the job location, and turns the exchange into a clean owner-ready summary.",
+      label: t("mctb_page.value_cards.what_does.label"),
+      title: t("mctb_page.value_cards.what_does.title"),
+      description: t("mctb_page.value_cards.what_does.desc"),
     },
     {
       icon: Users,
-      label: "Who it is for",
-      title: "Local service businesses that miss calls",
-      description:
-        "Plumbers are the current starter demo, but the same structure fits contractors, HVAC, electrical, garage door, cleaning, towing, and other service operators who cannot sit on the phone all day.",
+      label: t("mctb_page.value_cards.who_for.label"),
+      title: t("mctb_page.value_cards.who_for.title"),
+      description: t("mctb_page.value_cards.who_for.desc"),
     },
   ];
 
@@ -52,30 +48,26 @@ export default function NSSMissedCallTextBack() {
     {
       icon: PhoneCall,
       step: "Step 1",
-      title: "Missed call triggers the response",
-      description:
-        "The customer calls the business line, nobody picks up, and the system opens the text conversation without waiting on the owner.",
+      title: t("mctb_page.workflow.step1.title"),
+      description: t("mctb_page.workflow.step1.desc"),
     },
     {
       icon: MessageSquareText,
       step: "Step 2",
-      title: "The customer gets a short intake",
-      description:
-        "The script asks one question at a time, stays on topic, and keeps the customer moving instead of dumping a long paragraph on them.",
+      title: t("mctb_page.workflow.step2.title"),
+      description: t("mctb_page.workflow.step2.desc"),
     },
     {
       icon: Wrench,
       step: "Step 3",
-      title: "The job gets classified",
-      description:
-        "Issue type, severity, urgency, location, and customer name are captured so the owner can act on something useful.",
+      title: t("mctb_page.workflow.step3.title"),
+      description: t("mctb_page.workflow.step3.desc"),
     },
     {
       icon: FileText,
       step: "Step 4",
-      title: "The owner gets the summary",
-      description:
-        "Instead of guessing from voicemail or raw texts, the owner sees the lead summary and knows whether to call immediately or queue it normally.",
+      title: t("mctb_page.workflow.step4.title"),
+      description: t("mctb_page.workflow.step4.desc"),
     },
   ];
 
@@ -136,8 +128,8 @@ export default function NSSMissedCallTextBack() {
   ];
 
   const ownerSummary = [
-    { label: "Type", value: "Lead Summary" },
-    { label: "Name", value: "John" },
+    { label: t("product.stage"), value: "Lead Summary" },
+    { label: t("contact.form.name"), value: "John" },
     { label: "Issue", value: "Leak under sink" },
     { label: "Severity", value: "High" },
     { label: "Urgency", value: "Same-day recommended" },
@@ -160,39 +152,36 @@ export default function NSSMissedCallTextBack() {
         <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full bg-yellow-500/[0.02] blur-3xl pointer-events-none" />
 
         <div className="container mx-auto max-w-4xl relative z-10 text-center">
-          <div className="mb-8 flex justify-center">
-            <StudioHomeLink />
-          </div>
 
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/30 mb-6">
             <Zap className="w-4 h-4 text-yellow-400" />
-            <span className="text-xs font-black uppercase tracking-wider text-yellow-400">Starter automation for local service teams</span>
+            <span className="text-xs font-black uppercase tracking-wider text-yellow-400">{t("mctb_page.hero.badge")}</span>
           </div>
 
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tighter mb-6 leading-[0.9]">
-            Stop losing service jobs to missed calls
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black uppercase tracking-normal mb-4 leading-tight">
+            {t("mctb_page.hero.title")}
           </h1>
 
-          <p className="text-xl sm:text-2xl text-accent font-bold mb-8">
-            A 24/7 response flow that texts back instantly, qualifies the job, and sends the owner a clean summary.
+          <p className="text-xl sm:text-2xl text-accent font-bold mb-6">
+            {t("mctb_page.hero.subtitle")}
           </p>
 
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-10">
-            This is not a generic chatbot page. It is a focused lead-recovery system for real service businesses that cannot afford to miss the phone and lose the next job. Plumbing is the current starter playbook because it is the fastest version to sell and demo, not because the system is limited to plumbers.
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8 font-normal">
+            {t("mctb_page.hero.description")}
           </p>
 
           <div className="mb-10 flex flex-wrap items-center justify-center gap-3">
             <span className="rounded-full border border-yellow-500/30 bg-yellow-500/10 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-yellow-400">
-              Current starter demo: plumbing
+              {t("mctb_page.hero.demo_badge")}
             </span>
             <span className="rounded-full border border-border bg-background/70 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-muted-foreground">
-              Owner summary included
+              {t("mctb_page.hero.summary_badge")}
             </span>
             <span className="rounded-full border border-border bg-background/70 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-muted-foreground">
-              Compliance-aware SMS flow
+              {t("mctb_page.hero.compliance_badge")}
             </span>
             <span className="rounded-full border border-border bg-background/70 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-muted-foreground">
-              Expandable to other service verticals
+              {t("mctb_page.hero.verticals_badge")}
             </span>
           </div>
 
@@ -213,12 +202,12 @@ export default function NSSMissedCallTextBack() {
 
       <section className="py-20 px-4 sm:px-6 border-t border-border bg-gradient-to-b from-accent/[0.01] to-transparent">
         <div className="container mx-auto max-w-6xl">
-          <div className="mb-12 text-center">
-            <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tighter text-foreground">
-              What a buyer needs to understand in under a minute
+          <div className="mb-10 text-center">
+            <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-normal text-foreground leading-tight">
+              {t("mctb_page.value_cards.title")}
             </h2>
-            <p className="mx-auto mt-4 max-w-3xl text-muted-foreground">
-              The page should answer three questions fast: what this is, what it does, and why it is worth paying for before the customer calls someone else.
+            <p className="mx-auto mt-4 max-w-3xl text-muted-foreground font-normal">
+              {t("mctb_page.value_cards.description")}
             </p>
           </div>
 
@@ -229,7 +218,7 @@ export default function NSSMissedCallTextBack() {
                   <card.icon className="h-3.5 w-3.5" />
                   {card.label}
                 </div>
-                <h3 className="text-2xl font-black uppercase tracking-tight text-foreground">
+                <h3 className="text-2xl font-black uppercase tracking-normal text-foreground">
                   {card.title}
                 </h3>
                 <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
@@ -239,19 +228,19 @@ export default function NSSMissedCallTextBack() {
             ))}
           </div>
 
-          <div className="mt-8 rounded-3xl border border-yellow-500/30 bg-gradient-to-r from-yellow-500/10 via-transparent to-transparent px-6 py-6">
+          <div className="mt-8 rounded-3xl border border-yellow-500/30 bg-gradient-to-r from-yellow-500/10 via-transparent to-transparent px-6 py-6 font-normal">
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
               <div>
                 <p className="text-sm font-black uppercase tracking-wider text-yellow-400">
-                  ROI line
+                  {t("mctb_page.roi.line")}
                 </p>
                 <p className="mt-1 text-lg font-bold text-foreground">
-                  If it saves one missed job per week, it can pay for itself.
+                  {t("mctb_page.roi.text")}
                 </p>
               </div>
               <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-4 py-2 text-sm font-bold text-muted-foreground">
                 <TrendingUp className="h-4 w-4 text-accent" />
-                Faster response. Better filtering. More callbacks.
+                {t("mctb_page.roi.tags")}
               </div>
             </div>
           </div>
@@ -283,11 +272,11 @@ export default function NSSMissedCallTextBack() {
           <div className="grid items-start gap-8 xl:grid-cols-[1.15fr_0.85fr]">
             <div>
               <div className="mb-6">
-                <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tighter text-foreground">
-                  The live flow should feel obvious
+                <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-foreground leading-tight">
+                  {t("mctb_page.workflow.title")}
                 </h2>
-                <p className="mt-4 max-w-3xl text-muted-foreground">
-                  Do not make the visitor imagine the system. Show the call trigger, the intake, the classification, and the owner summary in the same scroll path. The current demo below uses plumbing because it is the fastest starter vertical, but the framework is meant for service businesses more broadly.
+                <p className="mt-4 max-w-3xl text-muted-foreground font-normal">
+                  {t("mctb_page.workflow.desc")}
                 </p>
               </div>
 
@@ -362,13 +351,13 @@ export default function NSSMissedCallTextBack() {
             <div className="card-dark-wise">
               <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-blue-400">
                 <FileText className="h-3.5 w-3.5" />
-                What the owner sees
+                {t("mctb_page.summary.badge")}
               </div>
-              <h2 className="text-3xl font-black uppercase tracking-tighter text-foreground">
-                The summary is the selling point
+              <h2 className="text-3xl font-black uppercase tracking-tight text-foreground leading-tight">
+                {t("mctb_page.summary.title")}
               </h2>
-              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                This is the moment that makes the product make sense. The owner does not need to read a voicemail transcript. They need a clean snapshot of the job and what to do next.
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground font-normal">
+                {t("mctb_page.summary.desc")}
               </p>
               <div className="mt-6 space-y-3 rounded-3xl border border-border bg-background/70 p-5">
                 {ownerSummary.map((row) => (
@@ -421,12 +410,8 @@ export default function NSSMissedCallTextBack() {
                 </div>
                 <p className="mt-5 text-sm text-muted-foreground">
                   {t("mctb.legal_note")}{" "}
-                  <Link to="/privacy" className="text-accent hover:underline">
-                    {t("footer.privacy")}
-                  </Link>{" "}
-                  {t("mctb.legal_and")}{" "}
                   <Link to="/terms" className="text-accent hover:underline">
-                    {t("footer.terms")}
+                    Terms & Privacy
                   </Link>{" "}
                   {t("mctb.legal_detail")}
                 </p>
@@ -441,13 +426,13 @@ export default function NSSMissedCallTextBack() {
           <div className="mb-12 text-center">
             <div className="inline-flex items-center gap-2 rounded-full border border-yellow-500/30 bg-yellow-500/10 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-yellow-400">
               <TrendingUp className="h-3.5 w-3.5" />
-              Offer structure
+              {t("divisions.automation.cta")}
             </div>
-            <h2 className="mt-4 text-3xl sm:text-4xl font-black uppercase tracking-tighter text-foreground">
-              Clear tiers beat vague custom pricing
-            </h2>
-            <p className="mx-auto mt-4 max-w-3xl text-muted-foreground">
-              Buyers should be able to see where they fit. The tiers are there to simplify the sale, not to make the system look more complicated.
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black uppercase leading-[1.05] tracking-normal text-foreground">
+              {t("mctb_page.pricing.title")}
+            </h1>
+            <p className="mx-auto mt-4 max-w-3xl text-muted-foreground font-normal">
+              {t("mctb_page.pricing.desc")}
             </p>
           </div>
 
@@ -521,14 +506,14 @@ export default function NSSMissedCallTextBack() {
             })}
           </div>
 
-          <div className="mt-8 rounded-3xl border border-border bg-background/60 px-6 py-6">
+          <div className="mt-8 rounded-3xl border border-border bg-background/60 px-6 py-6 font-normal">
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
               <div>
                 <p className="text-sm font-black uppercase tracking-wider text-accent">
-                  Recommendation
+                  {t("mctb_page.pricing.recommendation_title")}
                 </p>
                 <p className="mt-1 text-lg font-bold text-foreground">
-                  Most businesses should start with Starter, prove the workflow, and expand later.
+                  {t("mctb_page.pricing.recommendation_text")}
                 </p>
                 <p className="mt-2 text-sm text-muted-foreground">
                   Plumbing is simply the current packaged demo and easiest first rollout. The same offer structure can be adapted for other service businesses once the first flow is proven.

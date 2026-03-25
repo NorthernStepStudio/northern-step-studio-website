@@ -7,6 +7,7 @@ import {
   DollarSign,
   FileText,
   Inbox,
+  Layout,
   LayoutDashboard,
   Megaphone,
   MessageSquare,
@@ -140,6 +141,14 @@ export const ADMIN_NAV_ITEMS: AdminNavItem[] = [
     icon: Wrench,
     page: "settings",
     section: "settings",
+  },
+  {
+    path: "/admin/site-editor",
+    label: "Site Editor",
+    description: "Edit public website text and sections in real-time.",
+    icon: Layout,
+    page: "site-editor",
+    section: "core",
   },
 ];
 

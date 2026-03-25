@@ -6,20 +6,23 @@
 	"compatibility_flags": [
 		"nodejs_compat"
 	],
+	"rules": [
+		{
+			"type": "Text",
+			"globs": [
+				"**/*.html*"
+			],
+			"fallthrough": true
+		}
+	],
 	"observability": {
 		"enabled": true
 	},
 	"upload_source_maps": true,
 	"assets": {
+		"directory": "dist",
 		"not_found_handling": "single-page-application"
 	},
-	"d1_databases": [
-		{
-			"binding": "DB",
-			"database_name": "northern-step-studio-db",
-			"database_id": "c0a3fcad-8e05-4e6a-b1ad-a35f330bb886"
-		}
-	],
 	"services": [],
 	"routes": [
 		{

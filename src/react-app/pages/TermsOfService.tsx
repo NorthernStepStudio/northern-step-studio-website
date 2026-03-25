@@ -1,234 +1,242 @@
-import { FileText, Mail } from "lucide-react";
+import { useState, useEffect } from "react";
+import { FileText, Mail, Shield, MessageSquare, Bell, Lock, AlertCircle, RefreshCw, HelpCircle, ChevronRight, Loader2 } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import GlitchedText from "@/react-app/components/GlitchedText";
-import StudioHomeLink from "@/react-app/components/StudioHomeLink";
+import { useSiteContent } from "@/react-app/hooks/useSiteContent";
 
 export default function TermsOfService() {
-  const lastUpdated = "March 8, 2026";
+  const { content: termsContent, loading: termsLoading, updatedAt: termsUpdatedAt } = useSiteContent("terms_content");
+  const { content: privacyContent, loading: privacyLoading, updatedAt: privacyUpdatedAt } = useSiteContent("privacy_content");
+  const [lastUpdated, setLastUpdated] = useState("March 24, 2026");
+
+  const loading = termsLoading || privacyLoading;
+  const latestUpdatedAt = (termsUpdatedAt && privacyUpdatedAt) 
+    ? (new Date(termsUpdatedAt) > new Date(privacyUpdatedAt) ? termsUpdatedAt : privacyUpdatedAt)
+    : (termsUpdatedAt || privacyUpdatedAt);
+
+  useEffect(() => {
+    if (latestUpdatedAt) {
+      setLastUpdated(new Date(latestUpdatedAt).toLocaleDateString(undefined, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      }));
+    }
+  }, [latestUpdatedAt]);
 
   return (
-    <div className="min-h-screen pt-24 px-4 sm:px-6 pb-12">
+    <div className="min-h-screen pt-24 px-4 sm:px-6 pb-24 bg-background">
       <div className="container mx-auto max-w-4xl">
-        <div className="mb-8 flex justify-center sm:justify-start">
-          <StudioHomeLink />
-        </div>
 
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-accent/10 border border-accent/30 mb-4">
-            <FileText className="w-8 h-8 text-accent" />
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-accent/10 border border-accent/20 mb-6 group hover:border-accent/40 transition-colors duration-500">
+            <Shield className="w-10 h-10 text-accent group-hover:scale-110 transition-transform duration-500" />
           </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tighter mb-4">
-            <GlitchedText text="Terms of Service" duration={600} />
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tighter mb-4 leading-none">
+            <GlitchedText text="Terms & Privacy" duration={800} />
           </h1>
-          <p className="text-muted-foreground text-sm">
-            Last updated: {lastUpdated}
-          </p>
+          <div className="inline-block px-4 py-1.5 rounded-full bg-secondary/30 border border-border/50">
+            <p className="text-muted-foreground text-[10px] font-black uppercase tracking-[0.2em]">
+              Legal Context • Last updated: {lastUpdated}
+            </p>
+          </div>
         </div>
 
-        <div className="card-dark-wise space-y-8">
-          <section>
-            <h2 className="text-xl font-black uppercase mb-4 text-accent">Agreement to Terms</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              Welcome to Northern Step Studio. These Terms of Service ("Terms") govern your access to and use of our
-              mobile applications, games, websites, and services (collectively, the "Services") operated by Northern
-              Step Studio ("we," "our," or "us").
-            </p>
-            <p className="text-muted-foreground leading-relaxed mt-4">
-              By accessing or using our Services, you agree to be bound by these Terms. If you do not agree to these
-              Terms, please do not use our Services.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-black uppercase mb-4 text-accent">Pilot and Early Access Services</h2>
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              Some Services, including Lead Recovery systems, may be offered as guided installs, pilots, beta programs, or limited
-              early-access releases. Availability, features, pricing, and support scope may change as the product
-              matures.
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              We may accept, defer, pause, or decline pilot requests based on fit, readiness, operational capacity, or
-              compliance requirements.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-black uppercase mb-4 text-accent">Use of Services</h2>
-
-            <h3 className="text-lg font-bold mb-2">Eligibility</h3>
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              You must be at least 13 years old to use our Services. By using our Services, you represent and warrant
-              that you meet this age requirement.
-            </p>
-
-            <h3 className="text-lg font-bold mb-2">Account Registration</h3>
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              Some features of our Services may require you to create an account. You are responsible for maintaining
-              the confidentiality of your account credentials and for all activities that occur under your account.
-            </p>
-
-            <h3 className="text-lg font-bold mb-2">Acceptable Use</h3>
-            <p className="text-muted-foreground leading-relaxed mb-2">
-              You agree not to:
-            </p>
-            <ul className="list-disc list-inside text-muted-foreground space-y-2">
-              <li>Use the Services for any unlawful purpose</li>
-              <li>Attempt to gain unauthorized access to our systems</li>
-              <li>Interfere with or disrupt the Services</li>
-              <li>Reverse engineer, decompile, or disassemble our software</li>
-              <li>Use automated systems or bots without our permission</li>
-              <li>Harass, abuse, or harm other users</li>
-              <li>Violate any applicable laws or regulations</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-black uppercase mb-4 text-accent">Messaging, Calls, and Compliance</h2>
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              If you use our service automation or any related communication workflow, you are responsible for using it lawfully and
-              only in connection with valid customer relationships, requested service, or other permitted operational
-              communication.
-            </p>
-            <ul className="list-disc list-inside text-muted-foreground space-y-2">
-              <li>Obtain any consent required by applicable law before sending messages</li>
-              <li>Use accurate business identity, routing, and contact information</li>
-              <li>Honor opt-out requests and customer communication preferences</li>
-              <li>Do not use our Services for spam, deceptive messaging, or unlawful solicitation</li>
-              <li>Maintain any required third-party accounts, numbers, approvals, or provider compliance checks</li>
-            </ul>
-            <p className="text-muted-foreground leading-relaxed mt-4">
-              If you provide a mobile number and explicitly agree to SMS follow-up on our website, you agree that
-              Northern Step Studio may send conversational text messages related to your inquiry, setup review,
-              onboarding, support, or service automation request. Message frequency varies. Message and data rates may
-              apply. Reply STOP to opt out and HELP for help. Consent is not a condition of purchase. Carriers are not
-              liable for delayed or undelivered messages.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-black uppercase mb-4 text-accent">Intellectual Property</h2>
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              All content, features, and functionality of our Services, including but not limited to text, graphics,
-              logos, icons, images, audio clips, software, and code, are owned by Northern Step Studio or our licensors
-              and are protected by copyright, trademark, and other intellectual property laws.
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              You are granted a limited, non-exclusive, non-transferable license to access and use our Services for
-              personal, non-commercial purposes. This license does not include any right to modify, reproduce,
-              distribute, or create derivative works from our content.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-black uppercase mb-4 text-accent">In-App Purchases and Payments</h2>
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              Some of our Services may offer in-app purchases or premium features. All purchases are processed through
-              the respective app store and are subject to the app store's terms and conditions.
-            </p>
-            <ul className="list-disc list-inside text-muted-foreground space-y-2">
-              <li>All sales are final unless otherwise required by law</li>
-              <li>Prices are subject to change without notice</li>
-              <li>You are responsible for all charges incurred under your account</li>
-              <li>Refund requests should be directed to the respective app store</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-black uppercase mb-4 text-accent">User Content</h2>
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              If our Services allow you to submit, post, or share content, you retain ownership of your content but
-              grant us a worldwide, non-exclusive, royalty-free license to use, reproduce, modify, and distribute your
-              content in connection with operating and improving our Services.
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              You are solely responsible for your content and must ensure it does not violate any laws or infringe on
-              any third-party rights.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-black uppercase mb-4 text-accent">Disclaimers</h2>
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              Our Services are provided "as is" and "as available" without warranties of any kind, either express or
-              implied. We do not warrant that the Services will be uninterrupted, error-free, or free of viruses or
-              other harmful components.
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              To the fullest extent permitted by law, we disclaim all warranties, including implied warranties of
-              merchantability, fitness for a particular purpose, and non-infringement.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-black uppercase mb-4 text-accent">Limitation of Liability</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              To the maximum extent permitted by law, Northern Step Studio shall not be liable for any indirect,
-              incidental, special, consequential, or punitive damages, including but not limited to loss of profits,
-              data, or use, arising out of or related to your use of our Services, even if we have been advised of the
-              possibility of such damages.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-black uppercase mb-4 text-accent">Indemnification</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              You agree to indemnify, defend, and hold harmless Northern Step Studio and its officers, directors,
-              employees, and agents from and against any claims, liabilities, damages, losses, and expenses arising out
-              of or related to your use of the Services or violation of these Terms.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-black uppercase mb-4 text-accent">Termination</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              We reserve the right to suspend or terminate your access to our Services at any time, with or without
-              cause, and with or without notice. Upon termination, your right to use the Services will immediately
-              cease.
-            </p>
-            <p className="text-muted-foreground leading-relaxed mt-4">
-              We may also suspend or disable communication workflows that create delivery risk, compliance risk, abuse
-              risk, or provider account violations.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-black uppercase mb-4 text-accent">Changes to Terms</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              We may update these Terms from time to time. We will notify you of any material changes by posting the new
-              Terms on this page and updating the last-updated date. Your continued use of the Services after changes
-              become effective constitutes your acceptance of the revised Terms.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-black uppercase mb-4 text-accent">Governing Law</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              These Terms shall be governed by and construed in accordance with applicable laws, without regard to
-              conflict of law principles. Any disputes arising from these Terms or your use of the Services shall be
-              resolved through good-faith negotiation.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-black uppercase mb-4 text-accent">Severability</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              If any provision of these Terms is found to be unenforceable or invalid, that provision will be limited or
-              eliminated to the minimum extent necessary, and the remaining provisions will remain in full force and
-              effect.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-black uppercase mb-4 text-accent">Contact the Studio</h2>
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              If you have any questions about these Terms, please contact us:
-            </p>
-            <div className="flex items-center gap-3 p-4 bg-accent/10 rounded-2xl border border-accent/20">
-              <Mail className="w-5 h-5 text-accent" />
-              <a href="mailto:hello@northernstepstudio.com" className="text-accent hover:underline">
-                hello@northernstepstudio.com
-              </a>
+        <div className="space-y-12">
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-20 card-dark-wise">
+              <Loader2 className="w-8 h-8 animate-spin text-accent mb-4" />
+              <p className="text-sm text-muted-foreground animate-pulse uppercase font-black tracking-widest">
+                Retrieving legal infrastructure...
+              </p>
             </div>
-          </section>
+          ) : (termsContent || privacyContent) ? (
+            <div className="space-y-8">
+              {termsContent && (
+                <div className="card-dark-wise p-8 sm:p-10">
+                  <div className="flex items-center gap-3 mb-8 border-b border-border pb-4">
+                    <FileText className="w-5 h-5 text-accent" />
+                    <h2 className="text-xl font-black uppercase tracking-tight">Terms of Service</h2>
+                  </div>
+                  <div className="prose prose-invert max-w-none prose-sm sm:prose-base">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      {termsContent}
+                    </ReactMarkdown>
+                  </div>
+                </div>
+              )}
+              
+              {privacyContent && (
+                <div className="card-dark-wise p-8 sm:p-10 border-t-2 border-accent/20">
+                  <div className="flex items-center gap-3 mb-8 border-b border-border pb-4">
+                    <Lock className="w-5 h-5 text-accent" />
+                    <h2 className="text-xl font-black uppercase tracking-tight">Privacy Policy</h2>
+                  </div>
+                  <div className="prose prose-invert max-w-none prose-sm sm:prose-base">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      {privacyContent}
+                    </ReactMarkdown>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="card-dark-wise p-8 sm:p-10">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-accent/5 border border-accent/10 flex items-center justify-center">
+                  <Shield className="w-5 h-5 text-accent" />
+                </div>
+                <h2 className="text-xl font-black uppercase tracking-tight text-foreground">Legal Foundation</h2>
+              </div>
+              <p className="text-lg text-foreground font-medium leading-relaxed mb-10">
+                Welcome to Northern Step Studio. These Terms & Privacy guidelines govern your access to and use of our
+                services. By using our Studio's products, you agree to the following terms.
+              </p>
+
+              <div className="space-y-12">
+                <section className="group">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-10 h-10 rounded-xl bg-accent/5 border border-accent/10 flex items-center justify-center group-hover:bg-accent/10 group-hover:border-accent/30 transition-all duration-300">
+                      <Shield className="w-5 h-5 text-accent" />
+                    </div>
+                    <h2 className="text-xl font-black uppercase tracking-tight text-foreground">1. Service Description</h2>
+                  </div>
+                  <p className="text-muted-foreground leading-relaxed pl-14">
+                    Northern Step Studio provides mobile applications, games, and automated communication tools, including missed call text-back and lead recovery messaging services for businesses.
+                  </p>
+                </section>
+
+                <section className="group">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-10 h-10 rounded-xl bg-accent/5 border border-accent/10 flex items-center justify-center group-hover:bg-accent/10 group-hover:border-accent/30 transition-all duration-300">
+                      <Bell className="w-5 h-5 text-accent" />
+                    </div>
+                    <h2 className="text-xl font-black uppercase tracking-tight text-foreground">2. Messaging Consent</h2>
+                  </div>
+                  <div className="pl-14 space-y-4">
+                    <p className="text-muted-foreground leading-relaxed">
+                      By submitting your phone number through our forms or interacting with our services, you consent to receive SMS messages related to:
+                    </p>
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {["Missed call follow-ups", "Appointment coordination", "Service-related communication"].map((item) => (
+                        <li key={item} className="flex items-center gap-3 p-3 rounded-2xl bg-secondary/20 border border-border/40 text-sm text-foreground font-bold italic uppercase">
+                          <MessageSquare className="w-4 h-4 text-accent" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="text-sm text-muted-foreground leading-relaxed mt-4">
+                      If you use our service automation or any related communication workflow, you are responsible for using it lawfully and only in connection with valid customer relationships.
+                    </p>
+                    <p className="text-xs text-muted-foreground italic font-medium pt-2">
+                      Message frequency may vary. Message and data rates may apply.
+                    </p>
+                  </div>
+                </section>
+
+                <section className="group">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-10 h-10 rounded-xl bg-accent/5 border border-accent/10 flex items-center justify-center group-hover:bg-accent/10 group-hover:border-accent/30 transition-all duration-300">
+                      <HelpCircle className="w-5 h-5 text-accent" />
+                    </div>
+                    <h2 className="text-xl font-black uppercase tracking-tight text-foreground">3. Opt-Out Instructions</h2>
+                  </div>
+                  <div className="pl-14">
+                    <p className="text-muted-foreground leading-relaxed mb-6">
+                      You can opt out at any time by replying:
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="p-4 rounded-2xl bg-destructive/5 border border-destructive/20">
+                        <p className="text-xs font-black uppercase text-destructive mb-1">Unsubscribe</p>
+                        <p className="text-2xl font-black text-foreground">STOP</p>
+                      </div>
+                      <div className="p-4 rounded-2xl bg-accent/5 border border-accent/20 border-dashed">
+                        <p className="text-xs font-black uppercase text-accent mb-1">Assistance</p>
+                        <p className="text-2xl font-black text-foreground">HELP</p>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                <section className="group">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-10 h-10 rounded-xl bg-accent/5 border border-accent/10 flex items-center justify-center group-hover:bg-accent/10 group-hover:border-accent/30 transition-all duration-300">
+                      <AlertCircle className="w-5 h-5 text-accent" />
+                    </div>
+                    <h2 className="text-xl font-black uppercase tracking-tight text-foreground">4. Use of Services & Eligibility</h2>
+                  </div>
+                  <div className="pl-14 space-y-4">
+                    <p className="text-muted-foreground leading-relaxed">
+                      You must be at least 13 years old to use our Services. Some features may require account registration. You are responsible for all activities that occur under your account.
+                    </p>
+                    <h3 className="text-sm font-black uppercase text-accent mt-4">Acceptable Use Policy</h3>
+                    <ul className="space-y-2">
+                      {[
+                        "No unlawful purpose or harassment",
+                        "No reverse engineering or decompiling software",
+                        "No unauthorized access or disruption to systems",
+                        "No automated bots or deceptive messaging"
+                      ].map((rule) => (
+                        <li key={rule} className="flex items-center gap-3 text-sm text-muted-foreground">
+                          <ChevronRight className="w-3 h-3 text-accent" />
+                          {rule}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </section>
+
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <section className="group card-dark-wise p-6 bg-secondary/10 border-none">
+                    <h2 className="text-sm font-black uppercase tracking-widest text-accent mb-4">6. Availability</h2>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      We do not guarantee uninterrupted or error-free service. Services may be offered as beta programs with varying support scope.
+                    </p>
+                  </section>
+
+                  <section className="group card-dark-wise p-6 bg-secondary/10 border-none">
+                    <h2 className="text-sm font-black uppercase tracking-widest text-accent mb-4">7. Liability</h2>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Northern Step Studio is not liable for any damages resulting from the use or inability to use our services, to the maximum extent permitted by law.
+                    </p>
+                  </section>
+                </div>
+
+                <section className="group pt-6 border-t border-border/50">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-10 h-10 rounded-xl bg-accent/5 border border-accent/10 flex items-center justify-center group-hover:bg-accent/10 group-hover:border-accent/30 transition-all duration-300">
+                      <RefreshCw className="w-5 h-5 text-accent" />
+                    </div>
+                    <h2 className="text-xl font-black uppercase tracking-tight text-foreground">8. Changes to Terms</h2>
+                  </div>
+                  <p className="text-muted-foreground leading-relaxed pl-14">
+                    We may update these terms at any time. Continued use of the Services after changes become effective constitutes your acceptance of the revised Terms.
+                  </p>
+                </section>
+
+                <section className="group pt-8">
+                  <div className="p-8 rounded-[2rem] bg-gradient-to-br from-accent/10 via-background to-background border border-accent/20">
+                    <h2 className="text-xl font-black uppercase tracking-tight text-foreground mb-4">9. Contact the Studio</h2>
+                    <p className="text-muted-foreground mb-8">For support, questions about these terms, or service coordination:</p>
+                    <a 
+                      href="mailto:support@northernstepstudio.com" 
+                      className="inline-flex items-center gap-4 p-4 pr-8 rounded-2xl bg-background border border-border/50 hover:border-accent group/btn transition-colors duration-300"
+                    >
+                      <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center group-hover/btn:bg-accent group-hover/btn:text-accent-foreground transition-colors">
+                        <Mail className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-0.5">Email Support</p>
+                        <p className="text-sm font-bold text-foreground">support@northernstepstudio.com</p>
+                      </div>
+                    </a>
+                  </div>
+                </section>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

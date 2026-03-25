@@ -7,6 +7,7 @@ import CountUp from "@/react-app/components/CountUp";
 import SEO from "@/react-app/components/SEO";
 import FeatureGate from "@/react-app/components/FeatureGate";
 import { BRAND_ASSETS } from "@/react-app/lib/site";
+import { useSiteContent } from "@/react-app/hooks/useSiteContent";
 
 
 const getCategoryIcon = (category: string) => {
@@ -143,6 +144,8 @@ function ProjectCard({ app, index, t }: { app: any, index: number, t: any }) {
 export default function HomePage() {
   const { t } = useTranslation();
   const { apps: allApps, isLoading } = useApps();
+  const { content: dynamicHeroTitle } = useSiteContent("home_hero_title");
+  const { content: dynamicHeroSubtitle } = useSiteContent("home_hero_subtitle");
   
   // Filter to only show published apps on public pages
   const apps = allApps.filter(app => app.visibility === "published");
@@ -185,29 +188,35 @@ export default function HomePage() {
         canonicalUrl="/"
       />
       {/* Hero Section - Product Infrastructure */}
-      <section className="pt-20 sm:pt-28 pb-20 sm:pb-32 px-4 sm:px-6 relative overflow-hidden">
+      <section className="pt-16 sm:pt-20 pb-16 sm:pb-24 px-4 sm:px-6 relative overflow-hidden">
         {/* Gradient orbs */}
         <div className="absolute top-20 left-1/4 w-[400px] h-[400px] rounded-full bg-accent/[0.03] blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full bg-yellow-500/[0.02] blur-3xl pointer-events-none" />
         
         <div className="container mx-auto max-w-5xl relative z-10">
           {/* Company badge */}
-          <div className="flex justify-center mb-8">
-            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-accent/10 border border-accent/30 backdrop-blur-sm">
-              <img src={BRAND_ASSETS.studioMark} alt="Northern Step Studio" className="w-8 h-8" />
-              <span className="text-label text-foreground text-base sm:text-lg lg:text-xl font-black tracking-widest uppercase">Northern Step Studio</span>
+          <div className="flex justify-center mb-6">
+            <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-accent/10 border border-accent/30 backdrop-blur-sm">
+              <img src={BRAND_ASSETS.studioMark} alt="Northern Step Studio" className="w-6 h-6" />
+              <span className="text-label text-foreground text-sm sm:text-base font-black tracking-widest uppercase">Northern Step Studio</span>
             </div>
           </div>
           
           {/* Main headline */}
-          <div className="text-center mb-12">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tighter mb-6 leading-[0.9] text-foreground">
-              <span className="block mb-2">{t("home.hero_line_1")}</span>
-              <span className="block">{t("home.hero_line_2")}</span>
+          <div className="text-center mb-10">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-normal mb-5 leading-[1.05] text-foreground">
+              {dynamicHeroTitle ? (
+                <span className="block whitespace-pre-line">{dynamicHeroTitle}</span>
+              ) : (
+                <>
+                  <span className="block mb-1">{t("home.hero_line_1")}</span>
+                  <span className="block">{t("home.hero_line_2")}</span>
+                </>
+              )}
             </h1>
             
             <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto font-normal leading-relaxed">
-              {t("home.hero_subtitle")}
+              {dynamicHeroSubtitle || t("home.hero_subtitle")}
             </p>
           </div>
           
@@ -264,15 +273,15 @@ export default function HomePage() {
       </section>
 
       {/* Core Divisions */}
-      <section className="py-20 sm:py-28 px-4 sm:px-6 border-t border-border bg-gradient-to-b from-accent/[0.01] to-transparent">
+      <section className="py-16 sm:py-24 px-4 sm:px-6 border-t border-border bg-gradient-to-b from-accent/[0.01] to-transparent">
         <div className="container mx-auto max-w-6xl">
           {/* Section header */}
-          <div className="text-center mb-14 sm:mb-20">
-            <span className="inline-flex items-center gap-2 text-label text-accent mb-3 text-xs sm:text-sm font-black uppercase">
+          <div className="text-center mb-12 sm:mb-16">
+            <span className="inline-flex items-center gap-2 text-label text-accent mb-2.5 text-xs sm:text-sm font-black uppercase">
               <Rocket className="w-3.5 h-3.5" />
               {t("divisions.label")}
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tighter mb-4 text-foreground">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-normal mb-3 text-foreground leading-tight">
               {t("divisions.title")}
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto font-normal">
@@ -425,7 +434,7 @@ export default function HomePage() {
                 <Code2 className="w-3 h-3" />
                 {t("building.label")}
               </span>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tighter text-foreground">{t("building.title")}</h2>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-normal text-foreground">{t("building.title")}</h2>
             </div>
             <FeatureGate feature="apps">
               <Link 

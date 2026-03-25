@@ -1,7 +1,7 @@
 import { Outlet, Link } from "react-router";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/react-app/lib/auth";
-import { LogOut, User, Settings, AlertTriangle, X, Menu, PhoneCall, ArrowRight, LayoutDashboard } from "lucide-react";
+import { LogOut, User, Settings, AlertTriangle, X, Menu, PhoneCall, ArrowRight, LayoutDashboard, ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
 import NotificationBell from "./NotificationBell";
 import ThemeToggle from "./ThemeToggle";
@@ -93,17 +93,17 @@ export default function PublicLayout() {
             <img
               src={BRAND_ASSETS.studioLogo}
               alt="Northern Step Studio"
-              className="hidden sm:block h-10 md:h-11 lg:h-12 w-auto"
+              className="hidden sm:block h-10 md:h-11 lg:h-12 w-auto dark:invert-0 invert"
             />
             <img
               src={BRAND_ASSETS.studioMark}
               alt="Northern Step Studio"
-              className="sm:hidden h-10 w-auto"
+              className="sm:hidden h-10 w-auto dark:invert-0 invert"
             />
           </Link>
 
-          <nav className="hidden md:flex items-center gap-6">
-            <Link to="/missed-call-text-back" className="text-sm text-yellow-400 hover:text-yellow-300 transition-colors uppercase font-black">
+          <nav className="hidden md:flex items-center gap-7">
+            <Link to="/missed-call-text-back" className="text-sm text-yellow-500 hover:text-yellow-400 transition-colors uppercase font-black">
               Lead Recovery
             </Link>
             <Link to="/apps" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black">
@@ -112,15 +112,25 @@ export default function PublicLayout() {
             <Link to="/workspace-ai" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black">
               {t("nav.workspace_ai")}
             </Link>
-            <Link to="/apps/nexusbuild/app" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black border-l border-border pl-6">
-              NexusBuild
-            </Link>
-            <Link to="/about" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black">
-              {t("nav.about")}
-            </Link>
-            <Link to="/contact" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black">
-              {t("nav.contact")}
-            </Link>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black focus:outline-none">
+                {t("common.more") || "More"}
+                <ChevronDown className="w-4 h-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48 bg-background/95 backdrop-blur-md">
+                <DropdownMenuItem asChild>
+                  <Link to="/about" className="uppercase font-black text-xs py-2.5">
+                    {t("nav.about")}
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/contact" className="uppercase font-black text-xs py-2.5">
+                    {t("nav.contact")}
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </nav>
 
           <div className="flex items-center gap-2 sm:gap-3">
@@ -213,13 +223,6 @@ export default function PublicLayout() {
                 {t("nav.workspace_ai")}
               </Link>
               <Link
-                to="/apps/nexusbuild/app"
-                className="text-sm text-accent transition-colors uppercase font-black py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                NexusBuild
-              </Link>
-              <Link
                 to="/about"
                 className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black py-2"
                 onClick={() => setMobileMenuOpen(false)}
@@ -302,7 +305,7 @@ export default function PublicLayout() {
         <Outlet />
       </div>
 
-      <footer className="border-t border-border py-8 px-4 sm:px-6 bg-card-soft">
+      <footer className="border-t border-border py-6 px-4 sm:px-6 bg-card-soft">
         <div className="container mx-auto max-w-6xl">
           <div className="mb-8 rounded-3xl border border-yellow-500/30 bg-gradient-to-r from-yellow-500/10 via-transparent to-accent/10 px-6 py-6">
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -359,8 +362,7 @@ export default function PublicLayout() {
             <div>
               <h4 className="text-sm font-black uppercase mb-4">{t("footer.legal")}</h4>
               <ul className="space-y-2">
-                <li><Link to="/privacy" className="text-sm text-muted-foreground hover:text-accent transition-colors font-normal">{t("footer.privacy")}</Link></li>
-                <li><Link to="/terms" className="text-sm text-muted-foreground hover:text-accent transition-colors font-normal">{t("footer.terms")}</Link></li>
+                <li><Link to="/terms" className="text-sm text-muted-foreground hover:text-accent transition-colors font-normal">Terms & Privacy</Link></li>
               </ul>
             </div>
           </div>

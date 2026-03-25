@@ -155,7 +155,8 @@
     "web": "Web",
     "coming_soon": "Coming Soon",
     "view": "View",
-    "notify_me": "Notify Me"
+    "notify_me": "Notify Me",
+    "more": "More"
   },
   "building": {
     "label": "Products in Motion",
@@ -413,12 +414,12 @@
       "interest_label": "What are you watching?",
       "interest_placeholder": "ProvLy insurance exports, NeuroMoves routines, Lead Recovery rollout, etc.",
       "success": "You are on the list.",
-      "saved_only": "You are on the list. Email forwarding is still pending, so use hello@northernstepstudio.com if this is urgent.",
+      "saved_only": "You are on the list. Email forwarding is still pending, so use support@northernstepstudio.com if this is urgent.",
       "updated": "You were already on the list. Your note was updated.",
       "joining": "Joining..."
     },
     "success": "Message received. We will review it and follow up.",
-    "saved_only": "Message received and saved. Email forwarding is still pending, so use hello@northernstepstudio.com if this is urgent.",
+    "saved_only": "Message received and saved. Email forwarding is still pending, so use support@northernstepstudio.com if this is urgent.",
     "error": "Something went wrong. Please try again.",
     "general_label": "Studio and partnerships",
     "support_label": "Product support",
@@ -713,5 +714,72 @@
     "cta_title": "Get Started with Lead Recovery",
     "cta_desc": "Ready to stop losing leads to missed calls? Tell us about your business and we'll see if the NSS Missed Call Text Back system is a fit for your workflow.",
     "cta_button": "Contact the Studio"
+  },
+  "mctb_page": {
+    "hero": {
+      "badge": "Starter automation for local service teams",
+      "title": "Stop losing service jobs to missed calls",
+      "subtitle": "A 24/7 response flow that texts back instantly, qualifies the job, and sends the owner a clean summary.",
+      "description": "This is not a generic chatbot page. It is a focused lead-recovery system for real service businesses that cannot afford to miss the phone and lose the next job. Plumbing is the current starter playbook because it is the fastest version to sell and demo, not because the system is limited to plumbers.",
+      "demo_badge": "Current starter demo: plumbing",
+      "summary_badge": "Owner summary included",
+      "compliance_badge": "Compliance-aware SMS flow",
+      "verticals_badge": "Expandable to other service verticals"
+    },
+    "value_cards": {
+      "title": "What a buyer needs to understand in under a minute",
+      "description": "The page should answer three questions fast: what this is, what it does, and why it is worth paying for before the customer calls someone else.",
+      "what_is": {
+        "label": "What it is",
+        "title": "A missed-call recovery system",
+        "desc": "When a business misses a call, the system texts back immediately, starts the intake, and keeps the lead engaged until the owner calls back."
+      },
+      "what_does": {
+        "label": "What it does",
+        "title": "Qualifies the lead before you touch it",
+        "desc": "It asks short service questions, checks urgency, captures the job location, and turns the exchange into a clean owner-ready summary."
+      },
+      "who_for": {
+        "label": "Who it is for",
+        "title": "Local service businesses that miss calls",
+        "desc": "Plumbers are the current starter demo, but the same structure fits contractors, HVAC, electrical, garage door, cleaning, towing, and other service operators who cannot sit on the phone all day."
+      }
+    },
+    "roi": {
+      "line": "ROI line",
+      "text": "If it saves one missed job per week, it can pay for itself.",
+      "tags": "Faster response. Better filtering. More callbacks."
+    },
+    "workflow": {
+      "title": "The live flow should feel obvious",
+      "desc": "Do not make the visitor imagine the system. Show the call trigger, the intake, the classification, and the owner summary in the same scroll path.",
+      "step1": {
+        "title": "Missed call triggers the response",
+        "desc": "The customer calls the business line, nobody picks up, and the system opens the text conversation without waiting on the owner."
+      },
+      "step2": {
+        "title": "The customer gets a short intake",
+        "desc": "The script asks one question at a time, stays on topic, and keeps the customer moving instead of dumping a long paragraph on them."
+      },
+      "step3": {
+        "title": "The job gets classified",
+        "desc": "Issue type, severity, urgency, location, and customer name are captured so the owner can act on something useful."
+      },
+      "step4": {
+        "title": "The owner gets the summary",
+        "desc": "Instead of guessing from voicemail or raw texts, the owner sees the lead summary and knows whether to call immediately or queue it normally."
+      }
+    },
+    "summary": {
+      "badge": "What the owner sees",
+      "title": "The summary is the selling point",
+      "desc": "This is the moment that makes the product make sense. The owner does not need to read a voicemail transcript. They need a clean snapshot of the job and what to do next."
+    },
+    "pricing": {
+      "title": "Clear tiers beat vague custom pricing",
+      "desc": "Buyers should be able to see where they fit. The tiers are there to simplify the sale, not to make the system look more complicated.",
+      "recommendation_title": "Recommendation",
+      "recommendation_text": "Most businesses should start with Starter, prove the workflow, and expand later."
+    }
   }
 }

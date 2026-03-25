@@ -9,7 +9,7 @@ Last updated: March 19, 2026
 - Website: `https://northernstepstudio.com`
 - Privacy policy: `https://northernstepstudio.com/privacy`
 - Terms of service: `https://northernstepstudio.com/terms`
-- Contact email: `hello@northernstepstudio.com`
+- Contact email: `support@northernstepstudio.com`
 - Support email: `support@northernstepstudio.com`
 - Toll-free number: `+18777550689`
 - Toll-free number SID: `PNc93e659d0a6928459d5a19d375478f0b`
@@ -34,7 +34,7 @@ Last updated: March 19, 2026
 
 ## HELP message sample
 
-`Northern Step Studio: Help for product inquiries and service automation requests. Reply STOP to opt out or email hello@northernstepstudio.com.`
+`Northern Step Studio: Help for product inquiries and service automation requests. Reply STOP to opt out or email support@northernstepstudio.com.`
 
 ## Opt-in confirmation sample
 
@@ -62,4 +62,4 @@ Last updated: March 19, 2026
 - Business registration number:
   if Twilio asks for one in the Console flow, use the sole-proprietor path and provide the required individual/business identity data shown there rather than inventing an EIN
 - Notification email for Twilio status updates:
-  recommended `hello@northernstepstudio.com`
+  recommended `support@northernstepstudio.com`

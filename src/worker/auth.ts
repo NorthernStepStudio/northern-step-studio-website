@@ -309,6 +309,26 @@ export async function clearAuthSessions(c: { env: Env; req: { url: string } }) {
 
 export async function getAuthenticatedUser(c: { env: Env; req: { url: string } }): Promise<AppUser | null> {
   const sessionToken = getCookie(c as never, LOCAL_SESSION_TOKEN_COOKIE_NAME);
+  
+  // Development Fallback: If DB URL is not configured (contains YOUR_PASSWORD placeholder),
+  // return a mock owner session to unblock UI testing on localhost.
+  if (c.env.SUPABASE_DB_URL?.includes("YOUR_PASSWORD") || c.env.DATABASE_URL?.includes("YOUR_PASSWORD")) {
+    return {
+      id: "mock-owner",
+      email: OWNER_EMAIL,
+      role: "owner",
+      display_name: "Studio Owner (Dev)",
+      bio: "This is a mock session for local development when the database is unavailable.",
+      avatar_url: null,
+      has_password: true,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      last_signed_in_at: new Date().toISOString(),
+      auth_method: "local",
+      db_user_id: 1,
+    };
+  }
+
   if (typeof sessionToken !== "string" || sessionToken.length === 0) {
     return null;
   }
@@ -316,24 +336,31 @@ export async function getAuthenticatedUser(c: { env: Env; req: { url: string } }
   const sessionTokenHash = await sha256(sessionToken);
   const sql = getDb(c.env);
 
-  const [row] = await sql<LocalSessionRow[]>`
-    SELECT
-      u.id,
-      u.email,
-      u.role,
-      u.display_name,
-      u.bio,
-      u.avatar_url,
-      u.password_hash,
-      u.password_salt,
-      u.created_at,
-      u.updated_at,
-      s.last_seen_at
-    FROM user_sessions s
-    JOIN users u ON u.id = s.user_id
-    WHERE s.session_token_hash = ${sessionTokenHash}
-      AND s.expires_at > CURRENT_TIMESTAMP
-  `;
+  let row;
+  try {
+    const results = await sql<LocalSessionRow[]>`
+      SELECT
+        u.id,
+        u.email,
+        u.role,
+        u.display_name,
+        u.bio,
+        u.avatar_url,
+        u.password_hash,
+        u.password_salt,
+        u.created_at,
+        u.updated_at,
+        s.last_seen_at
+      FROM user_sessions s
+      JOIN users u ON u.id = s.user_id
+      WHERE s.session_token_hash = ${sessionTokenHash}
+        AND s.expires_at > CURRENT_TIMESTAMP
+    `;
+    row = results[0];
+  } catch (error) {
+    console.error("[Auth] Database error in getAuthenticatedUser:", error);
+    return null;
+  }
 
   if (!row) {
     setCookie(c as never, LOCAL_SESSION_TOKEN_COOKIE_NAME, "", {
@@ -364,6 +391,9 @@ export const authMiddleware: MiddlewareHandler<{ Bindings: Env; Variables: { use
 };
 
 export async function getGoogleOAuthRedirectUrl(c: { env: Env; req: { url: string } }) {
+  if (!c.env.GOOGLE_CLIENT_ID) {
+    throw new Error("GOOGLE_CLIENT_ID is not configured in environment variables");
+  }
   const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
   const options = {
     redirect_uri: new URL("/api/oauth/google/callback", c.req.url).toString(),

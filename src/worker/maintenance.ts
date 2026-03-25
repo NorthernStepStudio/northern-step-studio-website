@@ -6,10 +6,22 @@ const maintenance = new Hono<{ Bindings: Env; Variables: { user: AppUser } }>();
 
 // Get maintenance settings
 maintenance.get("/", async (c) => {
-  const sql = getDb(c.env);
-  const [settings] = await sql`SELECT * FROM maintenance_settings WHERE id = 1`;
-  
-  return c.json(settings || { is_active: false, message: "", scheduled_date: null, scheduled_time: null });
+  try {
+    const sql = getDb(c.env);
+    
+    // Manual timeout to prevent hanging on localhost/slow connections
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error("Database timeout")), 2000)
+    );
+    
+    const settingsPromise = sql`SELECT * FROM maintenance_settings WHERE id = 1`;
+    const [settings] = await Promise.race([settingsPromise, timeoutPromise]) as any[];
+    
+    return c.json(settings || { is_active: false, message: "" });
+  } catch (error) {
+    console.error("[Maintenance] Database query failed or timed out:", error);
+    return c.json({ is_active: false, message: "" });
+  }
 });
 
 // Update maintenance settings (owner/admin only)

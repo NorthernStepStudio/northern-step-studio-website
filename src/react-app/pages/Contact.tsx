@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { AlertCircle, BookOpen, CheckCircle, Mail, MessageCircle, PhoneCall, Send, Sparkles } from "lucide-react";
 import GlitchedText from "@/react-app/components/GlitchedText";
 import SEO from "@/react-app/components/SEO";
-import StudioHomeLink from "@/react-app/components/StudioHomeLink";
 import { EXTERNAL_LINKS } from "@/react-app/lib/site";
 
 type FeedbackState = {
@@ -216,13 +215,10 @@ export default function Contact() {
         canonicalUrl="/contact"
       />
       <div className="container mx-auto max-w-5xl">
-        <div className="mb-8 flex justify-center sm:justify-start">
-          <StudioHomeLink />
-        </div>
 
         <div className="mb-12 text-center">
           <span className="mb-2 block text-xs text-accent text-label sm:text-sm">{t("contact.label")}</span>
-          <h1 className="mb-4 text-3xl font-black uppercase tracking-tighter sm:text-4xl lg:text-5xl">
+          <h1 className="mb-4 text-3xl font-black uppercase tracking-tight sm:text-4xl lg:text-5xl leading-tight">
             <GlitchedText text={t("contact.title")} duration={600} />
           </h1>
           <p className="mx-auto max-w-2xl text-sm font-normal text-muted-foreground sm:text-base">
@@ -352,12 +348,8 @@ export default function Contact() {
                   />
                   <span className="text-muted-foreground">
                     {t("contact.form.sms_opt_in_label")}{" "}
-                    <Link to="/privacy" className="text-accent hover:underline">
-                      {t("footer.privacy")}
-                    </Link>{" "}
-                    {t("contact.legal_and")}{" "}
                     <Link to="/terms" className="text-accent hover:underline">
-                      {t("footer.terms")}
+                      Terms & Privacy
                     </Link>
                     .
                   </span>
@@ -439,7 +431,7 @@ export default function Contact() {
                   <div>
                     <p className="text-xs text-muted-foreground">{t("contact.general_label")}</p>
                     <a href={EXTERNAL_LINKS.contactEmail} className="text-sm font-medium transition-colors hover:text-accent">
-                      hello@northernstepstudio.com
+                      support@northernstepstudio.com
                     </a>
                   </div>
                 </div>
@@ -528,12 +520,8 @@ export default function Contact() {
               </form>
               <p className="mt-4 text-xs text-muted-foreground">
                 {t("contact.legal_note")}{" "}
-                <Link to="/privacy" className="text-accent hover:underline">
-                  {t("footer.privacy")}
-                </Link>{" "}
-                {t("contact.legal_and")}{" "}
                 <Link to="/terms" className="text-accent hover:underline">
-                  {t("footer.terms")}
+                  Terms & Privacy
                 </Link>
                 .
               </p>

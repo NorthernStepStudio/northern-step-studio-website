@@ -13,7 +13,7 @@ export const BRAND_ASSETS = {
 } as const;
 
 export const EXTERNAL_LINKS = {
-  contactEmail: "mailto:hello@northernstepstudio.com",
+  contactEmail: "mailto:support@northernstepstudio.com",
   supportEmail: "mailto:support@northernstepstudio.com",
 } as const;
 

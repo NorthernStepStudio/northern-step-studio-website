@@ -1,15 +1,21 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
+import { useMemo } from "react";
 import { Mountain, Target, Rocket, Heart, Code, Gamepad2, Cpu, Sparkles, ArrowRight } from "lucide-react";
 import GlitchedText from "@/react-app/components/GlitchedText";
 import SEO from "@/react-app/components/SEO";
 import { BRAND_ASSETS } from "@/react-app/lib/site";
 import { useApps } from "@/react-app/hooks/useApps";
 import { getAppCategoryLabel } from "@/react-app/lib/appCategories";
+import { useSiteContent } from "@/react-app/hooks/useSiteContent";
+import type { App } from "@/react-app/hooks/useApps";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export default function About() {
   const { t } = useTranslation();
   const { apps } = useApps();
+  const { content: dynamicContent } = useSiteContent("about_content");
   const pageLabel = t("about_page.label", { defaultValue: "Who We Are" });
   const pageTitle = t("about_page.title", { defaultValue: "Northern Step Studio" });
   const pageSubtitle = t("about_page.subtitle", {
@@ -118,10 +124,12 @@ export default function About() {
     },
   ];
 
-  const studioProducts = apps.filter((app) => app.visibility !== "hidden").slice(0, 5);
+  const studioProducts = useMemo(() => {
+    return apps.filter((app: App) => app.visibility !== "hidden").slice(0, 5);
+  }, [apps]);
 
   return (
-    <div className="min-h-screen pt-24 px-4 sm:px-6 pb-12">
+    <div className="min-h-screen pt-16 sm:pt-20 px-4 sm:px-6 pb-12">
       <SEO
         title="About Us"
         description="Learn how Northern Step Studio builds practical software across home readiness, finance education, guided support experiences, hardware planning, and lead recovery automation."
@@ -130,12 +138,12 @@ export default function About() {
       />
       <div className="container mx-auto max-w-5xl">
         {/* Hero */}
-        <div className="text-center mb-12 sm:mb-16">
-          <div className="inline-flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-accent/10 border border-accent/30 mb-6">
-            <img src={BRAND_ASSETS.studioMark} alt="Northern Step Studio" className="w-16 h-16 sm:w-20 sm:h-20" />
+        <div className="text-center mb-10 sm:mb-14">
+          <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-accent/10 border border-accent/30 mb-5">
+            <img src={BRAND_ASSETS.studioMark} alt="Northern Step Studio" className="w-12 h-12 sm:w-16 sm:h-16 dark:invert-0 invert" />
           </div>
           <span className="text-label text-accent mb-2 block text-xs sm:text-sm">{pageLabel}</span>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tighter mb-4">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-normal mb-4 leading-tight">
             <GlitchedText text={pageTitle} duration={600} />
           </h1>
           <p className="text-muted-foreground font-normal max-w-2xl mx-auto text-sm sm:text-base">
@@ -152,9 +160,17 @@ export default function About() {
             <h2 className="text-xl sm:text-2xl font-black uppercase">{storyTitle}</h2>
           </div>
           <div className="space-y-4 text-muted-foreground font-normal text-sm sm:text-base leading-relaxed">
-            {storyParagraphs.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
+            {dynamicContent ? (
+              <div className="prose prose-invert max-w-none">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {dynamicContent}
+                </ReactMarkdown>
+              </div>
+            ) : (
+              storyParagraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))
+            )}
           </div>
         </div>
 
@@ -180,7 +196,7 @@ export default function About() {
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {studioProducts.map((app) => (
+            {studioProducts.map((app: App) => (
               <Link
                 key={app.slug}
                 to={`/apps/${app.slug}`}

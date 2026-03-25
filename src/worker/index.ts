@@ -1,11 +1,11 @@
 import { Hono, type Context } from "hono";
-import { handle } from "hono/vercel";
+import { HTTPException } from "hono/http-exception";
 import Stripe from "stripe";
 import community from "./community";
 import featureToggles from "./feature-toggles";
 import maintenance from "./maintenance";
 import communityUploads from "./community-uploads";
-import appShellHtml from "../../index.html?raw";
+import appShellHtml from "../../dist/index.html";
 import { getDb } from "./db";
 import { sendEmail } from "./email";
 import {
@@ -26,13 +26,48 @@ import {
   verifyUserPassword,
   exchangeGoogleCodeForUser,
   getGoogleOAuthRedirectUrl,
+  findDatabaseUserByEmail,
   validatePassword,
   type AppUser,
 } from "./auth";
 
-export const runtime = "edge";
 
 const app = new Hono<{ Bindings: Env; Variables: { user: AppUser } }>({ strict: false });
+
+// Health check and diagnostics (moved to top to ensure matching)
+app.get("/api/health", async (c) => {
+  const env = c.env;
+  let dbConnected = false;
+  let dbError = null;
+  try {
+    const sql = getDb(env);
+    await (async () => {
+      await Promise.race([
+        sql`SELECT 1 as ok`,
+        new Promise((_, reject) => setTimeout(() => reject(new Error("Database timeout")), 5000))
+      ]);
+      dbConnected = true;
+    })();
+  } catch (e) {
+    dbError = e instanceof Error ? e.message : String(e);
+  }
+
+  return c.json({
+    status: "ok",
+    version: "1.0.3",
+    path: c.req.path,
+    url: c.req.url,
+    environment: {
+      has_database: Boolean(env.SUPABASE_DB_URL || env.DATABASE_URL),
+      has_google_auth: Boolean(env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET),
+      database_connected: dbConnected,
+      database_error: dbError
+    },
+    timestamp: new Date().toISOString()
+  });
+});
+
+app.get("/api/ping", (c) => c.json({ status: "pong", path: c.req.path }));
 
 // NexusBuild Proxy (placed first for precedence)
 app.all("/api/nexus/*", async (c) => {
@@ -62,21 +97,26 @@ app.all("/api/nexus/*", async (c) => {
   }
 });
 
-app.notFound((c) => {
-  if (c.req.path.startsWith("/api/")) {
-    return c.json({ error: "Not found" }, 404);
+// (Routes moved to end of file for diagnostic visibility)
+
+// Global Error Handler (Ensures all errors return JSON to the frontend)
+app.onError((err, c) => {
+  console.error(`[Worker Error] ${err.message}`, err);
+  
+  if (err instanceof HTTPException) {
+    return err.getResponse();
   }
 
-  if (c.req.method === "GET" || c.req.method === "HEAD") {
-    if (c.env.ASSETS && typeof c.env.ASSETS.fetch === "function") {
-      return c.env.ASSETS.fetch(c.req.raw);
-    }
-
-    return c.html(appShellHtml);
-  }
-
-  return c.text("Not Found", 404);
+  const status = (err as any).status || 500;
+  return c.json({ 
+    error: err.message || "Internal Server Error",
+    path: c.req.path,
+    url: c.req.url, // Help diagnose host/protocol issues
+    stack: (c.env as any).NODE_ENV === "development" ? err.stack : undefined
+  }, status as any);
 });
+
+// (notFound moved to end)
 
 function getStripe(env: Env) {
   const apiKey = typeof env.STRIPE_SECRET_KEY === "string" ? env.STRIPE_SECRET_KEY.trim() : "";
@@ -88,9 +128,9 @@ function getStripe(env: Env) {
 }
 
 // Create an API-scoped app
-const api = new Hono<{ Bindings: Env; Variables: { user: AppUser } }>();
+// (api instance removed - using app directly)
 
-const STUDIO_CONTACT_EMAIL = "hello@northernstepstudio.com";
+const STUDIO_CONTACT_EMAIL = "support@northernstepstudio.com";
 const STUDIO_SUPPORT_EMAIL = "support@northernstepstudio.com";
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const SUPPORT_REQUEST_PATTERN = /\b(support|bug|error|issue|billing|account|login|password|refund|problem|help)\b/i;
@@ -316,6 +356,23 @@ async function handlePasswordLogin(
 
   if (!dbUser && adminOnly) {
     dbUser = await bootstrapLocalOwnerPasswordLogin(c, email, password);
+    
+    // Production Bootstrapper (if enabled via environment variable)
+    if (!dbUser && email === OWNER_EMAIL && c.env.OWNER_BOOTSTRAP_PASSWORD) {
+      if (password === c.env.OWNER_BOOTSTRAP_PASSWORD) {
+        console.log("[Auth] Bootstrapping owner account...");
+        const credentials = await createPasswordCredentials(password);
+        dbUser = await ensureDatabaseUser(c.env, email, "Northern Step Studio");
+        await sql`
+          UPDATE users 
+          SET password_hash = ${credentials.password_hash}, 
+              password_salt = ${credentials.password_salt},
+              role = 'owner'
+          WHERE id = ${dbUser.id}
+        `;
+        dbUser = await findDatabaseUserByEmail(c.env, email);
+      }
+    }
   }
 
   if (!dbUser) {
@@ -407,6 +464,8 @@ async function handlePasswordRegistration(c: Context<{ Bindings: Env; Variables:
 
   return c.json({ success: true, user: toLocalAppUser(dbUser) }, 201);
 }
+
+// (Duplicate routes removed - consolidate definitions below)
 
 function resolveContactDestination(subject: string, message: string) {
   return SUPPORT_REQUEST_PATTERN.test(`${subject}\n${message}`) ? STUDIO_SUPPORT_EMAIL : STUDIO_CONTACT_EMAIL;
@@ -764,8 +823,8 @@ app.get("/api/logout", async (c) => {
   return c.json({ success: true }, 200);
 });
 
-// OAuth redirect URL
-api.get("/oauth/google/redirect_url", async (c) => {
+// OAuth redirect URL (moved to app)
+app.get("/api/oauth/google/redirect_url", async (c) => {
   try {
     const redirectUrl = await getGoogleOAuthRedirectUrl(c);
     return c.json({ redirectUrl }, 200);
@@ -775,6 +834,8 @@ api.get("/oauth/google/redirect_url", async (c) => {
   }
 });
 
+// (api route mounting removed)
+
 // OAuth callback
 app.get("/api/oauth/google/callback", async (c) => {
   const code = c.req.query("code");
@@ -782,20 +843,10 @@ app.get("/api/oauth/google/callback", async (c) => {
     return c.redirect("/login?error=missing_code");
   }
 
-  try {
-    const googleUser = await exchangeGoogleCodeForUser(c, code);
-    const dbUser = await ensureDatabaseUser(
-      c.env,
-      googleUser.email,
-      googleUser.name || googleUser.given_name || null
-    );
-
-    await createLocalSession(c, dbUser.id);
-    return c.redirect("/auth/callback?success=true");
-  } catch (error) {
-    console.error("Google OAuth callback failed:", error);
-    return c.redirect("/login?error=oauth_failed");
-  }
+  // Redirect to the frontend callback page with the code.
+  // The frontend component (AuthCallback.tsx) will then call /api/sessions 
+  // to perform the actual token exchange. This consolidates the logic.
+  return c.redirect(`/auth/callback?code=${code}`);
 });
 
 // Exchange code for session token (legacy compatibility or frontend flow)
@@ -846,7 +897,10 @@ app.post("/api/auth/admin-login", async (c) => {
     return await handlePasswordLogin(c, { adminOnly: true });
   } catch (error) {
     console.error("Admin password login failed:", error);
-    return c.json({ error: "Unable to sign in to the admin console right now." }, 500);
+    return c.json({ 
+      error: "Unable to sign in to the admin console right now.",
+      detail: error instanceof Error ? error.message : String(error)
+    }, 500);
   }
 });
 
@@ -1262,6 +1316,58 @@ app.get("/api/apps", async (c) => {
   const apps = (results as any[]).map((app: any) => mapAppRecord(app as AppRecord));
 
   return c.json(apps);
+});
+
+// Site Content CMS Routes
+app.get("/api/site-content/:key", async (c) => {
+  const key = c.req.param("key");
+  const sql = getDb(c.env);
+  
+  try {
+    const [result] = await sql<{ content: string, updated_at: string }[]>`
+      SELECT content, updated_at FROM site_content WHERE key = ${key}
+    `;
+
+    if (!result) {
+      return c.json({ error: "Content not found" }, 404);
+    }
+
+    return c.json({ key, content: result.content, updated_at: result.updated_at });
+  } catch (err) {
+    console.error(`[SiteContent] Failed to fetch key ${key}:`, err);
+    return c.json({ error: "Failed to fetch content" }, 500);
+  }
+});
+
+app.put("/api/site-content/:key", authMiddleware, async (c) => {
+  const allowedRole = await requireRole(c, ["owner", "admin"]);
+  if (!allowedRole) {
+    return c.json({ error: "Admin access required" }, 403);
+  }
+
+  const key = c.req.param("key");
+  const body = await c.req.json().catch(() => null);
+  const content = typeof body?.content === "string" ? body.content : "";
+
+  if (!content) {
+    return c.json({ error: "Content is required" }, 400);
+  }
+
+  const sql = getDb(c.env);
+  try {
+    await sql`
+      INSERT INTO site_content (key, content)
+      VALUES (${key}, ${content})
+      ON CONFLICT (key) DO UPDATE SET 
+        content = EXCLUDED.content,
+        updated_at = CURRENT_TIMESTAMP
+    `;
+
+    return c.json({ success: true });
+  } catch (err) {
+    console.error(`[SiteContent] Failed to update key ${key}:`, err);
+    return c.json({ error: "Failed to update content" }, 500);
+  }
 });
 
 app.get("/api/apps/:slug", async (c) => {
@@ -2400,6 +2506,63 @@ async function deleteManagedProfileAvatar(bucket: R2Bucket, avatarUrl: string | 
   await bucket.delete(getProfileAvatarObjectKey(userId, filename)).catch(() => null);
 }
 
+// Site Content CRUD (CMS)
+app.get("/api/site-content", async (c) => {
+  const sql = getDb(c.env);
+  const results = await sql`
+    SELECT * FROM site_content ORDER BY key ASC
+  `;
+  return c.json(results);
+});
+// Site Content API (CMS)
+app.get("/api/site-content/:key", async (c) => {
+  const key = c.req.param("key");
+  const env = c.env;
+
+  // Development Fallback: Return null if DB is not configured correctly
+  if (env.SUPABASE_DB_URL?.includes("YOUR_PASSWORD") || env.DATABASE_URL?.includes("YOUR_PASSWORD")) {
+    return c.json({ key, content: null });
+  }
+
+  try {
+    const sql = getDb(env);
+    const [row] = await sql<{ content: string }[]>`
+      SELECT content FROM site_content WHERE key = ${key}
+    `;
+    
+    if (!row) {
+      return c.json({ error: "Content not found" }, 404);
+    }
+    
+    return c.json({ key, content: row.content });
+  } catch (error) {
+    console.error(`[SiteContent] Error fetching key ${key}:`, error);
+    return c.json({ key, content: null }); // Fallback to null (let frontend handle defaults)
+  }
+});
+
+app.put("/api/site-content/:key", authMiddleware, async (c) => {
+  const allowedRole = await requireRole(c, ["owner", "admin"]);
+  if (!allowedRole) {
+    return c.json({ error: "Admin access required" }, 403);
+  }
+
+  const key = c.req.param("key");
+  const body = await c.req.json();
+  const sql = getDb(c.env);
+
+  await sql`
+    INSERT INTO site_content (key, content, metadata, updated_at)
+    VALUES (${key}, ${body.content}, ${JSON.stringify(body.metadata || {})}, CURRENT_TIMESTAMP)
+    ON CONFLICT (key) DO UPDATE SET
+      content = EXCLUDED.content,
+      metadata = EXCLUDED.metadata,
+      updated_at = EXCLUDED.updated_at
+  `;
+
+  return c.json({ success: true });
+});
+
 // Update user profile
 app.put("/api/user/profile", authMiddleware, async (c) => {
   const authUser = c.get("user");
@@ -3176,6 +3339,8 @@ app.put("/api/user/preferences", authMiddleware, async (c) => {
   return c.json({ success: true });
 });
 
+// (health routes moved to top)
+
 // Mount feature toggles routes
 app.route("/api/feature-toggles", featureToggles);
 
@@ -3185,4 +3350,28 @@ app.route("/api/maintenance", maintenance);
 // Mount community uploads routes
 app.route("/api/community-files", communityUploads);
 
-export default handle(app);
+// Global Not Found Handler (at the very end)
+app.notFound((c) => {
+  const path = c.req.path;
+  console.log(`[Worker NotFound] Path: ${path}`);
+
+  if (path.startsWith("/api") || path.includes("/api/")) {
+    return c.json({
+      error: "API endpoint not found",
+      path,
+      method: c.req.method
+    }, 404);
+  }
+
+  if (c.req.method === "GET" || c.req.method === "HEAD") {
+    if (c.env.ASSETS && typeof c.env.ASSETS.fetch === "function") {
+      return c.env.ASSETS.fetch(c.req.raw);
+    }
+
+    return c.html(appShellHtml);
+  }
+
+  return c.text("Not Found", 404);
+});
+
+export default app;
