@@ -617,9 +617,68 @@
     "hero_line_1": "Costruendo Software Focalizzato",
     "hero_line_2": "Che Risolve Problemi Reali",
     "hero_subtitle": "Northern Step Studio sviluppa applicazioni pratiche in produttività, apprendimento, finanza e automazione—aiutando individui e aziende a passare dalle idee all'azione.",
+    "hero_pitch": "Studio creativo che costruisce app mobili, giochi e strumenti di IA per far crescere la tua azienda.",
     "lead_recovery": "Recupero Lead",
     "studio_ai": "IA dello Studio",
-    "focus_areas_count": 6
+    "focus_areas_count": 6,
+    "cta_view_work": "Vedi i progetti",
+    "cta_get_quote": "Richiedi un preventivo",
+    "focus_title": "Cosa facciamo meglio",
+    "focus_subtitle": "Capacità selezionate offerte da un unico studio di prodotto.",
+    "focus_area_apps_title": "App e prodotti web",
+    "focus_area_apps_desc": "Strategia, design di prodotto e ingegneria moderna per strumenti mobili e web.",
+    "focus_area_gaming_title": "Giochi casuali",
+    "focus_area_gaming_desc": "Esperienze ludiche guidate da storie con servizi live e connessioni comunitarie.",
+    "focus_area_ai_title": "Strumenti e integrazioni IA",
+    "focus_area_ai_desc": "Automazioni e copiloti che mantengono i team in movimento.",
+    "focus_area_systems_title": "Operazioni e sistemi",
+    "focus_area_systems_desc": "Automazione dei flussi di lavoro che riduce il rumore e rende i lanci prevedibili.",
+    "portfolio_title": "Portfolio",
+    "portfolio_subtitle": "Progetti selezionati che mostrano risultati misurabili per clienti e brand interni.",
+    "portfolio_empty": "Nessun progetto pubblico è disponibile in questo momento.",
+    "portfolio_disabled": "Accesso al portfolio in arrivo.",
+    "portfolio_default_description": "Prossimi passi concentrati sui risultati e sugli apprendimenti.",
+    "testimonials_title": "Prova e risultati",
+    "testimonials_subtitle": "Testimonianze dei team con cui lavoriamo e dei lanci che abbiamo realizzato.",
+    "testimonials": {
+      "provly": {
+        "quote": "Hanno trasformato i nostri dati di vendita in una dashboard che finalmente usiamo.",
+        "author": "Leah Morales",
+        "role": "Fondatrice, Provly",
+        "highlight": "Rilancio in 3 mesi"
+      },
+      "nexus": {
+        "quote": "Northern Step ha consegnato un'esperienza unificata per formazione e automazione go-to-market.",
+        "author": "Marco Silva",
+        "role": "Co-fondatore, NexusBuild",
+        "highlight": "Rilascio multipiattaforma"
+      },
+      "paso": {
+        "quote": "L'automazione ha dimezzato i nostri follow-up manuali migliorando la chiarezza per gli operatori.",
+        "author": "Tessa Reza",
+        "role": "Responsabile Operazioni, PasoScore",
+        "highlight": "Automazione operativa"
+      }
+    },
+    "process_title": "Come lavoriamo",
+    "process_subtitle": "Ritmi semplici e metriche condivise.",
+    "process": {
+      "discovery": {
+        "title": "Pianificare con dati",
+        "description": "Ricerca, metriche e wireframe allineano il team prima di scrivere codice."
+      },
+      "build": {
+        "title": "Costruire con sprint intenzionali",
+        "description": "Team piccoli consegnano software funzionante ogni settimana e testano le ipotesi più rischiose."
+      },
+      "launch": {
+        "title": "Lanciare e imparare",
+        "description": "Rilasciare presto, misurare segnali chiave e iterare senza rifare le fondamenta."
+      }
+    },
+    "final_cta_title": "Pronto a eliminare il rumore?",
+    "final_cta_subtitle": "Condividi la sfida che vuoi risolvere e proporremo un percorso di consegna snello.",
+    "final_cta_button": "Inizia un progetto"
   },
   "mctb": {
     "label": "Automazione dei Servizi",

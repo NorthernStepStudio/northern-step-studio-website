@@ -661,9 +661,68 @@
     "hero_line_1": "Building Focused Software",
     "hero_line_2": "That Solves Real Problems",
     "hero_subtitle": "Northern Step Studio develops practical applications across productivity, learning, finance, and automation—helping individuals and businesses move from ideas to action.",
+    "hero_pitch": "Creative studio building mobile apps, games, and AI tools that grow your business.",
     "lead_recovery": "Lead Recovery",
     "studio_ai": "Studio AI",
-    "focus_areas_count": 6
+    "focus_areas_count": 6,
+    "cta_view_work": "View Work",
+    "cta_get_quote": "Get a Quote",
+    "focus_title": "What we do best",
+    "focus_subtitle": "Curated capabilities delivered by a single product studio.",
+    "focus_area_apps_title": "Apps & Web Products",
+    "focus_area_apps_desc": "Strategy, product design, and modern engineering for mobile and web tools.",
+    "focus_area_gaming_title": "Casual Gaming",
+    "focus_area_gaming_desc": "Playful, story-led experiences with live services and community hooks.",
+    "focus_area_ai_title": "AI Tools & Integrations",
+    "focus_area_ai_desc": "Automations and copilots that keep teams moving.",
+    "focus_area_systems_title": "Operations & Systems",
+    "focus_area_systems_desc": "Workflow automation that reduces noise and keeps launches predictable.",
+    "portfolio_title": "Portfolio",
+    "portfolio_subtitle": "Selected builds demonstrating measurable outcomes for clients and studio brands.",
+    "portfolio_empty": "Nothing public is live right now.",
+    "portfolio_disabled": "Portfolio access is coming soon.",
+    "portfolio_default_description": "Outcome-driven next steps and measurable learnings.",
+    "testimonials_title": "Proof & Outcomes",
+    "testimonials_subtitle": "Testimonials from the teams we serve and the launches we ship.",
+    "testimonials": {
+      "provly": {
+        "quote": "They turned our sales analytics into a dashboard we finally trust.",
+        "author": "Leah Morales",
+        "role": "Founder, Provly",
+        "highlight": "3-month dashboard relaunch"
+      },
+      "nexus": {
+        "quote": "Northern Step delivered a unified experience for training and go-to-market automation.",
+        "author": "Marco Silva",
+        "role": "Co-founder, NexusBuild",
+        "highlight": "Multi-platform release"
+      },
+      "paso": {
+        "quote": "Automation cut our manual follow-ups in half while improving clarity for operators.",
+        "author": "Tessa Reza",
+        "role": "Operations Lead, PasoScore",
+        "highlight": "Operational automation"
+      }
+    },
+    "process_title": "How we work",
+    "process_subtitle": "Simple rhythms and shared measurements.",
+    "process": {
+      "discovery": {
+        "title": "Plan with evidence",
+        "description": "Research, metrics, and wireframes align the team before a line of code is written."
+      },
+      "build": {
+        "title": "Build with intentional sprints",
+        "description": "Small, focused teams ship working software weekly and test the riskiest assumptions."
+      },
+      "launch": {
+        "title": "Launch & learn",
+        "description": "Release early, measure key signals, and iterate without redoing the foundation."
+      }
+    },
+    "final_cta_title": "Ready for less noise?",
+    "final_cta_subtitle": "Share the challenge you want to solve and we will propose a lean delivery path.",
+    "final_cta_button": "Start a Project"
   },
   "mctb": {
     "label": "Service Automation",
