@@ -49,11 +49,11 @@
   "scripts": {
     "build": "tsc -b && vite build && node ./scripts/sanitize-dist.mjs",
     "cf-typegen": "wrangler types",
-    "check": "tsc && vite build && node ./scripts/wrangler-dry-run.mjs",
+    "check": "tsc && vite build",
     "dev": "vite",
     "knip": "knip",
     "lint": "eslint .",
-    "deploy": "npm run build && npx wrangler deploy --config wrangler.json",
+    "deploy": "npm run build && npx vercel deploy --prod --yes",
     "auto-deploy-node": "node ./scripts/auto-deploy.js"
   }
 }
