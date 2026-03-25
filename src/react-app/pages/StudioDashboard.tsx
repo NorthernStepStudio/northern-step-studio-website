@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { apiFetch } from "@/react-app/lib/api";
 import { Plus, Pin, PinOff, Pencil, Trash2, X, Save, StickyNote, Lightbulb, CheckSquare, FileText } from "lucide-react";
 import MentionInput, { extractMentionedUserIds, renderMentions } from "@/react-app/components/MentionInput";
 import { sendMentionNotifications } from "@/react-app/lib/notifications";
@@ -40,7 +41,7 @@ export default function StudioDashboard() {
 
   const fetchNotes = async () => {
     try {
-      const res = await fetch("/api/studio/notes");
+      const res = await apiFetch("/api/studio/notes");
       if (res.ok) {
         const data = await res.json();
         setNotes(data);
@@ -94,7 +95,7 @@ export default function StudioDashboard() {
       let noteId = editingNote?.id ?? null;
 
       if (editingNote) {
-        const response = await fetch(`/api/studio/notes/${editingNote.id}`, {
+        const response = await apiFetch(`/api/studio/notes/${editingNote.id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(noteData),
@@ -103,7 +104,7 @@ export default function StudioDashboard() {
           throw new Error("Failed to update note");
         }
       } else {
-        const response = await fetch("/api/studio/notes", {
+        const response = await apiFetch("/api/studio/notes", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(noteData),
@@ -140,7 +141,7 @@ export default function StudioDashboard() {
     if (!confirm("Delete this note?")) return;
 
     try {
-      await fetch(`/api/studio/notes/${id}`, { method: "DELETE" });
+      await apiFetch(`/api/studio/notes/${id}`, { method: "DELETE" });
       fetchNotes();
       if (editingNote?.id === id) resetForm();
     } catch (error) {
@@ -150,7 +151,7 @@ export default function StudioDashboard() {
 
   const togglePin = async (note: Note) => {
     try {
-      await fetch(`/api/studio/notes/${note.id}`, {
+      await apiFetch(`/api/studio/notes/${note.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -371,3 +372,5 @@ export default function StudioDashboard() {
     </div>
   );
 }
+
+

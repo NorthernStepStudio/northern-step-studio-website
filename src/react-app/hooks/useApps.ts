@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { AppData, ProgressItem } from "@/react-app/types/apps";
+import { apiFetch } from "@/react-app/lib/api";
 
 export type App = AppData;
 
@@ -166,7 +167,7 @@ export function useApps() {
   const refetch = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch("/api/apps");
+      const response = await apiFetch("/api/apps");
       if (!response.ok) {
         throw new Error("Failed to fetch apps");
       }
@@ -205,7 +206,7 @@ export function useApps() {
   };
 
   const updateApp = async (id: string | number, patch: Partial<App>): Promise<void> => {
-    const response = await fetch(`/api/apps/${id}`, {
+    const response = await apiFetch(`/api/apps/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(transformToDb(patch)),
@@ -229,7 +230,7 @@ export function useApps() {
   };
 
   const deleteApp = async (id: string | number): Promise<void> => {
-    const response = await fetch(`/api/apps/${id}`, {
+    const response = await apiFetch(`/api/apps/${id}`, {
       method: "DELETE",
     });
 
@@ -259,7 +260,7 @@ export function useApp(slug: string) {
     const fetchApp = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch(`/api/apps/${slug}`);
+        const response = await apiFetch(`/api/apps/${slug}`);
         if (!response.ok) {
           throw new Error(response.status === 404 ? "App not found" : "Failed to fetch app");
         }

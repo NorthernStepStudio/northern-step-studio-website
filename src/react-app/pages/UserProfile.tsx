@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/react-app/hooks/usePermissions";
 import { getRoleDisplayLabel } from "@/shared/auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/react-app/components/ui/avatar";
+import { apiFetch } from "@/react-app/lib/api";
 
 interface UserActivity {
   threads: {
@@ -74,7 +75,7 @@ export default function UserProfile({ isOwnProfile = false }: UserProfileProps) 
         }
       } else if (userId) {
         try {
-          const response = await fetch(`/api/users/${userId}/activity`);
+          const response = await apiFetch(`/api/users/${userId}/activity`);
           if (response.ok) {
             const data = await response.json();
             setActivity(data);

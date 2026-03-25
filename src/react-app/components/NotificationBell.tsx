@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Bell, Check, CheckCheck, FileText, MessageSquare, StickyNote, X } from "lucide-react";
 import { Link } from "react-router";
+import { apiFetch } from "@/react-app/lib/api";
 
 interface Notification {
   id: number;
@@ -33,7 +34,7 @@ export default function NotificationBell() {
   // Fetch unread count
   const fetchUnreadCount = async () => {
     try {
-      const res = await fetch("/api/notifications/unread-count");
+      const res = await apiFetch("/api/notifications/unread-count");
       if (res.ok) {
         const data = await res.json();
         setUnreadCount(data.count);
@@ -87,7 +88,7 @@ export default function NotificationBell() {
 
   const markAsRead = async (id: number) => {
     try {
-      await fetch(`/api/notifications/${id}/read`, { method: "PUT" });
+      await apiFetch(`/api/notifications/${id}/read`, { method: "PUT" });
       setNotifications((prev) =>
         prev.map((n) => (n.id === id ? { ...n, is_read: 1 } : n))
       );

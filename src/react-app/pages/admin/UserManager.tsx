@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { apiFetch } from "@/react-app/lib/api";
 import { Users, Shield, ShieldCheck, ShieldAlert, Trash2, Search, UserCog } from "lucide-react";
 import { getRoleDisplayLabel } from "@/shared/auth";
 
@@ -29,7 +30,7 @@ export default function UserManager() {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch("/api/users");
+      const res = await apiFetch("/api/users");
       if (res.ok) {
         const data = await res.json();
         setUsers(data);
@@ -43,7 +44,7 @@ export default function UserManager() {
 
   const updateRole = async (userId: number, newRole: string) => {
     try {
-      const res = await fetch(`/api/users/${userId}/role`, {
+      const res = await apiFetch(`/api/users/${userId}/role`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ role: newRole }),
@@ -61,7 +62,7 @@ export default function UserManager() {
     if (!confirm("Are you sure you want to remove this user? This action cannot be undone.")) return;
 
     try {
-      const res = await fetch(`/api/users/${userId}`, { method: "DELETE" });
+      const res = await apiFetch(`/api/users/${userId}`, { method: "DELETE" });
       if (res.ok) {
         setUsers(users.filter(u => u.id !== userId));
       }
@@ -265,3 +266,5 @@ export default function UserManager() {
     </div>
   );
 }
+
+

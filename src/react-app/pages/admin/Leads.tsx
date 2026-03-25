@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { apiFetch } from "@/react-app/lib/api";
 import { Link } from "react-router";
 import {
   AlertCircle,
@@ -196,7 +197,7 @@ export default function Leads() {
     setError(null);
 
     try {
-      const response = await fetch("/api/admin/contact-messages");
+      const response = await apiFetch("/api/admin/contact-messages");
       const data = await response.json().catch(() => null);
       if (!response.ok) {
         throw new Error(data?.error || "Failed to load leads");
@@ -291,7 +292,7 @@ export default function Leads() {
     setFeedback(null);
 
     try {
-      const response = await fetch(`/api/admin/contact-messages/${selectedLead.id}`, {
+      const response = await apiFetch(`/api/admin/contact-messages/${selectedLead.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -805,3 +806,5 @@ export default function Leads() {
     </div>
   );
 }
+
+

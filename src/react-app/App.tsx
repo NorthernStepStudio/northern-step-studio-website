@@ -43,7 +43,6 @@ import CommunityManager from "@/react-app/pages/admin/CommunityManager";
 import FeatureToggles from "@/react-app/pages/admin/FeatureToggles";
 import MaintenanceSettings from "@/react-app/pages/admin/MaintenanceSettings";
 import UpdatesManager from "@/react-app/pages/admin/UpdatesManager";
-import SiteEditor from "@/react-app/pages/admin/SiteEditor";
 import MaintenancePage from "@/react-app/pages/MaintenancePage";
 import NSSWorkspaceAI from "@/react-app/pages/NSSWorkspaceAI";
 import NotFound from "@/react-app/pages/NotFound";
@@ -161,7 +160,6 @@ export default function App() {
             <Route path="studio" element={<StudioDashboard />} />
             <Route path="community" element={<CommunityManager />} />
             <Route path="settings" element={<FeatureToggles />} />
-            <Route path="site-editor" element={<SiteEditor />} />
             <Route path="maintenance" element={<MaintenanceSettings />} />
           </Route>
         </Routes>

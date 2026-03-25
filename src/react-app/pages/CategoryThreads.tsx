@@ -9,6 +9,7 @@ import { sendMentionNotifications } from "@/react-app/lib/notifications";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useTranslation } from "react-i18next";
+import { apiFetch } from "@/react-app/lib/api";
 
 interface Thread {
   id: number;
@@ -111,7 +112,7 @@ export default function CategoryThreads() {
 
     setLoading(true);
     const searchParam = searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : "";
-    fetch(`/api/community/threads?category=${category}&page=${page}&limit=20${searchParam}`)
+    apiFetch(`/api/community/threads?category=${category}&page=${page}&limit=20${searchParam}`)
       .then((res) => res.json())
       .then((data) => {
         setThreads(data.threads || []);

@@ -155,7 +155,7 @@ export default function HomePage() {
       <section className="px-4">
         <div className="container mx-auto max-w-6xl">
           <div className="mb-8 text-center">
-            <h2 className="text-xl sm:text-2xl font-black uppercase tracking-[0.16em] text-accent">
+            <h2 className="text-xl sm:text-2xl font-black tracking-tight text-accent">
               {t("home.portfolio_title")}
             </h2>
             <p className="mx-auto mt-3 max-w-2xl text-sm sm:text-base text-muted-foreground">
@@ -174,29 +174,25 @@ export default function HomePage() {
       <section className="px-4">
         <div className="container mx-auto max-w-5xl">
           <div className="rounded-3xl border border-border bg-card p-6 sm:p-8">
-            <div className="mb-5 flex items-center gap-3">
+            <div className="mb-4 flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-accent/10">
                 <Cpu className="h-5 w-5 text-accent" />
               </div>
-              <h2 className="text-xl sm:text-2xl font-black uppercase tracking-[0.16em] text-foreground">
+              <h2 className="text-xl sm:text-2xl font-black tracking-tight text-foreground">
                 {t("home.about_title")}
               </h2>
             </div>
             <p className="max-w-3xl text-sm sm:text-base leading-relaxed text-muted-foreground">
               {t("home.about_text")}
             </p>
-            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
               <div className="rounded-2xl border border-border bg-background/60 p-4">
-                <p className="text-sm font-black uppercase text-foreground">{t("home.about_point_1_title")}</p>
+                <p className="text-sm font-black text-foreground">{t("home.about_point_1_title")}</p>
                 <p className="mt-2 text-sm text-muted-foreground">{t("home.about_point_1_desc")}</p>
               </div>
               <div className="rounded-2xl border border-border bg-background/60 p-4">
-                <p className="text-sm font-black uppercase text-foreground">{t("home.about_point_2_title")}</p>
+                <p className="text-sm font-black text-foreground">{t("home.about_point_2_title")}</p>
                 <p className="mt-2 text-sm text-muted-foreground">{t("home.about_point_2_desc")}</p>
-              </div>
-              <div className="rounded-2xl border border-border bg-background/60 p-4">
-                <p className="text-sm font-black uppercase text-foreground">{t("home.about_point_3_title")}</p>
-                <p className="mt-2 text-sm text-muted-foreground">{t("home.about_point_3_desc")}</p>
               </div>
             </div>
           </div>
@@ -206,7 +202,7 @@ export default function HomePage() {
       <section className="px-4 pb-16 sm:pb-20">
         <div className="container mx-auto max-w-5xl">
           <div className="rounded-3xl border border-accent/40 bg-accent/5 p-6 sm:p-8 text-center">
-            <h2 className="text-xl sm:text-2xl font-black text-foreground">
+            <h2 className="text-xl sm:text-2xl font-black tracking-tight text-foreground">
               {t("home.final_cta_title")}
             </h2>
             <p className="mx-auto mt-3 max-w-2xl text-sm sm:text-base text-muted-foreground">

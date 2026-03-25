@@ -5,6 +5,7 @@ import { Input } from "@/react-app/components/ui/input";
 import { Button } from "@/react-app/components/ui/button";
 import SEO from "@/react-app/components/SEO";
 import { useTranslation } from "react-i18next";
+import { apiFetch } from "@/react-app/lib/api";
 
 interface Category {
   id: number;
@@ -63,7 +64,7 @@ export default function Community() {
 
     setSearching(true);
     try {
-      const res = await fetch(`/api/community/threads?search=${encodeURIComponent(searchQuery.trim())}`);
+      const res = await apiFetch(`/api/community/threads?search=${encodeURIComponent(searchQuery.trim())}`);
       const data = await res.json();
       setSearchResults(data.threads || []);
     } catch (err) {

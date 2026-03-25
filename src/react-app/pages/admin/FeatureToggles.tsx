@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { apiFetch } from "@/react-app/lib/api";
 import {
   AlertTriangle,
   CheckCircle2,
@@ -63,7 +64,7 @@ export default function FeatureToggles() {
 
   const loadFeatures = async () => {
     try {
-      const res = await fetch("/api/feature-toggles");
+      const res = await apiFetch("/api/feature-toggles");
       if (!res.ok) {
         throw new Error("Failed to fetch feature toggles");
       }
@@ -82,7 +83,7 @@ export default function FeatureToggles() {
     setUpdating(feature.id);
 
     try {
-      const res = await fetch(`/api/feature-toggles/${feature.id}`, {
+      const res = await apiFetch(`/api/feature-toggles/${feature.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ is_enabled: !feature.is_enabled }),
@@ -103,7 +104,7 @@ export default function FeatureToggles() {
 
   const loadIntegrationStatus = async () => {
     try {
-      const res = await fetch("/api/integrations/status");
+      const res = await apiFetch("/api/integrations/status");
       if (!res.ok) {
         const error = await res.json().catch(() => null);
         throw new Error(error?.error || "Failed to load infrastructure status");
@@ -407,3 +408,5 @@ export default function FeatureToggles() {
     </div>
   );
 }
+
+

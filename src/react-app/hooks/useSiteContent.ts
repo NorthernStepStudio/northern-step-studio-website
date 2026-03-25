@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { apiFetch } from "@/react-app/lib/api";
 
 export function useSiteContent(key: string) {
   const [content, setContent] = useState<string | null>(null);
@@ -9,7 +10,7 @@ export function useSiteContent(key: string) {
   useEffect(() => {
     async function fetchContent() {
       try {
-        const res = await fetch(`/api/site-content/${key}`);
+        const res = await apiFetch(`/api/site-content/${key}`);
         if (res.ok) {
           const data = await res.json();
           setContent(data.content);

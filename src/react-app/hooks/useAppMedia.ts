@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { apiFetch } from "@/react-app/lib/api";
 
 export interface AppMedia {
   id: number;
@@ -24,7 +25,7 @@ export function useAppMedia(appSlugOrUuid: string) {
     const fetchMedia = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch(`/api/apps/${appSlugOrUuid}/media`);
+        const response = await apiFetch(`/api/apps/${appSlugOrUuid}/media`);
         if (!response.ok) throw new Error("Failed to fetch media");
         const data = await response.json();
         setMedia(data);

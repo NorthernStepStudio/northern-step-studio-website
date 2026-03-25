@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import { useTranslation } from "react-i18next";
+import { apiFetch } from "@/react-app/lib/api";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 import GlitchedText from "@/react-app/components/GlitchedText";
 
@@ -23,7 +24,7 @@ export default function Blog() {
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const res = await fetch(`/api/blog?lang=${i18n.language}`);
+        const res = await apiFetch(`/api/blog?lang=${i18n.language}`);
         const data = await res.json();
         setPosts(data);
       } catch (err) {

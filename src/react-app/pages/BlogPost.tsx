@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router";
 import { useTranslation } from "react-i18next";
+import { apiFetch } from "@/react-app/lib/api";
 import ReactMarkdown from "react-markdown";
 import { ArrowLeft, Calendar, Clock, Globe } from "lucide-react";
 
@@ -25,7 +26,7 @@ export default function BlogPost() {
   useEffect(() => {
     async function fetchPost() {
       try {
-        const res = await fetch(`/api/blog/${slug}`);
+        const res = await apiFetch(`/api/blog/${slug}`);
         if (!res.ok) {
           setError(true);
           return;

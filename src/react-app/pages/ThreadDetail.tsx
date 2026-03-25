@@ -8,6 +8,7 @@ import { sendMentionNotifications } from "@/react-app/lib/notifications";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useTranslation } from "react-i18next";
+import { apiFetch } from "@/react-app/lib/api";
 
 interface Thread {
   id: number;
@@ -126,11 +127,11 @@ export default function ThreadDetail() {
 
     const loadThread = async () => {
       try {
-        const threadRes = await fetch(`/api/community/threads/${slug}`);
+        const threadRes = await apiFetch(`/api/community/threads/${slug}`);
         const threadData = await threadRes.json();
         setThread(threadData);
 
-        const postsRes = await fetch(`/api/community/posts?thread_id=${threadData.id}&page=${page}&limit=50`);
+        const postsRes = await apiFetch(`/api/community/posts?thread_id=${threadData.id}&page=${page}&limit=50`);
         const postsData = await postsRes.json();
         setPosts(postsData.posts || []);
         setHasMore(postsData.pagination?.hasMore || false);
@@ -221,7 +222,7 @@ export default function ThreadDetail() {
     try {
       const existingPost = posts.find((post) => post.id === postId);
       const previousMentionIds = existingPost ? extractMentionedUserIds(existingPost.content) : [];
-      const res = await fetch(`/api/community/posts/${postId}`, {
+      const res = await apiFetch(`/api/community/posts/${postId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content: editContent.trim() }),
@@ -265,7 +266,7 @@ export default function ThreadDetail() {
     if (!confirm("Are you sure you want to delete this post?")) return;
 
     try {
-      const res = await fetch(`/api/community/posts/${postId}`, {
+      const res = await apiFetch(`/api/community/posts/${postId}`, {
         method: "DELETE",
       });
 

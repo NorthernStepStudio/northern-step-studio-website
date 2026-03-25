@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { apiFetch } from "@/react-app/lib/api";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { TrendingUp, Users, Eye, MousePointer } from "lucide-react";
 
@@ -21,7 +22,7 @@ export default function Analytics() {
 
   const fetchAnalytics = async () => {
     try {
-      const response = await fetch(`/api/analytics?range=${timeRange}`);
+      const response = await apiFetch(`/api/analytics?range=${timeRange}`);
       if (!response.ok) throw new Error("Failed to fetch analytics");
       const result = await response.json();
       setData(result);
@@ -227,3 +228,5 @@ export default function Analytics() {
     </div>
   );
 }
+
+

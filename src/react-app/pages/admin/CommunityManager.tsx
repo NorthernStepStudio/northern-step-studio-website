@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { apiFetch } from "@/react-app/lib/api";
 import { Button } from "@/react-app/components/ui/button";
 import { Trash2, Pin, Lock, Eye, EyeOff } from "lucide-react";
 
@@ -24,7 +25,7 @@ export default function CommunityManager() {
   }, []);
 
   const loadThreads = () => {
-    fetch("/api/community/threads")
+    apiFetch("/api/community/threads")
       .then((res) => res.json())
       .then((data) => {
         // Handle both array response and paginated response {threads: [...], total: X}
@@ -41,7 +42,7 @@ export default function CommunityManager() {
 
   const togglePin = async (id: number, currentState: boolean) => {
     try {
-      const res = await fetch(`/api/community/threads/${id}/pin`, {
+      const res = await apiFetch(`/api/community/threads/${id}/pin`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ is_pinned: !currentState }),
@@ -60,7 +61,7 @@ export default function CommunityManager() {
 
   const toggleLock = async (id: number, currentState: boolean) => {
     try {
-      const res = await fetch(`/api/community/threads/${id}/lock`, {
+      const res = await apiFetch(`/api/community/threads/${id}/lock`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ is_locked: !currentState }),
@@ -76,7 +77,7 @@ export default function CommunityManager() {
 
   const toggleHide = async (id: number, currentState: boolean) => {
     try {
-      const res = await fetch(`/api/community/threads/${id}/hide`, {
+      const res = await apiFetch(`/api/community/threads/${id}/hide`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ is_hidden: !currentState }),
@@ -94,7 +95,7 @@ export default function CommunityManager() {
     if (!confirm("Are you sure you want to delete this thread?")) return;
 
     try {
-      const res = await fetch(`/api/community/threads/${id}`, {
+      const res = await apiFetch(`/api/community/threads/${id}`, {
         method: "DELETE",
       });
 
@@ -217,3 +218,5 @@ export default function CommunityManager() {
     </div>
   );
 }
+
+

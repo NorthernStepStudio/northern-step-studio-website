@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { apiFetch } from "@/react-app/lib/api";
 import { Plus, Edit, Trash2, Eye, EyeOff, Calendar, Megaphone } from "lucide-react";
 import { Button } from "@/react-app/components/ui/button";
 import { useApps } from "@/react-app/hooks/useApps";
@@ -38,7 +39,7 @@ export default function UpdatesManager() {
 
   const fetchUpdates = async () => {
     try {
-      const res = await fetch("/api/app-updates");
+      const res = await apiFetch("/api/app-updates");
       const data = await res.json();
       setUpdates(data);
     } catch (error) {
@@ -55,7 +56,7 @@ export default function UpdatesManager() {
 
     try {
       if (editingId) {
-        await fetch(`/api/app-updates/${editingId}`, {
+        await apiFetch(`/api/app-updates/${editingId}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -65,7 +66,7 @@ export default function UpdatesManager() {
           }),
         });
       } else {
-        await fetch("/api/app-updates", {
+        await apiFetch("/api/app-updates", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -100,7 +101,7 @@ export default function UpdatesManager() {
     if (!confirm("Are you sure you want to delete this update?")) return;
 
     try {
-      await fetch(`/api/app-updates/${id}`, { method: "DELETE" });
+      await apiFetch(`/api/app-updates/${id}`, { method: "DELETE" });
       fetchUpdates();
     } catch (error) {
       console.error("Failed to delete update:", error);
@@ -312,3 +313,5 @@ export default function UpdatesManager() {
     </div>
   );
 }
+
+

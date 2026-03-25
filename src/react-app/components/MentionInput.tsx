@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Loader2 } from "lucide-react";
+import { apiFetch } from "@/react-app/lib/api";
 import { getRoleDisplayLabel } from "@/shared/auth";
 
 interface User {
@@ -57,7 +58,7 @@ export default function MentionInput({
     const searchUsers = async () => {
       setIsLoading(true);
       try {
-        const res = await fetch(`/api/users/search?q=${encodeURIComponent(searchQuery)}`);
+        const res = await apiFetch(`/api/users/search?q=${encodeURIComponent(searchQuery)}`);
         if (res.ok) {
           const data = await res.json();
           setUsers(data);

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { apiFetch } from "@/react-app/lib/api";
 import { X, Upload, Image, Plus, Trash2, Check } from "lucide-react";
 import { useApps, type App } from "@/react-app/hooks/useApps";
 import type { ProgressItem } from "@/react-app/types/apps";
@@ -195,7 +196,7 @@ export default function AppForm({ app, onClose, onSuccess }: AppFormProps) {
         const logoFormData = new FormData();
         logoFormData.append("logo", logoFile);
 
-        const logoResponse = await fetch(`/api/apps/${appId}/upload-logo`, {
+        const logoResponse = await apiFetch(`/api/apps/${appId}/upload-logo`, {
           method: "POST",
           body: logoFormData,
         });
@@ -212,7 +213,7 @@ export default function AppForm({ app, onClose, onSuccess }: AppFormProps) {
           const screenshotFormData = new FormData();
           screenshotFormData.append("screenshot", screenshotFiles[index]);
 
-          const screenshotResponse = await fetch(`/api/apps/${appId}/upload-screenshot`, {
+          const screenshotResponse = await apiFetch(`/api/apps/${appId}/upload-screenshot`, {
             method: "POST",
             body: screenshotFormData,
           });
@@ -579,3 +580,5 @@ export default function AppForm({ app, onClose, onSuccess }: AppFormProps) {
     </div>
   );
 }
+
+

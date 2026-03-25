@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { apiFetch } from "@/react-app/lib/api";
 import { Users as UsersIcon, UserPlus, Mail, Shield, ShieldCheck, Trash2, Search } from "lucide-react";
 import { Button } from "@/react-app/components/ui/button";
 import { Input } from "@/react-app/components/ui/input";
@@ -27,7 +28,7 @@ export default function Users() {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch("/api/users");
+      const res = await apiFetch("/api/users");
       if (res.ok) {
         const data = await res.json();
         setUsers(data);
@@ -56,7 +57,7 @@ export default function Users() {
 
     setInviteSending(true);
     try {
-      const res = await fetch("/api/users/invite", {
+      const res = await apiFetch("/api/users/invite", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -96,7 +97,7 @@ export default function Users() {
     if (!confirm(`Change this user's role to ${getRoleDisplayLabel(newRole)}?`)) return;
 
     try {
-      const res = await fetch(`/api/users/${userId}/role`, {
+      const res = await apiFetch(`/api/users/${userId}/role`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ role: newRole }),
@@ -118,7 +119,7 @@ export default function Users() {
     if (!confirm(`Delete user ${email}? This cannot be undone.`)) return;
 
     try {
-      const res = await fetch(`/api/users/${userId}`, {
+      const res = await apiFetch(`/api/users/${userId}`, {
         method: "DELETE",
       });
 
@@ -364,3 +365,5 @@ export default function Users() {
     </div>
   );
 }
+
+

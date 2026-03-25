@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { apiFetch } from "@/react-app/lib/api";
 import { Plus, Edit2, Trash2, Megaphone, ExternalLink } from "lucide-react";
 import { useApps } from "@/react-app/hooks/useApps";
 
@@ -34,7 +35,7 @@ export default function PromoManager() {
   const loadPromotions = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch("/api/promotions");
+      const res = await apiFetch("/api/promotions");
       const data = await res.json();
       setPromotions(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -111,7 +112,7 @@ export default function PromoManager() {
     if (!confirm(`Delete promotion "${promotion.title}"?`)) return;
 
     try {
-      const res = await fetch(`/api/promotions/${promotion.id}`, { method: "DELETE" });
+      const res = await apiFetch(`/api/promotions/${promotion.id}`, { method: "DELETE" });
       if (!res.ok) {
         throw new Error("Failed to delete promotion");
       }
@@ -281,3 +282,5 @@ export default function PromoManager() {
     </div>
   );
 }
+
+

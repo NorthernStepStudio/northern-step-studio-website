@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { apiFetch } from "@/react-app/lib/api";
 import { Plus, Edit2, Trash2, Eye, EyeOff, Globe, Calendar, Search } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/react-app/components/ui/dialog";
 
@@ -43,7 +44,7 @@ export default function ContentManager() {
 
   async function fetchPosts() {
     try {
-      const res = await fetch("/api/blog/all");
+      const res = await apiFetch("/api/blog/all");
       const data = await res.json();
       setPosts(data);
     } catch (err) {
@@ -118,7 +119,7 @@ export default function ContentManager() {
 
   async function togglePublish(post: BlogPost) {
     try {
-      await fetch(`/api/blog/${post.id}`, {
+      await apiFetch(`/api/blog/${post.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -136,7 +137,7 @@ export default function ContentManager() {
     if (!confirm("Are you sure you want to delete this post?")) return;
 
     try {
-      await fetch(`/api/blog/${id}`, { method: "DELETE" });
+      await apiFetch(`/api/blog/${id}`, { method: "DELETE" });
       await fetchPosts();
     } catch (err) {
       console.error("Failed to delete post:", err);
@@ -428,3 +429,5 @@ export default function ContentManager() {
     </div>
   );
 }
+
+
