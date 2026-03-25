@@ -52,6 +52,8 @@
     "check": "tsc && vite build && node ./scripts/wrangler-dry-run.mjs",
     "dev": "vite",
     "knip": "knip",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "deploy": "npm run build && npx wrangler publish",
+    "auto-deploy-node": "node ./scripts/auto-deploy.js"
   }
 }
