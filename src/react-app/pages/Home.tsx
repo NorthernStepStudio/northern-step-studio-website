@@ -180,8 +180,9 @@ export default function HomePage() {
       <section className="px-4 pb-16 sm:pb-20 border-t border-border bg-gradient-to-b from-secondary/20 to-transparent">
         <div className="container mx-auto max-w-6xl">
           <div className="mb-10 text-center">
-            <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-accent mb-2">{t("home.focus_title")}</p>
-            <h2 className="text-3xl sm:text-4xl font-black text-foreground mb-3">{t("home.focus_title")}</h2>
+            <p className="text-3xl sm:text-4xl font-black uppercase tracking-[0.3em] text-accent mb-3">
+              {t("home.focus_title")}
+            </p>
             <p className="text-sm sm:text-base text-muted-foreground">{t("home.focus_subtitle")}</p>
           </div>
           <div className="grid gap-4 md:grid-cols-2">
@@ -203,8 +204,9 @@ export default function HomePage() {
       <section className="px-4 pb-16 sm:pb-20 border-t border-border">
         <div className="container mx-auto max-w-6xl">
           <div className="mb-10 flex flex-col gap-2 text-center">
-            <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-accent">{t("home.portfolio_title")}</p>
-            <h2 className="text-3xl sm:text-4xl font-black text-foreground">{t("home.portfolio_title")}</h2>
+            <p className="text-3xl sm:text-4xl font-black uppercase tracking-[0.3em] text-accent">
+              {t("home.portfolio_title")}
+            </p>
             <p className="text-sm sm:text-base text-muted-foreground">{t("home.portfolio_subtitle")}</p>
           </div>
 
@@ -228,11 +230,9 @@ export default function HomePage() {
       </section>
 
       <section className="px-4 pb-16 sm:pb-20 border-t border-border bg-gradient-to-b from-transparent via-secondary/30 to-transparent">
-        <div className="container mx-auto max-w-6xl">
-          <div className="mb-10 text-center">
-            <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-accent">{t("home.testimonials_title")}</p>
-            <h2 className="text-3xl sm:text-4xl font-black text-foreground">{t("home.testimonials_title")}</h2>
-            <p className="text-sm sm:text-base text-muted-foreground">{t("home.testimonials_subtitle")}</p>
+          <div className="container mx-auto max-w-6xl">
+          <div className="hidden" aria-hidden="true">
+            {/* Proof & Outcomes headline hidden temporarily */}
           </div>
           <div className="grid gap-4 md:grid-cols-3">
             {TESTIMONIALS.map((entry) => (
@@ -257,8 +257,9 @@ export default function HomePage() {
       <section className="px-4 pb-16 sm:pb-20 border-t border-border">
         <div className="container mx-auto max-w-6xl">
           <div className="mb-10 text-center">
-            <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-accent">{t("home.process_title")}</p>
-            <h2 className="text-3xl sm:text-4xl font-black text-foreground">{t("home.process_title")}</h2>
+            <p className="text-3xl sm:text-4xl font-black uppercase tracking-[0.3em] text-accent">
+              {t("home.process_title")}
+            </p>
             <p className="text-sm sm:text-base text-muted-foreground">{t("home.process_subtitle")}</p>
           </div>
           <div className="grid gap-4 md:grid-cols-3">
