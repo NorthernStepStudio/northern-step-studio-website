@@ -53,10 +53,18 @@ function getBackendOrigin() {
 }
 
 async function backendFetch(path: string, init?: RequestInit) {
-  return fetch(`${getBackendOrigin()}${path}`, {
-    credentials: "include",
-    ...init,
-  });
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 15000);
+
+  try {
+    return await fetch(`${getBackendOrigin()}${path}`, {
+      credentials: "include",
+      signal: controller.signal,
+      ...init,
+    });
+  } finally {
+    window.clearTimeout(timeout);
+  }
 }
 
 async function requestCurrentUser() {
@@ -75,10 +83,6 @@ async function requestCurrentUser() {
 
 function toCallbackUrl() {
   return `${window.location.origin}/auth/callback`;
-}
-
-function getGoogleClientId() {
-  return import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -130,25 +134,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const redirectToLogin = async () => {
-    const clientId = getGoogleClientId();
-    if (!clientId) {
-      throw new Error("Google sign in is not configured. Set VITE_GOOGLE_CLIENT_ID.");
+    const redirectUri = toCallbackUrl();
+    const response = await backendFetch(`/api/oauth/google/redirect_url?redirectUri=${encodeURIComponent(redirectUri)}`);
+    const data = await parseResponse(response);
+
+    if (!response.ok) {
+      throw new Error(data?.error || "Google sign in is not configured right now.");
     }
 
-    const redirectUri = toCallbackUrl();
-    const params = new URLSearchParams({
-      client_id: clientId,
-      redirect_uri: redirectUri,
-      access_type: "offline",
-      response_type: "code",
-      prompt: "consent",
-      scope: [
-        "https://www.googleapis.com/auth/userinfo.profile",
-        "https://www.googleapis.com/auth/userinfo.email",
-      ].join(" "),
-    });
+    if (!data?.redirectUrl || typeof data.redirectUrl !== "string") {
+      throw new Error("Failed to create the Google sign-in URL.");
+    }
 
-    window.location.assign(`https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`);
+    window.location.assign(data.redirectUrl);
   };
 
   const exchangeCodeForSessionToken = async () => {
