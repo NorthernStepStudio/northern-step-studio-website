@@ -390,13 +390,17 @@ export const authMiddleware: MiddlewareHandler<{ Bindings: Env; Variables: { use
   await next();
 };
 
-export async function getGoogleOAuthRedirectUrl(c: { env: Env; req: { url: string } }) {
+export async function getGoogleOAuthRedirectUrl(
+  c: { env: Env; req: { url: string } },
+  redirectUri?: string | null,
+) {
   if (!c.env.GOOGLE_CLIENT_ID) {
     throw new Error("GOOGLE_CLIENT_ID is not configured in environment variables");
   }
   const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+  const resolvedRedirectUri = redirectUri?.trim() || new URL("/auth/callback", c.req.url).toString();
   const options = {
-    redirect_uri: new URL("/api/oauth/google/callback", c.req.url).toString(),
+    redirect_uri: resolvedRedirectUri,
     client_id: c.env.GOOGLE_CLIENT_ID,
     access_type: "offline",
     response_type: "code",
@@ -411,13 +415,18 @@ export async function getGoogleOAuthRedirectUrl(c: { env: Env; req: { url: strin
   return `${rootUrl}?${qs.toString()}`;
 }
 
-export async function exchangeGoogleCodeForUser(c: { env: Env; req: { url: string } }, code: string) {
+export async function exchangeGoogleCodeForUser(
+  c: { env: Env; req: { url: string } },
+  code: string,
+  redirectUri?: string | null,
+) {
   const url = "https://oauth2.googleapis.com/token";
+  const resolvedRedirectUri = redirectUri?.trim() || new URL("/auth/callback", c.req.url).toString();
   const values = {
     code,
     client_id: c.env.GOOGLE_CLIENT_ID,
     client_secret: c.env.GOOGLE_CLIENT_SECRET,
-    redirect_uri: new URL("/api/oauth/google/callback", c.req.url).toString(),
+    redirect_uri: resolvedRedirectUri,
     grant_type: "authorization_code",
   };
 

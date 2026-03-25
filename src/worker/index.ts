@@ -1,4 +1,5 @@
 import { Hono, type Context } from "hono";
+import { cors } from "hono/cors";
 import { HTTPException } from "hono/http-exception";
 import Stripe from "stripe";
 import community from "./community";
@@ -33,6 +34,20 @@ import {
 
 
 const app = new Hono<{ Bindings: Env; Variables: { user: AppUser } }>({ strict: false });
+
+app.use(
+  "*",
+  cors({
+    origin: [
+      "https://northernstepstudio.com",
+      "http://localhost:4173",
+      "http://127.0.0.1:4173",
+    ],
+    credentials: true,
+    allowHeaders: ["Content-Type", "Authorization"],
+    allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  }),
+);
 
 // Health check and diagnostics (moved to top to ensure matching)
 app.get("/api/health", async (c) => {
@@ -826,7 +841,8 @@ app.get("/api/logout", async (c) => {
 // OAuth redirect URL (moved to app)
 app.get("/api/oauth/google/redirect_url", async (c) => {
   try {
-    const redirectUrl = await getGoogleOAuthRedirectUrl(c);
+    const redirectUri = c.req.query("redirectUri");
+    const redirectUrl = await getGoogleOAuthRedirectUrl(c, redirectUri);
     return c.json({ redirectUrl }, 200);
   } catch (error) {
     console.error("Failed to create Google OAuth redirect URL:", error);
@@ -858,7 +874,7 @@ app.post("/api/sessions", async (c) => {
       return c.json({ error: "No authorization code provided" }, 400);
     }
 
-    const googleUser = await exchangeGoogleCodeForUser(c, body.code);
+    const googleUser = await exchangeGoogleCodeForUser(c, body.code, body.redirectUri);
     const dbUser = await ensureDatabaseUser(
       c.env,
       googleUser.email,

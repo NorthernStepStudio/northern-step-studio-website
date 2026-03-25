@@ -24,17 +24,5 @@
 		"not_found_handling": "single-page-application"
 	},
 	"services": [],
-	"routes": [
-		{
-			"pattern": "northernstepstudio.com",
-			"zone_name": "northernstepstudio.com",
-			"custom_domain": true
-		},
-		{
-			"pattern": "www.northernstepstudio.com",
-			"zone_name": "northernstepstudio.com",
-			"custom_domain": true
-		}
-	],
 	"workers_dev": true
 }

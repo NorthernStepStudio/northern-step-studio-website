@@ -1,6 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { supabase, getSupabaseOrigin, type SupabaseUser } from "@/react-app/lib/supabase";
-import { OWNER_EMAIL, isAdminDomainEmail, isElevatedRole } from "@/shared/auth";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
 export type AppUser = {
   id?: string;
@@ -41,215 +39,152 @@ type AuthContextValue = {
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
-function inferRole(email: string, supabaseUser?: SupabaseUser | null) {
-  const metadataRole =
-    typeof supabaseUser?.app_metadata?.role === "string"
-      ? supabaseUser.app_metadata.role
-      : typeof supabaseUser?.user_metadata?.role === "string"
-        ? supabaseUser.user_metadata.role
-        : null;
-
-  if (metadataRole) {
-    return metadataRole;
-  }
-
-  if (email === OWNER_EMAIL) {
-    return "owner";
-  }
-
-  if (isAdminDomainEmail(email)) {
-    return "admin";
-  }
-
-  return "user";
+async function parseResponse(response: Response) {
+  return response.json().catch(() => null);
 }
 
-function mapSupabaseUser(user: SupabaseUser): AppUser {
-  const email = user.email ?? "";
-  const role = inferRole(email, user);
-  const provider = user.app_metadata?.provider || user.identities?.[0]?.provider || "email";
-  const displayName =
-    (typeof user.user_metadata?.display_name === "string" && user.user_metadata.display_name.trim()) ||
-    (typeof user.user_metadata?.full_name === "string" && user.user_metadata.full_name.trim()) ||
-    (typeof user.user_metadata?.name === "string" && user.user_metadata.name.trim()) ||
-    email.split("@")[0] ||
-    null;
-
-  return {
-    id: user.id,
-    id_token: user.id,
-    email,
-    auth_method: provider === "google" ? "google" : "local",
-    role,
-    display_name: displayName,
-    bio:
-      typeof user.user_metadata?.bio === "string" && user.user_metadata.bio.trim()
-        ? user.user_metadata.bio.trim()
-        : null,
-    avatar_url:
-      typeof user.user_metadata?.avatar_url === "string"
-        ? user.user_metadata.avatar_url
-        : typeof user.user_metadata?.picture === "string"
-          ? user.user_metadata.picture
-          : null,
-    has_password: provider !== "google",
-    db_user_id: Number(user.user_metadata?.db_user_id ?? 0) || 0,
-  };
-}
-
-function requireSupabase() {
-  if (!supabase) {
-    throw new Error(
-      "Supabase is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY before using auth.",
-    );
+function getBackendOrigin() {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL as string | undefined;
+  if (!backendUrl) {
+    throw new Error("Backend is not configured. Set VITE_BACKEND_URL.");
   }
 
-  return supabase;
+  return backendUrl.replace(/\/$/, "");
 }
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+async function backendFetch(path: string, init?: RequestInit) {
+  return fetch(`${getBackendOrigin()}${path}`, {
+    credentials: "include",
+    ...init,
+  });
+}
+
+async function requestCurrentUser() {
+  const response = await backendFetch("/api/users/me");
+
+  if (response.status === 401) {
+    return null;
+  }
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch current user");
+  }
+
+  return (await parseResponse(response)) as AppUser;
+}
+
+function toCallbackUrl() {
+  return `${window.location.origin}/auth/callback`;
+}
+
+function getGoogleClientId() {
+  return import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
+}
+
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AppUser | null>(null);
   const [isPending, setIsPending] = useState(true);
   const [isFetching, setIsFetching] = useState(false);
 
-  const syncUserFromSession = useCallback(async () => {
-    const client = requireSupabase();
-    const { data, error } = await client.auth.getSession();
-
-    if (error) {
-      throw error;
-    }
-
-    const nextUser = data.session?.user ? mapSupabaseUser(data.session.user) : null;
-    setUser(nextUser);
-    return nextUser;
-  }, []);
-
-  const fetchUser = useCallback(async () => {
+  const fetchUser = async () => {
     setIsFetching(true);
 
     try {
-      return await syncUserFromSession();
+      const data = await requestCurrentUser();
+      setUser(data);
+      return data;
     } finally {
       setIsFetching(false);
     }
-  }, [syncUserFromSession]);
+  };
 
   useEffect(() => {
-    let active = true;
-    const client = supabase;
+    let cancelled = false;
 
-    const initialize = async () => {
-      if (!client) {
-        if (active) {
-          setUser(null);
-          setIsFetching(false);
-          setIsPending(false);
-        }
-        return;
-      }
-
+    const loadUser = async () => {
       setIsFetching(true);
-      try {
-        const { data, error } = await client.auth.getSession();
-        if (error) {
-          throw error;
-        }
 
-        if (active) {
-          setUser(data.session?.user ? mapSupabaseUser(data.session.user) : null);
+      try {
+        const currentUser = await requestCurrentUser();
+        if (!cancelled) {
+          setUser(currentUser);
         }
       } catch (error) {
-        if (active) {
+        if (!cancelled) {
           console.error("Failed to initialize auth state:", error);
           setUser(null);
         }
       } finally {
-        if (active) {
+        if (!cancelled) {
           setIsFetching(false);
           setIsPending(false);
         }
       }
     };
 
-    void initialize();
-
-    const subscription = client?.auth.onAuthStateChange((_event, session) => {
-      if (!active) {
-        return;
-      }
-
-      setUser(session?.user ? mapSupabaseUser(session.user) : null);
-      setIsFetching(false);
-      setIsPending(false);
-    });
+    void loadUser();
 
     return () => {
-      active = false;
-      subscription?.data.subscription.unsubscribe();
+      cancelled = true;
     };
   }, []);
 
-  const redirectToLogin = useCallback(async () => {
-    const client = requireSupabase();
-    const redirectTo = `${getSupabaseOrigin()}/auth/callback`;
-    const { data, error } = await client.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo,
-      },
+  const redirectToLogin = async () => {
+    const clientId = getGoogleClientId();
+    if (!clientId) {
+      throw new Error("Google sign in is not configured. Set VITE_GOOGLE_CLIENT_ID.");
+    }
+
+    const redirectUri = toCallbackUrl();
+    const params = new URLSearchParams({
+      client_id: clientId,
+      redirect_uri: redirectUri,
+      access_type: "offline",
+      response_type: "code",
+      prompt: "consent",
+      scope: [
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/userinfo.email",
+      ].join(" "),
     });
 
-    if (error) {
-      throw error;
-    }
+    window.location.assign(`https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`);
+  };
 
-    if (!data?.url) {
-      throw new Error("Unable to start Google sign in right now.");
-    }
-
-    window.location.assign(data.url);
-  }, []);
-
-  const exchangeCodeForSessionToken = useCallback(async () => {
-    const client = requireSupabase();
+  const exchangeCodeForSessionToken = async () => {
     const code = new URLSearchParams(window.location.search).get("code");
 
     if (!code) {
       throw new Error("Missing authorization code");
     }
 
-    const { data, error } = await client.auth.exchangeCodeForSession(code);
-    if (error) {
-      throw error;
-    }
-
-    const nextUser = data.session?.user ? mapSupabaseUser(data.session.user) : null;
-    setUser(nextUser);
-    return nextUser;
-  }, []);
-
-  const loginWithPassword = useCallback(
-    async (email: string, password: string, options: PasswordLoginOptions = {}) => {
-    const client = requireSupabase();
-
-    if (options.admin) {
-      const inferredRole = inferRole(email);
-      if (!isElevatedRole(inferredRole)) {
-        throw new Error("Admin access required for this account.");
-      }
-    }
-
-    const { data, error } = await client.auth.signInWithPassword({
-      email,
-      password,
+    const response = await backendFetch("/api/sessions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code, redirectUri: toCallbackUrl() }),
     });
 
-    if (error) {
-      throw error;
+    const data = await parseResponse(response);
+    if (!response.ok) {
+      throw new Error(data?.error || "Failed to create session");
     }
 
-    const authenticatedUser = data.user ? mapSupabaseUser(data.user) : null;
+    return fetchUser();
+  };
+
+  const loginWithPassword = async (email: string, password: string, options: PasswordLoginOptions = {}) => {
+    const response = await backendFetch(options.admin ? "/api/auth/admin-login" : "/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await parseResponse(response);
+    if (!response.ok) {
+      throw new Error(data?.error || "Unable to sign in right now.");
+    }
+
+    const authenticatedUser = data?.user as AppUser | undefined;
     if (authenticatedUser) {
       setUser(authenticatedUser);
       return authenticatedUser;
@@ -261,73 +196,69 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     return refreshedUser;
-    },
-    [fetchUser],
-  );
+  };
 
-  const registerWithPassword = useCallback(
-    async (email: string, password: string, options: PasswordRegistrationOptions = {}) => {
-    const client = requireSupabase();
-    const { data, error } = await client.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          display_name: options.displayName?.trim() || undefined,
-          role: "user",
-        },
-        emailRedirectTo: `${getSupabaseOrigin()}/auth/callback`,
-      },
+  const registerWithPassword = async (
+    email: string,
+    password: string,
+    options: PasswordRegistrationOptions = {},
+  ) => {
+    const response = await backendFetch("/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email,
+        password,
+        displayName: options.displayName,
+      }),
     });
 
-    if (error) {
-      throw error;
+    const data = await parseResponse(response);
+    if (!response.ok) {
+      throw new Error(data?.error || "Unable to create your account right now.");
     }
 
-    if (data.session?.user) {
-      const authenticatedUser = mapSupabaseUser(data.session.user);
+    const authenticatedUser = data?.user as AppUser | undefined;
+    if (authenticatedUser) {
       setUser(authenticatedUser);
       return authenticatedUser;
     }
 
-    if (data.user) {
-      throw new Error("Account created. Check your email to confirm the sign-up before signing in.");
+    const refreshedUser = await fetchUser();
+    if (!refreshedUser) {
+      throw new Error("Unable to load your account after sign up.");
     }
 
-    throw new Error("Unable to create your account right now.");
-    },
-    [],
-  );
+    return refreshedUser;
+  };
 
-  const logout = useCallback(async () => {
+  const logout = async () => {
     try {
-      const client = supabase;
-      if (client) {
-        await client.auth.signOut();
-      }
+      await backendFetch("/api/logout");
     } catch (error) {
       console.error("Logout failed:", error);
     } finally {
       setUser(null);
     }
-  }, []);
+  };
 
-  const value = useMemo<AuthContextValue>(
-    () => ({
-      user,
-      isPending,
-      isFetching,
-      fetchUser,
-      redirectToLogin,
-      exchangeCodeForSessionToken,
-      loginWithPassword,
-      registerWithPassword,
-      logout,
-    }),
-    [user, isPending, isFetching, fetchUser, redirectToLogin, exchangeCodeForSessionToken, loginWithPassword, registerWithPassword, logout],
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        isPending,
+        isFetching,
+        fetchUser,
+        redirectToLogin,
+        exchangeCodeForSessionToken,
+        loginWithPassword,
+        registerWithPassword,
+        logout,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
   );
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
