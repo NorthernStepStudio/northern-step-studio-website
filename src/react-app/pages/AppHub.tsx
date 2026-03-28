@@ -7,6 +7,7 @@ import GlitchedText from "@/react-app/components/GlitchedText";
 import { Search, X } from "lucide-react";
 import SEO from "@/react-app/components/SEO";
 import { getAppCategoryLabel } from "@/react-app/lib/appCategories";
+import { CATALOG_APPS, type CatalogApp } from "@/react-app/data/appsCatalog";
 
 export default function AppHub() {
   const { t } = useTranslation();
@@ -14,13 +15,24 @@ export default function AppHub() {
   const [activeFilter, setActiveFilter] = useState("ALL");
   const [activeStatus, setActiveStatus] = useState<"ALL" | "BETA" | "LIVE">("ALL");
   const [searchQuery, setSearchQuery] = useState("");
+  const fallbackApps = CATALOG_APPS;
+  const curatedApps = apps.length > 0
+    ? [
+        ...apps,
+        ...fallbackApps.filter((fallback) => !apps.some((app) => app.slug === fallback.slug)),
+      ]
+    : fallbackApps;
+  const isHidden = (app: { visibility?: string }) => app.visibility === "hidden";
+  const featuredSlugs = new Set(fallbackApps.map((app) => app.slug));
+  const featuredApps = curatedApps.filter((app) => featuredSlugs.has(app.slug) && !isHidden(app));
+  const remoteApps = curatedApps.filter((app) => !featuredSlugs.has(app.slug) && !isHidden(app));
 
   const filters = [
     { key: "ALL", label: "All" },
     ...Array.from(
       new Set(
-        apps
-          .filter((app) => app.visibility !== "hidden")
+        curatedApps
+          .filter((app) => !isHidden(app))
           .map((app) => app.category)
       )
     ).map((category) => ({
@@ -29,8 +41,8 @@ export default function AppHub() {
     })),
   ];
 
-  const filteredApps = apps.filter(app => {
-    if (app.visibility === "hidden") {
+  const filteredApps = curatedApps.filter(app => {
+    if (isHidden(app)) {
       return false;
     }
 
@@ -125,10 +137,35 @@ export default function AppHub() {
             <p className="text-muted-foreground font-normal">{t("common.loading")}</p>
           </div>
         ) : filteredApps.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {filteredApps.map((app) => (
-              <AppCard key={app.id} {...app} />
-            ))}
+          <div className="space-y-10">
+            <div>
+              <div className="mb-4 flex items-center justify-between gap-4">
+                <h2 className="text-sm font-black uppercase tracking-[0.24em] text-accent">Featured apps</h2>
+                <p className="text-xs text-muted-foreground">{featuredApps.length} curated products</p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                  {filteredApps
+                    .filter((app) => featuredSlugs.has(app.slug))
+                    .map((app) => (
+                    <AppCard key={app.id} {...app} progressPercent={app.progressPercent} />
+                  ))}
+              </div>
+            </div>
+
+            {remoteApps.length > 0 && (
+              <div>
+                <h2 className="mb-4 text-sm font-black uppercase tracking-[0.24em] text-muted-foreground">
+                  More from the studio
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                  {filteredApps
+                    .filter((app) => !featuredSlugs.has(app.slug))
+                    .map((app) => (
+                    <AppCard key={app.id} {...app} progressPercent={app.progressPercent} />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         ) : (
           <div className="card-dark-wise text-center py-12">
