@@ -32,6 +32,14 @@ const PORTFOLIO_ITEMS: PortfolioItem[] = [
     icon: Smartphone,
   },
   {
+    nameKey: "home.portfolio_neuromove_title",
+    descriptionKey: "home.portfolio_neuromove_desc",
+    outcomeKey: "home.portfolio_neuromove_outcome",
+    statusKey: "home.portfolio_status_close_to_launch",
+    link: "/apps/neuromoves",
+    icon: HeartPulse,
+  },
+  {
     nameKey: "home.portfolio_provly_title",
     descriptionKey: "home.portfolio_provly_desc",
     outcomeKey: "home.portfolio_provly_outcome",
