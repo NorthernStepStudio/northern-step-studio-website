@@ -25,7 +25,7 @@ try {
   git push origin $branch
 
   if ($branch -eq 'main') {
-    Write-Host "On main — building and publishing locally via wrangler"
+    Write-Host "On main — building and publishing via Vercel"
     npm ci
     npm run deploy
     Write-Host "Local publish finished."

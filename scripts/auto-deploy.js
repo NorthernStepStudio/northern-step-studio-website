@@ -37,7 +37,7 @@ function run(cmd) {
     run(`git push origin ${branch}`);
 
     if (branch === 'main' || process.argv.includes('--force-deploy')) {
-      console.log('On `main` (or forced) — building and publishing via wrangler.');
+      console.log('On `main` (or forced) — building and publishing via Vercel.');
       // Install dependencies if node_modules missing
       try {
         run('npm ci');
