@@ -38,11 +38,25 @@ const app = new Hono<{ Bindings: Env; Variables: { user: AppUser } }>({ strict: 
 app.use(
   "*",
   cors({
-    origin: [
-      "https://northernstepstudio.com",
-      "http://localhost:4173",
-      "http://127.0.0.1:4173",
-    ],
+    origin: (origin) => {
+      if (!origin) {
+        return undefined;
+      }
+
+      const allowedOrigins = new Set([
+        "https://northernstepstudio.com",
+        "https://www.northernstepstudio.com",
+        "https://northern-step-studio-website.proyectgate.workers.dev",
+        "http://localhost:4173",
+        "http://127.0.0.1:4173",
+      ]);
+
+      if (allowedOrigins.has(origin) || origin.endsWith(".northernstepstudio.com")) {
+        return origin;
+      }
+
+      return undefined;
+    },
     credentials: true,
     allowHeaders: ["Content-Type", "Authorization"],
     allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
