@@ -141,7 +141,7 @@ export default function AppHub() {
             <div>
               <div className="mb-4 flex items-center justify-between gap-4">
                 <h2 className="text-sm font-black uppercase tracking-[0.24em] text-accent">Featured apps</h2>
-                <p className="text-xs text-muted-foreground">{featuredApps.length} curated products</p>
+                <p className="text-xs text-muted-foreground">{curatedApps.length} curated products</p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                   {filteredApps
