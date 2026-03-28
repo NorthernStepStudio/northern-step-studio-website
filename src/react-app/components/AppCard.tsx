@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import { useTranslation } from "react-i18next";
 import { Sparkles, Zap, Gamepad2, GraduationCap, TrendingUp, House, HeartPulse } from "lucide-react";
 import { getAppCategoryLabel } from "@/react-app/lib/appCategories";
+import { getCatalogApp } from "@/react-app/data/appsCatalog";
 
 interface AppCardProps {
   id: number;
@@ -16,6 +17,7 @@ interface AppCardProps {
   video_url?: string | null;
   features?: string[] | null;
   platform?: string;
+  progressPercent?: number;
 }
 
 const categoryIcons = {
@@ -28,6 +30,14 @@ const categoryIcons = {
   THERAPY: HeartPulse,
 };
 
+function getStatusLabel(status: string) {
+  const normalized = status.trim().toUpperCase();
+  if (normalized === "LIVE") return "Live";
+  if (normalized === "BETA") return "Beta";
+  if (normalized === "COMING_SOON") return "Coming soon";
+  return status;
+}
+
 export default function AppCard({
   name,
   slug,
@@ -35,9 +45,12 @@ export default function AppCard({
   category,
   status,
   logo,
+  progressPercent,
 }: AppCardProps) {
   const { t } = useTranslation();
   const IconComponent = categoryIcons[category as keyof typeof categoryIcons] || Sparkles;
+  const catalogLogo = getCatalogApp(slug)?.logo || null;
+  const displayLogo = logo || catalogLogo;
 
   return (
     <Link
@@ -46,8 +59,8 @@ export default function AppCard({
     >
       <div className="flex items-start justify-between mb-4">
         <div className="w-14 h-14 rounded-2xl border border-border bg-gradient-to-br from-background to-secondary/80 flex items-center justify-center group-hover:border-accent/30 group-hover:bg-accent/5 transition-colors overflow-hidden">
-          {logo ? (
-            <img src={logo} alt={name} className="w-full h-full object-contain p-2.5" />
+          {displayLogo ? (
+            <img src={displayLogo} alt={name} className="w-full h-full object-contain p-2.5" />
           ) : (
             <IconComponent className="w-7 h-7 text-accent" />
           )}
@@ -65,7 +78,7 @@ export default function AppCard({
                 : "bg-muted/10 text-muted-foreground border border-border"
             }`}
           >
-            {status}
+            {getStatusLabel(status)}
           </span>
         </div>
       </div>
@@ -77,6 +90,21 @@ export default function AppCard({
       <p className="text-sm text-muted-foreground font-normal mb-6 line-clamp-2">
         {description || "No description available"}
       </p>
+
+      {typeof progressPercent === "number" && (
+        <div className="mb-4">
+          <div className="mb-2 flex items-center justify-between text-[11px] font-black uppercase tracking-wide text-muted-foreground">
+            <span>Completion</span>
+            <span>{progressPercent}%</span>
+          </div>
+          <div className="h-2 overflow-hidden rounded-full bg-secondary">
+            <div
+              className="h-full rounded-full bg-gradient-to-r from-accent to-accent/80"
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
+        </div>
+      )}
 
       <div className="w-full py-3 rounded-full bg-secondary border border-border group-hover:bg-accent group-hover:text-accent-foreground group-hover:border-accent transition-all font-black uppercase text-sm text-center">
         {status === "LIVE" ? t("apps.open") : status === "BETA" ? t("apps.join_beta") : t("apps.learn_more")}

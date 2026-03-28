@@ -11,14 +11,19 @@ import { useAppMedia } from "@/react-app/hooks/useAppMedia";
 import GlitchedText from "@/react-app/components/GlitchedText";
 import SEO from "@/react-app/components/SEO";
 import { getAppCategoryLabel } from "@/react-app/lib/appCategories";
+import { getCatalogApp } from "@/react-app/data/appsCatalog";
+import { apiFetch } from "@/react-app/lib/api";
 
 export default function ProductDetail() {
   const { t } = useTranslation();
   const { slug } = useParams<{ slug: string }>();
-  const { app, isLoading, error } = useApp(slug || "");
+  const { app: remoteApp, isLoading } = useApp(slug || "");
   const { media } = useAppMedia(slug || "");
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const fallbackApp = slug ? getCatalogApp(slug) : null;
+  const app = remoteApp || fallbackApp;
+  const appLogo = app?.logo || fallbackApp?.logo || null;
   const screenshots = useMemo(() => {
     if (!app) {
       return [];
@@ -42,13 +47,13 @@ export default function ProductDetail() {
     if (!app) return;
     
     try {
-      await fetch("/api/analytics/track", {
+      await apiFetch("/api/analytics/track", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           event: "app_download",
           app_id: app.id,
-          app_uuid: app.uuid,
+            app_uuid: "uuid" in app ? app.uuid : null,
           user_id: null,
           metadata: JSON.stringify({
             app_name: app.name,
@@ -78,7 +83,7 @@ export default function ProductDetail() {
     );
   }
 
-  if (error || !app) {
+  if (!app) {
     return (
       <div className="min-h-screen pt-24 px-4 sm:px-6">
         <div className="container mx-auto max-w-4xl">
@@ -107,6 +112,8 @@ export default function ProductDetail() {
   const completedSteps = progress.filter(p => p.completed).length;
   const totalSteps = progress.length;
   const progressPercent = app.progressPercent || 0;
+  const completedItems = progress.filter((item) => item.completed);
+  const missingItems = progress.filter((item) => !item.completed);
 
   const openLightbox = (index: number) => {
     setLightboxIndex(index);
@@ -176,7 +183,7 @@ export default function ProductDetail() {
         description={app.description}
         keywords={`${app.name}, ${app.category}, ${app.platform} app, ${app.techStack?.join(", ") || ""}`}
         canonicalUrl={`/apps/${app.slug}`}
-        ogImage={app.logo || undefined}
+        ogImage={appLogo || undefined}
         ogType="website"
         structuredData={structuredData}
       />
@@ -196,8 +203,8 @@ export default function ProductDetail() {
             <div className="flex flex-col lg:flex-row items-start gap-6 lg:gap-8">
               {/* App Icon */}
               <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-3xl bg-gradient-to-br from-background to-secondary/80 flex items-center justify-center overflow-hidden flex-shrink-0 border-2 border-accent/20 shadow-xl shadow-accent/10">
-                {app.logo ? (
-                  <img src={app.logo} alt={app.name} className="w-full h-full object-contain p-4 sm:p-5" />
+                {appLogo ? (
+                  <img src={appLogo} alt={app.name} className="w-full h-full object-contain p-4 sm:p-5" />
                 ) : (
                   <Zap className="w-12 h-12 text-accent" />
                 )}
@@ -310,6 +317,34 @@ export default function ProductDetail() {
           {/* Progress Checklist */}
           {progress.length > 0 && (
             <div className="space-y-3">
+              <div className="grid gap-3 sm:grid-cols-2 mb-6">
+                <div className="rounded-2xl border border-accent/20 bg-accent/5 p-4">
+                  <p className="text-[11px] font-black uppercase tracking-[0.2em] text-accent">What is done</p>
+                  <ul className="mt-3 space-y-2 text-sm text-foreground">
+                    {completedItems.map((item, index) => (
+                      <li key={index} className="flex gap-2">
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                        <span>{item.text}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="rounded-2xl border border-border bg-secondary/30 p-4">
+                  <p className="text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground">What is missing</p>
+                  {missingItems.length > 0 ? (
+                    <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+                      {missingItems.map((item, index) => (
+                        <li key={index} className="flex gap-2">
+                          <Circle className="mt-0.5 h-4 w-4 shrink-0" />
+                          <span>{item.text}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="mt-3 text-sm text-foreground font-bold">Nothing missing. This phase is complete.</p>
+                  )}
+                </div>
+              </div>
               <h3 className="text-sm font-black uppercase text-muted-foreground mb-4">{t("product.milestones")}</h3>
               {progress.map((step, i) => {
                 const isNext = !step.completed && (i === 0 || progress[i - 1]?.completed);

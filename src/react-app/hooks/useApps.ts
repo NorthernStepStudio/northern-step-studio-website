@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type { AppData, ProgressItem } from "@/react-app/types/apps";
 import { apiFetch } from "@/react-app/lib/api";
 import { CATALOG_APPS } from "@/react-app/data/appsCatalog";
+import { CATALOG_APPS, getCatalogApp } from "@/react-app/data/appsCatalog";
 
 export type App = AppData;
 
@@ -88,6 +89,9 @@ function normalizeStatus(status: string | null | undefined) {
   const value = (status || "").trim().toUpperCase().replace(/\s+/g, "_");
   if (!value) return "COMING_SOON";
   if (value === "COMING SOON") return "COMING_SOON";
+  if (value === "PUBLISHED") return "LIVE";
+  if (value === "DRAFT") return "BETA";
+  if (value === "HIDDEN") return "COMING_SOON";
   return value;
 }
 
@@ -133,6 +137,18 @@ function normalizeApp(record: AppRecord): App {
   };
 }
 
+function withCatalogFallback(app: App): App {
+  const fallback = getCatalogApp(app.slug);
+  if (!fallback) {
+    return app;
+  }
+
+  return {
+    ...app,
+    logo: app.logo || fallback.logo,
+  };
+}
+
 function transformToDb(app: Partial<App>) {
   const status = normalizeStatus(app.status);
   return {
@@ -174,7 +190,9 @@ export function useApps() {
       }
 
       const data = await response.json();
-      const normalized = Array.isArray(data) ? data.map((record) => normalizeApp(record as AppRecord)) : [];
+      const normalized = Array.isArray(data)
+        ? data.map((record) => withCatalogFallback(normalizeApp(record as AppRecord)))
+        : [];
       const merged = [
         ...normalized,
         ...CATALOG_APPS.filter((fallback) => !normalized.some((app) => app.slug === fallback.slug)),
@@ -194,7 +212,7 @@ export function useApps() {
   }, []);
 
   const createApp = async (input: Partial<App>): Promise<{ id: number; uuid: string }> => {
-    const response = await fetch("/api/apps", {
+    const response = await apiFetch("/api/apps", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(transformToDb(input)),
