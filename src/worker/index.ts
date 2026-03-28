@@ -40,7 +40,7 @@ app.use(
   cors({
     origin: (origin) => {
       if (!origin) {
-        return "";
+        return undefined;
       }
 
       const allowedOrigins = new Set([
@@ -55,7 +55,7 @@ app.use(
         return origin;
       }
 
-      return "";
+      return undefined;
     },
     credentials: true,
     allowHeaders: ["Content-Type", "Authorization"],
