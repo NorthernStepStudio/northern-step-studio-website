@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { AppData, ProgressItem } from "@/react-app/types/apps";
 import { apiFetch } from "@/react-app/lib/api";
+import { CATALOG_APPS } from "@/react-app/data/appsCatalog";
 
 export type App = AppData;
 
@@ -160,7 +161,7 @@ function transformToDb(app: Partial<App>) {
 }
 
 export function useApps() {
-  const [apps, setApps] = useState<App[]>([]);
+  const [apps, setApps] = useState<App[]>(CATALOG_APPS as App[]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -174,10 +175,14 @@ export function useApps() {
 
       const data = await response.json();
       const normalized = Array.isArray(data) ? data.map((record) => normalizeApp(record as AppRecord)) : [];
-      setApps(normalized);
+      const merged = [
+        ...normalized,
+        ...CATALOG_APPS.filter((fallback) => !normalized.some((app) => app.slug === fallback.slug)),
+      ] as App[];
+      setApps(merged);
       setError(null);
     } catch (err) {
-      setApps([]);
+      setApps(CATALOG_APPS as App[]);
       setError(err instanceof Error ? err.message : "Failed to fetch apps");
     } finally {
       setIsLoading(false);
