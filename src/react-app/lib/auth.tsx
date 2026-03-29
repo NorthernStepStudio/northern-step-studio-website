@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { apiUrl } from "@/react-app/lib/api";
 
 export type AppUser = {
   id?: string;
@@ -43,21 +44,12 @@ async function parseResponse(response: Response) {
   return response.json().catch(() => null);
 }
 
-function getBackendOrigin() {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL as string | undefined;
-  if (!backendUrl) {
-    throw new Error("Backend is not configured. Set VITE_BACKEND_URL.");
-  }
-
-  return backendUrl.replace(/\/$/, "");
-}
-
 async function backendFetch(path: string, init?: RequestInit) {
   const controller = new AbortController();
   const timeout = window.setTimeout(() => controller.abort(), 15000);
 
   try {
-    return await fetch(`${getBackendOrigin()}${path}`, {
+    return await fetch(apiUrl(path), {
       credentials: "include",
       signal: controller.signal,
       ...init,

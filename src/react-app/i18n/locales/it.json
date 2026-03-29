@@ -160,7 +160,8 @@
     "coming_soon": "Prossimamente",
     "view": "Vedi",
     "notify_me": "Avvisami",
-    "setup_review": "Richiedi revisione configurazione"
+    "setup_review": "Richiedi revisione configurazione",
+    "more": "Altro"
   },
   "building": {
     "label": "Prodotti in Movimento",
@@ -674,7 +675,7 @@
     "focus_areas_count": 6,
     "cta_view_work": "Vedi lavoro",
     "cta_get_quote": "Richiedi un preventivo",
-    "focus_title": "Ci? che fa NSS",
+    "focus_title": "Ciò che fa NSS",
     "focus_subtitle": "Prodotti focalizzati, tenuti semplici.",
     "focus_area_apps_title": "App focalizzate",
     "focus_area_apps_desc": "NexusBuild, ProvLy e NooBS Investing restano piccole e utili.",
@@ -685,7 +686,7 @@
     "focus_area_systems_title": "Sistemi puliti",
     "focus_area_systems_desc": "Prodotti diretti, facili da usare.",
     "portfolio_title": "Lavoro attuale",
-    "portfolio_subtitle": "Tre app vicine al lancio, pi? il sistema di recupero lead.",
+    "portfolio_subtitle": "Tre app vicine al lancio, più il sistema di recupero lead.",
     "portfolio_status_close_to_launch": "Fase beta",
     "portfolio_status_almost_ready": "Fase beta",
     "portfolio_status_service": "Recupero lead",
@@ -708,9 +709,9 @@
     "portfolio_noobs_outcome": "Guida per investitori alle prime armi",
     "portfolio_lead_title": "Servizio di Recupero Lead",
     "portfolio_lead_desc": "Missed Call Text Back mantiene i lead in movimento con un rapido follow-up SMS.",
-    "portfolio_lead_outcome": "Risposta pi? rapida alle chiamate perse",
+    "portfolio_lead_outcome": "Risposta più rapida alle chiamate perse",
     "about_title": "Cosa fa NSS",
-    "about_text": "NSS mantiene la homepage piccola per far vedere chiaramente il lavoro. Il focus ? il recupero lead prima di tutto, poi poche app pratiche.",
+    "about_text": "NSS mantiene la homepage piccola per far vedere chiaramente il lavoro. Il focus è il recupero lead prima di tutto, poi poche app pratiche.",
     "about_point_1_title": "Prima il recupero lead",
     "about_point_1_desc": "Missed Call Text Back evita che le chiamate perse diventino lead persi.",
     "about_point_2_title": "Tre app in corso",
@@ -768,5 +769,72 @@
     "cta_title": "Inizia con il Recupero Lead",
     "cta_desc": "Pronto a smettere di perdere lead per chiamate perse? Raccontaci della tua attività e vedremo se il sistema NSS Missed Call Text Back è adatto al tuo flusso di lavoro.",
     "cta_button": "Contatta lo Studio"
+  },
+  "mctb_page": {
+    "hero": {
+      "badge": "Automazione iniziale per team di servizi locali",
+      "title": "Smetti di perdere lavori per chiamate perse",
+      "subtitle": "Un flusso di risposta 24/7 che risponde via SMS all'istante, qualifica il lavoro e invia al titolare un riepilogo pulito.",
+      "description": "Questa non è una pagina chatbot generica. È un sistema mirato di recupero lead per vere attività di servizi che non possono permettersi di perdere una chiamata e il lavoro successivo. L'idraulica è il playbook iniziale attuale perché è la versione più veloce da vendere e mostrare, non perché il sistema sia limitato agli idraulici.",
+      "demo_badge": "Demo iniziale attuale: idraulica",
+      "summary_badge": "Riepilogo del titolare incluso",
+      "compliance_badge": "Flusso SMS attento alla conformità",
+      "verticals_badge": "Espandibile ad altri settori di servizi"
+    },
+    "value_cards": {
+      "title": "Ciò che un acquirente deve capire in meno di un minuto",
+      "description": "La pagina dovrebbe rispondere velocemente a tre domande: cos'è, cosa fa e perché vale la pena pagarla prima che il cliente chiami qualcun altro.",
+      "what_is": {
+        "label": "Cos'è",
+        "title": "Un sistema di recupero delle chiamate perse",
+        "desc": "Quando un'attività perde una chiamata, il sistema risponde via SMS all'istante, avvia l'acquisizione e mantiene il lead ingaggiato finché il titolare richiama."
+      },
+      "what_does": {
+        "label": "Cosa fa",
+        "title": "Qualifica il lead prima che tu lo gestisca",
+        "desc": "Fa domande brevi sul servizio, controlla l?urgenza, acquisisce la posizione del lavoro e trasforma lo scambio in un riepilogo pulito pronto per il titolare."
+      },
+      "who_for": {
+        "label": "Per chi è",
+        "title": "Attività di servizi locali che perdono chiamate",
+        "desc": "Gli idraulici sono la demo iniziale attuale, ma la stessa struttura si adatta a imprese edili, HVAC, elettricisti, garage door, pulizie, soccorso stradale e altri operatori che non possono stare al telefono tutto il giorno."
+      }
+    },
+    "roi": {
+      "line": "Linea ROI",
+      "text": "Se fa risparmiare un solo lavoro perso a settimana, pu? ripagarsi da solo.",
+      "tags": "Risposta più veloce. Filtraggio migliore. Più richiamate."
+    },
+    "workflow": {
+      "title": "Il flusso live dovrebbe sembrare ovvio",
+      "desc": "Non costringere il visitatore a immaginare il sistema. Mostra il trigger della chiamata, l'acquisizione, la classificazione e il riepilogo del titolare nello stesso percorso di scroll.",
+      "step1": {
+        "title": "La chiamata persa attiva la risposta",
+        "desc": "Il cliente chiama la linea dell'attività, nessuno risponde e il sistema apre la conversazione via testo senza aspettare il titolare."
+      },
+      "step2": {
+        "title": "Il cliente riceve un'acquisizione breve",
+        "desc": "Lo script fa una domanda alla volta, resta sul tema e mantiene il cliente in movimento invece di scaricargli un paragrafo lungo."
+      },
+      "step3": {
+        "title": "Il lavoro viene classificato",
+        "desc": "Tipo di problema, gravità, urgenza, posizione e nome del cliente vengono raccolti così il titolare può agire su qualcosa di utile."
+      },
+      "step4": {
+        "title": "Il titolare riceve il riepilogo",
+        "desc": "Invece di indovinare da una segreteria o da testi grezzi, il titolare vede il riepilogo del lead e sa se chiamare subito o metterlo in coda normalmente."
+      }
+    },
+    "summary": {
+      "badge": "Ciò che vede il titolare",
+      "title": "Il riepilogo è il punto di vendita",
+      "desc": "Questo è il momento che fa capire il prodotto. Il titolare non deve leggere una trascrizione della segreteria. Ha bisogno di una vista chiara del lavoro e del passo successivo."
+    },
+    "pricing": {
+      "title": "I piani chiari battono i prezzi personalizzati vaghi",
+      "desc": "Gli acquirenti dovrebbero vedere subito dove si collocano. I piani servono a semplificare la vendita, non a far sembrare il sistema più complicato.",
+      "recommendation_title": "Raccomandazione",
+      "recommendation_text": "La maggior parte delle attività dovrebbe iniziare con Starter, validare il flusso di lavoro e poi espandersi."
+    }
   }
 }

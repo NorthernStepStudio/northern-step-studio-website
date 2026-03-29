@@ -160,7 +160,8 @@
     "coming_soon": "Próximamente",
     "view": "Ver",
     "notify_me": "Notificarme",
-    "setup_review": "Solicitar revisión de configuración"
+    "setup_review": "Solicitar revisión de configuración",
+    "more": "Más"
   },
   "building": {
     "label": "Productos en Movimiento",
@@ -662,14 +663,14 @@
     "workspace_keywords": "Northern Step Studio, tecnología, desarrollo de software, IA, ProvLy, NexusBuild, NooBS Investing, NeuroMoves, PasoScore, Missed Call Text Back"
   },
   "home": {
-    "hero_title": "NSS construye software pr?ctico.",
+    "hero_title": "NSS construye software práctico.",
     "hero_line_1": "Construyendo Software Enfocado",
     "hero_line_2": "Que Resuelve Problemas Reales",
-    "hero_subtitle": "Northern Step Studio crea sistemas de recuperaci?n de prospectos y apps enfocadas.",
-    "hero_pitch": "Software pr?ctico con un portafolio peque?o y un prop?sito claro.",
+    "hero_subtitle": "Northern Step Studio crea sistemas de recuperación de prospectos y apps enfocadas.",
+    "hero_pitch": "Software práctico con un portafolio pequeño y un propósito claro.",
     "hero_primary": "Ver portafolio",
     "hero_secondary": "Contacto",
-    "lead_recovery": "Recuperaci?n de Prospectos",
+    "lead_recovery": "Recuperación de Prospectos",
     "studio_ai": "IA del Estudio",
     "focus_areas_count": 6,
     "cta_view_work": "Ver trabajo",
@@ -677,23 +678,23 @@
     "focus_title": "Lo que hace NSS",
     "focus_subtitle": "Productos enfocados, mantenidos simples.",
     "focus_area_apps_title": "Apps enfocadas",
-    "focus_area_apps_desc": "NexusBuild, ProvLy y NooBS Investing se mantienen peque?as y ?tiles.",
-    "focus_area_gaming_title": "Recuperaci?n de prospectos",
+    "focus_area_apps_desc": "NexusBuild, ProvLy y NooBS Investing se mantienen pequeñas y útiles.",
+    "focus_area_gaming_title": "Recuperación de prospectos",
     "focus_area_gaming_desc": "Missed Call Text Back mantiene los nuevos prospectos en movimiento.",
-    "focus_area_ai_title": "Automatizaci?n simple",
+    "focus_area_ai_title": "Automatización simple",
     "focus_area_ai_desc": "Herramientas que eliminan pasos manuales sin ruido.",
     "focus_area_systems_title": "Sistemas limpios",
-    "focus_area_systems_desc": "Productos directos, f?ciles de usar.",
+    "focus_area_systems_desc": "Productos directos, fáciles de usar.",
     "portfolio_title": "Trabajo actual",
-    "portfolio_subtitle": "Tres apps cerca del lanzamiento, m?s el sistema de recuperaci?n de prospectos.",
+    "portfolio_subtitle": "Tres apps cerca del lanzamiento, más el sistema de recuperación de prospectos.",
     "portfolio_status_close_to_launch": "Fase beta",
     "portfolio_status_almost_ready": "Fase beta",
-    "portfolio_status_service": "Recuperaci?n de prospectos",
+    "portfolio_status_service": "Recuperación de prospectos",
     "portfolio_type_app": "App",
     "portfolio_type_service": "Sistema",
-    "portfolio_empty": "Nada p?blico est? disponible ahora mismo.",
-    "portfolio_disabled": "Acceso al portafolio pr?ximamente.",
-    "portfolio_default_description": "Pr?ximos pasos enfocados en resultados y aprendizajes.",
+    "portfolio_empty": "Nada público está disponible ahora mismo.",
+    "portfolio_disabled": "Acceso al portafolio próximamente.",
+    "portfolio_default_description": "Próximos pasos enfocados en resultados y aprendizajes.",
     "portfolio_nexus_title": "NexusBuild",
     "portfolio_nexus_desc": "Un producto enfocado para planificar y construir mejores sistemas.",
     "portfolio_nexus_outcome": "Lanzamiento multiplataforma en 3 meses",
@@ -701,22 +702,22 @@
     "portfolio_neuromove_desc": "Un compañero de terapia ocupacional guiada para niños pequeños, con rutinas estructuradas, herramientas para padres y seguimiento de progreso.",
     "portfolio_neuromove_outcome": "Apoyo estructurado para crecer cada día.",
     "portfolio_provly_title": "ProvLy",
-    "portfolio_provly_desc": "Un panel claro para anal?tica de ventas y decisiones diarias.",
-    "portfolio_provly_outcome": "Informaci?n en tiempo real lista para la acci?n",
+    "portfolio_provly_desc": "Un panel claro para analítica de ventas y decisiones diarias.",
+    "portfolio_provly_outcome": "Información en tiempo real lista para la acción",
     "portfolio_noobs_title": "NooBS Investing",
-    "portfolio_noobs_desc": "Un compa?ero de inversi?n paso a paso, claro y f?cil de seguir.",
-    "portfolio_noobs_outcome": "Gu?a para inversores primerizos",
-    "portfolio_lead_title": "Servicio de Recuperaci?n de Prospectos",
-    "portfolio_lead_desc": "Missed Call Text Back mantiene los prospectos avanzando con seguimiento r?pido por SMS.",
-    "portfolio_lead_outcome": "Respuesta m?s r?pida a llamadas perdidas",
-    "about_title": "?Qu? es NSS?",
-    "about_text": "NSS mantiene la p?gina principal peque?a para que el trabajo se vea claro. El foco es la recuperaci?n de prospectos primero, luego unas pocas apps pr?cticas.",
-    "about_point_1_title": "Primero la recuperaci?n",
+    "portfolio_noobs_desc": "Un compañero de inversión paso a paso, claro y fácil de seguir.",
+    "portfolio_noobs_outcome": "Guía para inversores primerizos",
+    "portfolio_lead_title": "Servicio de Recuperación de Prospectos",
+    "portfolio_lead_desc": "Missed Call Text Back mantiene los prospectos avanzando con seguimiento rápido por SMS.",
+    "portfolio_lead_outcome": "Respuesta más rápida a llamadas perdidas",
+    "about_title": "¿Qué es NSS?",
+    "about_text": "NSS mantiene la página principal pequeña para que el trabajo se vea claro. El foco es la recuperación de prospectos primero, luego unas pocas apps prácticas.",
+    "about_point_1_title": "Primero la recuperación",
     "about_point_1_desc": "Missed Call Text Back evita que las llamadas perdidas se conviertan en leads perdidos.",
     "about_point_2_title": "Tres apps en curso",
     "about_point_2_desc": "NexusBuild, ProvLy y NooBS Investing son las apps principales.",
-    "final_cta_title": "?Necesitas una construcci?n limpia?",
-    "final_cta_subtitle": "Escr?benos si quieres que NSS construya un producto, una app o un sistema de automatizaci?n.",
+    "final_cta_title": "¿Necesitas una construcción limpia?",
+    "final_cta_subtitle": "Escríbenos si quieres que NSS construya un producto, una app o un sistema de automatización.",
     "final_cta_button": "Empezar proyecto"
   },
   "mctb": {
@@ -768,5 +769,72 @@
     "cta_title": "Comienza con la Recuperación de Prospectos",
     "cta_desc": "¿Listo para dejar de perder prospectos por llamadas perdidas? Cuéntanos sobre tu negocio y veremos si el sistema NSS Missed Call Text Back es adecuado para tu flujo de trabajo.",
     "cta_button": "Contactar al Estudio"
+  },
+  "mctb_page": {
+    "hero": {
+      "badge": "Automatización inicial para equipos de servicios locales",
+      "title": "Deja de perder trabajos por llamadas perdidas",
+      "subtitle": "Un flujo de respuesta 24/7 que contesta al instante por SMS, califica el trabajo y envía al dueño un resumen limpio.",
+      "description": "Esta no es una página genérica de chatbot. Es un sistema enfocado de recuperación de prospectos para negocios reales de servicios que no pueden permitirse perder una llamada y dejar pasar el siguiente trabajo. La plomería es el playbook inicial actual porque es la versión más rápida para vender y mostrar, no porque el sistema se limite a los plomeros.",
+      "demo_badge": "Demo inicial actual: plomería",
+      "summary_badge": "Resumen para el dueño incluido",
+      "compliance_badge": "Flujo SMS consciente del cumplimiento",
+      "verticals_badge": "Expandible a otros rubros de servicios"
+    },
+    "value_cards": {
+      "title": "Lo que un comprador necesita entender en menos de un minuto",
+      "description": "La página debería responder rápido a tres preguntas: qué es, qué hace y por qué vale la pena pagarlo antes de que el cliente llame a otra persona.",
+      "what_is": {
+        "label": "Qué es",
+        "title": "Un sistema de recuperación de llamadas perdidas",
+        "desc": "Cuando un negocio pierde una llamada, el sistema responde por SMS de inmediato, inicia la captura y mantiene al prospecto interesado hasta que el dueño devuelve la llamada."
+      },
+      "what_does": {
+        "label": "Qué hace",
+        "title": "Califica el prospecto antes de revisarlo",
+        "desc": "Hace preguntas cortas sobre el servicio, verifica la urgencia, captura la ubicación del trabajo y convierte el intercambio en un resumen limpio listo para el dueño."
+      },
+      "who_for": {
+        "label": "Para quién es",
+        "title": "Negocios locales de servicios que pierden llamadas",
+        "desc": "Los plomeros son la demo inicial actual, pero la misma estructura encaja con contratistas, HVAC, electricidad, puertas de garaje, limpieza, remolque y otros operadores de servicios que no pueden pasar el día pegados al teléfono."
+      }
+    },
+    "roi": {
+      "line": "Línea de ROI",
+      "text": "Si salva un solo trabajo perdido por semana, puede pagarse solo.",
+      "tags": "Respuesta más rápida. Mejor filtrado. Más devoluciones de llamada."
+    },
+    "workflow": {
+      "title": "El flujo en vivo debería sentirse obvio",
+      "desc": "No hagas que el visitante imagine el sistema. Muestra el disparador de la llamada, la captura, la clasificación y el resumen del dueño en el mismo recorrido.",
+      "step1": {
+        "title": "La llamada perdida activa la respuesta",
+        "desc": "El cliente llama a la línea del negocio, nadie contesta y el sistema abre la conversación por texto sin esperar al dueño."
+      },
+      "step2": {
+        "title": "El cliente recibe una captura breve",
+        "desc": "El guion hace una pregunta a la vez, se mantiene en el tema y mantiene al cliente avanzando en lugar de arrojarle un párrafo largo."
+      },
+      "step3": {
+        "title": "El trabajo se clasifica",
+        "desc": "Tipo de problema, gravedad, urgencia, ubicación y nombre del cliente se capturan para que el dueño pueda actuar sobre algo útil."
+      },
+      "step4": {
+        "title": "El dueño recibe el resumen",
+        "desc": "En lugar de adivinar a partir del buzón de voz o textos crudos, el dueño ve el resumen del prospecto y sabe si llamar de inmediato o ponerlo en cola normalmente."
+      }
+    },
+    "summary": {
+      "badge": "Lo que ve el dueño",
+      "title": "El resumen es el argumento de venta",
+      "desc": "Este es el momento que hace que el producto tenga sentido. El dueño no necesita leer una transcripción del buzón de voz. Necesita una vista clara del trabajo y del siguiente paso."
+    },
+    "pricing": {
+      "title": "Los planes claros superan los precios personalizados vagos",
+      "desc": "Los compradores deberían ver enseguida dónde encajan. Los planes están ahí para simplificar la venta, no para hacer que el sistema parezca más complicado.",
+      "recommendation_title": "Recomendación",
+      "recommendation_text": "La mayoría de los negocios debería empezar con Starter, validar el flujo de trabajo y expandirse después."
+    }
   }
 }
