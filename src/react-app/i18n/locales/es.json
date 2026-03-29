@@ -16,7 +16,8 @@
     "logout": "Cerrar Sesión",
     "console": "Consola",
     "profile": "Perfil",
-    "lead_recovery": "Recuperación de Prospectos"
+    "lead_recovery": "Recuperación de Prospectos",
+    "lead_recovery_short": "Leads"
   },
   "hero": {
     "label": "Estudio Indie",
@@ -161,6 +162,7 @@
     "view": "Ver",
     "notify_me": "Notificarme",
     "setup_review": "Solicitar revisión de configuración",
+    "setup_review_short": "Revisión",
     "more": "Más"
   },
   "building": {

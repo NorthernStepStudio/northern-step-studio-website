@@ -16,7 +16,8 @@
     "logout": "Logout",
     "console": "Console",
     "profile": "Profile",
-    "lead_recovery": "Lead Recovery"
+    "lead_recovery": "Lead Recovery",
+    "lead_recovery_short": "Lead"
   },
   "hero": {
     "label": "Indie Studio",
@@ -161,7 +162,8 @@
     "view": "View",
     "notify_me": "Notify Me",
     "more": "More",
-    "setup_review": "Request Setup Review"
+    "setup_review": "Request Setup Review",
+    "setup_review_short": "Setup Review"
   },
   "building": {
     "label": "Products in Motion",

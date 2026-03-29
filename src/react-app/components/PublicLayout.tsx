@@ -108,19 +108,19 @@ export default function PublicLayout() {
             </span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-7">
-            <Link to="/missed-call-text-back" className="text-sm text-yellow-500 hover:text-yellow-400 transition-colors uppercase font-black">
-              {t("nav.lead_recovery")}
+          <nav className="hidden md:flex items-center gap-5 xl:gap-7 min-w-0">
+            <Link to="/missed-call-text-back" className="text-[11px] xl:text-xs 2xl:text-sm text-yellow-500 hover:text-yellow-400 transition-colors uppercase font-black whitespace-nowrap">
+              {t("nav.lead_recovery_short")}
             </Link>
-            <Link to="/apps" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black">
+            <Link to="/apps" className="text-[11px] xl:text-xs 2xl:text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black whitespace-nowrap">
               {t("nav.apps")}
             </Link>
-            <Link to="/contact" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black">
+            <Link to="/contact" className="text-[11px] xl:text-xs 2xl:text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black whitespace-nowrap">
               {t("nav.contact")}
             </Link>
 
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black focus:outline-none">
+              <DropdownMenuTrigger className="flex items-center gap-1.5 text-[11px] xl:text-xs 2xl:text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black whitespace-nowrap focus:outline-none">
                 {t("common.more") || "More"}
                 <ChevronDown className="w-4 h-4" />
               </DropdownMenuTrigger>
@@ -150,7 +150,7 @@ export default function PublicLayout() {
 
             <div className="hidden md:flex items-center gap-3">
               <Link to={setupReviewHref} className="btn-pill-primary-compact">
-                {t("common.setup_review")}
+                {t("common.setup_review_short")}
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
               {user ? (
@@ -204,28 +204,28 @@ export default function PublicLayout() {
             <nav className="container mx-auto px-4 py-4 flex flex-col gap-2">
               <Link
                 to="/missed-call-text-back"
-                className="text-sm text-yellow-400 hover:text-yellow-300 transition-colors uppercase font-black py-2"
+                className="text-sm text-yellow-400 hover:text-yellow-300 transition-colors uppercase font-black py-2 whitespace-nowrap"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                {t("nav.lead_recovery")}
+                {t("nav.lead_recovery_short")}
               </Link>
               <Link
                 to="/apps"
-                className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black py-2"
+                className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black py-2 whitespace-nowrap"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t("nav.apps")}
               </Link>
               <Link
                 to="/about"
-                className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black py-2"
+                className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black py-2 whitespace-nowrap"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t("nav.about")}
               </Link>
               <Link
                 to="/contact"
-                className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black py-2"
+                className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black py-2 whitespace-nowrap"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t("nav.contact")}
@@ -238,7 +238,7 @@ export default function PublicLayout() {
                 className="btn-pill-primary-compact mt-1"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                {t("common.setup_review")}
+                {t("common.setup_review_short")}
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
 

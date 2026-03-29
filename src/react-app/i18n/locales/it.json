@@ -16,7 +16,8 @@
     "logout": "Esci",
     "console": "Console",
     "profile": "Profilo",
-    "lead_recovery": "Recupero Lead"
+    "lead_recovery": "Recupero Lead",
+    "lead_recovery_short": "Lead"
   },
   "hero": {
     "label": "Studio Indie",
@@ -161,6 +162,7 @@
     "view": "Vedi",
     "notify_me": "Avvisami",
     "setup_review": "Richiedi revisione configurazione",
+    "setup_review_short": "Revisione",
     "more": "Altro"
   },
   "building": {
