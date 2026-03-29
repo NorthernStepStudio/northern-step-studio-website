@@ -9,6 +9,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useTranslation } from "react-i18next";
 import { apiFetch } from "@/react-app/lib/api";
+import { getMockCommunityThreadBySlug } from "@/react-app/data/communityMock";
 
 interface Thread {
   id: number;
@@ -51,6 +52,7 @@ export default function ThreadDetail() {
   const [editSubmitting, setEditSubmitting] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [usingMockData, setUsingMockData] = useState(false);
   const newPostTextareaRef = useRef<HTMLTextAreaElement>(null);
   const editPostTextareaRef = useRef<HTMLTextAreaElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
@@ -126,21 +128,40 @@ export default function ThreadDetail() {
     if (!slug) return;
 
     const loadThread = async () => {
+      let loadedLiveThread = false;
+
       try {
         const threadRes = await apiFetch(`/api/community/threads/${slug}`);
-        const threadData = await threadRes.json();
-        setThread(threadData);
+        const threadData = await threadRes.json().catch(() => null);
+        if (threadData?.id) {
+          setThread(threadData);
 
-        const postsRes = await apiFetch(`/api/community/posts?thread_id=${threadData.id}&page=${page}&limit=50`);
-        const postsData = await postsRes.json();
-        setPosts(postsData.posts || []);
-        setHasMore(postsData.pagination?.hasMore || false);
-        setTotalPages(Math.ceil((postsData.pagination?.total || 0) / (postsData.pagination?.limit || 50)));
+          const postsRes = await apiFetch(`/api/community/posts?thread_id=${threadData.id}&page=${page}&limit=50`);
+          const postsData = await postsRes.json().catch(() => null);
+          setPosts(Array.isArray(postsData?.posts) ? postsData.posts : []);
+          setHasMore(postsData?.pagination?.hasMore || false);
+          setTotalPages(Math.ceil((postsData?.pagination?.total || 0) / (postsData?.pagination?.limit || 50)));
+          setUsingMockData(false);
+          loadedLiveThread = true;
+        }
       } catch (err) {
         console.error("Failed to load thread:", err);
-      } finally {
-        setLoading(false);
       }
+
+      if (!loadedLiveThread) {
+        const mockThread = slug ? getMockCommunityThreadBySlug(slug) : null;
+        if (mockThread) {
+          setThread(mockThread);
+          setPosts(mockThread.posts);
+          setHasMore(false);
+          setTotalPages(mockThread.posts.length > 0 ? 1 : 0);
+          setUsingMockData(true);
+        } else {
+          setThread(null);
+        }
+      }
+
+      setLoading(false);
     };
 
     loadThread();
@@ -201,6 +222,7 @@ export default function ThreadDetail() {
   };
 
   const canEditPost = (post: Post) => {
+    if (usingMockData) return false;
     const currentUserId = user?.db_user_id ?? Number(user?.id);
     if (!currentUserId || post.author_id !== currentUserId) return false;
     const postTime = new Date(post.created_at).getTime();
@@ -320,6 +342,12 @@ export default function ThreadDetail() {
             {thread.category_name}
           </Link>
         </div>
+
+        {usingMockData && (
+          <div className="mb-4 rounded-xl border border-dashed border-accent/30 bg-accent/5 px-4 py-3 text-sm text-muted-foreground">
+            Showing sample discussion data.
+          </div>
+        )}
 
         {/* Thread header */}
         <div className="bg-card border border-border rounded-2xl p-6 mb-6">
@@ -523,7 +551,11 @@ export default function ThreadDetail() {
         </div>
 
         {/* Reply form */}
-        {user && !thread.is_locked ? (
+        {usingMockData ? (
+          <div className="bg-card border border-border rounded-2xl p-6 text-center">
+            <p className="text-muted-foreground">Sample thread data only. Replies are disabled until the live community backend is ready.</p>
+          </div>
+        ) : user && !thread.is_locked ? (
           <div className="bg-card border border-border rounded-2xl p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">{t("community.thread_form.post_reply", "Post a Reply")}</h2>

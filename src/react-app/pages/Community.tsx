@@ -6,6 +6,10 @@ import { Button } from "@/react-app/components/ui/button";
 import SEO from "@/react-app/components/SEO";
 import { useTranslation } from "react-i18next";
 import { apiFetch } from "@/react-app/lib/api";
+import {
+  getMockCommunityCategories,
+  searchMockCommunityThreads,
+} from "@/react-app/data/communityMock";
 
 interface Category {
   id: number;
@@ -41,18 +45,30 @@ export default function Community() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<Thread[]>([]);
   const [searching, setSearching] = useState(false);
+  const [usingMockData, setUsingMockData] = useState(false);
 
   useEffect(() => {
-    fetch("/api/community/categories")
-      .then((res) => res.json())
-      .then((data) => {
-        setCategories(data);
-        setLoading(false);
-      })
-      .catch((err) => {
+    const loadCategories = async () => {
+      try {
+        const res = await apiFetch("/api/community/categories");
+        const data = await res.json().catch(() => null);
+        if (Array.isArray(data) && data.length > 0) {
+          setCategories(data);
+          setUsingMockData(false);
+          return;
+        }
+        setCategories(getMockCommunityCategories());
+        setUsingMockData(true);
+      } catch (err) {
         console.error("Failed to load categories:", err);
+        setCategories(getMockCommunityCategories());
+        setUsingMockData(true);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    void loadCategories();
   }, []);
 
   const handleSearch = async (e: React.FormEvent) => {
@@ -65,10 +81,24 @@ export default function Community() {
     setSearching(true);
     try {
       const res = await apiFetch(`/api/community/threads?search=${encodeURIComponent(searchQuery.trim())}`);
-      const data = await res.json();
-      setSearchResults(data.threads || []);
+      const data = await res.json().catch(() => null);
+      const serverResults = Array.isArray(data?.threads) ? data.threads : [];
+      if (serverResults.length > 0) {
+        setSearchResults(serverResults);
+        setUsingMockData(false);
+      } else if (usingMockData) {
+        const mockResults = searchMockCommunityThreads(searchQuery.trim());
+        setSearchResults(mockResults);
+      } else {
+        setSearchResults([]);
+      }
     } catch (err) {
       console.error("Search failed:", err);
+      if (usingMockData) {
+        setSearchResults(searchMockCommunityThreads(searchQuery.trim()));
+      } else {
+        setSearchResults([]);
+      }
     } finally {
       setSearching(false);
     }
@@ -119,6 +149,11 @@ export default function Community() {
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
             {t("community.subtitle")}
           </p>
+          {usingMockData && (
+            <div className="mb-6 inline-flex rounded-full border border-accent/30 bg-accent/5 px-4 py-2 text-sm text-muted-foreground">
+              Showing simple sample community data.
+            </div>
+          )}
 
           {/* Search */}
           <form onSubmit={handleSearch} className="max-w-2xl mx-auto">

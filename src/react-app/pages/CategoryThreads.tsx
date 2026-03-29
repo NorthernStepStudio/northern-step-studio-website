@@ -10,6 +10,10 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useTranslation } from "react-i18next";
 import { apiFetch } from "@/react-app/lib/api";
+import {
+  getMockCommunityCategories,
+  getMockCommunityThreadsForCategory,
+} from "@/react-app/data/communityMock";
 
 interface Thread {
   id: number;
@@ -43,6 +47,7 @@ export default function CategoryThreads() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [usingMockData, setUsingMockData] = useState(false);
   const threadContentTextareaRef = useRef<HTMLTextAreaElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
   const mentionedUserIds = useRef<number[]>([]);
@@ -110,20 +115,41 @@ export default function CategoryThreads() {
   useEffect(() => {
     if (!category) return;
 
-    setLoading(true);
-    const searchParam = searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : "";
-    apiFetch(`/api/community/threads?category=${category}&page=${page}&limit=20${searchParam}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setThreads(data.threads || []);
-        setHasMore(data.pagination?.hasMore || false);
-        setTotalPages(Math.ceil((data.pagination?.total || 0) / (data.pagination?.limit || 20)));
-        setLoading(false);
-      })
-      .catch((err) => {
+    const loadThreads = async () => {
+      setLoading(true);
+      const searchParam = searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : "";
+
+      try {
+        const res = await apiFetch(`/api/community/threads?category=${category}&page=${page}&limit=20${searchParam}`);
+        const data = await res.json().catch(() => null);
+        const serverThreads = Array.isArray(data?.threads) ? data.threads : [];
+
+        if (serverThreads.length > 0) {
+          setThreads(serverThreads);
+          setHasMore(data.pagination?.hasMore || false);
+          setTotalPages(Math.ceil((data.pagination?.total || 0) / (data.pagination?.limit || 20)));
+          setUsingMockData(false);
+          return;
+        }
+
+        const mockThreads = getMockCommunityThreadsForCategory(category, searchQuery);
+        setThreads(mockThreads);
+        setHasMore(false);
+        setTotalPages(mockThreads.length > 0 ? 1 : 0);
+        setUsingMockData(true);
+      } catch (err) {
         console.error("Failed to load threads:", err);
+        const mockThreads = getMockCommunityThreadsForCategory(category, searchQuery);
+        setThreads(mockThreads);
+        setHasMore(false);
+        setTotalPages(mockThreads.length > 0 ? 1 : 0);
+        setUsingMockData(true);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    void loadThreads();
   }, [category, page, searchTrigger]);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -201,7 +227,9 @@ export default function CategoryThreads() {
     );
   }
 
-  const categoryName = threads[0]?.category_name || category;
+  const mockCategoryName =
+    getMockCommunityCategories().find((item) => item.slug === category)?.name || category;
+  const categoryName = threads[0]?.category_name || mockCategoryName;
 
   return (
     <div className="min-h-screen bg-background pt-24 pb-16">
@@ -220,7 +248,11 @@ export default function CategoryThreads() {
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
               {categoryName}
             </h1>
-            {user ? (
+            {usingMockData ? (
+              <div className="rounded-full border border-accent/30 bg-accent/5 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-accent">
+                Sample data only
+              </div>
+            ) : user ? (
               <Button 
                 className="gap-2"
                 onClick={() => setShowNewThreadForm(true)}
@@ -497,7 +529,7 @@ export default function CategoryThreads() {
           <div className="text-center py-16">
             <MessageSquare className="w-16 h-16 mx-auto mb-4 text-muted-foreground opacity-50" />
             <p className="text-muted-foreground mb-4">No threads in this category yet.</p>
-            {user && (
+            {user && !usingMockData && (
               <Button 
                 className="gap-2"
                 onClick={() => setShowNewThreadForm(true)}
