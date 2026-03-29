@@ -3,8 +3,8 @@ export const SITE_ORIGIN =
   typeof window !== "undefined" ? window.location.origin : "https://northernstepstudio.com";
 
 export const BRAND_ASSETS = {
-  studioLogo: "/brand/studio-logo-full.svg",
-  studioMark: "/brand/studio-mark.svg",
+  studioLogo: "/brand/studio-logo-full.png",
+  studioMark: "/brand/studio-mark.png",
   provly: "/brand/provly-logo.png",
   nexusbuild: "/brand/nexusbuild-logo.png",
   noobsInvesting: "/brand/noobs-investing-logo.png",
