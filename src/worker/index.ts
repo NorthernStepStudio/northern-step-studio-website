@@ -383,25 +383,35 @@ async function handlePasswordLogin(
   const sql = getDb(c.env);
   let [dbUser] = await sql<any[]>`SELECT * FROM users WHERE email = ${email}`;
 
-  if (!dbUser && adminOnly) {
+  if (adminOnly && !dbUser) {
     dbUser = await bootstrapLocalOwnerPasswordLogin(c, email, password);
-    
-    // Production Bootstrapper (if enabled via environment variable)
-    if (!dbUser && email === OWNER_EMAIL && c.env.OWNER_BOOTSTRAP_PASSWORD) {
-      if (password === c.env.OWNER_BOOTSTRAP_PASSWORD) {
-        console.log("[Auth] Bootstrapping owner account...");
-        const credentials = await createPasswordCredentials(password);
-        dbUser = await ensureDatabaseUser(c.env, email, "Northern Step Studio");
-        await sql`
-          UPDATE users 
-          SET password_hash = ${credentials.password_hash}, 
-              password_salt = ${credentials.password_salt},
-              role = 'owner'
-          WHERE id = ${dbUser.id}
-        `;
-        dbUser = await findDatabaseUserByEmail(c.env, email);
-      }
+  }
+
+  const canBootstrapOwnerPassword =
+    adminOnly && email === OWNER_EMAIL && Boolean(c.env.OWNER_BOOTSTRAP_PASSWORD) && password === c.env.OWNER_BOOTSTRAP_PASSWORD;
+
+  if (canBootstrapOwnerPassword && (!dbUser || !dbUser.password_hash || !dbUser.password_salt)) {
+    console.log("[Auth] Bootstrapping owner account...");
+
+    if (!validatePassword(password)) {
+      throw new Error("Password must be at least 8 characters long to bootstrap the owner account.");
     }
+
+    const credentials = await createPasswordCredentials(password);
+
+    if (!dbUser) {
+      dbUser = await ensureDatabaseUser(c.env, email, "Northern Step Studio");
+    }
+
+    await sql`
+      UPDATE users 
+      SET password_hash = ${credentials.password_hash}, 
+          password_salt = ${credentials.password_salt},
+          role = 'owner'
+      WHERE id = ${dbUser.id}
+    `;
+
+    dbUser = await findDatabaseUserByEmail(c.env, email);
   }
 
   if (!dbUser) {

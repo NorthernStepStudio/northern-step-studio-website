@@ -7,7 +7,7 @@ import GlitchedText from "@/react-app/components/GlitchedText";
 import { Search, X } from "lucide-react";
 import SEO from "@/react-app/components/SEO";
 import { getAppCategoryLabel } from "@/react-app/lib/appCategories";
-import { CATALOG_APPS, type CatalogApp } from "@/react-app/data/appsCatalog";
+import { CATALOG_APPS } from "@/react-app/data/appsCatalog";
 
 export default function AppHub() {
   const { t } = useTranslation();
@@ -24,7 +24,6 @@ export default function AppHub() {
     : fallbackApps;
   const isHidden = (app: { visibility?: string }) => app.visibility === "hidden";
   const featuredSlugs = new Set(fallbackApps.map((app) => app.slug));
-  const featuredApps = curatedApps.filter((app) => featuredSlugs.has(app.slug) && !isHidden(app));
   const remoteApps = curatedApps.filter((app) => !featuredSlugs.has(app.slug) && !isHidden(app));
 
   const filters = [

@@ -4,6 +4,7 @@ import {
   PhoneCall,
   Sparkles,
   Smartphone,
+  HeartPulse,
   Gamepad2,
   Cpu,
 } from "lucide-react";

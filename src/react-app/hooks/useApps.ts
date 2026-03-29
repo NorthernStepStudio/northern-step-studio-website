@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import type { AppData, ProgressItem } from "@/react-app/types/apps";
 import { apiFetch } from "@/react-app/lib/api";
-import { CATALOG_APPS } from "@/react-app/data/appsCatalog";
 import { CATALOG_APPS, getCatalogApp } from "@/react-app/data/appsCatalog";
 
 export type App = AppData;
