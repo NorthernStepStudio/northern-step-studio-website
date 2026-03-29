@@ -33,7 +33,7 @@ export const CATALOG_APPS: CatalogApp[] = [
     description:
       "Automated missed-call recovery that instantly texts, qualifies, and follows up with leads so you never lose a job again.",
     fullDescription:
-      "NSS Missed Call Text Back is the lead recovery engine for local service businesses that cannot afford to lose jobs when the phone is missed. It responds immediately, qualifies the caller, and keeps the conversation moving until you can step in.",
+      "NStep Missed Call Text Back is the lead recovery engine for local service businesses that cannot afford to lose jobs when the phone is missed. It responds immediately, qualifies the caller, and keeps the conversation moving until you can step in.",
     category: "HOME",
     status: "LIVE",
     statusLabel: "Live",

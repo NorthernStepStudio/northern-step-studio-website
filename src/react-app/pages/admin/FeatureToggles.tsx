@@ -56,6 +56,7 @@ export default function FeatureToggles() {
   const [updating, setUpdating] = useState<number | null>(null);
   const [integrationStatus, setIntegrationStatus] = useState<IntegrationStatus | null>(null);
   const [integrationError, setIntegrationError] = useState<string | null>(null);
+  const stripePublishableKeyConfigured = Boolean(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY?.trim());
 
   useEffect(() => {
     void loadFeatures();
@@ -356,6 +357,16 @@ export default function FeatureToggles() {
                 </div>
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-2">
+                    <CreditCard className="w-4 h-4 text-accent" />
+                    <span>Stripe publishable key</span>
+                  </div>
+                  {renderStatusPill(
+                    stripePublishableKeyConfigured,
+                    stripePublishableKeyConfigured ? "Configured" : "Missing",
+                  )}
+                </div>
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-2">
                     <Shield className="w-4 h-4 text-accent" />
                     <span>Local password auth</span>
                   </div>
@@ -375,7 +386,7 @@ export default function FeatureToggles() {
                   )}
                 </div>
                 <div className="rounded-xl border border-border bg-background/40 px-3 py-3 text-xs text-muted-foreground">
-                  Google OAuth needs `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`. Stripe revenue cards need `STRIPE_SECRET_KEY`.
+                  Google OAuth needs `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`. Public Stripe UI needs `VITE_STRIPE_PUBLISHABLE_KEY`, and revenue cards need `STRIPE_SECRET_KEY`.
                 </div>
               </div>
             </div>

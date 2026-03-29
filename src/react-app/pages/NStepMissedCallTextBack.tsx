@@ -16,7 +16,7 @@ import { Link } from "react-router";
 import { useTranslation } from "react-i18next";
 import SEO from "@/react-app/components/SEO";
 
-export default function NSSMissedCallTextBack() {
+export default function NStepMissedCallTextBack() {
   const { t } = useTranslation();
 
   const setupHref = "/contact?intent=setup-review&source=missed_call_offer";

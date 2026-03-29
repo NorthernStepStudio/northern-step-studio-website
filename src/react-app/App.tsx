@@ -16,8 +16,8 @@ import About from "@/react-app/pages/About";
 import Contact from "@/react-app/pages/Contact";
 import KnowledgeBase from "@/react-app/pages/KnowledgeBase";
 import TermsOfService from "@/react-app/pages/TermsOfService";
-import NSSMissedCallTextBack from "@/react-app/pages/NSSMissedCallTextBack";
-import NSSMissedCallTextBackDemo from "@/react-app/pages/NSSMissedCallTextBackDemo";
+import NStepMissedCallTextBack from "@/react-app/pages/NStepMissedCallTextBack";
+import NStepMissedCallTextBackDemo from "@/react-app/pages/NStepMissedCallTextBackDemo";
 import Updates from "@/react-app/pages/Updates";
 import Community from "@/react-app/pages/Community";
 import CategoryThreads from "@/react-app/pages/CategoryThreads";
@@ -44,7 +44,7 @@ import FeatureToggles from "@/react-app/pages/admin/FeatureToggles";
 import MaintenanceSettings from "@/react-app/pages/admin/MaintenanceSettings";
 import UpdatesManager from "@/react-app/pages/admin/UpdatesManager";
 import MaintenancePage from "@/react-app/pages/MaintenancePage";
-import NSSWorkspaceAI from "@/react-app/pages/NSSWorkspaceAI";
+import NStepWorkspaceAI from "@/react-app/pages/NStepWorkspaceAI";
 import NotFound from "@/react-app/pages/NotFound";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/react-app/lib/auth";
@@ -124,9 +124,9 @@ export default function App() {
             <Route path="/community/thread/:slug" element={<ProtectedRoute feature="community"><ThreadDetail /></ProtectedRoute>} />
             <Route path="/user/:userId" element={<ProtectedRoute feature="user_profiles"><UserProfile /></ProtectedRoute>} />
             <Route path="/profile" element={<UserProfile isOwnProfile />} />
-            <Route path="/missed-call-text-back" element={<NSSMissedCallTextBack />} />
-            <Route path="/missed-call-text-back/demo" element={<NSSMissedCallTextBackDemo />} />
-            <Route path="/workspace-ai" element={<NSSWorkspaceAI />} />
+            <Route path="/missed-call-text-back" element={<NStepMissedCallTextBack />} />
+            <Route path="/missed-call-text-back/demo" element={<NStepMissedCallTextBackDemo />} />
+            <Route path="/workspace-ai" element={<NStepWorkspaceAI />} />
             <Route path="/updates" element={<Updates />} />
             <Route path="/privacy" element={<TermsOfService />} />
             <Route path="/terms" element={<TermsOfService />} />

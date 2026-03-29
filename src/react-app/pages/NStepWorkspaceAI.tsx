@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 import SEO from "@/react-app/components/SEO";
 import StudioHomeLink from "@/react-app/components/StudioHomeLink";
 
-export default function NSSWorkspaceAI() {
+export default function NStepWorkspaceAI() {
   const { t } = useTranslation();
 
   const products = [

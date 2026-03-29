@@ -229,7 +229,7 @@ function buildSummary(state: DemoState): LeadSummary {
   };
 }
 
-export default function NSSMissedCallTextBackDemo() {
+export default function NStepMissedCallTextBackDemo() {
   const [demo, setDemo] = useState<DemoState>(INITIAL_STATE);
   const [transcript, setTranscript] = useState<TranscriptEntry[]>([]);
   const [message, setMessage] = useState("");
