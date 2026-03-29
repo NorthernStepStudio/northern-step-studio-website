@@ -1854,50 +1854,94 @@ app.get("/api/analytics", authMiddleware, async (c) => {
   const range = c.req.query("range") || "7d";
   const days = range === "1d" ? 1 : range === "7d" ? 7 : range === "30d" ? 30 : 365;
   const sql = getDb(c.env);
+  const isD1 = Boolean((c.env as any).DB);
 
   // Total events
-  const [totalEventsResult] = await sql<{ count: number }[]>`
-    SELECT COUNT(*) as count FROM analytics WHERE timestamp >= CURRENT_TIMESTAMP - (interval '1 day' * ${days})
-  `;
+  const [totalEventsResult] = isD1
+    ? await sql<{ count: number }[]>`
+        SELECT COUNT(*) as count
+        FROM analytics
+        WHERE timestamp >= datetime('now', '-' || ${days} || ' days')
+      `
+    : await sql<{ count: number }[]>`
+        SELECT COUNT(*) as count
+        FROM analytics
+        WHERE timestamp >= CURRENT_TIMESTAMP - (interval '1 day' * ${days})
+      `;
   const totalEvents = totalEventsResult?.count || 0;
 
   // Unique users
-  const [uniqueUsersResult] = await sql<{ count: number }[]>`
-    SELECT COUNT(DISTINCT user_id) as count FROM analytics 
-    WHERE timestamp >= CURRENT_TIMESTAMP - (interval '1 day' * ${days}) AND user_id IS NOT NULL
-  `;
+  const [uniqueUsersResult] = isD1
+    ? await sql<{ count: number }[]>`
+        SELECT COUNT(DISTINCT user_id) as count
+        FROM analytics
+        WHERE timestamp >= datetime('now', '-' || ${days} || ' days') AND user_id IS NOT NULL
+      `
+    : await sql<{ count: number }[]>`
+        SELECT COUNT(DISTINCT user_id) as count
+        FROM analytics
+        WHERE timestamp >= CURRENT_TIMESTAMP - (interval '1 day' * ${days}) AND user_id IS NOT NULL
+      `;
   const uniqueUsers = uniqueUsersResult?.count || 0;
 
   // Top apps
-  const topApps = await sql`
-    SELECT apps.name, COUNT(*) as count 
-     FROM analytics 
-     LEFT JOIN apps ON (analytics.app_uuid IS NOT NULL AND analytics.app_uuid = apps.uuid) 
-                    OR (analytics.app_uuid IS NULL AND analytics.app_id = apps.id)
-     WHERE analytics.timestamp >= CURRENT_TIMESTAMP - (interval '1 day' * ${days})
-       AND apps.name IS NOT NULL
-     GROUP BY apps.uuid, apps.name 
-     ORDER BY count DESC 
-     LIMIT 10
-  `;
+  const topApps = isD1
+    ? await sql`
+        SELECT apps.name, COUNT(*) as count
+         FROM analytics
+         LEFT JOIN apps ON (analytics.app_uuid IS NOT NULL AND analytics.app_uuid = apps.uuid)
+                        OR (analytics.app_uuid IS NULL AND analytics.app_id = apps.id)
+         WHERE analytics.timestamp >= datetime('now', '-' || ${days} || ' days')
+           AND apps.name IS NOT NULL
+         GROUP BY apps.uuid, apps.name
+         ORDER BY count DESC
+         LIMIT 10
+      `
+    : await sql`
+        SELECT apps.name, COUNT(*) as count
+         FROM analytics
+         LEFT JOIN apps ON (analytics.app_uuid IS NOT NULL AND analytics.app_uuid = apps.uuid)
+                        OR (analytics.app_uuid IS NULL AND analytics.app_id = apps.id)
+         WHERE analytics.timestamp >= CURRENT_TIMESTAMP - (interval '1 day' * ${days})
+           AND apps.name IS NOT NULL
+         GROUP BY apps.uuid, apps.name
+         ORDER BY count DESC
+         LIMIT 10
+      `;
 
   // Events by type
-  const eventsByType = await sql`
-    SELECT event as name, COUNT(*) as value 
-     FROM analytics 
-     WHERE timestamp >= CURRENT_TIMESTAMP - (interval '1 day' * ${days})
-     GROUP BY event 
-     ORDER BY value DESC
-  `;
+  const eventsByType = isD1
+    ? await sql`
+        SELECT event as name, COUNT(*) as value
+         FROM analytics
+         WHERE timestamp >= datetime('now', '-' || ${days} || ' days')
+         GROUP BY event
+         ORDER BY value DESC
+      `
+    : await sql`
+        SELECT event as name, COUNT(*) as value
+         FROM analytics
+         WHERE timestamp >= CURRENT_TIMESTAMP - (interval '1 day' * ${days})
+         GROUP BY event
+         ORDER BY value DESC
+      `;
 
   // Daily visits
-  const dailyVisits = await sql`
-    SELECT date(timestamp) as date, COUNT(*) as visits 
-     FROM analytics 
-     WHERE timestamp >= CURRENT_TIMESTAMP - (interval '1 day' * ${days})
-     GROUP BY date(timestamp) 
-     ORDER BY date(timestamp) ASC
-  `;
+  const dailyVisits = isD1
+    ? await sql`
+        SELECT date(timestamp) as date, COUNT(*) as visits
+         FROM analytics
+         WHERE timestamp >= datetime('now', '-' || ${days} || ' days')
+         GROUP BY date(timestamp)
+         ORDER BY date(timestamp) ASC
+      `
+    : await sql`
+        SELECT date(timestamp) as date, COUNT(*) as visits
+         FROM analytics
+         WHERE timestamp >= CURRENT_TIMESTAMP - (interval '1 day' * ${days})
+         GROUP BY date(timestamp)
+         ORDER BY date(timestamp) ASC
+      `;
 
   return c.json({
     totalEvents,

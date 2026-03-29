@@ -4,7 +4,8 @@ import { getCookie, setCookie } from "hono/cookie";
 import { OWNER_EMAIL } from "../shared/auth";
 
 const PASSWORD_MIN_LENGTH = 8;
-const PASSWORD_PBKDF2_ITERATIONS = 210000;
+// Cloudflare Workers currently rejects PBKDF2 iteration counts above 100,000.
+const PASSWORD_PBKDF2_ITERATIONS = 100000;
 const PASSWORD_SALT_BYTES = 16;
 const LOCAL_SESSION_TOKEN_BYTES = 32;
 const LOCAL_SESSION_MAX_AGE_SECONDS = 60 * 24 * 60 * 60;
@@ -267,23 +268,43 @@ export async function createLocalSession(c: { env: Env; req: { url: string } }, 
   const sessionTokenHash = await sha256(sessionToken);
   const sql = getDb(c.env);
 
-  await sql`
-    INSERT INTO user_sessions (
-      user_id,
-      session_token_hash,
-      expires_at,
-      created_at,
-      updated_at,
-      last_seen_at
-    ) VALUES (
-      ${dbUserId}, 
-      ${sessionTokenHash}, 
-      CURRENT_TIMESTAMP + INTERVAL '60 days', 
-      CURRENT_TIMESTAMP, 
-      CURRENT_TIMESTAMP, 
-      CURRENT_TIMESTAMP
-    )
-  `;
+  if ((c.env as any).DB) {
+    await sql`
+      INSERT INTO user_sessions (
+        user_id,
+        session_token_hash,
+        expires_at,
+        created_at,
+        updated_at,
+        last_seen_at
+      ) VALUES (
+        ${dbUserId}, 
+        ${sessionTokenHash}, 
+        datetime('now', '+60 days'), 
+        CURRENT_TIMESTAMP, 
+        CURRENT_TIMESTAMP, 
+        CURRENT_TIMESTAMP
+      )
+    `;
+  } else {
+    await sql`
+      INSERT INTO user_sessions (
+        user_id,
+        session_token_hash,
+        expires_at,
+        created_at,
+        updated_at,
+        last_seen_at
+      ) VALUES (
+        ${dbUserId}, 
+        ${sessionTokenHash}, 
+        CURRENT_TIMESTAMP + INTERVAL '60 days', 
+        CURRENT_TIMESTAMP, 
+        CURRENT_TIMESTAMP, 
+        CURRENT_TIMESTAMP
+      )
+    `;
+  }
 
   setCookie(c as never, LOCAL_SESSION_TOKEN_COOKIE_NAME, sessionToken, {
     ...getSessionCookieOptions(c.req.url),
