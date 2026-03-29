@@ -1,7 +1,7 @@
 {
   "nav": {
     "home": "Inicio",
-    "apps": "Apps",
+    "apps": "Aplicaciones",
     "games": "Juegos",
     "blog": "Blog",
     "docs": "Documentación",
@@ -78,7 +78,7 @@
     "search_placeholder": "Buscar productos, funciones o casos de uso...",
     "no_search_results": "No hay apps que coincidan con tu búsqueda.",
     "filter_all": "TODAS",
-    "filter_saas": "SAAS",
+    "filter_saas": "SaaS",
     "filter_game": "JUEGO",
     "filter_ai_tool": "HERRAMIENTA IA",
     "filter_tool": "HERRAMIENTA",
@@ -407,9 +407,9 @@
     },
     "info": {
       "title": "Mejores Formas de Contactarnos",
-      "email": "Email",
+      "email": "Correo electrónico",
       "social": "Redes Sociales",
-      "beta": "Beta Testing"
+      "beta": "Pruebas beta"
     },
     "beta": {
       "title": "Interés en Acceso Anticipado",
@@ -513,7 +513,7 @@
     "google": "Continuar con Google",
     "email_option": "O inicia sesión con email",
     "back_to_google": "Volver a Google",
-    "email_label": "Email",
+    "email_label": "Correo electrónico",
     "password_label": "Contraseña",
     "sign_in": "Iniciar Sesión",
     "signing_in": "Iniciando sesión...",
@@ -589,7 +589,7 @@
     "search_placeholder": "Buscar artículos de ayuda...",
     "browse_topics": "Explorar Temas",
     "quick": {
-      "download": "Apps",
+      "download": "Aplicaciones",
       "privacy": "Privacidad",
       "updates": "Actualizaciones",
       "contact": "Contacto"
@@ -690,7 +690,7 @@
     "portfolio_status_close_to_launch": "Fase beta",
     "portfolio_status_almost_ready": "Fase beta",
     "portfolio_status_service": "Recuperación de prospectos",
-    "portfolio_type_app": "App",
+    "portfolio_type_app": "Aplicación",
     "portfolio_type_service": "Sistema",
     "portfolio_empty": "Nada público está disponible ahora mismo.",
     "portfolio_disabled": "Acceso al portafolio próximamente.",
