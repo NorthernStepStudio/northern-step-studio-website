@@ -126,6 +126,11 @@ export default function PublicLayout() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48 bg-background/95 backdrop-blur-md">
                 <DropdownMenuItem asChild>
+                  <Link to="/community" className="uppercase font-black text-xs py-2.5">
+                    {t("nav.community")}
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
                   <Link to="/about" className="uppercase font-black text-xs py-2.5">
                     {t("nav.about")}
                   </Link>
@@ -230,7 +235,20 @@ export default function PublicLayout() {
               >
                 {t("nav.contact")}
               </Link>
-
+              <Link
+                to="/community"
+                className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black py-2 whitespace-nowrap"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {t("nav.community")}
+              </Link>
+              <Link
+                to="/about"
+                className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black py-2 whitespace-nowrap"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {t("nav.about")}
+              </Link>
               <div className="border-t border-border my-2"></div>
 
               <Link
