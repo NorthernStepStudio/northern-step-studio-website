@@ -4,12 +4,9 @@ import {
   Clock3,
   Check,
   FileText,
-  MessageSquareText,
   PhoneCall,
-  Shield,
   TrendingUp,
   Users,
-  Wrench,
   Zap,
 } from "lucide-react";
 import { Link } from "react-router";
@@ -41,33 +38,6 @@ export default function NStepMissedCallTextBack() {
       label: t("mctb_page.value_cards.who_for.label"),
       title: t("mctb_page.value_cards.who_for.title"),
       description: t("mctb_page.value_cards.who_for.desc"),
-    },
-  ];
-
-  const workflowSteps = [
-    {
-      icon: PhoneCall,
-      step: "Step 1",
-      title: t("mctb_page.workflow.step1.title"),
-      description: t("mctb_page.workflow.step1.desc"),
-    },
-    {
-      icon: MessageSquareText,
-      step: "Step 2",
-      title: t("mctb_page.workflow.step2.title"),
-      description: t("mctb_page.workflow.step2.desc"),
-    },
-    {
-      icon: Wrench,
-      step: "Step 3",
-      title: t("mctb_page.workflow.step3.title"),
-      description: t("mctb_page.workflow.step3.desc"),
-    },
-    {
-      icon: FileText,
-      step: "Step 4",
-      title: t("mctb_page.workflow.step4.title"),
-      description: t("mctb_page.workflow.step4.desc"),
     },
   ];
 
@@ -265,48 +235,32 @@ export default function NStepMissedCallTextBack() {
 
       <section className="py-20 px-4 sm:px-6 border-t border-border bg-gradient-to-b from-transparent via-yellow-500/[0.03] to-transparent">
         <div className="container mx-auto max-w-6xl">
-          <div className="grid items-start gap-8 xl:grid-cols-[1.15fr_0.85fr]">
-            <div>
-              <div className="mb-6">
-                <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-foreground leading-tight">
-                  {t("mctb_page.workflow.title")}
-                </h2>
-                <p className="mt-4 max-w-3xl text-muted-foreground font-normal">
-                  {t("mctb_page.workflow.desc")}
-                </p>
-              </div>
-
-              <div className="grid gap-5 md:grid-cols-2">
-                {workflowSteps.map((item) => (
-                  <div key={item.title} className="card-dark-wise">
-                    <div className="mb-4 flex items-center gap-3">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-yellow-500/10">
-                        <item.icon className="h-6 w-6 text-yellow-400" />
-                      </div>
-                      <div>
-                        <p className="text-[11px] font-black uppercase tracking-wider text-yellow-400">{item.step}</p>
-                        <h3 className="text-lg font-black uppercase tracking-tight text-foreground">
-                          {item.title}
-                        </h3>
-                      </div>
-                    </div>
-                    <p className="text-sm leading-relaxed text-muted-foreground">
-                      {item.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
+          <div className="mb-12 text-center">
+            <div className="inline-flex items-center gap-2 rounded-full border border-yellow-500/30 bg-yellow-500/10 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-yellow-400">
+              <Clock3 className="h-3.5 w-3.5" />
+              How it works
             </div>
+            <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tight text-foreground leading-tight">
+              Never Miss Another Customer Again
+            </h2>
+            <p className="mx-auto mt-4 max-w-3xl text-base sm:text-lg leading-relaxed text-muted-foreground font-normal">
+              When a call is missed, NStep instantly texts back, qualifies the lead, and sends you a clean summary — so you know exactly what to do next.
+            </p>
+          </div>
 
+          <div className="grid items-start gap-8 xl:grid-cols-[1.08fr_0.92fr]">
             <div className="card-dark-wise">
-              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-muted-foreground">
-                <Clock3 className="h-3.5 w-3.5 text-accent" />
-                Example conversation
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-yellow-500/30 bg-yellow-500/10 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-yellow-400">
+                <Clock3 className="h-3.5 w-3.5" />
+                How it works
               </div>
-              <p className="mb-4 text-sm text-muted-foreground">
-                This sample is shown in the plumbing version because that is the current demo script. The same structure can be adapted to HVAC, electrical, cleaning, towing, locksmith, and other local service workflows.
+              <h3 className="text-3xl font-black uppercase tracking-tight text-foreground leading-tight">
+                This is what happens when the call is missed
+              </h3>
+              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                The conversation stays short, asks the right questions, and ends with a clean owner summary.
               </p>
-              <div className="space-y-4">
+              <div className="mt-6 space-y-4">
                 <div className="rounded-2xl border border-accent/20 bg-accent/10 px-4 py-3">
                   <p className="text-xs font-black uppercase tracking-wider text-accent">System</p>
                   <p className="mt-2 text-sm text-foreground">
@@ -337,52 +291,37 @@ export default function NStepMissedCallTextBack() {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 px-4 sm:px-6 border-t border-border">
-        <div className="container mx-auto max-w-6xl">
-          <div className="mb-10 text-center">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tight text-foreground leading-tight">
-              Never Miss Another Customer Again
-            </h2>
-            <p className="mx-auto mt-4 max-w-3xl text-base sm:text-lg leading-relaxed text-muted-foreground font-normal">
-              Every missed call is a lost job. NStep responds instantly, qualifies the lead, and sends you exactly what matters - so you can call back and close.
-            </p>
-          </div>
-
-          <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-            <div className="card-dark-wise">
-              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-blue-400">
-                <FileText className="h-3.5 w-3.5" />
-                What the owner sees
-              </div>
-              <h2 className="text-3xl font-black uppercase tracking-tight text-foreground leading-tight">
-                This is what you get instantly
-              </h2>
-              <div className="mt-6 space-y-3 rounded-3xl border border-border bg-background/70 p-5">
-                {ownerSummary.map((row) => (
-                  <div key={row.label} className="flex items-start justify-between gap-4 border-b border-border/60 pb-3 last:border-b-0 last:pb-0">
-                    <span className="text-xs font-black uppercase tracking-wider text-muted-foreground">
-                      {row.label}
-                    </span>
-                    <span className="text-right text-sm font-medium text-foreground">
-                      {row.value}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
 
             <div className="space-y-6">
+              <div className="card-dark-wise">
+                <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-blue-400">
+                  <FileText className="h-3.5 w-3.5" />
+                  What the owner sees
+                </div>
+                <h3 className="text-3xl font-black uppercase tracking-tight text-foreground leading-tight">
+                  This is what you get instantly
+                </h3>
+                <div className="mt-6 space-y-3 rounded-3xl border border-border bg-background/70 p-5">
+                  {ownerSummary.map((row) => (
+                    <div key={row.label} className="flex items-start justify-between gap-4 border-b border-border/60 pb-3 last:border-b-0 last:pb-0">
+                      <span className="text-xs font-black uppercase tracking-wider text-muted-foreground">
+                        {row.label}
+                      </span>
+                      <span className="text-right text-sm font-medium text-foreground">
+                        {row.value}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               <div className="card-dark-wise border-yellow-500/30">
                 <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-yellow-500/30 bg-yellow-500/10 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-yellow-400">
                   <Zap className="h-3.5 w-3.5" />
-                  Automation flow
+                  What happens automatically
                 </div>
                 <h3 className="text-2xl font-black uppercase tracking-tight text-foreground">
-                  What happens automatically
+                  The automation handles the follow-up
                 </h3>
                 <div className="mt-5 space-y-3">
                   {packageItems.map((item) => (
@@ -392,30 +331,8 @@ export default function NStepMissedCallTextBack() {
                     </div>
                   ))}
                 </div>
-              </div>
-
-              <div className="card-dark-wise">
-                <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-accent">
-                  <Shield className="h-3.5 w-3.5" />
-                  Messaging safeguards
-                </div>
-                <h3 className="text-2xl font-black uppercase tracking-tight text-foreground">
-                  Compliance still needs to be obvious
-                </h3>
-                <div className="mt-5 space-y-3">
-                  {[0, 1, 2, 3, 4].map((i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <Check className="mt-0.5 h-5 w-5 flex-shrink-0 text-accent" />
-                      <p className="text-sm text-muted-foreground">{t(`mctb.compliance.${i}`)}</p>
-                    </div>
-                  ))}
-                </div>
                 <p className="mt-5 text-sm text-muted-foreground">
-                  {t("mctb.legal_note")}{" "}
-                  <Link to="/terms" className="text-accent hover:underline">
-                    Terms & Privacy
-                  </Link>{" "}
-                  {t("mctb.legal_detail")}
+                  Built for obvious compliance from the first message.
                 </p>
               </div>
             </div>
