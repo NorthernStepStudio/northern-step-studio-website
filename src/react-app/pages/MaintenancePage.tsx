@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Wrench, Calendar, Clock } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { BRAND_ASSETS } from "@/react-app/lib/site";
+import NStepBrand from "@/react-app/components/NStepBrand";
 
 interface MaintenanceSettings {
   is_active: boolean;
@@ -36,11 +36,7 @@ export default function MaintenancePage() {
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="max-w-2xl w-full text-center space-y-8">
         <div className="flex justify-center mb-8">
-          <img
-            src={BRAND_ASSETS.studioMark}
-            alt="Northern Step Studio"
-            className="h-20 w-auto opacity-80"
-          />
+          <NStepBrand markClassName="h-20 w-20" wordmarkClassName="text-xl" />
         </div>
 
         <div className="relative inline-block">

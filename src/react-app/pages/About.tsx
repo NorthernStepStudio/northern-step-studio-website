@@ -125,7 +125,7 @@ export default function About() {
   ];
 
   const studioProducts = useMemo(() => {
-    return apps.filter((app: App) => app.visibility !== "hidden").slice(0, 5);
+    return apps.filter((app: App) => app.visibility !== "hidden").slice(0, 6);
   }, [apps]);
 
   return (

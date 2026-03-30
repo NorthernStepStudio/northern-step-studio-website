@@ -7,6 +7,7 @@ import {
   HeartPulse,
   Gamepad2,
   Cpu,
+  CreditCard,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import SEO from "@/react-app/components/SEO";
@@ -38,6 +39,7 @@ const PORTFOLIO_ITEMS: PortfolioItem[] = [
     outcomeKey: "home.portfolio_neuromove_outcome",
     statusKey: "home.portfolio_status_close_to_launch",
     link: "/apps/neuromoves",
+    image: BRAND_ASSETS.neuromoves,
     icon: HeartPulse,
   },
   {
@@ -57,6 +59,15 @@ const PORTFOLIO_ITEMS: PortfolioItem[] = [
     link: "/apps/noobs-investing",
     image: BRAND_ASSETS.noobsInvesting,
     icon: Sparkles,
+  },
+  {
+    nameKey: "home.portfolio_pasoscore_title",
+    descriptionKey: "home.portfolio_pasoscore_desc",
+    outcomeKey: "home.portfolio_pasoscore_outcome",
+    statusKey: "home.portfolio_status_close_to_launch",
+    link: "/apps/pasoscore",
+    image: BRAND_ASSETS.pasoscore,
+    icon: CreditCard,
   },
   {
     nameKey: "home.portfolio_lead_title",

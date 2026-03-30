@@ -8,6 +8,7 @@ import ThemeToggle from "./ThemeToggle";
 import LanguageSelector from "./LanguageSelector";
 import { usePermissions } from "@/react-app/hooks/usePermissions";
 import { Button } from "@/react-app/components/ui/button";
+import NStepBrand from "./NStepBrand";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/react-app/components/ui/dropdown-menu";
-import { BRAND_ASSETS, SITE_NAME } from "@/react-app/lib/site";
+import { SITE_NAME } from "@/react-app/lib/site";
 
 interface MaintenanceSettings {
   scheduled_date: string | null;
@@ -91,21 +92,8 @@ export default function PublicLayout() {
       <header className={`fixed left-0 right-0 z-40 border-b border-border bg-background/80 backdrop-blur-xl ${hasScheduledMaintenance ? "top-[52px]" : "top-0"}`}>
         <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <img
-              src={BRAND_ASSETS.studioLogo}
-              alt={SITE_NAME}
-              className="hidden sm:block h-10 w-auto max-w-[180px] shrink-0"
-            />
-            <img
-              src={BRAND_ASSETS.studioMark}
-              alt={SITE_NAME}
-              className="h-10 w-10 shrink-0 rounded-xl sm:hidden"
-            />
-            <span className="flex flex-col leading-tight sm:hidden">
-              <span className="text-[10px] font-black uppercase tracking-[0.22em] text-foreground">
-                {SITE_NAME}
-              </span>
-            </span>
+            <NStepBrand className="hidden sm:inline-flex" markClassName="h-10 w-10" wordmarkClassName="text-sm" />
+            <NStepBrand className="sm:hidden" markClassName="h-10 w-10" showWordmark={false} />
           </Link>
 
           <nav className="hidden md:flex items-center gap-5 xl:gap-7 min-w-0">
@@ -343,11 +331,7 @@ export default function PublicLayout() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="md:col-span-1">
               <Link to="/" className="inline-block">
-                <img
-                  src={BRAND_ASSETS.studioMark}
-                  alt={SITE_NAME}
-                  className="h-10 w-10 rounded-xl opacity-80 hover:opacity-100 transition-opacity"
-                />
+                <NStepBrand markClassName="h-10 w-10" wordmarkClassName="text-sm" />
               </Link>
               <p className="mt-3 text-xs font-black uppercase tracking-[0.24em] text-foreground">
                 {SITE_NAME}

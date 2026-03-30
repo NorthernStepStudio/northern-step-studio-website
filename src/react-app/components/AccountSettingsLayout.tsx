@@ -8,8 +8,8 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/react-app/lib/auth";
 import { usePermissions } from "@/react-app/hooks/usePermissions";
-import { BRAND_ASSETS } from "@/react-app/lib/site";
 import { getRoleDisplayLabel } from "@/shared/auth";
+import NStepBrand from "./NStepBrand";
 
 type AccountNavItem = {
   to: string;
@@ -46,11 +46,7 @@ export default function AccountSettingsLayout() {
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
           <div className="flex min-w-0 items-center gap-4">
             <Link to="/" className="inline-flex items-center gap-3">
-              <img
-                src={BRAND_ASSETS.studioMark}
-                alt="Northern Step Studio"
-                className="h-11 w-11 rounded-2xl border border-border bg-card p-2 shadow-[0_12px_30px_rgba(15,23,42,0.08)]"
-              />
+              <NStepBrand markClassName="h-11 w-11" wordmarkClassName="text-base" />
               <div className="min-w-0">
                 <p className="text-[11px] font-black uppercase tracking-[0.18em] text-accent">Account Center</p>
                 <p className="truncate text-sm font-semibold text-muted-foreground">Northern Step Studio</p>

@@ -14,17 +14,18 @@ import { Link } from "react-router";
 import { useTranslation } from "react-i18next";
 import SEO from "@/react-app/components/SEO";
 import StudioHomeLink from "@/react-app/components/StudioHomeLink";
+import { getCatalogApp } from "@/react-app/data/appsCatalog";
 
 export default function NStepWorkspaceAI() {
   const { t } = useTranslation();
 
   const products = [
-    { name: "ProvLy", descKey: "workspace_ai.products.provly_desc", icon: Home },
-    { name: "NexusBuild", descKey: "workspace_ai.products.nexusbuild_desc", icon: Monitor },
-    { name: "NooBS Investing", descKey: "workspace_ai.products.noobs_desc", icon: TrendingUp },
-    { name: "NeuroMoves", descKey: "workspace_ai.products.neuromoves_desc", icon: HeartPulse },
-    { name: "PasoScore", descKey: "workspace_ai.products.pasoscore_desc", icon: CreditCard },
-    { name: "Missed Call Text Back", descKey: "workspace_ai.products.mctb_desc", icon: PhoneOff },
+    { slug: "provly", name: "ProvLy", descKey: "workspace_ai.products.provly_desc", icon: Home },
+    { slug: "nexusbuild", name: "NexusBuild", descKey: "workspace_ai.products.nexusbuild_desc", icon: Monitor },
+    { slug: "noobs-investing", name: "NooBS Investing", descKey: "workspace_ai.products.noobs_desc", icon: TrendingUp },
+    { slug: "neuromoves", name: "NeuroMoves", descKey: "workspace_ai.products.neuromoves_desc", icon: HeartPulse },
+    { slug: "pasoscore", name: "PasoScore", descKey: "workspace_ai.products.pasoscore_desc", icon: CreditCard },
+    { slug: "missed-call-text-back", name: "Missed Call Text Back", descKey: "workspace_ai.products.mctb_desc", icon: PhoneOff },
   ];
 
   const principles = [
@@ -91,8 +92,16 @@ export default function NStepWorkspaceAI() {
             {products.map((product) => (
               <div key={product.name} className="card-dark-wise flex flex-col gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0">
-                    <product.icon className="w-5 h-5 text-accent" />
+                  <div className="w-10 h-10 rounded-xl bg-accent/10 border border-border flex items-center justify-center flex-shrink-0 overflow-hidden">
+                    {getCatalogApp(product.slug)?.logo ? (
+                      <img
+                        src={getCatalogApp(product.slug)?.logo || undefined}
+                        alt={product.name}
+                        className="w-full h-full object-contain p-1.5"
+                      />
+                    ) : (
+                      <product.icon className="w-5 h-5 text-accent" />
+                    )}
                   </div>
                   <h3 className="font-black uppercase text-sm">{product.name}</h3>
                 </div>

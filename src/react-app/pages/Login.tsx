@@ -9,7 +9,7 @@ import {
 import { Link, useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/react-app/lib/auth";
-import { BRAND_ASSETS } from "@/react-app/lib/site";
+import NStepBrand from "@/react-app/components/NStepBrand";
 
 type LoginProps = {
   mode?: "user" | "admin";
@@ -103,11 +103,7 @@ export default function Login({ mode = "user" }: LoginProps) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
-          <img
-            src={BRAND_ASSETS.studioMark}
-            alt="Northern Step Studio"
-            className="h-16 w-16 mx-auto mb-4 opacity-50 animate-pulse"
-          />
+          <NStepBrand className="justify-center mx-auto mb-4" markClassName="h-16 w-16" wordmarkClassName="text-lg" />
           <p className="text-sm text-muted-foreground font-normal">Loading account access...</p>
         </div>
       </div>
@@ -140,11 +136,9 @@ export default function Login({ mode = "user" }: LoginProps) {
       <div className="flex-1 flex items-center justify-center px-6 pb-20">
         <div className="w-full max-w-lg">
           <div className="text-center mb-8">
-            <img
-              src={BRAND_ASSETS.studioMark}
-              alt="Northern Step Studio"
-              className="h-16 w-16 mx-auto mb-6"
-            />
+            <div className="mb-6 flex justify-center">
+              <NStepBrand markClassName="h-16 w-16" wordmarkClassName="text-lg" />
+            </div>
             <AnimatePresence mode="wait">
                   <motion.div
                     key={isAdminMode ? "admin" : "user"}

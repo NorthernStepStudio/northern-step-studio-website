@@ -5,7 +5,7 @@ import { useAuth } from "@/react-app/lib/auth";
 import { useState, useMemo, useEffect } from "react";
 import ThemeToggle from "./ThemeToggle";
 import { usePermissions } from "@/react-app/hooks/usePermissions";
-import { BRAND_ASSETS } from "@/react-app/lib/site";
+import NStepBrand from "./NStepBrand";
 import { getRoleDisplayLabel } from "@/shared/auth";
 import {
   ADMIN_NAV_ITEMS,
@@ -106,10 +106,10 @@ export default function AdminLayout() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <img 
-            src={BRAND_ASSETS.studioMark} 
-            alt="Northern Step Studio" 
-            className="h-10 w-auto mx-auto mb-4 opacity-50 animate-pulse"
+          <NStepBrand
+            className="justify-center mx-auto mb-4"
+            markClassName="h-10 w-10"
+            wordmarkClassName="text-sm"
           />
           <p className="text-muted-foreground font-normal text-xs uppercase tracking-widest">Loading...</p>
         </div>
@@ -234,11 +234,7 @@ function AccountSidebar({ logout }: { logout: () => void }) {
     <aside className="hidden lg:flex flex-col w-52 border-r border-border bg-card-soft p-5 fixed h-full z-40">
       <div className="mb-6">
         <Link to="/" className="flex items-center gap-2.5">
-          <img 
-            src={BRAND_ASSETS.studioLogo} 
-            alt="Northern Step Studio" 
-            className="h-7 w-auto"
-          />
+          <NStepBrand markClassName="h-7 w-7" wordmarkClassName="text-xs" />
           <span className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em]">Studio</span>
         </Link>
       </div>
@@ -313,11 +309,7 @@ function SidebarContent({
       {/* Mobile Header (unchanged positioning, just scale) */}
       <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-card-soft border-b border-border px-4 py-2 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
-          <img 
-            src={BRAND_ASSETS.studioMark} 
-            alt="Northern Step Studio" 
-            className="h-7 w-auto"
-          />
+          <NStepBrand showWordmark={false} markClassName="h-7 w-7" />
           <div>
             <p className="text-[9px] text-muted-foreground font-black uppercase tracking-wider">Admin</p>
           </div>

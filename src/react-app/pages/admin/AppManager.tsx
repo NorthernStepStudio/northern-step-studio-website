@@ -4,6 +4,7 @@ import AppForm from "@/react-app/components/AppForm";
 import { Edit2, Trash2, ExternalLink, Search, X } from "lucide-react";
 import { Link } from "react-router";
 import { getAppCategoryLabel } from "@/react-app/lib/appCategories";
+import { getCatalogApp } from "@/react-app/data/appsCatalog";
 import type { App } from "@/react-app/hooks/useApps";
 
 export default function AppManager() {
@@ -94,84 +95,88 @@ export default function AppManager() {
         </div>
       ) : filteredApps.length > 0 ? (
         <div className="space-y-3 sm:space-y-4">
-          {filteredApps.map((app) => (
-            <div key={app.id} className="card-dark-wise">
-              <div className="flex flex-col sm:flex-row items-start gap-4">
-                <div className="flex items-start gap-3 sm:gap-4 flex-1 w-full">
-                  {app.logo && (
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl border border-border bg-gradient-to-br from-background to-secondary/80 flex items-center justify-center overflow-hidden flex-shrink-0">
-                      <img
-                        src={app.logo}
-                        alt={app.name}
-                        className="w-full h-full object-contain p-2 sm:p-3"
-                      />
-                    </div>
-                  )}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex flex-wrap items-center gap-2 mb-2">
-                      <h3 className="text-base sm:text-xl font-black uppercase tracking-tight">
-                        {app.name}
-                      </h3>
-                      <span className="text-label text-[10px] sm:text-xs px-2 sm:px-3 py-1 rounded-full bg-secondary border border-border">
-                        {getAppCategoryLabel(app.category)}
-                      </span>
-                      <span
-                        className={`text-label text-[10px] sm:text-xs px-2 sm:px-3 py-1 rounded-full ${
-                          app.status === "LIVE"
-                            ? "bg-success/10 text-success border border-success/30"
-                            : app.status === "BETA"
-                            ? "bg-accent/10 text-accent border border-accent/30"
-                            : "bg-muted/10 text-muted-foreground border border-border"
-                        }`}
-                      >
-                        {app.status}
-                      </span>
-                    </div>
-                    <p className="text-xs sm:text-sm text-muted-foreground font-normal mb-2 line-clamp-2">
-                      {app.description || "No description"}
-                    </p>
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs text-muted-foreground/60">
-                      <span className="font-normal truncate">Slug: {app.slug}</span>
-                      {app.cta_url && (
-                        <a
-                          href={app.cta_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-1 hover:text-accent transition-colors"
+          {filteredApps.map((app) => {
+            const displayLogo = app.logo || getCatalogApp(app.slug)?.logo || null;
+
+            return (
+              <div key={app.id} className="card-dark-wise">
+                <div className="flex flex-col sm:flex-row items-start gap-4">
+                  <div className="flex items-start gap-3 sm:gap-4 flex-1 w-full">
+                    {displayLogo && (
+                      <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl border border-border bg-gradient-to-br from-background to-secondary/80 flex items-center justify-center overflow-hidden flex-shrink-0">
+                        <img
+                          src={displayLogo}
+                          alt={app.name}
+                          className="w-full h-full object-contain p-2 sm:p-3"
+                        />
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-wrap items-center gap-2 mb-2">
+                        <h3 className="text-base sm:text-xl font-black uppercase tracking-tight">
+                          {app.name}
+                        </h3>
+                        <span className="text-label text-[10px] sm:text-xs px-2 sm:px-3 py-1 rounded-full bg-secondary border border-border">
+                          {getAppCategoryLabel(app.category)}
+                        </span>
+                        <span
+                          className={`text-label text-[10px] sm:text-xs px-2 sm:px-3 py-1 rounded-full ${
+                            app.status === "LIVE"
+                              ? "bg-success/10 text-success border border-success/30"
+                              : app.status === "BETA"
+                              ? "bg-accent/10 text-accent border border-accent/30"
+                              : "bg-muted/10 text-muted-foreground border border-border"
+                          }`}
                         >
-                          <ExternalLink className="w-3 h-3" />
-                          CTA URL
-                        </a>
-                      )}
+                          {app.status}
+                        </span>
+                      </div>
+                      <p className="text-xs sm:text-sm text-muted-foreground font-normal mb-2 line-clamp-2">
+                        {app.description || "No description"}
+                      </p>
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs text-muted-foreground/60">
+                        <span className="font-normal truncate">Slug: {app.slug}</span>
+                        {app.cta_url && (
+                          <a
+                            href={app.cta_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1 hover:text-accent transition-colors"
+                          >
+                            <ExternalLink className="w-3 h-3" />
+                            CTA URL
+                          </a>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-2 w-full sm:w-auto justify-end sm:justify-start">
-                  <Link
-                    to={`/apps/${app.slug}`}
-                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-secondary hover:bg-accent/10 hover:text-accent transition-colors flex items-center justify-center"
-                    title="View"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                  </Link>
-                  <button
-                    onClick={() => handleEdit(app)}
-                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-secondary hover:bg-accent/10 hover:text-accent transition-colors flex items-center justify-center"
-                    title="Edit"
-                  >
-                    <Edit2 className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(app.id)}
-                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-secondary hover:bg-destructive/10 hover:text-destructive transition-colors flex items-center justify-center"
-                    title="Delete"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                  <div className="flex items-center gap-2 w-full sm:w-auto justify-end sm:justify-start">
+                    <Link
+                      to={`/apps/${app.slug}`}
+                      className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-secondary hover:bg-accent/10 hover:text-accent transition-colors flex items-center justify-center"
+                      title="View"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                    </Link>
+                    <button
+                      onClick={() => handleEdit(app)}
+                      className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-secondary hover:bg-accent/10 hover:text-accent transition-colors flex items-center justify-center"
+                      title="Edit"
+                    >
+                      <Edit2 className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(app.id)}
+                      className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-secondary hover:bg-destructive/10 hover:text-destructive transition-colors flex items-center justify-center"
+                      title="Delete"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       ) : (
         <div className="card-dark-wise text-center py-12">
