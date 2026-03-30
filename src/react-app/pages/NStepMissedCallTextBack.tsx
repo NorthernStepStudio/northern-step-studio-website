@@ -72,11 +72,11 @@ export default function NStepMissedCallTextBack() {
   ];
 
   const packageItems = [
-    "Instant missed-call text-back",
-    "Short qualification flow",
-    "Urgency routing for same-day vs normal callback",
-    "Owner summary and follow-up alert",
-    "Compliance controls for HELP, STOP, and START",
+    "Instant text reply to missed calls",
+    "Qualifies the customer in seconds",
+    "Detects urgency (same-day vs later)",
+    "Sends you a clean lead summary",
+    "Built-in compliance (STOP / HELP)",
   ];
 
   const pricingTiers = [
@@ -128,14 +128,10 @@ export default function NStepMissedCallTextBack() {
   ];
 
   const ownerSummary = [
-    { label: t("product.stage"), value: "Lead Summary" },
-    { label: t("contact.form.name"), value: "John" },
+    { label: "Customer", value: "John" },
     { label: "Issue", value: "Leak under sink" },
-    { label: "Severity", value: "High" },
-    { label: "Urgency", value: "Same-day recommended" },
-    { label: "Location", value: "Kitchen" },
-    { label: "Notes", value: "Constant leak, minor flooding" },
-    { label: "Action", value: "Call immediately" },
+    { label: "Priority", value: "High" },
+    { label: "Recommended Action", value: "Same-day callback" },
   ];
 
   return (
@@ -347,18 +343,24 @@ export default function NStepMissedCallTextBack() {
 
       <section className="py-20 px-4 sm:px-6 border-t border-border">
         <div className="container mx-auto max-w-6xl">
+          <div className="mb-10 text-center">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tight text-foreground leading-tight">
+              Never Miss Another Customer Again
+            </h2>
+            <p className="mx-auto mt-4 max-w-3xl text-base sm:text-lg leading-relaxed text-muted-foreground font-normal">
+              Every missed call is a lost job. NStep responds instantly, qualifies the lead, and sends you exactly what matters - so you can call back and close.
+            </p>
+          </div>
+
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
             <div className="card-dark-wise">
               <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-blue-400">
                 <FileText className="h-3.5 w-3.5" />
-                {t("mctb_page.summary.badge")}
+                What the owner sees
               </div>
               <h2 className="text-3xl font-black uppercase tracking-tight text-foreground leading-tight">
-                {t("mctb_page.summary.title")}
+                This is what you get instantly
               </h2>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground font-normal">
-                {t("mctb_page.summary.desc")}
-              </p>
               <div className="mt-6 space-y-3 rounded-3xl border border-border bg-background/70 p-5">
                 {ownerSummary.map((row) => (
                   <div key={row.label} className="flex items-start justify-between gap-4 border-b border-border/60 pb-3 last:border-b-0 last:pb-0">
@@ -377,10 +379,10 @@ export default function NStepMissedCallTextBack() {
               <div className="card-dark-wise border-yellow-500/30">
                 <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-yellow-500/30 bg-yellow-500/10 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-yellow-400">
                   <Zap className="h-3.5 w-3.5" />
-                  Starter package
+                  Automation flow
                 </div>
                 <h3 className="text-2xl font-black uppercase tracking-tight text-foreground">
-                  The first version should stay narrow and sellable
+                  What happens automatically
                 </h3>
                 <div className="mt-5 space-y-3">
                   {packageItems.map((item) => (
