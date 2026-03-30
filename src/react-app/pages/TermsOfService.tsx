@@ -89,7 +89,7 @@ export default function TermsOfService() {
           </h1>
           <div className="inline-block px-4 py-1.5 rounded-full bg-secondary/30 border border-border/50">
             <p className="text-muted-foreground text-[10px] font-black uppercase tracking-[0.2em]">
-              Legal Context • Last updated: {updatedAtLabel}
+              Legal Context - Last updated: {updatedAtLabel}
             </p>
           </div>
         </div>
