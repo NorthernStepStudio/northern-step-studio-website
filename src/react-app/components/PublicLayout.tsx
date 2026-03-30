@@ -49,7 +49,6 @@ export default function PublicLayout() {
 
   const footerLinks = [
     { label: t("footer.updates"), to: "/updates" },
-    { label: t("footer.community"), to: "/community" },
     { label: t("nav.workspace_ai"), to: "/workspace-ai" },
     { label: t("footer.contact"), to: "/contact" },
     { label: t("footer.docs"), to: "/docs" },
@@ -107,22 +106,17 @@ export default function PublicLayout() {
               {t("nav.contact")}
             </Link>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1.5 text-[11px] xl:text-xs 2xl:text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black whitespace-nowrap focus:outline-none">
-                {t("common.more") || "More"}
-                <ChevronDown className="w-4 h-4" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 bg-background/95 backdrop-blur-md">
-                <DropdownMenuItem asChild>
-                  <Link to="/community" className="uppercase font-black text-xs py-2.5">
-                    {t("nav.community")}
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/about" className="uppercase font-black text-xs py-2.5">
-                    {t("nav.about")}
-                  </Link>
-                </DropdownMenuItem>
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex items-center gap-1.5 text-[11px] xl:text-xs 2xl:text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black whitespace-nowrap focus:outline-none">
+                  {t("common.more") || "More"}
+                  <ChevronDown className="w-4 h-4" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48 bg-background/95 backdrop-blur-md">
+                  <DropdownMenuItem asChild>
+                    <Link to="/about" className="uppercase font-black text-xs py-2.5">
+                      {t("nav.about")}
+                    </Link>
+                  </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </nav>
@@ -222,20 +216,6 @@ export default function PublicLayout() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t("nav.contact")}
-              </Link>
-              <Link
-                to="/community"
-                className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black py-2 whitespace-nowrap"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {t("nav.community")}
-              </Link>
-              <Link
-                to="/about"
-                className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black py-2 whitespace-nowrap"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {t("nav.about")}
               </Link>
               <div className="border-t border-border my-2"></div>
 

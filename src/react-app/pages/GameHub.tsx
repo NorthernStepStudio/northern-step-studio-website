@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router";
 import { useTranslation } from "react-i18next";
-import { Gamepad2, Users, Trophy, Filter, ExternalLink, Smartphone, Monitor, Globe } from "lucide-react";
+import { Gamepad2, Filter, ExternalLink, Smartphone, Monitor, Globe } from "lucide-react";
 import { useApps } from "@/react-app/hooks/useApps";
 import GlitchedText from "@/react-app/components/GlitchedText";
 import SEO from "@/react-app/components/SEO";
@@ -200,36 +200,6 @@ export default function GameHub() {
           </div>
         )}
 
-        {/* Community Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mt-8 sm:mt-12">
-          <div className="card-dark-wise">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center">
-                <Users className="w-5 h-5 text-accent" />
-              </div>
-              <h2 className="text-lg sm:text-xl font-black uppercase">{t("games.community")}</h2>
-            </div>
-            <p className="text-muted-foreground font-normal mb-4 text-sm">
-              {t("games.community_desc")}
-            </p>
-            <Link to="/community" className="btn-pill-ghost inline-block text-sm">
-              {t("games.visit_community")}
-            </Link>
-          </div>
-
-          <div className="card-dark-wise">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center">
-                <Trophy className="w-5 h-5 text-accent" />
-              </div>
-              <h2 className="text-lg sm:text-xl font-black uppercase">{t("games.leaderboards")}</h2>
-            </div>
-            <p className="text-muted-foreground font-normal mb-4 text-sm">
-              {t("games.leaderboards_desc")}
-            </p>
-            <span className="text-xs text-muted-foreground/60 font-normal">{t("games.coming_soon")}</span>
-          </div>
-        </div>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router";
 import { AuthProvider } from "@/react-app/lib/auth";
 import ScrollToTop from "@/react-app/components/ScrollToTop";
 import PageViewTracker from "@/react-app/components/PageViewTracker";
@@ -19,9 +19,6 @@ import TermsOfService from "@/react-app/pages/TermsOfService";
 import NStepMissedCallTextBack from "@/react-app/pages/NStepMissedCallTextBack";
 import NStepMissedCallTextBackDemo from "@/react-app/pages/NStepMissedCallTextBackDemo";
 import Updates from "@/react-app/pages/Updates";
-import Community from "@/react-app/pages/Community";
-import CategoryThreads from "@/react-app/pages/CategoryThreads";
-import ThreadDetail from "@/react-app/pages/ThreadDetail";
 import UserProfile from "@/react-app/pages/UserProfile";
 import UserPreferences from "@/react-app/pages/UserPreferences";
 import EditProfile from "@/react-app/pages/EditProfile";
@@ -119,9 +116,9 @@ export default function App() {
             <Route path="/contact" element={<ProtectedRoute feature="contact"><Contact /></ProtectedRoute>} />
             <Route path="/docs" element={<ProtectedRoute feature="docs"><KnowledgeBase /></ProtectedRoute>} />
             <Route path="/docs/:slug" element={<ProtectedRoute feature="docs"><DocsArticle /></ProtectedRoute>} />
-            <Route path="/community" element={<ProtectedRoute feature="community"><Community /></ProtectedRoute>} />
-            <Route path="/community/:category" element={<ProtectedRoute feature="community"><CategoryThreads /></ProtectedRoute>} />
-            <Route path="/community/thread/:slug" element={<ProtectedRoute feature="community"><ThreadDetail /></ProtectedRoute>} />
+            <Route path="/community" element={<Navigate to="/" replace />} />
+            <Route path="/community/:category" element={<Navigate to="/" replace />} />
+            <Route path="/community/thread/:slug" element={<Navigate to="/" replace />} />
             <Route path="/user/:userId" element={<ProtectedRoute feature="user_profiles"><UserProfile /></ProtectedRoute>} />
             <Route path="/profile" element={<UserProfile isOwnProfile />} />
             <Route path="/missed-call-text-back" element={<NStepMissedCallTextBack />} />

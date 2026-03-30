@@ -1,4 +1,4 @@
-import {
+﻿import {
   ArrowRight,
   ClipboardList,
   Clock3,
@@ -244,7 +244,7 @@ export default function NStepMissedCallTextBack() {
               Never Miss Another Customer Again
             </h2>
             <p className="mx-auto mt-4 max-w-3xl text-base sm:text-lg leading-relaxed text-muted-foreground font-normal">
-              When a call is missed, NStep instantly texts back, qualifies the lead, and sends you a clean summary — so you know exactly what to do next.
+              When a call is missed, NStep texts back, qualifies the lead, and sends you a clean summary — so you know exactly what to do next.
             </p>
           </div>
 
@@ -255,16 +255,16 @@ export default function NStepMissedCallTextBack() {
                 How it works
               </div>
               <h3 className="text-3xl font-black uppercase tracking-tight text-foreground leading-tight">
-                This is what happens when the call is missed
+                The missed-call flow
               </h3>
               <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                The conversation stays short, asks the right questions, and ends with a clean owner summary.
+                Short prompts, clear answers, and a clean owner summary.
               </p>
               <div className="mt-6 space-y-4">
                 <div className="rounded-2xl border border-accent/20 bg-accent/10 px-4 py-3">
                   <p className="text-xs font-black uppercase tracking-wider text-accent">System</p>
                   <p className="mt-2 text-sm text-foreground">
-                    Hey, this is Mike from ABC Plumbing. Sorry we missed your call. What&apos;s going on: leak, clog, water heater, or something else?
+                    Hey, this is Mike from ABC Plumbing. Sorry we missed your call. What are you dealing with?
                   </p>
                 </div>
                 <div className="rounded-2xl border border-border bg-background/80 px-4 py-3">
@@ -274,13 +274,13 @@ export default function NStepMissedCallTextBack() {
                 <div className="rounded-2xl border border-accent/20 bg-accent/10 px-4 py-3">
                   <p className="text-xs font-black uppercase tracking-wider text-accent">System</p>
                   <p className="mt-2 text-sm text-foreground">
-                    Got it. Is the leak constant or only when you use the sink? Is there flooding or urgent damage right now? Where is it located? Can I get your name so the technician can reach you?
+                    Got it. Is it urgent, and what's your name?
                   </p>
                 </div>
                 <div className="rounded-2xl border border-border bg-background/80 px-4 py-3">
                   <p className="text-xs font-black uppercase tracking-wider text-muted-foreground">Customer</p>
                   <p className="mt-2 text-sm text-foreground">
-                    Constant. Yes, a little. Kitchen. John.
+                    Constant. A little. John.
                   </p>
                 </div>
                 <div className="rounded-2xl border border-yellow-500/30 bg-yellow-500/10 px-4 py-3">
