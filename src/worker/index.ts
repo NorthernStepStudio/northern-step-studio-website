@@ -8,12 +8,15 @@ import maintenance from "./maintenance";
 import communityUploads from "./community-uploads";
 import appShellHtml from "../../dist/index.html";
 import { getDb } from "./db";
+import { handleAiChat } from "./ai-assistant";
 import { sendEmail } from "./email";
 import {
   betaInterestNotificationEmail,
   contactSubmissionNotificationEmail,
   mentionNotificationEmail,
   studioInvitationEmail,
+  testerRequestNotificationEmail,
+  testerApprovalEmail,
 } from "./email-templates";
 import { getRoleDisplayLabel, isElevatedRole, OWNER_EMAIL } from "../shared/auth";
 import {
@@ -32,6 +35,11 @@ import {
   type AppUser,
 } from "./auth";
 
+
+export interface Env {
+  GEMINI_API_KEY: string;
+  [key: string]: any;
+}
 
 const app = new Hono<{ Bindings: Env; Variables: { user: AppUser } }>({ strict: false });
 
@@ -89,6 +97,7 @@ app.get("/api/health", async (c) => {
     environment: {
       has_database: Boolean(env.SUPABASE_DB_URL || env.DATABASE_URL),
       has_google_auth: Boolean(env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET),
+      has_gemini_api_key: Boolean(env.GEMINI_API_KEY && env.GEMINI_API_KEY.trim()),
       database_connected: dbConnected,
       database_error: dbError
     },
@@ -156,11 +165,20 @@ function getStripe(env: Env) {
   return new Stripe(apiKey);
 }
 
+const STRIPE_SECRET_ENV = "STRIPE_SECRET_KEY";
+
+function stripeUnavailableResponse() {
+  return {
+    configured: false,
+    missingEnv: STRIPE_SECRET_ENV,
+  };
+}
+
 // Create an API-scoped app
 // (api instance removed - using app directly)
 
-const STUDIO_CONTACT_EMAIL = "support@northernstepstudio.com";
-const STUDIO_SUPPORT_EMAIL = "support@northernstepstudio.com";
+const STUDIO_CONTACT_EMAIL = "hello@northernstepstudio.com";
+const STUDIO_SUPPORT_EMAIL = "hello@northernstepstudio.com";
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const SUPPORT_REQUEST_PATTERN = /\b(support|bug|error|issue|billing|account|login|password|refund|problem|help)\b/i;
 type ContactLeadStatus = "new" | "contacted" | "qualified" | "closed";
@@ -3168,7 +3186,7 @@ app.get("/api/stripe/summary", authMiddleware, async (c) => {
     const stripe = getStripe(c.env);
     if (!stripe) {
       return c.json({
-        configured: false,
+        ...stripeUnavailableResponse(),
         availableBalance: 0,
         pendingBalance: 0,
         totalCustomers: 0,
@@ -3234,7 +3252,7 @@ app.get("/api/stripe/customers", authMiddleware, async (c) => {
     const stripe = getStripe(c.env);
     if (!stripe) {
       return c.json({
-        configured: false,
+        ...stripeUnavailableResponse(),
         customers: [],
       });
     }
@@ -3266,7 +3284,7 @@ app.get("/api/stripe/payments", authMiddleware, async (c) => {
     const stripe = getStripe(c.env);
     if (!stripe) {
       return c.json({
-        configured: false,
+        ...stripeUnavailableResponse(),
         payments: [],
         charges: [],
       });
@@ -3314,7 +3332,7 @@ app.get("/api/stripe/subscriptions", authMiddleware, async (c) => {
     const stripe = getStripe(c.env);
     if (!stripe) {
       return c.json({
-        configured: false,
+        ...stripeUnavailableResponse(),
         total: 0,
         active: 0,
         canceled: 0,
@@ -3433,6 +3451,9 @@ app.route("/api/maintenance", maintenance);
 
 // Mount community uploads routes
 app.route("/api/community-files", communityUploads);
+
+// NStep AI Chat
+app.post("/api/nstep-ai/chat", handleAiChat);
 
 // Global Not Found Handler (at the very end)
 app.notFound((c) => {

@@ -58,7 +58,7 @@ We may update or modify these terms at any time. Continued use of the Services a
 ### 10. Contact
 For support, questions, or service-related inquiries:
 
-[support@northernstepstudio.com](mailto:support@northernstepstudio.com)
+[hello@northernstepstudio.com](mailto:hello@northernstepstudio.com)
 `;
 
 const summaryCards = [
@@ -80,7 +80,7 @@ const summaryCards = [
   {
     icon: Mail,
     title: "Support contact",
-    description: "support@northernstepstudio.com",
+    description: "hello@northernstepstudio.com",
   },
 ];
 
@@ -255,12 +255,12 @@ export default function TermsOfService() {
               <p className="mt-2 text-sm leading-6 text-muted-foreground">
                 Questions about these terms or service coordination can go to the support inbox below.
               </p>
-              <a
-                href="mailto:support@northernstepstudio.com"
+                <a
+                href="mailto:hello@northernstepstudio.com"
                 className="mt-5 inline-flex items-center gap-3 rounded-2xl border border-border bg-background/80 px-4 py-3 text-sm font-semibold text-foreground transition-colors hover:border-accent"
               >
                 <Mail className="h-4 w-4 text-accent" />
-                support@northernstepstudio.com
+                hello@northernstepstudio.com
               </a>
             </div>
 

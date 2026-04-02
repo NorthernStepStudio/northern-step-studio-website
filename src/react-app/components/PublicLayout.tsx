@@ -1,7 +1,7 @@
 import { Outlet, Link } from "react-router";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/react-app/lib/auth";
-import { LogOut, User, Settings, AlertTriangle, X, Menu, PhoneCall, ArrowRight, LayoutDashboard, ChevronDown } from "lucide-react";
+import { LogOut, User, Settings, AlertTriangle, X, Menu, PhoneCall, ArrowRight, LayoutDashboard, ChevronDown, Sparkles } from "lucide-react";
 import { useState, useEffect } from "react";
 import NotificationBell from "./NotificationBell";
 import ThemeToggle from "./ThemeToggle";
@@ -49,6 +49,7 @@ export default function PublicLayout() {
 
   const footerLinks = [
     { label: t("footer.updates"), to: "/updates" },
+    { label: "NStep AI", to: "/ai" },
     { label: t("nav.workspace_ai"), to: "/workspace-ai" },
     { label: t("footer.contact"), to: "/contact" },
     { label: t("footer.docs"), to: "/docs" },
@@ -104,6 +105,10 @@ export default function PublicLayout() {
             </Link>
             <Link to="/contact" className="text-[11px] xl:text-xs 2xl:text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black whitespace-nowrap">
               {t("nav.contact")}
+            </Link>
+            <Link to="/ai" className="flex items-center gap-1.5 text-[11px] xl:text-xs 2xl:text-sm text-studio-accent hover:text-studio-accent/80 transition-colors uppercase font-black whitespace-nowrap">
+              <Sparkles className="w-3.5 h-3.5" />
+              NStep AI
             </Link>
 
               <DropdownMenu>
@@ -216,6 +221,14 @@ export default function PublicLayout() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t("nav.contact")}
+              </Link>
+              <Link
+                to="/ai"
+                className="text-sm text-studio-accent hover:text-studio-accent/80 transition-colors uppercase font-black py-2 flex items-center gap-2 whitespace-nowrap"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Sparkles className="w-4 h-4" />
+                NStep AI
               </Link>
               <div className="border-t border-border my-2"></div>
 

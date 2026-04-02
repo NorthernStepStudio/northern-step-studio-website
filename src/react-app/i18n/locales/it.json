@@ -1,4 +1,4 @@
-﻿{
+{
   "nav": {
     "home": "Home",
     "apps": "App",
@@ -243,18 +243,18 @@
       }
     },
     "neuromoves": {
-      "tagline": "Compagno di Movimento e Routine Guidato",
-      "description": "NeuroMoves Ã¨ un compagno di movimento e routine guidato progettato per aiutare i bambini a sviluppare coordinazione, concentrazione e abilitÃ  quotidiane attraverso attivitÃ  strutturate e routine passo dopo passo.",
+      "tagline": "Compagno di Terapia Occupazionale Guidata per Bambini",
+      "description": "Neuromove è un compagno di terapia occupazionale guidata per bambini piccoli, con routine strutturate, strumenti per i genitori e tracciamento dei progressi.",
       "features": {
-        "0": "Tracciamento Movimento: Tracciamento in tempo reale dei movimenti corporei per forma di esercizio accurata e monitoraggio del progresso",
-        "1": "Integrazione Cognitiva: Combina esercizi fisici con sfide cognitive per allenamento neurologico olistico",
-        "2": "Strumenti Professionali: Costruito per terapisti con gestione clienti, tracciamento progressi e programmi di esercizi personalizzabili"
+        "0": "Attività guidate: accompagna i bambini passo dopo passo con suggerimenti di supporto",
+        "1": "Strumenti per i genitori: gestisci profili, routine e note sui progressi in un unico posto",
+        "2": "Tracciamento dei progressi: mantiene ordinati obiettivi, diari e traguardi terapeutici"
       },
       "progress": {
-        "0": "Concetto centrale e ricerca",
-        "1": "Prototipo tracciamento movimento",
-        "2": "Libreria esercizi",
-        "3": "Analisi progressi"
+        "0": "Flussi base di TO e onboarding",
+        "1": "Profili dei bambini e configurazione delle routine",
+        "2": "Suggerimenti guidati e supporto all'accessibilità",
+        "3": "Diari dei progressi e sistema di ricompense"
       }
     }
   },
@@ -276,7 +276,7 @@
     },
     "guided": {
       "name": "Supporto Guidato",
-      "desc": "NeuroMoves rappresenta il lavoro di supporto guidato dello studio, con routine strutturate, tracciamento dei progressi e strumenti per genitori integrati nell'esperienza del prodotto.",
+      "desc": "Neuromove rappresenta il lavoro di supporto guidato dello studio, con routine strutturate, tracciamento dei progressi e strumenti per genitori integrati nell'esperienza del prodotto.",
       "tag1": "Routine",
       "tag2": "Sistemi di Progresso",
       "cta": "Vedi Lavoro dello Studio"
@@ -329,7 +329,7 @@
       "provly_desc": "Un sistema digitale di inventario domestico che aiuta gli utenti a documentare i possedimenti e generare report pronti per i reclami quando necessario.",
       "nexusbuild_desc": "Uno strumento di pianificazione PC e decisioni hardware progettato per aiutare gli utenti a costruire sistemi bilanciati senza congetture.",
       "noobs_desc": "Una piattaforma di educazione agli investimenti amichevole per principianti focalizzata sull'aiutare i nuovi investitori a capire i mercati passo dopo passo.",
-      "neuromoves_desc": "Uno strumento compagno progettato per aiutare a strutturare routine di apprendimento e sviluppo delle competenze per bambini.",
+      "neuromoves_desc": "Un compagno di terapia occupazionale guidata per bambini piccoli, con routine strutturate, strumenti per i genitori e tracciamento dei progressi.",
       "pasoscore_desc": "Una piattaforma di orientamento creditizio progettata per aiutare gli utenti a navigare strategie di miglioramento finanziario con chiarezza.",
       "mctb_desc": "Uno strumento di automazione che risponde istantaneamente alle chiamate commerciali perse con un messaggio di testo affinchÃ© nessun potenziale cliente venga perso."
     }
@@ -415,18 +415,18 @@
     },
     "beta": {
       "title": "Interesse per Accesso Anticipato",
-      "desc": "Se vuoi l'accesso anticipato a prodotti come ProvLy, NexusBuild, NeuroMoves, PasoScore, NooBS Investing o Missed Call Text Back, iscriviti alla lista e dicci quale prodotto o flusso di lavoro stai seguendo.",
+      "desc": "Se vuoi l'accesso anticipato a prodotti come ProvLy, NexusBuild, Neuromove, PasoScore, NooBS Investing o Missed Call Text Back, iscriviti alla lista e dicci quale prodotto o flusso di lavoro stai seguendo.",
       "join": "Unisciti al Programma Beta",
       "placeholder": "Inserisci la tua email",
       "interest_label": "Cosa stai seguendo?",
-      "interest_placeholder": "Esportazioni assicurative ProvLy, routine NeuroMoves, lancio Recupero Lead, ecc.",
+      "interest_placeholder": "Esportazioni assicurative ProvLy, routine Neuromove, lancio Recupero Lead, ecc.",
       "success": "Sei nella lista.",
-      "saved_only": "Sei nella lista. L'inoltro email Ã¨ ancora in sospeso, usa support@northernstepstudio.com se Ã¨ urgente.",
+      "saved_only": "Sei nella lista. L'inoltro email Ã¨ ancora in sospeso, usa hello@northernstepstudio.com se Ã¨ urgente.",
       "updated": "Eri giÃ  nella lista. La tua nota Ã¨ stata aggiornata.",
       "joining": "Iscrizione..."
     },
     "success": "Messaggio ricevuto. Lo esamineremo e faremo seguito.",
-    "saved_only": "Messaggio ricevuto e salvato. L'inoltro email Ã¨ ancora in sospeso, usa support@northernstepstudio.com se Ã¨ urgente.",
+    "saved_only": "Messaggio ricevuto e salvato. L'inoltro email Ã¨ ancora in sospeso, usa hello@northernstepstudio.com se Ã¨ urgente.",
     "error": "Qualcosa Ã¨ andato storto. Riprova.",
     "general_label": "Studio e partnership",
     "support_label": "Supporto prodotti",
@@ -652,17 +652,17 @@
   "seo": {
     "default_title": "Northern Step Studio | Prodotti Software Pratici e Automazione dei Servizi",
     "default_description": "Northern Step Studio sviluppa applicazioni pratiche in produttivitÃ , apprendimento, finanza e automazioneâ€”aiutando individui e aziende a passare dalle idee all'azione.",
-    "default_keywords": "Northern Step Studio, ProvLy, NexusBuild, NooBS Investing, NeuroMoves, PasoScore, NStep Workspace AI, generatore proposte IA, missed call text back, automazione servizi, app inventario casa, pianificatore PC, app educazione investimenti, app routine guidate, app miglioramento credito, recupero lead",
+    "default_keywords": "Northern Step Studio, ProvLy, NexusBuild, NooBS Investing, Neuromove, PasoScore, NStep Workspace AI, generatore proposte IA, missed call text back, automazione servizi, app inventario casa, pianificatore PC, app educazione investimenti, app routine guidate, app miglioramento credito, recupero lead",
     "apps_title": "Catalogo Prodotti",
     "apps_description": "Esplora i prodotti di Northern Step Studio in inventario domestico, pianificazione PC, apprendimento finanziario, supporto guidato, miglioramento creditizio e automazione delle risposte.",
-    "apps_keywords": "Northern Step Studio app, catalogo prodotti, ProvLy, NexusBuild, NooBS Investing, NeuroMoves, PasoScore, missed call text back",
+    "apps_keywords": "Northern Step Studio app, catalogo prodotti, ProvLy, NexusBuild, NooBS Investing, Neuromove, PasoScore, missed call text back",
     "games_description": "Vedi i concept di gioco e le build pubbliche di Northern Step Studio quando sono pronte per i test insieme al resto del portfolio dello studio.",
     "contact_description": "Contatta Northern Step Studio per richieste di accesso ai prodotti, domande di supporto, idee di partnership o revisione del servizio Missed Call Text Back.",
     "kb_description": "Documentazione per i prodotti di Northern Step Studio, flussi account, note di rilascio e percorsi di supporto.",
     "mctb_description": "NStep Missed Call Text Back Ã¨ il sistema automatizzato costruito per le attivitÃ  di servizi locali per recuperare i lead che normalmente sparirebbero dopo una chiamata persa.",
     "mctb_keywords": "missed call text back, NStep, Northern Step Studio, recupero lead, automazione servizi, risposta automatizzata lead",
     "workspace_description": "Northern Step Studio sviluppa software pratico progettato per risolvere problemi del mondo reale usando ingegneria moderna e IA attentamente applicata.",
-    "workspace_keywords": "Northern Step Studio, tecnologia, sviluppo software, IA, ProvLy, NexusBuild, NooBS Investing, NeuroMoves, PasoScore, Missed Call Text Back"
+    "workspace_keywords": "Northern Step Studio, tecnologia, sviluppo software, IA, ProvLy, NexusBuild, NooBS Investing, Neuromove, PasoScore, Missed Call Text Back"
   },
   "home": {
     "hero_title": "NStep costruisce software pratico.",
@@ -688,12 +688,13 @@
     "focus_area_systems_title": "Sistemi puliti",
     "focus_area_systems_desc": "Prodotti diretti, facili da usare.",
     "portfolio_title": "Lavoro attuale",
-    "portfolio_subtitle": "Cinque app vicine al lancio, più il sistema di recupero lead.",
+    "portfolio_subtitle": "Il sistema di recupero lead live viene prima, seguito dalle app vicine al lancio.",
     "portfolio_status_close_to_launch": "Fase beta",
     "portfolio_status_almost_ready": "Fase beta",
     "portfolio_status_service": "Recupero lead",
     "portfolio_type_app": "App",
     "portfolio_type_service": "Sistema",
+    "portfolio_lead_live_today": "Attivo oggi",
     "portfolio_empty": "Nessun contenuto pubblico disponibile al momento.",
     "portfolio_disabled": "Accesso al portfolio in arrivo presto.",
     "portfolio_default_description": "Prossimi passi orientati ai risultati e agli apprendimenti.",
@@ -719,8 +720,8 @@
     "about_text": "NStep mantiene la homepage piccola per far vedere chiaramente il lavoro. Il focus Ã¨ il recupero lead prima di tutto, poi poche app pratiche.",
     "about_point_1_title": "Prima il recupero lead",
     "about_point_1_desc": "Missed Call Text Back evita che le chiamate perse diventino lead persi.",
-    "about_point_2_title": "Cinque app in corso",
-    "about_point_2_desc": "NexusBuild, ProvLy, NooBS Investing, NeuroMoves e PasoScore sono le app principali mostrate qui.",
+    "about_point_2_title": "Un servizio live e cinque app",
+      "about_point_2_desc": "Il sistema di recupero lead è già live, e NexusBuild, ProvLy, NooBS Investing, Neuromove e PasoScore sono le app principali mostrate qui.",
     "final_cta_title": "Ti serve una build pulita?",
     "final_cta_subtitle": "Scrivici se vuoi che NStep costruisca un prodotto, un'app o un sistema di automazione.",
     "final_cta_button": "Avvia un progetto"

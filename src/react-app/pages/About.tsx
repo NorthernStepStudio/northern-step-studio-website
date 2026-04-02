@@ -111,7 +111,7 @@ export default function About() {
       title: t("about_page.focus.guided.title", { defaultValue: "Guided Learning and Support" }),
       description: t("about_page.focus.guided.desc", {
         defaultValue:
-          "Products like NeuroMoves turn structured routines, progress tracking, and support workflows into approachable experiences.",
+          "Products like Neuromove turn structured routines, progress tracking, and support workflows into approachable experiences.",
       }),
     },
     {

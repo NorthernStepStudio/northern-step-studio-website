@@ -25,6 +25,14 @@ type PortfolioItem = {
 
 const PORTFOLIO_ITEMS: PortfolioItem[] = [
   {
+    nameKey: "home.portfolio_lead_title",
+    descriptionKey: "home.portfolio_lead_desc",
+    outcomeKey: "home.portfolio_lead_outcome",
+    statusKey: "home.portfolio_status_service",
+    link: "/missed-call-text-back",
+    icon: PhoneCall,
+  },
+  {
     nameKey: "home.portfolio_nexus_title",
     descriptionKey: "home.portfolio_nexus_desc",
     outcomeKey: "home.portfolio_nexus_outcome",
@@ -69,14 +77,6 @@ const PORTFOLIO_ITEMS: PortfolioItem[] = [
     image: BRAND_ASSETS.pasoscore,
     icon: CreditCard,
   },
-  {
-    nameKey: "home.portfolio_lead_title",
-    descriptionKey: "home.portfolio_lead_desc",
-    outcomeKey: "home.portfolio_lead_outcome",
-    statusKey: "home.portfolio_status_service",
-    link: "/missed-call-text-back",
-    icon: PhoneCall,
-  },
 ];
 
 type PortfolioCardProps = PortfolioItem;
@@ -96,7 +96,7 @@ function PortfolioCard({
   return (
     <Link
       to={link}
-      className="group rounded-3xl border border-border bg-card p-5 transition-all hover:border-accent/50 hover:shadow-[0_18px_35px_rgba(88,171,255,0.16)]"
+      className="group rounded-3xl border border-border bg-card p-6 sm:p-7 transition-all hover:border-accent/50 hover:shadow-[0_18px_35px_rgba(88,171,255,0.16)]"
     >
       <div className="flex items-start gap-4">
         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-border bg-background/80 overflow-hidden">
@@ -124,6 +124,62 @@ function PortfolioCard({
           <p className="mt-3 text-xs font-bold uppercase tracking-[0.18em] text-accent">
             {t(outcomeKey)}
           </p>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+function FeaturedPortfolioCard(props: PortfolioItem) {
+  const { t } = useTranslation();
+  const isService = props.nameKey === "home.portfolio_lead_title";
+
+  return (
+    <Link
+      to={props.link}
+      className="group relative overflow-hidden rounded-[2rem] border border-accent/35 bg-gradient-to-br from-card via-card to-accent/10 p-6 sm:p-8 lg:p-10 transition-all hover:border-accent/60 hover:shadow-[0_24px_60px_rgba(88,171,255,0.18)]"
+    >
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(177,225,85,0.12),transparent_42%),radial-gradient(circle_at_bottom_left,rgba(88,171,255,0.08),transparent_35%)] pointer-events-none" />
+      <div className="relative z-10 flex flex-col gap-8">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-[10px] font-black uppercase tracking-[0.22em] text-accent">
+            {t(props.statusKey)}
+          </span>
+          <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+            {isService ? t("home.portfolio_type_service") : t("home.portfolio_type_app")}
+          </span>
+        </div>
+
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-8">
+          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-3xl border border-accent/30 bg-accent/10 shadow-[0_0_0_1px_rgba(177,225,85,0.15)]">
+            {props.image ? (
+              <img src={props.image} alt="" className="h-full w-full object-contain p-3" />
+            ) : (
+              <PhoneCall className="h-7 w-7 text-accent" />
+            )}
+          </div>
+
+          <div className="min-w-0 flex-1">
+            <h3 className="text-2xl sm:text-3xl lg:text-5xl font-black uppercase tracking-tighter text-foreground">
+              {t(props.nameKey)}
+            </h3>
+            <p className="mt-4 max-w-3xl text-sm sm:text-base leading-relaxed text-muted-foreground">
+              {t(props.descriptionKey)}
+            </p>
+            <p className="mt-6 text-sm font-black uppercase tracking-[0.24em] text-accent">
+              {t(props.outcomeKey)}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4 border-t border-border/60 pt-5 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs sm:text-sm font-bold uppercase tracking-[0.18em] text-muted-foreground">
+            {t("home.portfolio_lead_live_today")}
+          </p>
+          <span className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-black uppercase text-accent-foreground transition-transform group-hover:translate-x-0.5">
+            {t("apps.open")}
+            <ArrowRight className="h-4 w-4" />
+          </span>
         </div>
       </div>
     </Link>
@@ -183,10 +239,13 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
-            {PORTFOLIO_ITEMS.map((item) => (
-              <PortfolioCard key={item.nameKey} {...item} />
-            ))}
+          <div className="space-y-10">
+            <FeaturedPortfolioCard {...PORTFOLIO_ITEMS[0]} />
+            <div className="grid gap-10 md:grid-cols-2 lg:gap-12">
+              {PORTFOLIO_ITEMS.slice(1).map((item) => (
+                <PortfolioCard key={item.nameKey} {...item} />
+              ))}
+            </div>
           </div>
         </div>
       </section>

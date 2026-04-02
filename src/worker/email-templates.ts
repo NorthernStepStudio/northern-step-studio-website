@@ -204,3 +204,72 @@ export function betaInterestNotificationEmail(params: {
     ${emailFooter("Copyright 2026 Northern Step Studio. All rights reserved.")}
   `);
 }
+
+export function testerRequestNotificationEmail(params: {
+  name: string;
+  email: string;
+  appSlug: string;
+  reason?: string | null;
+}) {
+  const { name, email, appSlug, reason } = params;
+
+  return emailTemplate(`
+    ${emailHeader("New Tester Request")}
+    ${emailBody(`
+      <p style="margin: 0 0 16px 0; font-size: 16px; line-height: 24px; color: #3f3f46;">
+        A new tester has requested access to <strong>${escapeHtml(appSlug)}</strong>.
+      </p>
+      <div style="margin: 0 0 24px 0; padding: 16px; background-color: #f4f4f5; border-radius: 8px;">
+        <p style="margin: 0 0 8px 0; font-size: 14px; color: #18181b;"><strong>Name:</strong> ${escapeHtml(name)}</p>
+        <p style="margin: 0 0 8px 0; font-size: 14px; color: #18181b;"><strong>Email:</strong> ${escapeHtml(email)}</p>
+        <p style="margin: 0; font-size: 14px; color: #18181b;"><strong>App:</strong> ${escapeHtml(appSlug)}</p>
+      </div>
+      <div style="padding: 16px; background-color: #ffffff; border: 1px solid #e4e4e7; border-radius: 8px;">
+        <p style="margin: 0 0 8px 0; font-size: 14px; color: #18181b;"><strong>Reason for Interest:</strong></p>
+        <p style="margin: 0; font-size: 14px; line-height: 22px; color: #3f3f46; white-space: pre-wrap;">${escapeHtml(reason || "No reason provided.")}</p>
+      </div>
+      ${emailButton("Review Request", "https://northernstepstudio.com/admin/testers")}
+    `)}
+    ${emailFooter("Copyright 2026 Northern Step Studio. All rights reserved.")}
+  `);
+}
+
+export function testerApprovalEmail(params: {
+  name: string;
+  appSlug: string;
+  adminNotes?: string | null;
+}) {
+  const { name, appSlug, adminNotes } = params;
+
+  return emailTemplate(`
+    ${emailHeader("You're Approved for Testing!")}
+    ${emailBody(`
+      <p style="margin: 0 0 16px 0; font-size: 16px; line-height: 24px; color: #3f3f46;">
+        Hi ${escapeHtml(name)},
+      </p>
+      <p style="margin: 0 0 16px 0; font-size: 16px; line-height: 24px; color: #3f3f46;">
+        Great news! You have been approved as a tester for <strong>${escapeHtml(appSlug)}</strong>.
+      </p>
+      ${
+        adminNotes
+          ? `
+      <div style="margin: 24px 0; padding: 16px; background-color: #f4f4f5; border-left: 3px solid #18181b; border-radius: 4px;">
+        <p style="margin: 0 0 8px 0; font-size: 14px; color: #18181b;"><strong>Note from the developer:</strong></p>
+        <p style="margin: 0; font-size: 14px; line-height: 20px; color: #52525b;">
+          ${escapeHtml(adminNotes)}
+        </p>
+      </div>
+      `
+          : ""
+      }
+      <p style="margin: 24px 0 16px 0; font-size: 16px; line-height: 24px; color: #3f3f46;">
+        You can now access the app preview. If this is a Vercel preview, you may need to "Request Access" on the deployment screen using the same email address you signed up with.
+      </p>
+      ${emailButton("Open App Preview", `https://${appSlug}.vercel.app`)}
+      <p style="margin: 24px 0 0 0; font-size: 14px; color: #71717a;">
+        Happy testing! Feel free to reach out if you find any bugs.
+      </p>
+    `)}
+    ${emailFooter("Copyright 2026 Northern Step Studio. All rights reserved.")}
+  `);
+}

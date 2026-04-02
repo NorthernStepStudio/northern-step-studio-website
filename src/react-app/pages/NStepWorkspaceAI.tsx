@@ -23,7 +23,7 @@ export default function NStepWorkspaceAI() {
     { slug: "provly", name: "ProvLy", descKey: "workspace_ai.products.provly_desc", icon: Home },
     { slug: "nexusbuild", name: "NexusBuild", descKey: "workspace_ai.products.nexusbuild_desc", icon: Monitor },
     { slug: "noobs-investing", name: "NooBS Investing", descKey: "workspace_ai.products.noobs_desc", icon: TrendingUp },
-    { slug: "neuromoves", name: "NeuroMoves", descKey: "workspace_ai.products.neuromoves_desc", icon: HeartPulse },
+    { slug: "neuromoves", name: "Neuromove", descKey: "workspace_ai.products.neuromoves_desc", icon: HeartPulse },
     { slug: "pasoscore", name: "PasoScore", descKey: "workspace_ai.products.pasoscore_desc", icon: CreditCard },
     { slug: "missed-call-text-back", name: "Missed Call Text Back", descKey: "workspace_ai.products.mctb_desc", icon: PhoneOff },
   ];

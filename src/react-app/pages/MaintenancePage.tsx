@@ -83,8 +83,8 @@ export default function MaintenancePage() {
           </p>
           <p className="text-xs text-muted-foreground/60">
             {t("maintenance.contact_label", "For urgent inquiries, contact")}{" "}
-            <a href="mailto:support@northernstepstudio.com" className="text-accent hover:underline">
-              support@northernstepstudio.com
+            <a href="mailto:hello@northernstepstudio.com" className="text-accent hover:underline">
+              hello@northernstepstudio.com
             </a>
           </p>
         </div>

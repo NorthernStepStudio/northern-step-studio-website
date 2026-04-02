@@ -259,11 +259,11 @@ export default function KnowledgeBase() {
               {t("kb.support.contact")}
             </Link>
             <a
-              href="mailto:support@northernstepstudio.com"
+              href="mailto:hello@northernstepstudio.com"
               className="btn-pill-ghost inline-flex items-center gap-2"
             >
               <Mail className="w-4 h-4" />
-              support@northernstepstudio.com
+              hello@northernstepstudio.com
               <ExternalLink className="w-3 h-3" />
             </a>
           </div>

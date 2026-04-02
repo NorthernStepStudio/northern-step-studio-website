@@ -14,6 +14,7 @@ import {
 
 interface StripeSummary {
   configured?: boolean;
+  missingEnv?: string;
   availableBalance: number;
   pendingBalance: number;
   totalCustomers: number;
@@ -191,6 +192,8 @@ export default function Revenue() {
   }
 
   if (summary?.configured === false) {
+    const missingEnv = summary.missingEnv?.trim() || "STRIPE_SECRET_KEY";
+
     return (
       <div>
         <div className="mb-8">
@@ -201,7 +204,7 @@ export default function Revenue() {
           <AlertCircle className="w-12 h-12 text-yellow-500 mx-auto mb-4" />
           <h3 className="text-lg font-bold mb-2">Stripe Is Not Connected Yet</h3>
           <p className="text-muted-foreground mb-6">
-            Revenue analytics will appear here once a Stripe secret key is configured for this site.
+            Revenue analytics will appear here once <span className="font-semibold text-foreground">{missingEnv}</span> is configured in the Cloudflare Worker for this site.
           </p>
           <a
             href="https://dashboard.stripe.com"

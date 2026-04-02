@@ -431,7 +431,7 @@ export default function Contact() {
                   <div>
                     <p className="text-xs text-muted-foreground">{t("contact.general_label")}</p>
                     <a href={EXTERNAL_LINKS.contactEmail} className="text-sm font-medium transition-colors hover:text-accent">
-                      support@northernstepstudio.com
+                      hello@northernstepstudio.com
                     </a>
                   </div>
                 </div>
@@ -442,7 +442,7 @@ export default function Contact() {
                   <div>
                     <p className="text-xs text-muted-foreground">{t("contact.support_label")}</p>
                     <a href={EXTERNAL_LINKS.supportEmail} className="text-sm font-medium transition-colors hover:text-accent">
-                      support@northernstepstudio.com
+                      hello@northernstepstudio.com
                     </a>
                   </div>
                 </div>

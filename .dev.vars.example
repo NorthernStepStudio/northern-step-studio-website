@@ -9,3 +9,4 @@ SUPABASE_URL=https://your-project-ref.supabase.co
 SUPABASE_ANON_KEY=replace-with-your-supabase-anon-key
 SUPABASE_SERVICE_ROLE_KEY=replace-with-your-supabase-service-role-key
 SUPABASE_PROJECT_REF=your-project-ref
+STRIPE_SECRET_KEY=replace-with-your-stripe-secret-key

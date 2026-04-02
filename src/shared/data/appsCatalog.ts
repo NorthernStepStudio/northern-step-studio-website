@@ -1,4 +1,29 @@
-const catalogApps = [
+
+export type CatalogApp = {
+  id: number;
+  name: string;
+  slug: string;
+  tagline: string;
+  description: string;
+  fullDescription: string;
+  category: string;
+  status: string;
+  statusLabel: string;
+  targetDate: string | null;
+  techStack: string[];
+  progress: { text: string; completed: boolean }[];
+  logo: string | null;
+  screenshots: string[];
+  cta_url: string | null;
+  video_url: string | null;
+  features: string[];
+  platform: string;
+  visibility: string;
+  progressPercent: number;
+  monetization: string;
+};
+
+export const CATALOG_APPS: CatalogApp[] = [
   {
     id: 1004,
     name: "Lead Recovery Service",
@@ -6,13 +31,13 @@ const catalogApps = [
     tagline: "Every missed call becomes a second chance.",
     description:
       "Automated missed-call recovery that instantly texts, qualifies, and follows up with leads so you never lose a job again.",
-    full_description:
-      "NSS Missed Call Text Back is the lead recovery engine for local service businesses that cannot afford to lose jobs when the phone is missed. It responds immediately, qualifies the caller, and keeps the conversation moving until you can step in.",
+    fullDescription:
+      "NStep Missed Call Text Back is the lead recovery engine for local service businesses that cannot afford to lose jobs when the phone is missed. It responds immediately, qualifies the caller, and keeps the conversation moving until you can step in.",
     category: "HOME",
     status: "LIVE",
-    status_label: "Live",
-    target_date: null,
-    tech_stack: ["ResponseOS", "Twilio", "Lead Routing", "SMS Automation"],
+    statusLabel: "Live",
+    targetDate: null,
+    techStack: ["ResponseOS", "Twilio", "Lead Routing", "SMS Automation"],
     progress: [{ text: "Live lead recovery workflow", completed: true }],
     logo: "/brand/studio-mark.png",
     screenshots: [],
@@ -25,7 +50,7 @@ const catalogApps = [
     ],
     platform: "web",
     visibility: "published",
-    progress_percent: 100,
+    progressPercent: 100,
     monetization: "Service",
   },
   {
@@ -35,13 +60,13 @@ const catalogApps = [
     tagline: "Build smarter. Not just faster.",
     description:
       "AI-powered PC build intelligence that analyzes performance, compatibility, and real-world value before you buy.",
-    full_description:
+    fullDescription:
       "NexusBuild is an AI-powered PC build companion that helps people compare parts, validate compatibility, and plan better hardware choices without guesswork. It keeps the tradeoffs visible so the build stays grounded in real performance and value.",
     category: "AI TOOL",
     status: "BETA",
-    status_label: "Beta",
-    target_date: "Q3 2026",
-    tech_stack: ["React Native", "React", "PostgreSQL"],
+    statusLabel: "Beta",
+    targetDate: "Q3 2026",
+    techStack: ["React Native", "React", "PostgreSQL"],
     progress: [
       { text: "Mobile app, web app, and backend foundation", completed: true },
       { text: "Compatibility engine and build management", completed: true },
@@ -59,7 +84,7 @@ const catalogApps = [
     ],
     platform: "mobile",
     visibility: "published",
-    progress_percent: 84,
+    progressPercent: 84,
     monetization: "Free",
   },
   {
@@ -69,13 +94,13 @@ const catalogApps = [
     tagline: "Guided OT Companion for Children",
     description:
       "A guided occupational therapy companion for young children, with structured routines, parent tools, and progress tracking.",
-    full_description:
+    fullDescription:
       "Neuromove is designed around structured movement, communication, and routine-building activities for children. It combines approachable visuals, guided prompts, parent-facing tools, and therapy-friendly reporting to keep the app useful outside of a single session.",
     category: "THERAPY",
     status: "BETA",
-    status_label: "Beta",
-    target_date: "Q3 2026",
-    tech_stack: ["React Native", "Therapy Activities", "Parent Profiles"],
+    statusLabel: "Beta",
+    targetDate: "Q3 2026",
+    techStack: ["React Native", "Therapy Activities", "Parent Profiles"],
     progress: [
       { text: "Core OT activity flows, auth, and onboarding", completed: true },
       { text: "Child profile management and routine setup", completed: true },
@@ -95,7 +120,7 @@ const catalogApps = [
     ],
     platform: "mobile",
     visibility: "published",
-    progress_percent: 63,
+    progressPercent: 63,
     monetization: "Free",
   },
   {
@@ -105,13 +130,13 @@ const catalogApps = [
     tagline: "Know what you own. Prove it when it matters.",
     description:
       "A home inventory system that turns your belongings into claim-ready records for insurance, loss, or emergencies.",
-    full_description:
+    fullDescription:
       "ProvLy is a privacy-first home inventory vault designed for insurance readiness and long-term household care. It keeps inventory records, receipts, warranties, exports, and reminders in one place without turning the product into a bloated enterprise platform.",
     category: "HOME",
     status: "BETA",
-    status_label: "Beta",
-    target_date: "Q4 2026",
-    tech_stack: ["React Native", "SQLite", "Claim Pack Export"],
+    statusLabel: "Beta",
+    targetDate: "Q4 2026",
+    techStack: ["React Native", "SQLite", "Claim Pack Export"],
     progress: [
       { text: "Homes, rooms, and item capture flow", completed: true },
       { text: "Receipt, warranty, and document attachment flow", completed: true },
@@ -129,7 +154,7 @@ const catalogApps = [
     ],
     platform: "mobile",
     visibility: "published",
-    progress_percent: 76,
+    progressPercent: 76,
     monetization: "Free",
   },
   {
@@ -139,13 +164,13 @@ const catalogApps = [
     tagline: "Learn investing by doing, not guessing.",
     description:
       "A guided investing system that teaches you how money actually grows, step by step, without confusion.",
-    full_description:
+    fullDescription:
       "NooBS Investing is a mobile-first learning companion built to make intimidating finance concepts easier to absorb. It blends structured lessons, interactive practice, and visual feedback into a product that feels approachable instead of academic.",
     category: "FINANCE",
     status: "BETA",
-    status_label: "Beta",
-    target_date: "Q2 2026",
-    tech_stack: ["React Native", "Interactive Lessons", "Gamified Learning"],
+    statusLabel: "Beta",
+    targetDate: "Q2 2026",
+    techStack: ["React Native", "Interactive Lessons", "Gamified Learning"],
     progress: [
       { text: "Language-first onboarding and lesson flow", completed: true },
       { text: "Core mini-games and learning modules", completed: true },
@@ -163,7 +188,7 @@ const catalogApps = [
     ],
     platform: "mobile",
     visibility: "published",
-    progress_percent: 72,
+    progressPercent: 72,
     monetization: "Free",
   },
   {
@@ -173,13 +198,13 @@ const catalogApps = [
     tagline: "Clear steps for credit improvement.",
     description:
       "A deterministic credit builder companion that walks users through month-by-month improvement steps without bureau access.",
-    full_description:
+    fullDescription:
       "PasoScore is a mobile-first credit guidance app that walks users through month-by-month improvement steps with deterministic decision paths, multilingual support, and privacy-first boundaries. It keeps the process understandable without pretending to be a credit bureau product.",
     category: "FINANCE",
     status: "ALPHA",
-    status_label: "Alpha",
-    target_date: "Q3 2026",
-    tech_stack: ["React Native", "Decision Tree Engine", "RevenueCat"],
+    statusLabel: "Alpha",
+    targetDate: "Q3 2026",
+    techStack: ["React Native", "Decision Tree Engine", "RevenueCat"],
     progress: [
       { text: "Dual onboarding for anonymous and personalized paths", completed: true },
       { text: "Deterministic roadmap engine and step tracking", completed: true },
@@ -197,15 +222,11 @@ const catalogApps = [
     ],
     platform: "mobile",
     visibility: "published",
-    progress_percent: 58,
+    progressPercent: 58,
     monetization: "Free",
   },
 ];
 
-export function getCatalogApps() {
-  return catalogApps;
-}
-
-export function getCatalogAppBySlug(slug) {
-  return catalogApps.find((app) => app.slug === slug) || null;
+export function getCatalogApp(slug: string) {
+  return CATALOG_APPS.find((app) => app.slug === slug) || null;
 }
