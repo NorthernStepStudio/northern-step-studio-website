@@ -35,6 +35,7 @@ import PromoManager from "@/react-app/pages/admin/PromoManager";
 import Users from "@/react-app/pages/admin/Users";
 import Permissions from "@/react-app/pages/admin/Permissions";
 import Revenue from "@/react-app/pages/admin/Revenue";
+import LeadRecovery from "@/react-app/pages/admin/LeadRecovery";
 import StudioDashboard from "@/react-app/pages/StudioDashboard";
 import CommunityManager from "@/react-app/pages/admin/CommunityManager";
 import FeatureToggles from "@/react-app/pages/admin/FeatureToggles";
@@ -42,7 +43,6 @@ import MaintenanceSettings from "@/react-app/pages/admin/MaintenanceSettings";
 import UpdatesManager from "@/react-app/pages/admin/UpdatesManager";
 import MaintenancePage from "@/react-app/pages/MaintenancePage";
 import NStepWorkspaceAI from "@/react-app/pages/NStepWorkspaceAI";
-import NStepAI from "@/react-app/pages/NStepAI";
 import TesterSignup from "@/react-app/pages/TesterSignup";
 import TesterManager from "@/react-app/pages/admin/TesterManager";
 import NotFound from "@/react-app/pages/NotFound";
@@ -127,7 +127,7 @@ export default function App() {
               <Route path="/missed-call-text-back" element={<NStepMissedCallTextBack />} />
               <Route path="/missed-call-text-back/demo" element={<NStepMissedCallTextBackDemo />} />
               <Route path="/workspace-ai" element={<NStepWorkspaceAI />} />
-              <Route path="/ai" element={<NStepAI />} />
+              <Route path="/ai" element={<Navigate to="/" replace />} />
               <Route path="/testers" element={<TesterSignup />} />
               <Route path="/updates" element={<Updates />} />
               <Route path="/privacy" element={<TermsOfService />} />
@@ -140,6 +140,9 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
+            <Route path="/lead-recovery" element={<AdminLayout />}>
+              <Route index element={<LeadRecovery />} />
+            </Route>
 
             {/* Account settings */}
             <Route element={<AccountSettingsLayout />}>
@@ -153,6 +156,7 @@ export default function App() {
               <Route path="apps" element={<AppManager />} />
               <Route path="analytics" element={<Analytics />} />
               <Route path="leads" element={<Leads />} />
+              <Route path="lead-recovery" element={<LeadRecovery />} />
               <Route path="content" element={<ContentManager />} />
               <Route path="promos" element={<PromoManager />} />
               <Route path="updates" element={<UpdatesManager />} />

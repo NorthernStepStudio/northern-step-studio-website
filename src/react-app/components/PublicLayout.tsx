@@ -1,7 +1,7 @@
 import { Outlet, Link } from "react-router";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/react-app/lib/auth";
-import { LogOut, User, Settings, AlertTriangle, X, Menu, PhoneCall, ArrowRight, LayoutDashboard, ChevronDown, Sparkles } from "lucide-react";
+import { LogOut, User, Settings, AlertTriangle, X, Menu, ArrowRight, LayoutDashboard, ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
 import NotificationBell from "./NotificationBell";
 import ThemeToggle from "./ThemeToggle";
@@ -49,7 +49,6 @@ export default function PublicLayout() {
 
   const footerLinks = [
     { label: t("footer.updates"), to: "/updates" },
-    { label: "NStep AI", to: "/ai" },
     { label: t("nav.workspace_ai"), to: "/workspace-ai" },
     { label: t("footer.contact"), to: "/contact" },
     { label: t("footer.docs"), to: "/docs" },
@@ -97,18 +96,11 @@ export default function PublicLayout() {
           </Link>
 
           <nav className="hidden md:flex items-center gap-5 xl:gap-7 min-w-0">
-            <Link to="/missed-call-text-back" className="text-[11px] xl:text-xs 2xl:text-sm text-yellow-500 hover:text-yellow-400 transition-colors uppercase font-black whitespace-nowrap">
-              {t("nav.lead_recovery_short")}
-            </Link>
             <Link to="/apps" className="text-[11px] xl:text-xs 2xl:text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black whitespace-nowrap">
               {t("nav.apps")}
             </Link>
             <Link to="/contact" className="text-[11px] xl:text-xs 2xl:text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black whitespace-nowrap">
               {t("nav.contact")}
-            </Link>
-            <Link to="/ai" className="flex items-center gap-1.5 text-[11px] xl:text-xs 2xl:text-sm text-studio-accent hover:text-studio-accent/80 transition-colors uppercase font-black whitespace-nowrap">
-              <Sparkles className="w-3.5 h-3.5" />
-              NStep AI
             </Link>
 
               <DropdownMenu>
@@ -195,13 +187,6 @@ export default function PublicLayout() {
           <div className="md:hidden border-t border-border bg-background">
             <nav className="container mx-auto px-4 py-4 flex flex-col gap-2">
               <Link
-                to="/missed-call-text-back"
-                className="text-sm text-yellow-400 hover:text-yellow-300 transition-colors uppercase font-black py-2 whitespace-nowrap"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {t("nav.lead_recovery_short")}
-              </Link>
-              <Link
                 to="/apps"
                 className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black py-2 whitespace-nowrap"
                 onClick={() => setMobileMenuOpen(false)}
@@ -221,14 +206,6 @@ export default function PublicLayout() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t("nav.contact")}
-              </Link>
-              <Link
-                to="/ai"
-                className="text-sm text-studio-accent hover:text-studio-accent/80 transition-colors uppercase font-black py-2 flex items-center gap-2 whitespace-nowrap"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <Sparkles className="w-4 h-4" />
-                NStep AI
               </Link>
               <div className="border-t border-border my-2"></div>
 
@@ -300,27 +277,6 @@ export default function PublicLayout() {
 
       <footer className="border-t border-border py-6 px-4 sm:px-6 bg-card-soft">
         <div className="container mx-auto max-w-6xl">
-          <div className="mb-8 rounded-3xl border border-yellow-500/30 bg-gradient-to-r from-yellow-500/10 via-transparent to-accent/10 px-6 py-6">
-            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-              <div className="max-w-2xl">
-                <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-yellow-500/30 bg-yellow-500/10 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-yellow-400">
-                  <PhoneCall className="h-3.5 w-3.5" />
-                  {t("footer.lead_recovery_badge")}
-                </div>
-                <h3 className="text-xl font-black uppercase tracking-tight text-foreground">
-                  {t("footer.lead_recovery_title")}
-                </h3>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  {t("footer.lead_recovery_desc")}
-                </p>
-              </div>
-              <Link to={setupReviewHref} className="btn-pill-primary inline-flex items-center justify-center gap-2 whitespace-nowrap">
-                {t("common.setup_review")}
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-          </div>
-
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="md:col-span-1">
               <Link to="/" className="inline-block">
@@ -338,7 +294,6 @@ export default function PublicLayout() {
               <h4 className="text-sm font-black uppercase mb-4">{t("footer.products")}</h4>
               <ul className="space-y-2">
                 <li><Link to="/apps" className="text-sm text-muted-foreground hover:text-accent transition-colors font-normal">{t("nav.apps")}</Link></li>
-                <li><Link to="/missed-call-text-back" className="text-sm text-muted-foreground hover:text-accent transition-colors font-normal">{t("footer.missed_call")}</Link></li>
                 <li><Link to="/docs" className="text-sm text-muted-foreground hover:text-accent transition-colors font-normal">{t("nav.docs")}</Link></li>
               </ul>
             </div>
