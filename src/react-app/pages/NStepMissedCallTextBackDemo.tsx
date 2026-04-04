@@ -703,15 +703,17 @@ export default function NStepMissedCallTextBackDemo() {
 
       <section className="border-t border-border bg-gradient-to-b from-transparent via-accent/[0.02] to-transparent px-4 py-20 sm:px-6">
         <div className="container mx-auto max-w-6xl">
-          <div className="mb-12 text-center">
-            <div className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-accent">
-              <Wrench className="h-3.5 w-3.5" />
-              Fits next
+          <div className="mb-12 grid gap-6 text-center lg:grid-cols-[0.95fr_1.05fr] lg:items-end lg:text-left">
+            <div className="mx-auto max-w-2xl lg:mx-0">
+              <div className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-accent">
+                <Wrench className="h-3.5 w-3.5" />
+                Fits next
+              </div>
+              <h2 className="mt-4 text-3xl font-black uppercase tracking-tight text-foreground sm:text-4xl lg:text-5xl leading-tight">
+                Same system, different service vertical
+              </h2>
             </div>
-            <h2 className="mt-4 text-3xl font-black uppercase tracking-tighter text-foreground sm:text-4xl">
-              Same system, different service vertical
-            </h2>
-            <p className="mx-auto mt-4 max-w-3xl text-muted-foreground">
+            <p className="mx-auto max-w-2xl text-muted-foreground lg:mx-0 lg:justify-self-end lg:text-base lg:leading-8">
               Plumbing is the current packaged demo because it is the fastest version to sell and show. The system itself is a response framework that can be retuned for other local service businesses by changing the intake prompts and summary logic.
             </p>
           </div>
