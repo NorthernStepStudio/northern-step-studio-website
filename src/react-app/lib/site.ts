@@ -14,7 +14,7 @@ export const BRAND_ASSETS = {
 
 export const EXTERNAL_LINKS = {
   contactEmail: "mailto:hello@northernstepstudio.com",
-  supportEmail: "mailto:hello@northernstepstudio.com",
+  supportEmail: "mailto:support@northernstepstudio.com",
 } as const;
 
 export function resolveSiteUrl(pathOrUrl = "/"): string {
