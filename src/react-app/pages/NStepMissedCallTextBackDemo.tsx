@@ -272,13 +272,24 @@ export default function NStepMissedCallTextBackDemo() {
 
   function advanceDemo(rawValue: string) {
     const value = rawValue.trim();
-    if (!value || demo.stage === "idle" || demo.stage === "done") {
+    if (!value || demo.stage === "done") {
       return;
     }
 
-    const nextTranscript: TranscriptEntry[] = [...transcript, buildEntry("customer", value)];
+    const sessionDemo =
+      demo.stage === "idle"
+        ? {
+            ...INITIAL_STATE,
+            stage: "issue_type" as const,
+          }
+        : demo;
 
-    if (demo.stage === "issue_type") {
+    const sessionTranscript =
+      demo.stage === "idle" ? [buildEntry("system", buildOpeningMessage())] : transcript;
+
+    const nextTranscript: TranscriptEntry[] = [...sessionTranscript, buildEntry("customer", value)];
+
+    if (sessionDemo.stage === "issue_type") {
       const issueType = normalizeIssueType(value);
       if (!issueType) {
         return;
@@ -287,7 +298,7 @@ export default function NStepMissedCallTextBackDemo() {
       if (issueType === "other") {
         if (value.toLowerCase() !== "other") {
           setDemo({
-            ...demo,
+            ...sessionDemo,
             stage: "urgency",
             issueType,
             issueText: "Other",
@@ -302,7 +313,7 @@ export default function NStepMissedCallTextBackDemo() {
         }
 
         const nextState = {
-          ...demo,
+          ...sessionDemo,
           stage: "other_detail" as const,
           issueType,
           issueText: "Other",
@@ -321,7 +332,7 @@ export default function NStepMissedCallTextBackDemo() {
 
       if (issueType === "water_heater") {
         const nextState = {
-          ...demo,
+          ...sessionDemo,
           stage: "urgency" as const,
           issueType,
           issueText: value,
@@ -341,7 +352,7 @@ export default function NStepMissedCallTextBackDemo() {
           : "Got it. Is it fully blocked or draining slowly?";
 
       setDemo({
-        ...demo,
+        ...sessionDemo,
         stage: "severity_detail",
         issueType,
         issueText: value,
@@ -351,9 +362,9 @@ export default function NStepMissedCallTextBackDemo() {
       return;
     }
 
-    if (demo.stage === "other_detail") {
+    if (sessionDemo.stage === "other_detail") {
       setDemo({
-        ...demo,
+        ...sessionDemo,
         stage: "urgency",
         otherDetail: value,
       });
@@ -365,9 +376,9 @@ export default function NStepMissedCallTextBackDemo() {
       return;
     }
 
-    if (demo.stage === "severity_detail") {
+    if (sessionDemo.stage === "severity_detail") {
       setDemo({
-        ...demo,
+        ...sessionDemo,
         stage: "urgency",
         severityDetail: value,
       });
@@ -379,9 +390,9 @@ export default function NStepMissedCallTextBackDemo() {
       return;
     }
 
-    if (demo.stage === "urgency") {
+    if (sessionDemo.stage === "urgency") {
       setDemo({
-        ...demo,
+        ...sessionDemo,
         stage: "location",
         urgencyAnswer: value,
       });
@@ -393,9 +404,9 @@ export default function NStepMissedCallTextBackDemo() {
       return;
     }
 
-    if (demo.stage === "location") {
+    if (sessionDemo.stage === "location") {
       setDemo({
-        ...demo,
+        ...sessionDemo,
         stage: "customer_name",
         location: value,
       });
@@ -407,9 +418,9 @@ export default function NStepMissedCallTextBackDemo() {
       return;
     }
 
-    if (demo.stage === "customer_name") {
+    if (sessionDemo.stage === "customer_name") {
       const completedState = {
-        ...demo,
+        ...sessionDemo,
         stage: "done" as const,
         customerName: value,
       };
@@ -560,24 +571,35 @@ export default function NStepMissedCallTextBackDemo() {
               </div>
             )}
 
-            <div className="mt-5 flex gap-3">
-              <input
-                value={message}
-                disabled={demo.stage === "idle" || demo.stage === "done"}
-                onChange={(event) => setMessage(event.target.value)}
-                placeholder={demo.stage === "idle" ? "Start the demo first" : "Type the next customer reply"}
-                className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-accent/50 disabled:opacity-60"
-              />
-              <button
-                type="button"
-                className="btn-pill-primary whitespace-nowrap"
-                disabled={demo.stage === "idle" || demo.stage === "done" || !message.trim()}
-                onClick={() => {
-                  advanceDemo(message);
-                }}
-              >
-                Send
-              </button>
+            <div className="mt-5 max-w-xl">
+              <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
+                <input
+                  value={message}
+                  disabled={demo.stage === "done"}
+                  onChange={(event) => setMessage(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" && !event.shiftKey) {
+                      event.preventDefault();
+                      advanceDemo(message);
+                    }
+                  }}
+                  placeholder={demo.stage === "done" ? "Demo complete" : demo.stage === "idle" ? "Type the first reply to start the demo" : "Type the next customer reply"}
+                  className="h-12 w-full rounded-full border border-border bg-background px-4 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-accent/50 disabled:opacity-60"
+                />
+                <button
+                  type="button"
+                  className="btn-pill-primary-compact whitespace-nowrap sm:h-12"
+                  disabled={demo.stage === "done" || !message.trim()}
+                  onClick={() => {
+                    advanceDemo(message);
+                  }}
+                >
+                  Send
+                </button>
+              </div>
+              <p className="mt-2 text-xs text-muted-foreground">
+                Press Send to start the demo or advance the conversation.
+              </p>
             </div>
           </article>
 
