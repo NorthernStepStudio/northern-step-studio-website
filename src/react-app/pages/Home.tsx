@@ -140,8 +140,8 @@ function FeaturedPortfolioCard(props: PortfolioItem) {
       className="group relative overflow-hidden rounded-[2rem] border border-accent/35 bg-gradient-to-br from-card via-card to-accent/10 p-6 sm:p-8 lg:p-10 transition-all hover:border-accent/60 hover:shadow-[0_24px_60px_rgba(88,171,255,0.18)]"
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(177,225,85,0.12),transparent_42%),radial-gradient(circle_at_bottom_left,rgba(88,171,255,0.08),transparent_35%)] pointer-events-none" />
-      <div className="relative z-10 flex flex-col gap-8">
-        <div className="flex flex-wrap items-center gap-2">
+      <div className="relative z-10 flex flex-col gap-6 sm:gap-7">
+        <div className="flex flex-wrap items-center justify-center gap-2 text-center">
           <span className="text-[10px] font-black uppercase tracking-[0.22em] text-accent">
             {t(props.statusKey)}
           </span>
@@ -150,7 +150,7 @@ function FeaturedPortfolioCard(props: PortfolioItem) {
           </span>
         </div>
 
-        <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-8">
+        <div className="flex justify-center">
           <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-3xl border border-accent/30 bg-accent/10 shadow-[0_0_0_1px_rgba(177,225,85,0.15)]">
             {props.image ? (
               <img src={props.image} alt="" className="h-full w-full object-contain p-3" />
@@ -158,18 +158,18 @@ function FeaturedPortfolioCard(props: PortfolioItem) {
               <PhoneCall className="h-7 w-7 text-accent" />
             )}
           </div>
+        </div>
 
-          <div className="min-w-0 flex-1">
-            <h3 className="text-2xl sm:text-3xl lg:text-5xl font-black uppercase tracking-tighter text-foreground">
-              {t(props.nameKey)}
-            </h3>
-            <p className="mt-4 max-w-3xl text-sm sm:text-base leading-relaxed text-muted-foreground">
-              {t(props.descriptionKey)}
-            </p>
-            <p className="mt-6 text-sm font-black uppercase tracking-[0.24em] text-accent">
-              {t(props.outcomeKey)}
-            </p>
-          </div>
+        <div className="mx-auto max-w-3xl text-center">
+          <h3 className="text-2xl sm:text-3xl lg:text-5xl font-black uppercase tracking-tighter text-foreground">
+            {t(props.nameKey)}
+          </h3>
+          <p className="mt-4 text-sm sm:text-base leading-relaxed text-muted-foreground">
+            {t(props.descriptionKey)}
+          </p>
+          <p className="mt-6 text-sm font-black uppercase tracking-[0.24em] text-accent">
+            {t(props.outcomeKey)}
+          </p>
         </div>
 
         <div className="flex flex-col gap-4 border-t border-border/60 pt-5 sm:flex-row sm:items-center sm:justify-between">
