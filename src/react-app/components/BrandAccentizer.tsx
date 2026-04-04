@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { BRAND_NAME } from "@/react-app/lib/brand";
 
 const HIGHLIGHT_ATTR = "data-brand-highlighted";
+const BRAND_PATTERN = new RegExp(BRAND_NAME.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi");
 const SKIP_TAGS = new Set([
   "SCRIPT",
   "STYLE",
@@ -28,27 +29,30 @@ function shouldSkipElement(element: Element | null): boolean {
 
 function accentizeTextNode(node: Text): void {
   const text = node.nodeValue;
-  if (!text || !text.includes(BRAND_NAME)) {
+  if (!text || !BRAND_PATTERN.test(text)) {
+    BRAND_PATTERN.lastIndex = 0;
     return;
   }
 
+  BRAND_PATTERN.lastIndex = 0;
   if (shouldSkipElement(node.parentElement)) {
     return;
   }
 
   const fragment = document.createDocumentFragment();
-  const parts = text.split(BRAND_NAME);
+  const parts = text.split(BRAND_PATTERN);
+  const matches = text.match(BRAND_PATTERN) ?? [];
 
   parts.forEach((part, index) => {
     if (part) {
       fragment.appendChild(document.createTextNode(part));
     }
 
-    if (index < parts.length - 1) {
+    if (index < matches.length) {
       const accent = document.createElement("span");
       accent.className = "text-accent";
       accent.setAttribute(HIGHLIGHT_ATTR, "true");
-      accent.textContent = BRAND_NAME;
+      accent.textContent = matches[index];
       fragment.appendChild(accent);
     }
   });

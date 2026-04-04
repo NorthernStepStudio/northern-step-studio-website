@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 
 export const BRAND_NAME = "Northern Step Studio";
-const BRAND_PATTERN = new RegExp(BRAND_NAME.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g");
+const BRAND_PATTERN = new RegExp(BRAND_NAME.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi");
+const BRAND_NORMALIZED = BRAND_NAME.toLowerCase();
 
 function flattenChildren(children: ReactNode): string {
   if (children === null || children === undefined || typeof children === "boolean") {
@@ -20,11 +21,14 @@ function flattenChildren(children: ReactNode): string {
 }
 
 export function brandifyText(text: string, accentClassName = "text-accent"): ReactNode[] {
-  if (!text.includes(BRAND_NAME)) {
+  if (!BRAND_PATTERN.test(text)) {
+    BRAND_PATTERN.lastIndex = 0;
     return [text];
   }
 
+  BRAND_PATTERN.lastIndex = 0;
   const parts = text.split(BRAND_PATTERN);
+  const matches = text.match(BRAND_PATTERN) ?? [];
   const nodes: ReactNode[] = [];
 
   parts.forEach((part, index) => {
@@ -32,10 +36,10 @@ export function brandifyText(text: string, accentClassName = "text-accent"): Rea
       nodes.push(part);
     }
 
-    if (index < parts.length - 1) {
+    if (index < matches.length) {
       nodes.push(
         <span key={`${BRAND_NAME}-${index}`} className={accentClassName}>
-          {BRAND_NAME}
+          {matches[index]}
         </span>
       );
     }
@@ -45,10 +49,13 @@ export function brandifyText(text: string, accentClassName = "text-accent"): Rea
 }
 
 export function brandifyMarkdown(content: string): string {
-  return content.replace(BRAND_PATTERN, `**${BRAND_NAME}**`);
+  BRAND_PATTERN.lastIndex = 0;
+  return content.replace(BRAND_PATTERN, "**$&**");
 }
 
 export function isBrandText(children: ReactNode): boolean {
   const text = flattenChildren(children).trim();
-  return text === BRAND_NAME || text === `${BRAND_NAME} (NStep)`;
+  const normalized = text.toLowerCase();
+
+  return normalized === BRAND_NORMALIZED || normalized === `${BRAND_NORMALIZED} (nstep)`;
 }
