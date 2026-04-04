@@ -25,14 +25,6 @@ type PortfolioItem = {
 
 const PORTFOLIO_ITEMS: PortfolioItem[] = [
   {
-    nameKey: "home.portfolio_lead_title",
-    descriptionKey: "home.portfolio_lead_desc",
-    outcomeKey: "home.portfolio_lead_outcome",
-    statusKey: "home.portfolio_status_service",
-    link: "/missed-call-text-back",
-    icon: PhoneCall,
-  },
-  {
     nameKey: "home.portfolio_nexus_title",
     descriptionKey: "home.portfolio_nexus_desc",
     outcomeKey: "home.portfolio_nexus_outcome",
@@ -174,7 +166,7 @@ function FeaturedPortfolioCard(props: PortfolioItem) {
 
         <div className="flex flex-col gap-4 border-t border-border/60 pt-5 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs sm:text-sm font-bold uppercase tracking-[0.18em] text-muted-foreground">
-            {t("home.portfolio_lead_live_today")}
+            {t(props.statusKey)}
           </p>
           <span className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-black uppercase text-accent-foreground transition-transform group-hover:translate-x-0.5">
             {t("apps.open")}
