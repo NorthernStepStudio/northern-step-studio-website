@@ -2,7 +2,7 @@ import { Outlet, Link } from "react-router";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/react-app/lib/auth";
 import { brandifyText } from "@/react-app/lib/brand";
-import { LogOut, User, Settings, AlertTriangle, X, Menu, ArrowRight, LayoutDashboard, ChevronDown } from "lucide-react";
+import { LogOut, User, Settings, AlertTriangle, X, Menu, ArrowRight, LayoutDashboard } from "lucide-react";
 import { useState, useEffect } from "react";
 import NotificationBell from "./NotificationBell";
 import ThemeToggle from "./ThemeToggle";
@@ -102,19 +102,9 @@ export default function PublicLayout() {
             <Link to="/contact" className="text-[11px] xl:text-xs 2xl:text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black whitespace-nowrap">
               {t("nav.contact")}
             </Link>
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1.5 text-[11px] xl:text-xs 2xl:text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black whitespace-nowrap focus:outline-none">
-                {t("common.more") || "More"}
-                <ChevronDown className="w-4 h-4" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 bg-background/95 backdrop-blur-md">
-                <DropdownMenuItem asChild>
-                  <Link to="/about" className="uppercase font-black text-xs py-2.5">
-                    {t("nav.about")}
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Link to="/about" className="text-[11px] xl:text-xs 2xl:text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black whitespace-nowrap">
+              {t("nav.about")}
+            </Link>
           </nav>
 
           <div className="flex items-center gap-2 sm:gap-3">
