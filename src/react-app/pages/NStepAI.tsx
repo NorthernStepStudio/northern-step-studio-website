@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Send, Bot, User, Loader2, Sparkles, ChevronLeft, ExternalLink } from "lucide-react";
+import { Send, Bot, User, Loader2, Sparkles, ChevronLeft } from "lucide-react";
 import { Link } from "react-router";
+
+type ConfidenceLevel = "low" | "medium" | "high";
 
 interface ChatSource {
   title: string;
@@ -11,6 +13,7 @@ interface ChatApiResponse {
   answer: string;
   sources?: ChatSource[];
   mode?: "gemini" | "fallback";
+  confidence?: ConfidenceLevel;
   warning?: string;
   error?: string;
 }
@@ -19,14 +22,75 @@ interface Message {
   id: string;
   role: "user" | "assistant";
   content: string;
-  sources?: ChatSource[];
   timestamp: Date;
   mode?: "gemini" | "fallback";
+  confidence?: ConfidenceLevel;
   warning?: string;
 }
 
 const FALLBACK_ERROR_MESSAGE =
   "I'm sorry, I'm having trouble connecting right now. Please try again or contact support if the issue persists.";
+
+const QUICK_PROMPTS = [
+  { label: "Products catalog", prompt: "What products do you have?" },
+  { label: "Lead Recovery", prompt: "Tell me about Lead Recovery" },
+  { label: "Support info", prompt: "How do I contact support?" },
+] as const;
+
+function getConfidenceLabel(confidence?: ConfidenceLevel) {
+  if (confidence === "high") {
+    return "Strong answer";
+  }
+
+  if (confidence === "medium") {
+    return "Helpful answer";
+  }
+
+  if (confidence === "low") {
+    return "Needs human help";
+  }
+
+  return "Answer";
+}
+
+function getLoadingStatus(input: string) {
+  const lower = input.trim().toLowerCase();
+
+  if (lower.includes("price") || lower.includes("cost") || lower.includes("product")) {
+    return "Checking product info...";
+  }
+
+  if (lower.includes("doc") || lower.includes("how") || lower.includes("setup") || lower.includes("fix")) {
+    return "Checking studio docs...";
+  }
+
+  if (lower.includes("contact") || lower.includes("support") || lower.includes("human")) {
+    return "Checking support options...";
+  }
+
+  return "Finding the best answer...";
+}
+
+function getSuggestedPrompt(input: string, suggestionIndex: number) {
+  const lower = input.trim().toLowerCase();
+  if (!lower) {
+    return QUICK_PROMPTS[suggestionIndex % QUICK_PROMPTS.length].prompt;
+  }
+
+  if (lower.includes("product") || lower.includes("app")) {
+    return "What products do you have?";
+  }
+
+  if (lower.includes("lead") || lower.includes("recovery")) {
+    return "Tell me about Lead Recovery";
+  }
+
+  if (lower.includes("support") || lower.includes("contact")) {
+    return "How do I contact support?";
+  }
+
+  return QUICK_PROMPTS[suggestionIndex % QUICK_PROMPTS.length].prompt;
+}
 
 function buildAssistantErrorMessage(error: unknown) {
   if (error instanceof Error && error.message) {
@@ -48,10 +112,12 @@ const NStepAI: React.FC = () => {
       content:
         "Hello! I'm NStep AI, your guide to Northern Step Studio. I can help you with product information, documentation, or any questions you have about our work. How can I assist you today?",
       timestamp: new Date(),
+      confidence: "high",
     },
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [suggestionIndex, setSuggestionIndex] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -61,6 +127,27 @@ const NStepAI: React.FC = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    if (input.trim()) {
+      return;
+    }
+
+    const interval = window.setInterval(() => {
+      setSuggestionIndex((current) => (current + 1) % QUICK_PROMPTS.length);
+    }, 6000);
+
+    return () => window.clearInterval(interval);
+  }, [input]);
+
+  const lastAssistantMessage = [...messages].reverse().find((message) => message.role === "assistant");
+  const humanHandoffAvailable = lastAssistantMessage?.confidence === "low" || lastAssistantMessage?.mode === "fallback";
+  const chatStatus = isLoading
+    ? getLoadingStatus(input)
+    : humanHandoffAvailable
+      ? "Need a human? We can route you there."
+      : "Ready when you are.";
+  const activeSuggestion = getSuggestedPrompt(input, suggestionIndex);
 
   const handleSend = async () => {
     const trimmedInput = input.trim();
@@ -97,8 +184,8 @@ const NStepAI: React.FC = () => {
         id: (Date.now() + 1).toString(),
         role: "assistant",
         content: typeof data?.answer === "string" ? data.answer : FALLBACK_ERROR_MESSAGE,
-        sources: Array.isArray(data?.sources) ? data.sources : [],
         mode: data?.mode,
+        confidence: data?.confidence,
         warning: data?.warning,
         timestamp: new Date(),
       };
@@ -110,6 +197,7 @@ const NStepAI: React.FC = () => {
         id: (Date.now() + 1).toString(),
         role: "assistant",
         content: buildAssistantErrorMessage(error),
+        confidence: "low",
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, errorMessage]);
@@ -175,30 +263,32 @@ const NStepAI: React.FC = () => {
                   {message.content}
                 </div>
 
-                {message.role === "assistant" && message.warning && (
-                  <p className="max-w-[32rem] px-1 text-[11px] font-medium leading-relaxed text-yellow-400/80">
-                    {message.warning}
-                  </p>
-                )}
-
-                {message.sources && message.sources.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-1">
-                    {message.sources.map((source) => (
-                      <Link
-                        key={source.url}
-                        to={source.url}
-                        className="text-xs px-2.5 py-1 bg-studio-card border border-studio-border rounded-lg text-studio-text/60 hover:text-studio-accent hover:border-studio-accent/30 flex items-center gap-1.5 transition-colors"
-                      >
-                        <ExternalLink className="w-3 h-3" />
-                        {source.title}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-
-                <span className="text-[10px] text-studio-text/40 font-medium px-1 uppercase tracking-wider">
-                  {message.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                </span>
+                <div className="flex flex-wrap items-center gap-2 px-1">
+                  {message.role === "assistant" && (
+                    <span
+                      className={`rounded-full border px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.18em] ${
+                        message.confidence === "low"
+                          ? "border-yellow-500/30 bg-yellow-500/10 text-yellow-300"
+                          : message.confidence === "medium"
+                            ? "border-blue-500/30 bg-blue-500/10 text-blue-300"
+                            : "border-accent/30 bg-accent/10 text-accent"
+                      }`}
+                    >
+                      {getConfidenceLabel(message.confidence)}
+                    </span>
+                  )}
+                  <span className="text-[10px] text-studio-text/40 font-medium uppercase tracking-wider">
+                    {message.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                  </span>
+                  {message.role === "assistant" && message.confidence === "low" && (
+                    <Link
+                      to="/contact?intent=general-support&source=nstep_ai"
+                      className="text-[10px] font-black uppercase tracking-[0.18em] text-studio-accent transition-colors hover:text-studio-accent/80"
+                    >
+                      Talk to a human
+                    </Link>
+                  )}
+                </div>
               </div>
 
               {message.role === "user" && (
@@ -214,12 +304,13 @@ const NStepAI: React.FC = () => {
               <div className="w-10 h-10 rounded-full bg-studio-accent/10 border border-studio-accent/20 flex items-center justify-center shrink-0 animate-pulse">
                 <Bot className="w-5 h-5 text-studio-accent" />
               </div>
-              <div className="bg-studio-card border border-studio-border px-5 py-3.5 rounded-2xl flex items-center gap-2">
+              <div className="bg-studio-card border border-studio-border px-5 py-3.5 rounded-2xl flex items-center gap-3">
                 <div className="flex gap-1">
                   <span className="w-1.5 h-1.5 bg-studio-accent rounded-full animate-bounce [animation-delay:-0.3s]" />
                   <span className="w-1.5 h-1.5 bg-studio-accent rounded-full animate-bounce [animation-delay:-0.15s]" />
                   <span className="w-1.5 h-1.5 bg-studio-accent rounded-full animate-bounce" />
                 </div>
+                <span className="text-xs font-medium text-studio-text/60">{chatStatus}</span>
               </div>
             </div>
           )}
@@ -242,7 +333,7 @@ const NStepAI: React.FC = () => {
                 name="message"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask me about our products, docs, or status..."
+                placeholder={input.trim() ? "Continue your question..." : `Try: ${activeSuggestion}`}
                 autoComplete="off"
                 spellCheck={false}
                 className="w-full bg-studio-card/80 backdrop-blur-xl border border-studio-border hover:border-studio-accent/30 focus:border-studio-accent focus:ring-4 focus:ring-studio-accent/5 rounded-2xl px-6 py-4 outline-none transition-[background-color,border-color,box-shadow] pr-16 shadow-xl shadow-black/5 text-studio-text placeholder:text-studio-text/40"
@@ -256,28 +347,41 @@ const NStepAI: React.FC = () => {
                 {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
               </button>
             </form>
-            <div className="mt-3 flex gap-4 justify-center">
+            <div className="mt-3 flex flex-wrap gap-2 justify-center">
               <button
                 type="button"
-                onClick={() => setInput("What products do you have?")}
+                onClick={() => setInput(QUICK_PROMPTS[0].prompt)}
                 className="text-[11px] font-semibold text-studio-text/40 hover:text-studio-accent transition-colors bg-studio-card/50 border border-studio-border/50 px-2.5 py-1 rounded-lg"
               >
-                Products Catalog
+                {QUICK_PROMPTS[0].label}
               </button>
               <button
                 type="button"
-                onClick={() => setInput("Tell me about Neuromove")}
+                onClick={() => setInput(QUICK_PROMPTS[1].prompt)}
                 className="text-[11px] font-semibold text-studio-text/40 hover:text-studio-accent transition-colors bg-studio-card/50 border border-studio-border/50 px-2.5 py-1 rounded-lg"
               >
-                About Neuromove
+                {QUICK_PROMPTS[1].label}
               </button>
               <button
                 type="button"
-                onClick={() => setInput("How do I contact support?")}
+                onClick={() => setInput(QUICK_PROMPTS[2].prompt)}
                 className="text-[11px] font-semibold text-studio-text/40 hover:text-studio-accent transition-colors bg-studio-card/50 border border-studio-border/50 px-2.5 py-1 rounded-lg"
               >
-                Support Info
+                {QUICK_PROMPTS[2].label}
               </button>
+            </div>
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-3 text-center">
+              <span className="text-[10px] font-black uppercase tracking-[0.28em] text-studio-text/35">
+                {chatStatus}
+              </span>
+              {humanHandoffAvailable && (
+                <Link
+                  to="/contact?intent=general-support&source=nstep_ai"
+                  className="btn-pill-ghost-compact"
+                >
+                  Talk to a human
+                </Link>
+              )}
             </div>
           </div>
         </div>

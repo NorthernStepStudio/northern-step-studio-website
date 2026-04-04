@@ -1,10 +1,12 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 import { useMemo } from "react";
+import type { Components } from "react-markdown";
 import { Mountain, Target, Rocket, Heart, Code, Gamepad2, Cpu, Sparkles, ArrowRight } from "lucide-react";
 import GlitchedText from "@/react-app/components/GlitchedText";
 import SEO from "@/react-app/components/SEO";
 import { BRAND_ASSETS } from "@/react-app/lib/site";
+import { brandifyMarkdown, brandifyText, isBrandText } from "@/react-app/lib/brand";
 import { useApps } from "@/react-app/hooks/useApps";
 import { getAppCategoryLabel } from "@/react-app/lib/appCategories";
 import { useSiteContent } from "@/react-app/hooks/useSiteContent";
@@ -128,6 +130,14 @@ export default function About() {
     return apps.filter((app: App) => app.visibility !== "hidden").slice(0, 6);
   }, [apps]);
 
+  const markdownComponents: Components = {
+    strong: ({ children }) => (
+      <strong className={isBrandText(children) ? "font-black text-accent" : "font-semibold text-foreground"}>
+        {children}
+      </strong>
+    ),
+  };
+
   return (
     <div className="min-h-screen pt-16 sm:pt-20 px-4 sm:px-6 pb-12">
       <SEO
@@ -144,10 +154,10 @@ export default function About() {
           </div>
           <span className="text-label text-accent mb-2 block text-xs sm:text-sm">{pageLabel}</span>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-normal mb-4 leading-tight">
-            <GlitchedText text={pageTitle} duration={600} />
+            <GlitchedText text={pageTitle} duration={600} className="text-accent" />
           </h1>
           <p className="text-muted-foreground font-normal max-w-2xl mx-auto text-sm sm:text-base">
-            {pageSubtitle}
+            {brandifyText(pageSubtitle)}
           </p>
         </div>
 
@@ -162,13 +172,13 @@ export default function About() {
           <div className="space-y-4 text-muted-foreground font-normal text-sm sm:text-base leading-relaxed">
             {dynamicContent ? (
               <div className="prose prose-invert max-w-none">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {dynamicContent}
+                <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                  {brandifyMarkdown(dynamicContent)}
                 </ReactMarkdown>
               </div>
             ) : (
               storyParagraphs.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
+                <p key={paragraph}>{brandifyText(paragraph)}</p>
               ))
             )}
           </div>
@@ -182,7 +192,7 @@ export default function About() {
               {mission.title}
             </h2>
             <p className="text-muted-foreground font-normal max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
-              {mission.description}
+              {brandifyText(mission.description)}
             </p>
           </div>
         </div>
@@ -192,7 +202,7 @@ export default function About() {
             <span className="text-label text-accent mb-2 block text-xs sm:text-sm">{portfolio.label}</span>
             <h2 className="text-xl sm:text-2xl font-black uppercase mb-3">{portfolio.title}</h2>
             <p className="text-muted-foreground font-normal max-w-2xl mx-auto text-sm sm:text-base">
-              {portfolio.description}
+              {brandifyText(portfolio.description)}
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

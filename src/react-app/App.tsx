@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router";
 import { AuthProvider } from "@/react-app/lib/auth";
 import ScrollToTop from "@/react-app/components/ScrollToTop";
 import PageViewTracker from "@/react-app/components/PageViewTracker";
+import BrandAccentizer from "@/react-app/components/BrandAccentizer";
 import PublicLayout from "@/react-app/components/PublicLayout";
 import AdminLayout from "@/react-app/components/AdminLayout";
 import AccountSettingsLayout from "@/react-app/components/AccountSettingsLayout";
@@ -102,6 +103,7 @@ function MaintenanceCheck({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <AuthProvider>
+      <BrandAccentizer />
       <MaintenanceCheck>
         <Router>
           <ScrollToTop />

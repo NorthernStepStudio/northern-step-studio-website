@@ -3,6 +3,7 @@ import { Clock3, Mail, MessageSquare, Shield, Users } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useSiteContent } from "@/react-app/hooks/useSiteContent";
+import { brandifyMarkdown, isBrandText } from "@/react-app/lib/brand";
 
 const defaultLegalContent = `
 ## LEGAL FOUNDATION
@@ -85,6 +86,11 @@ const summaryCards = [
 ];
 
 const markdownComponents: Components = {
+  strong: ({ children }) => (
+    <strong className={isBrandText(children) ? "font-black text-accent" : "font-semibold text-foreground"}>
+      {children}
+    </strong>
+  ),
   h2: ({ children }) => (
     <h2 className="mt-10 text-2xl sm:text-3xl font-black uppercase tracking-tight text-foreground first:mt-0">
       {children}
@@ -131,7 +137,7 @@ const markdownComponents: Components = {
 export default function TermsOfService() {
   const { content: termsContent, loading: termsLoading, updatedAt: termsUpdatedAt } = useSiteContent("terms_content");
   const loading = termsLoading;
-  const content = termsContent || defaultLegalContent;
+  const content = brandifyMarkdown(termsContent || defaultLegalContent);
   const updatedAtLabel = termsUpdatedAt
     ? new Date(termsUpdatedAt).toLocaleDateString(undefined, {
         year: "numeric",

@@ -3,6 +3,7 @@ import ReactMarkdown from "react-markdown";
 import { ArrowLeft, BookOpen, ChevronRight } from "lucide-react";
 import SEO from "@/react-app/components/SEO";
 import { getDocsArticleBySlug } from "@/react-app/data/docs";
+import { brandifyMarkdown, brandifyText, isBrandText } from "@/react-app/lib/brand";
 
 export default function DocsArticle() {
   const { slug } = useParams<{ slug: string }>();
@@ -59,12 +60,22 @@ export default function DocsArticle() {
           <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tighter mb-4">
             {article.slug.replace(/-/g, " ")}
           </h1>
-          <p className="text-muted-foreground text-base leading-relaxed">{article.summary}</p>
+          <p className="text-muted-foreground text-base leading-relaxed">{brandifyText(article.summary)}</p>
         </header>
 
         <div className="card-dark-wise">
           <div className="prose prose-invert max-w-none prose-p:text-foreground/90 prose-li:text-foreground/90 prose-strong:text-foreground prose-headings:text-foreground prose-headings:uppercase prose-headings:tracking-tight prose-headings:font-black prose-a:text-accent">
-            <ReactMarkdown>{article.body}</ReactMarkdown>
+            <ReactMarkdown
+              components={{
+                strong: ({ children }) => (
+                  <strong className={isBrandText(children) ? "font-black text-accent" : "font-semibold text-foreground"}>
+                    {children}
+                  </strong>
+                ),
+              }}
+            >
+              {brandifyMarkdown(article.body)}
+            </ReactMarkdown>
           </div>
         </div>
       </article>

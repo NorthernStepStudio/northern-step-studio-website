@@ -10,6 +10,7 @@ import { useAuth } from "@/react-app/lib/auth";
 import { usePermissions } from "@/react-app/hooks/usePermissions";
 import { getRoleDisplayLabel } from "@/shared/auth";
 import NStepBrand from "./NStepBrand";
+import { brandifyText } from "@/react-app/lib/brand";
 
 type AccountNavItem = {
   to: string;
@@ -49,7 +50,9 @@ export default function AccountSettingsLayout() {
               <NStepBrand markClassName="h-11 w-11" wordmarkClassName="text-base" />
               <div className="min-w-0">
                 <p className="text-[11px] font-black uppercase tracking-[0.18em] text-accent">Account Center</p>
-                <p className="truncate text-sm font-semibold text-muted-foreground">Northern Step Studio</p>
+                <p className="truncate text-sm font-semibold text-muted-foreground">
+                  {brandifyText("Northern Step Studio")}
+                </p>
               </div>
             </Link>
           </div>

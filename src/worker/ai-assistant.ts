@@ -17,6 +17,7 @@ export interface ChatResponse {
   answer: string;
   sources: ChatSource[];
   mode: "gemini" | "fallback";
+  confidence: "low" | "medium" | "high";
   warning?: string;
 }
 
@@ -92,6 +93,7 @@ export const handleAiChat = async (c: Context) => {
       answer,
       sources: context.sources,
       mode: "gemini",
+      confidence: "high",
     });
   } catch (error) {
     console.error("[NStep AI] Gemini generation error:", error);
@@ -366,6 +368,7 @@ function getFallbackResponse(query: string, warning?: string): ChatResponse {
         "You can reach Northern Step Studio via the Contact page or email hello@northernstepstudio.com. We typically respond within 24-48 hours.",
       sources: [{ title: "Contact Us", url: "/contact" }],
       mode: "fallback",
+      confidence: "low",
       warning,
     };
   }
@@ -376,6 +379,7 @@ function getFallbackResponse(query: string, warning?: string): ChatResponse {
         "We have several active products including NexusBuild, Lead Recovery Service (Missed Call Text Back), and ProvLy. You can explore the full catalog in our App Hub.",
       sources: [{ title: "App Hub", url: "/apps" }],
       mode: "fallback",
+      confidence: "low",
       warning,
     };
   }
@@ -388,6 +392,7 @@ function getFallbackResponse(query: string, warning?: string): ChatResponse {
       { title: "Contact Us", url: "/contact" },
     ],
     mode: "fallback",
+    confidence: "low",
     warning,
   };
 }

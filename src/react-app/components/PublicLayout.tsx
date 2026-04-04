@@ -1,6 +1,7 @@
 import { Outlet, Link } from "react-router";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/react-app/lib/auth";
+import { brandifyText } from "@/react-app/lib/brand";
 import { LogOut, User, Settings, AlertTriangle, X, Menu, ArrowRight, LayoutDashboard, ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
 import NotificationBell from "./NotificationBell";
@@ -16,7 +17,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/react-app/components/ui/dropdown-menu";
-import { SITE_NAME } from "@/react-app/lib/site";
 
 interface MaintenanceSettings {
   scheduled_date: string | null;
@@ -102,18 +102,17 @@ export default function PublicLayout() {
             <Link to="/contact" className="text-[11px] xl:text-xs 2xl:text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black whitespace-nowrap">
               {t("nav.contact")}
             </Link>
-
-              <DropdownMenu>
-                <DropdownMenuTrigger className="flex items-center gap-1.5 text-[11px] xl:text-xs 2xl:text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black whitespace-nowrap focus:outline-none">
-                  {t("common.more") || "More"}
-                  <ChevronDown className="w-4 h-4" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48 bg-background/95 backdrop-blur-md">
-                  <DropdownMenuItem asChild>
-                    <Link to="/about" className="uppercase font-black text-xs py-2.5">
-                      {t("nav.about")}
-                    </Link>
-                  </DropdownMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center gap-1.5 text-[11px] xl:text-xs 2xl:text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black whitespace-nowrap focus:outline-none">
+                {t("common.more") || "More"}
+                <ChevronDown className="w-4 h-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48 bg-background/95 backdrop-blur-md">
+                <DropdownMenuItem asChild>
+                  <Link to="/about" className="uppercase font-black text-xs py-2.5">
+                    {t("nav.about")}
+                  </Link>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </nav>
@@ -283,7 +282,7 @@ export default function PublicLayout() {
                 <NStepBrand markClassName="h-10 w-10" wordmarkClassName="text-sm" />
               </Link>
               <p className="mt-3 text-xs font-black uppercase tracking-[0.24em] text-foreground">
-                {SITE_NAME}
+                {brandifyText("Northern Step Studio")}
               </p>
               <p className="mt-4 text-sm text-muted-foreground font-normal">
                 {t("footer.tagline")}

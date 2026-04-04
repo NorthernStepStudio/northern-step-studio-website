@@ -11,14 +11,15 @@ import {
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import SEO from "@/react-app/components/SEO";
-import { BRAND_ASSETS, SITE_NAME } from "@/react-app/lib/site";
+import { BRAND_ASSETS } from "@/react-app/lib/site";
+import { brandifyText } from "@/react-app/lib/brand";
 
 type PortfolioItem = {
   nameKey: string;
   descriptionKey: string;
   outcomeKey: string;
   statusKey: string;
-  link: string;
+  link?: string;
   image?: string;
   icon: typeof PhoneCall;
 };
@@ -87,7 +88,7 @@ function PortfolioCard({
 
   return (
     <Link
-      to={link}
+      to={link!}
       className="group rounded-3xl border border-border bg-card p-6 sm:p-7 transition-all hover:border-accent/50 hover:shadow-[0_18px_35px_rgba(88,171,255,0.16)]"
     >
       <div className="flex items-start gap-4">
@@ -127,54 +128,55 @@ function FeaturedPortfolioCard(props: PortfolioItem) {
   const isService = props.nameKey === "home.portfolio_lead_title";
 
   return (
-    <Link
-      to={props.link}
-      className="group relative overflow-hidden rounded-[2rem] border border-accent/35 bg-gradient-to-br from-card via-card to-accent/10 p-6 sm:p-8 lg:p-10 transition-all hover:border-accent/60 hover:shadow-[0_24px_60px_rgba(88,171,255,0.18)]"
-    >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(177,225,85,0.12),transparent_42%),radial-gradient(circle_at_bottom_left,rgba(88,171,255,0.08),transparent_35%)] pointer-events-none" />
-      <div className="relative z-10 flex flex-col gap-6 sm:gap-7">
-        <div className="flex flex-wrap items-center justify-center gap-2 text-center">
-          <span className="text-[10px] font-black uppercase tracking-[0.22em] text-accent">
-            {t(props.statusKey)}
-          </span>
-          <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-            {isService ? t("home.portfolio_type_service") : t("home.portfolio_type_app")}
-          </span>
-        </div>
+    <div className="relative overflow-hidden rounded-[2rem] border border-accent/35 bg-card p-6 sm:p-8 lg:p-10 transition-all hover:border-accent/60 hover:shadow-[0_24px_60px_rgba(88,171,255,0.18)]">
+      <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+        <div className="flex min-w-0 flex-1 flex-col gap-5 text-left">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-[10px] font-black uppercase tracking-[0.22em] text-accent">
+              {t(props.statusKey)}
+            </span>
+            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+              {isService ? t("home.portfolio_type_service") : t("home.portfolio_type_app")}
+            </span>
+          </div>
 
-        <div className="flex justify-center">
-          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-3xl border border-accent/30 bg-accent/10 shadow-[0_0_0_1px_rgba(177,225,85,0.15)]">
-            {props.image ? (
-              <img src={props.image} alt="" className="h-full w-full object-contain p-3" />
-            ) : (
-              <PhoneCall className="h-7 w-7 text-accent" />
-            )}
+          <div className="flex items-start gap-4">
+            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-3xl border border-accent/30 bg-accent/10 shadow-[0_0_0_1px_rgba(177,225,85,0.15)]">
+              {props.image ? (
+                <img src={props.image} alt="" className="h-full w-full object-contain p-3" />
+              ) : (
+                <PhoneCall className="h-7 w-7 text-accent" />
+              )}
+            </div>
+
+            <div className="min-w-0 flex-1">
+              <h3 className="text-2xl sm:text-3xl lg:text-5xl font-black uppercase tracking-tighter text-foreground">
+                {t(props.nameKey)}
+              </h3>
+              <p className="mt-4 max-w-2xl text-sm sm:text-base leading-relaxed text-muted-foreground">
+                {t(props.descriptionKey)}
+              </p>
+              <p className="mt-6 text-sm font-black uppercase tracking-[0.24em] text-accent">
+                {t(props.outcomeKey)}
+              </p>
+            </div>
           </div>
         </div>
 
-        <div className="mx-auto max-w-3xl text-center">
-          <h3 className="text-2xl sm:text-3xl lg:text-5xl font-black uppercase tracking-tighter text-foreground">
-            {t(props.nameKey)}
-          </h3>
-          <p className="mt-4 text-sm sm:text-base leading-relaxed text-muted-foreground">
-            {t(props.descriptionKey)}
-          </p>
-          <p className="mt-6 text-sm font-black uppercase tracking-[0.24em] text-accent">
-            {t(props.outcomeKey)}
-          </p>
-        </div>
-
-        <div className="flex flex-col gap-4 border-t border-border/60 pt-5 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-row items-center gap-4 border-t border-border/60 pt-5 lg:flex-col lg:items-end lg:border-t-0 lg:border-l lg:pl-6 lg:pt-0">
           <p className="text-xs sm:text-sm font-bold uppercase tracking-[0.18em] text-muted-foreground">
             {t(props.statusKey)}
           </p>
-          <span className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-black uppercase text-accent-foreground transition-transform group-hover:translate-x-0.5">
+          <Link
+            to={props.link!}
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-black uppercase text-accent-foreground transition-colors hover:bg-accent/90"
+          >
             {t("apps.open")}
             <ArrowRight className="h-4 w-4" />
-          </span>
+          </Link>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
 
@@ -193,7 +195,7 @@ export default function HomePage() {
       <section className="px-4 pt-16 sm:pt-20">
         <div className="container mx-auto max-w-4xl text-center">
           <p className="text-[10px] font-black uppercase tracking-[0.4em] text-muted-foreground">
-            {SITE_NAME}
+            {brandifyText("Northern Step Studio")}
           </p>
           <h1 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.05] text-foreground">
             {t("home.hero_title")}
