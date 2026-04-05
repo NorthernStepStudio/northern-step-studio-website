@@ -16,7 +16,7 @@ export function getDb(env: Env) {
   if (connectionString && !connectionString.includes("YOUR_PASSWORD")) {
     if (!sql) {
       sql = postgres(connectionString, {
-        ssl: "require",
+        ssl: { rejectUnauthorized: false },
         max: 1,
         idle_timeout: 1, // Close connection immediately
         connect_timeout: 2,
