@@ -1,39 +1,57 @@
 import postgres from "postgres";
 
+export interface Env {
+  DATABASE_URL?: string;
+  SUPABASE_DB_URL?: string;
+  DB?: any;
+  [key: string]: any;
+}
+
+let sql: any = null;
+
 export function getDb(env: Env) {
-  const d1 = (env as any).DB;
-  if (d1 && typeof d1.prepare === "function") {
-    return createD1Client(d1);
-  }
-
   const connectionString = env.SUPABASE_DB_URL || env.DATABASE_URL;
+
+  // Prioritize Postgres and cache the instance
+  if (connectionString && !connectionString.includes("YOUR_PASSWORD")) {
+    if (!sql) {
+      sql = postgres(connectionString, {
+        ssl: "require",
+        max: 1,
+        idle_timeout: 1, // Close connection immediately
+        connect_timeout: 2,
+      });
+    }
+    const client = sql as any;
+    client.isPostgres = true;
+    client.isD1 = false;
+    return client;
+  }
+
+  // Fallback to D1 if Postgres is not available
+  const d1 = env.DB;
+  if (d1 && typeof d1.prepare === "function") {
+    const client = createD1Client(d1);
+    client.isPostgres = false;
+    client.isD1 = true;
+    return client;
+  }
+
+  // Final Fallback: Development Mock
+  console.warn("[Database] Using MOCK database for development.");
   
-  // Development Mock: If the password is not set, return a proxy that handles queries gracefully
-  if (!connectionString || connectionString.includes("YOUR_PASSWORD")) {
-    console.warn("[Database] Using MOCK database for development.");
-    
-    const mockSql = ((_strings: TemplateStringsArray, ..._values: any[]) => {
-      // Return a proxy that looks like a promise/result
-      const result: any = Promise.resolve([]);
-      // Mock the tagged template behavior
-      return result;
-    }) as any;
+  const mockSql = ((_strings: TemplateStringsArray, ..._values: any[]) => {
+    // Return a proxy that looks like a promise/result
+    const result: any = Promise.resolve([]);
+    // Mock the tagged template behavior
+    return result;
+  }) as any;
 
-    // Add common properties used by the postgres client if any
-    mockSql.close = () => Promise.resolve();
-    mockSql.begin = (cb: any) => cb(mockSql);
-    
-    return mockSql;
-  }
-
-  if (!connectionString) {
-    throw new Error("DATABASE_URL or SUPABASE_DB_URL is not configured in environment variables.");
-  }
-
-  return postgres(connectionString, {
-    ssl: "require",
-    max: 1, // On Edge functions, we want to keep connections low
-  });
+  // Add common properties used by the postgres client if any
+  mockSql.close = () => Promise.resolve();
+  mockSql.begin = (cb: any) => cb(mockSql);
+  
+  return mockSql;
 }
 
 function createD1Client(db: any) {

@@ -177,7 +177,7 @@ export function getSessionCookieOptions(requestUrl: string) {
   };
 }
 
-import { getDb } from "./db";
+import { getDb, type Env } from "./db";
 
 // ... (previous functions unchanged until findDatabaseUserByEmail)
 
@@ -268,7 +268,7 @@ export async function createLocalSession(c: { env: Env; req: { url: string } }, 
   const sessionTokenHash = await sha256(sessionToken);
   const sql = getDb(c.env);
 
-  if ((c.env as any).DB) {
+  if (sql.isD1) {
     await sql`
       INSERT INTO user_sessions (
         user_id,
