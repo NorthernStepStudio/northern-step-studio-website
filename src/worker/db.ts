@@ -7,29 +7,18 @@ export interface Env {
   [key: string]: any;
 }
 
-let sql: any = null;
-
-// @ts-ignore - cloudflare:sockets is available in the Cloudflare Worker environment
-import { connect } from 'cloudflare:sockets';
+import { neon } from '@neondatabase/serverless';
 
 export function getDb(env: Env) {
   const connectionString = env.SUPABASE_DB_URL || env.DATABASE_URL;
 
   // 1. Prioritize Postgres with Cache
   if (connectionString && !connectionString.includes("YOUR_PASSWORD")) {
-    if (!sql) {
-      sql = postgres(connectionString, {
-        ssl: { rejectUnauthorized: false },
-        max: 1,
-        // @ts-ignore - cloudflare:sockets bridge
-        connect: (opts: any) => {
-          return connect({ hostname: opts.hostname, port: opts.port }).writable;
-        },
-        idle_timeout: 1, 
-        connect_timeout: 2,
-      });
-    }
-    const pgClient = sql as any;
+    const rawSql = neon(connectionString);
+    const pgClient = ((strings: TemplateStringsArray, ...values: any[]) => {
+      return rawSql(strings, ...values).then((res: any) => res ?? []);
+    }) as any;
+    
     pgClient.isPostgres = true;
     pgClient.isD1 = false;
     return pgClient;
