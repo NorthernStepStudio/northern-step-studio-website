@@ -7,16 +7,33 @@ export interface Env {
   [key: string]: any;
 }
 
-import { neon } from '@neondatabase/serverless';
+import pg from "pg";
 
 export function getDb(env: Env) {
   const connectionString = env.SUPABASE_DB_URL || env.DATABASE_URL;
 
-  // 1. Prioritize Postgres with Cache
+  // 1. Prioritize Postgres
   if (connectionString && !connectionString.includes("YOUR_PASSWORD")) {
-    const rawSql = neon(connectionString);
     const pgClient = ((strings: TemplateStringsArray, ...values: any[]) => {
-      return rawSql(strings, ...values).then((res: any) => res ?? []);
+      // Create a fresh client for every query for 100% stability in the Worker
+      const client = new pg.Client({ connectionString });
+      
+      return client.connect()
+        .then(() => {
+          let query = strings[0] ?? "";
+          for (let i = 0; i < values.length; i++) {
+            query += `$${i + 1}${strings[i + 1] ?? ""}`;
+          }
+          return client.query(query, values);
+        })
+        .then((res: any) => {
+          client.end().catch(() => {}); // Fire and forget closure
+          return res.rows ?? [];
+        })
+        .catch((error: any) => {
+          client.end().catch(() => {});
+          throw error;
+        });
     }) as any;
     
     pgClient.isPostgres = true;
