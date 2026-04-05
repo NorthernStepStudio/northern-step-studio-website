@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import {
   Send, Bot, User, Loader2, Sparkles, ChevronLeft,
-  ChevronDown, ChevronUp, ExternalLink, Database, Zap,
+  ChevronDown, ChevronUp, ExternalLink, Database,
 } from "lucide-react";
 import { Link } from "react-router";
 
