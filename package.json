@@ -6,6 +6,9 @@
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "@hono/zod-validator": "^0.5.0",
+    "@langchain/core": "^1.1.39",
+    "@langchain/langgraph": "^1.2.7",
+    "@langchain/langgraph-checkpoint-postgres": "^1.0.1",
     "@supabase/supabase-js": "^2.100.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -55,6 +58,11 @@
     "knip": "knip",
     "lint": "eslint .",
     "deploy": "npm run build && npx vercel deploy --prod --yes",
-    "auto-deploy-node": "node ./scripts/auto-deploy.js"
+    "deploy:fast": "npm run build:vite && npx vercel deploy --prod --yes",
+    "build:vite": "vite build && node ./scripts/sanitize-dist.mjs",
+    "auto-deploy-node": "node ./scripts/auto-deploy.js",
+    "seed:knowledge": "npx tsx scripts/seed-knowledge.ts",
+    "seed:knowledge:dry": "npx tsx scripts/seed-knowledge.ts --dry-run",
+    "migrate:knowledge": "npx tsx scripts/seed-knowledge.ts --migrate --dry-run"
   }
 }

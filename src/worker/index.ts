@@ -6,9 +6,11 @@ import community from "./community";
 import featureToggles from "./feature-toggles";
 import maintenance from "./maintenance";
 import communityUploads from "./community-uploads";
+import revenue from "./revenue";
 import appShellHtml from "../../dist/index.html";
 import { getDb } from "./db";
 import { handleAiChat } from "./ai-assistant";
+import { searchKnowledgeChunks, getKnowledgeLaneHealth } from "./knowledge";
 import { sendEmail } from "./email";
 import {
   betaInterestNotificationEmail,
@@ -104,6 +106,22 @@ app.get("/api/health", async (c) => {
     timestamp: new Date().toISOString()
   });
 });
+
+app.all("/api", (c) =>
+  c.json({
+    status: "ok",
+    service: "northern-step-studio-website",
+    path: c.req.path,
+  }),
+);
+
+app.all("/api/", (c) =>
+  c.json({
+    status: "ok",
+    service: "northern-step-studio-website",
+    path: c.req.path,
+  }),
+);
 
 app.get("/api/ping", (c) => c.json({ status: "pong", path: c.req.path }));
 
@@ -3380,6 +3398,9 @@ app.get("/api/stripe/subscriptions", authMiddleware, async (c) => {
 // Mount community routes
 app.route("/api/community", community);
 
+// Mount lead recovery routes
+app.route("/api/admin/revenue", revenue);
+
 // User preferences endpoints
 app.get("/api/user/preferences", authMiddleware, async (c) => {
   const authUser = c.get("user");
@@ -3454,6 +3475,43 @@ app.route("/api/community-files", communityUploads);
 
 // NStep AI Chat
 app.post("/api/nstep-ai/chat", handleAiChat);
+
+// ─── Knowledge API ────────────────────────────────────────────────────────────
+
+/**
+ * GET /api/knowledge/search?q=...&lane=...&topN=5
+ * Lane-filtered full-text search against knowledge_chunks.
+ * Used by the Studio Supervisor to retrieve grounded evidence.
+ */
+app.get("/api/knowledge/search", async (c) => {
+  const q = c.req.query("q") ?? "";
+  const lane = (c.req.query("lane") ?? null) as any;
+  const topN = Math.min(20, Math.max(1, Number(c.req.query("topN") ?? 5)));
+
+  if (!q.trim()) {
+    return c.json({ error: "Query parameter 'q' is required." }, 400);
+  }
+
+  const db = getDb(c.env);
+  const result = await searchKnowledgeChunks(db, { query: q, lane, topN });
+  return c.json(result);
+});
+
+/**
+ * GET /api/knowledge/health
+ * Returns lane distribution of active chunks.
+ * Use this as the go/no-go check after running seed:knowledge.
+ */
+app.get("/api/knowledge/health", async (c) => {
+  const db = getDb(c.env);
+  const lanes = await getKnowledgeLaneHealth(db);
+  const total = lanes.reduce((sum, row) => sum + Number(row.chunk_count), 0);
+  return c.json({
+    status: total > 0 ? "ok" : "empty",
+    total_chunks: total,
+    lanes,
+  });
+});
 
 // Global Not Found Handler (at the very end)
 app.notFound((c) => {

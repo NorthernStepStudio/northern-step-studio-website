@@ -165,6 +165,7 @@ export default function TesterSignup() {
                 </label>
                 <select
                   required
+                  aria-label="Which app do you want to test?"
                   className="w-full rounded-2xl border border-border bg-background/70 px-4 py-3 text-foreground outline-none transition-all focus:border-accent focus:ring-2 focus:ring-accent/30"
                   value={formData.app_slug}
                   onChange={(event) => setFormData({ ...formData, app_slug: event.target.value })}

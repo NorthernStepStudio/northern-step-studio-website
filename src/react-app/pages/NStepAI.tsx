@@ -1,20 +1,36 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Send, Bot, User, Loader2, Sparkles, ChevronLeft } from "lucide-react";
+import {
+  Send, Bot, User, Loader2, Sparkles, ChevronLeft,
+  ChevronDown, ChevronUp, ExternalLink, Database, Zap,
+} from "lucide-react";
 import { Link } from "react-router";
 
 type ConfidenceLevel = "low" | "medium" | "high";
 
-interface ChatSource {
-  title: string;
-  url: string;
+interface TraceChunkRef {
+  chunkId: string;
+  docId: string;
+  title: string | null;
+  section: string | null;
+  lane: string;
+  score: number;
+  sourceUrl: string | null;
+}
+
+interface TraceReport {
+  route: string;
+  lane: string | null;
+  confidence: ConfidenceLevel;
+  totalDurationMs: number;
+  retrievedChunks: TraceChunkRef[];
 }
 
 interface ChatApiResponse {
   answer: string;
-  sources?: ChatSource[];
   mode?: "gemini" | "fallback";
   confidence?: ConfidenceLevel;
-  warning?: string;
+  sources?: string[];
+  trace?: TraceReport;
   error?: string;
 }
 
@@ -25,84 +41,206 @@ interface Message {
   timestamp: Date;
   mode?: "gemini" | "fallback";
   confidence?: ConfidenceLevel;
-  warning?: string;
+  sources?: string[];
+  trace?: TraceReport;
 }
 
 const FALLBACK_ERROR_MESSAGE =
   "I'm sorry, I'm having trouble connecting right now. Please try again or contact support if the issue persists.";
 
 const QUICK_PROMPTS = [
-  { label: "Products catalog", prompt: "What products do you have?" },
-  { label: "Lead Recovery", prompt: "Tell me about Lead Recovery" },
-  { label: "Support info", prompt: "How do I contact support?" },
+  { label: "NexusBuild",      prompt: "Tell me about NexusBuild" },
+  { label: "ProvLy",          prompt: "What is ProvLy and who is it for?" },
+  { label: "NooBS Investing", prompt: "How does NooBS Investing work?" },
+  { label: "Neuromove",       prompt: "What is Neuromove?" },
+  { label: "PasoScore",       prompt: "How does PasoScore help with credit?" },
+  { label: "Support",         prompt: "How do I contact support?" },
 ] as const;
 
-function getConfidenceLabel(confidence?: ConfidenceLevel) {
-  if (confidence === "high") {
-    return "Strong answer";
-  }
+const LANE_COLORS: Record<string, string> = {
+  nexusbuild:         "text-blue-400 border-blue-500/30 bg-blue-500/10",
+  provly:             "text-emerald-400 border-emerald-500/30 bg-emerald-500/10",
+  noobs:              "text-amber-400 border-amber-500/30 bg-amber-500/10",
+  neuromove:          "text-violet-400 border-violet-500/30 bg-violet-500/10",
+  pasoscore:          "text-rose-400 border-rose-500/30 bg-rose-500/10",
+  mctb:               "text-green-400 border-green-500/30 bg-green-500/10",
+  studio:             "text-studio-accent border-accent/30 bg-accent/10",
+  automation:         "text-green-400 border-green-500/30 bg-green-500/10",
+  service_automation: "text-green-400 border-green-500/30 bg-green-500/10",
+  consumer_utility:   "text-blue-400 border-blue-500/30 bg-blue-500/10",
+  finance:            "text-amber-400 border-amber-500/30 bg-amber-500/10",
+  guided_support:     "text-violet-400 border-violet-500/30 bg-violet-500/10",
+};
 
-  if (confidence === "medium") {
-    return "Helpful answer";
-  }
+function getLaneStyle(lane: string | null | undefined): string {
+  if (!lane) return "text-studio-accent border-accent/30 bg-accent/10";
+  return LANE_COLORS[lane] ?? "text-studio-accent border-accent/30 bg-accent/10";
+}
 
-  if (confidence === "low") {
-    return "Needs human help";
-  }
+function getConfidenceStyle(confidence?: ConfidenceLevel): string {
+  if (confidence === "high")   return "border-emerald-500/30 bg-emerald-500/10 text-emerald-300";
+  if (confidence === "medium") return "border-blue-500/30 bg-blue-500/10 text-blue-300";
+  return "border-yellow-500/30 bg-yellow-500/10 text-yellow-300";
+}
 
+function getConfidenceLabel(confidence?: ConfidenceLevel): string {
+  if (confidence === "high")   return "Strong answer";
+  if (confidence === "medium") return "Helpful answer";
+  if (confidence === "low")    return "Needs human help";
   return "Answer";
 }
 
-function getLoadingStatus(input: string) {
+function getLoadingStatus(input: string): string {
   const lower = input.trim().toLowerCase();
-
-  if (lower.includes("price") || lower.includes("cost") || lower.includes("product")) {
+  if (lower.includes("nexusbuild") || lower.includes("hardware") || lower.includes("build"))
+    return "Consulting NexusBuild expert...";
+  if (lower.includes("provly") || lower.includes("inventory") || lower.includes("claim"))
+    return "Consulting ProvLy expert...";
+  if (lower.includes("noobs") || lower.includes("invest") || lower.includes("finance"))
+    return "Consulting Finance expert...";
+  if (lower.includes("neuromove") || lower.includes("therapy") || lower.includes("ot"))
+    return "Consulting Guided Support expert...";
+  if (lower.includes("paso") || lower.includes("credit"))
+    return "Consulting PasoScore expert...";
+  if (lower.includes("price") || lower.includes("cost") || lower.includes("product"))
     return "Checking product info...";
-  }
-
-  if (lower.includes("doc") || lower.includes("how") || lower.includes("setup") || lower.includes("fix")) {
-    return "Checking studio docs...";
-  }
-
-  if (lower.includes("contact") || lower.includes("support") || lower.includes("human")) {
+  if (lower.includes("doc") || lower.includes("how") || lower.includes("setup") || lower.includes("fix"))
+    return "Searching studio docs...";
+  if (lower.includes("contact") || lower.includes("support") || lower.includes("human"))
     return "Checking support options...";
-  }
-
-  return "Finding the best answer...";
+  return "Studio Brain thinking...";
 }
 
-function getSuggestedPrompt(input: string, suggestionIndex: number) {
-  const lower = input.trim().toLowerCase();
-  if (!lower) {
-    return QUICK_PROMPTS[suggestionIndex % QUICK_PROMPTS.length].prompt;
-  }
-
-  if (lower.includes("product") || lower.includes("app")) {
-    return "What products do you have?";
-  }
-
-  if (lower.includes("lead") || lower.includes("recovery")) {
-    return "Tell me about Lead Recovery";
-  }
-
-  if (lower.includes("support") || lower.includes("contact")) {
-    return "How do I contact support?";
-  }
-
-  return QUICK_PROMPTS[suggestionIndex % QUICK_PROMPTS.length].prompt;
-}
-
-function buildAssistantErrorMessage(error: unknown) {
+function buildAssistantErrorMessage(error: unknown): string {
   if (error instanceof Error && error.message) {
-    if (error.message.startsWith("I'm sorry")) {
-      return error.message;
-    }
-
+    if (error.message.startsWith("I'm sorry")) return error.message;
     return `I'm sorry, ${error.message.charAt(0).toLowerCase()}${error.message.slice(1)}`;
   }
-
   return FALLBACK_ERROR_MESSAGE;
 }
+
+// ─── Thought Accordion ────────────────────────────────────────────────────────
+
+interface ThoughtAccordionProps {
+  trace: TraceReport;
+  sources?: string[];
+}
+
+const ThoughtAccordion: React.FC<ThoughtAccordionProps> = ({ trace, sources }) => {
+  const [open, setOpen] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const hasChunks = trace.retrievedChunks.length > 0;
+  const hasSources = sources && sources.length > 0;
+
+  useEffect(() => {
+    buttonRef.current?.setAttribute("aria-expanded", open ? "true" : "false");
+  }, [open]);
+
+  return (
+    <div className="mt-2 rounded-xl border border-studio-border/60 overflow-hidden text-xs">
+      <button
+        ref={buttonRef}
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center gap-2 px-3 py-2 bg-studio-card/60 hover:bg-studio-card transition-colors text-left"
+        aria-controls="thought-accordion-body"
+      >
+        <span className="font-semibold text-studio-text/70 flex-1">
+          Thought Trail
+          <span className="ml-2 font-normal text-studio-text/40">
+            {trace.route} · {trace.totalDurationMs}ms
+            {trace.lane ? ` · ${trace.lane}` : ""}
+          </span>
+        </span>
+        {open
+          ? <ChevronUp className="w-3.5 h-3.5 text-studio-text/40" />
+          : <ChevronDown className="w-3.5 h-3.5 text-studio-text/40" />
+        }
+      </button>
+
+      {open && (
+        <div id="thought-accordion-body" className="px-3 py-3 space-y-3 bg-studio-bg/40">
+
+          {trace.lane && (
+            <div className="flex flex-wrap gap-1.5">
+              <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full border text-[10px] font-bold uppercase tracking-widest ${getLaneStyle(trace.lane)}`}>
+                <Database className="w-2.5 h-2.5" />
+                {trace.lane}
+              </span>
+              <span className={`inline-flex items-center px-2 py-0.5 rounded-full border text-[10px] font-bold uppercase tracking-widest ${getConfidenceStyle(trace.confidence)}`}>
+                {getConfidenceLabel(trace.confidence)}
+              </span>
+            </div>
+          )}
+
+          {hasChunks && (
+            <div className="space-y-1.5">
+              <p className="text-[10px] font-black uppercase tracking-widest text-studio-text/40">Evidence</p>
+              <div className="space-y-1">
+                {trace.retrievedChunks.slice(0, 5).map((chunk) => (
+                  <div
+                    key={chunk.chunkId}
+                    className="flex items-start gap-2 px-2 py-1.5 rounded-lg bg-studio-card/50 border border-studio-border/40"
+                  >
+                    <span className={`shrink-0 mt-0.5 px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider border ${getLaneStyle(chunk.lane)}`}>
+                      {chunk.lane}
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-studio-text/80 truncate">
+                        {chunk.title ?? chunk.docId}
+                      </p>
+                      {chunk.section && (
+                        <p className="text-[10px] text-studio-text/40 truncate">{chunk.section}</p>
+                      )}
+                    </div>
+                    <span className="shrink-0 text-[10px] text-studio-text/30 font-mono">
+                      {chunk.score.toFixed(2)}
+                    </span>
+                    {chunk.sourceUrl && (
+                      <a
+                        href={chunk.sourceUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="shrink-0 text-studio-accent/60 hover:text-studio-accent transition-colors"
+                        aria-label="Open source"
+                      >
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {hasSources && (
+            <div className="space-y-1">
+              <p className="text-[10px] font-black uppercase tracking-widest text-studio-text/40">Sources</p>
+              <div className="flex flex-wrap gap-1.5">
+                {sources!.map((src, idx) => (
+                  <span
+                    key={idx}
+                    className="inline-block px-2 py-0.5 rounded-full bg-studio-card border border-studio-border/60 text-studio-text/60 text-[10px] font-medium"
+                  >
+                    {src}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {!hasChunks && !hasSources && (
+            <p className="text-studio-text/40 text-[10px]">
+              Answer generated from studio knowledge base without specific chunk evidence.
+            </p>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// ─── Main Component ───────────────────────────────────────────────────────────
 
 const NStepAI: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
@@ -110,7 +248,7 @@ const NStepAI: React.FC = () => {
       id: "1",
       role: "assistant",
       content:
-        "Hello! I'm NStep AI, your guide to Northern Step Studio. I can help you with product information, documentation, or any questions you have about our work. How can I assist you today?",
+        "Hello! I'm NStep AI — the Studio Brain for Northern Step Studio. I'm an expert on every product we build: NexusBuild, ProvLy, NooBS Investing, Neuromove, PasoScore, and more. What can I help you with?",
       timestamp: new Date(),
       confidence: "high",
     },
@@ -124,30 +262,24 @@ const NStepAI: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   };
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+  useEffect(() => { scrollToBottom(); }, [messages]);
 
   useEffect(() => {
-    if (input.trim()) {
-      return;
-    }
-
+    if (input.trim()) return;
     const interval = window.setInterval(() => {
       setSuggestionIndex((current) => (current + 1) % QUICK_PROMPTS.length);
-    }, 6000);
-
+    }, 5000);
     return () => window.clearInterval(interval);
   }, [input]);
 
-  const lastAssistantMessage = [...messages].reverse().find((message) => message.role === "assistant");
-  const humanHandoffAvailable = lastAssistantMessage?.confidence === "low" || lastAssistantMessage?.mode === "fallback";
+  const lastAssistantMessage = [...messages].reverse().find((m) => m.role === "assistant");
+  const humanHandoffAvailable =
+    lastAssistantMessage?.confidence === "low" || lastAssistantMessage?.mode === "fallback";
   const chatStatus = isLoading
     ? getLoadingStatus(input)
     : humanHandoffAvailable
       ? "Need a human? We can route you there."
       : "Ready when you are.";
-  const activeSuggestion = getSuggestedPrompt(input, suggestionIndex);
 
   const handleSend = async () => {
     const trimmedInput = input.trim();
@@ -167,7 +299,10 @@ const NStepAI: React.FC = () => {
     try {
       const response = await fetch("/api/nstep-ai/chat", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-nstep-trace": "1",
+        },
         body: JSON.stringify({
           message: trimmedInput,
           history: messages.map((m) => ({ role: m.role, content: m.content })),
@@ -186,21 +321,24 @@ const NStepAI: React.FC = () => {
         content: typeof data?.answer === "string" ? data.answer : FALLBACK_ERROR_MESSAGE,
         mode: data?.mode,
         confidence: data?.confidence,
-        warning: data?.warning,
+        sources: data?.sources,
+        trace: data?.trace,
         timestamp: new Date(),
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
       console.error("AI Error:", error);
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        content: buildAssistantErrorMessage(error),
-        confidence: "low",
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, errorMessage]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: (Date.now() + 1).toString(),
+          role: "assistant",
+          content: buildAssistantErrorMessage(error),
+          confidence: "low",
+          timestamp: new Date(),
+        },
+      ]);
     } finally {
       setIsLoading(false);
     }
@@ -208,14 +346,17 @@ const NStepAI: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-studio-bg text-studio-text flex flex-col items-center pt-24 sm:pt-28 lg:pt-32">
-      {/* Background Gradient Orbs */}
+      {/* Background orbs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none opacity-20">
         <div className="absolute -top-24 -left-24 w-96 h-96 bg-studio-accent rounded-full blur-[120px]" />
         <div className="absolute top-1/2 -right-24 w-80 h-80 bg-studio-accent/30 rounded-full blur-[100px]" />
       </div>
 
       <header className="w-full max-w-5xl px-6 py-8 flex items-center justify-between relative z-10">
-        <Link to="/" className="flex items-center gap-2 text-studio-text/60 hover:text-studio-text transition-colors">
+        <Link
+          to="/"
+          className="flex items-center gap-2 text-studio-text/60 hover:text-studio-text transition-colors"
+        >
           <ChevronLeft className="w-4 h-4" />
           <span>Back to Studio</span>
         </Link>
@@ -223,15 +364,17 @@ const NStepAI: React.FC = () => {
           <div className="p-2 bg-studio-accent/10 rounded-xl border border-studio-accent/20">
             <Sparkles className="w-5 h-5 text-studio-accent" />
           </div>
-          <h1 className="text-xl font-bold tracking-tight">NStep AI</h1>
+          <div>
+            <h1 className="text-xl font-bold tracking-tight">NStep AI</h1>
+            <p className="text-[10px] text-studio-text/40 font-semibold uppercase tracking-widest">Studio Brain</p>
+          </div>
         </div>
         <div className="w-24" />
       </header>
 
-      <main className="flex-1 w-full max-w-4xl px-4 flex flex-col relative z-10 pb-40">
-        {/* Messages Container */}
+      <main className="flex-1 w-full max-w-4xl px-4 flex flex-col relative z-10 pb-44">
         <div
-          className="flex-1 space-y-6 overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-studio-border/50"
+          className="flex-1 space-y-6 overflow-y-auto pr-4"
           role="log"
           aria-live="polite"
           aria-relevant="additions text"
@@ -249,7 +392,7 @@ const NStepAI: React.FC = () => {
               )}
 
               <div
-                className={`max-w-[80%] flex flex-col gap-2 ${
+                className={`max-w-[82%] flex flex-col gap-2 ${
                   message.role === "assistant" ? "items-start" : "items-end"
                 }`}
               >
@@ -266,13 +409,7 @@ const NStepAI: React.FC = () => {
                 <div className="flex flex-wrap items-center gap-2 px-1">
                   {message.role === "assistant" && (
                     <span
-                      className={`rounded-full border px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.18em] ${
-                        message.confidence === "low"
-                          ? "border-yellow-500/30 bg-yellow-500/10 text-yellow-300"
-                          : message.confidence === "medium"
-                            ? "border-blue-500/30 bg-blue-500/10 text-blue-300"
-                            : "border-accent/30 bg-accent/10 text-accent"
-                      }`}
+                      className={`rounded-full border px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.18em] ${getConfidenceStyle(message.confidence)}`}
                     >
                       {getConfidenceLabel(message.confidence)}
                     </span>
@@ -289,6 +426,12 @@ const NStepAI: React.FC = () => {
                     </Link>
                   )}
                 </div>
+
+                {message.role === "assistant" && message.trace && (
+                  <div className="w-full">
+                    <ThoughtAccordion trace={message.trace} sources={message.sources} />
+                  </div>
+                )}
               </div>
 
               {message.role === "user" && (
@@ -314,17 +457,18 @@ const NStepAI: React.FC = () => {
               </div>
             </div>
           )}
+
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Input Area */}
+        {/* Fixed input area */}
         <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-studio-bg via-studio-bg to-transparent px-4 pb-[calc(2rem+env(safe-area-inset-bottom))] pt-12 flex justify-center z-20">
           <div className="w-full max-w-3xl relative">
             <div className="absolute inset-0 bg-studio-accent/5 blur-2xl rounded-full -z-10" />
             <form
               className="relative group"
-              onSubmit={(event) => {
-                event.preventDefault();
+              onSubmit={(e) => {
+                e.preventDefault();
                 void handleSend();
               }}
             >
@@ -333,7 +477,11 @@ const NStepAI: React.FC = () => {
                 name="message"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder={input.trim() ? "Continue your question..." : `Try: ${activeSuggestion}`}
+                placeholder={
+                  input.trim()
+                    ? "Continue your question..."
+                    : `Try: ${QUICK_PROMPTS[suggestionIndex % QUICK_PROMPTS.length].prompt}`
+                }
                 autoComplete="off"
                 spellCheck={false}
                 className="w-full bg-studio-card/80 backdrop-blur-xl border border-studio-border hover:border-studio-accent/30 focus:border-studio-accent focus:ring-4 focus:ring-studio-accent/5 rounded-2xl px-6 py-4 outline-none transition-[background-color,border-color,box-shadow] pr-16 shadow-xl shadow-black/5 text-studio-text placeholder:text-studio-text/40"
@@ -347,29 +495,20 @@ const NStepAI: React.FC = () => {
                 {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
               </button>
             </form>
+
             <div className="mt-3 flex flex-wrap gap-2 justify-center">
-              <button
-                type="button"
-                onClick={() => setInput(QUICK_PROMPTS[0].prompt)}
-                className="text-[11px] font-semibold text-studio-text/40 hover:text-studio-accent transition-colors bg-studio-card/50 border border-studio-border/50 px-2.5 py-1 rounded-lg"
-              >
-                {QUICK_PROMPTS[0].label}
-              </button>
-              <button
-                type="button"
-                onClick={() => setInput(QUICK_PROMPTS[1].prompt)}
-                className="text-[11px] font-semibold text-studio-text/40 hover:text-studio-accent transition-colors bg-studio-card/50 border border-studio-border/50 px-2.5 py-1 rounded-lg"
-              >
-                {QUICK_PROMPTS[1].label}
-              </button>
-              <button
-                type="button"
-                onClick={() => setInput(QUICK_PROMPTS[2].prompt)}
-                className="text-[11px] font-semibold text-studio-text/40 hover:text-studio-accent transition-colors bg-studio-card/50 border border-studio-border/50 px-2.5 py-1 rounded-lg"
-              >
-                {QUICK_PROMPTS[2].label}
-              </button>
+              {QUICK_PROMPTS.map((qp) => (
+                <button
+                  key={qp.label}
+                  type="button"
+                  onClick={() => setInput(qp.prompt)}
+                  className="text-[11px] font-semibold text-studio-text/40 hover:text-studio-accent transition-colors bg-studio-card/50 border border-studio-border/50 px-2.5 py-1 rounded-lg"
+                >
+                  {qp.label}
+                </button>
+              ))}
             </div>
+
             <div className="mt-4 flex flex-wrap items-center justify-center gap-3 text-center">
               <span className="text-[10px] font-black uppercase tracking-[0.28em] text-studio-text/35">
                 {chatStatus}

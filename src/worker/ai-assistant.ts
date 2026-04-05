@@ -1,24 +1,17 @@
 import { Context } from "hono";
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { CATALOG_APPS } from "../shared/data/appsCatalog";
-import { docsArticles } from "../shared/data/docs";
-
-export interface ChatMessage {
-  role: "user" | "assistant";
-  content: string;
-}
-
-export interface ChatSource {
-  title: string;
-  url: string;
-}
+import { type ChatMessage } from "./studio-supervisor.ts";
+import { getDb } from "./db.ts";
+import { routeMessage } from "../../packages/response-os/router.ts";
+import { runStudioGraph } from "../../packages/response-os/graph/index.ts";
+import type { AgentInput, AgentOutput } from "../../packages/response-os/agents/types.ts";
 
 export interface ChatResponse {
   answer: string;
-  sources: ChatSource[];
-  mode: "gemini" | "fallback";
+  sources?: string[];
+  mode?: "gemini" | "fallback";
   confidence: "low" | "medium" | "high";
   warning?: string;
+  error?: string;
 }
 
 type ChatRequest = {
@@ -48,6 +41,10 @@ const AI_CHAT_MAX_HISTORY_ENTRIES = 8;
 const aiChatBuckets = new Map<string, RateLimitBucket>();
 let missingGeminiKeyWarned = false;
 
+export async function handleAIRequest(input: AgentInput): Promise<AgentOutput> {
+  return runStudioGraph(input);
+}
+
 export const handleAiChat = async (c: Context) => {
   const parsed = await parseChatRequest(c);
   if ("error" in parsed) {
@@ -66,41 +63,45 @@ export const handleAiChat = async (c: Context) => {
   }
 
   const geminiKey = typeof c.env.GEMINI_API_KEY === "string" ? c.env.GEMINI_API_KEY.trim() : "";
+  const includeTrace = c.req.header("x-nstep-trace") === "1";
   if (!geminiKey) {
     warnMissingGeminiKey();
-    return c.json(
-      getFallbackResponse(parsed.message, "Gemini API key is not configured on this deployment."),
-    );
   }
 
-  const genAI = new GoogleGenerativeAI(geminiKey);
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-  const context = retrieveContext(parsed.message);
-  const prompt = buildPrompt(parsed.message, parsed.history, context.text);
+  const route = await routeMessage(parsed.message);
+  const input: AgentInput = {
+    userMessage: parsed.message,
+    sessionId: getClientIdentifier(c),
+    metadata: {
+      history: parsed.history,
+      geminiApiKey: geminiKey || undefined,
+      databaseUrl: c.env.SUPABASE_DB_URL || c.env.DATABASE_URL || undefined,
+      includeTrace,
+      requestPath: c.req.path,
+      requestUrl: c.req.url,
+    },
+  };
 
+  let result: AgentOutput;
   try {
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const answer = response.text().trim();
-
-    if (!answer) {
-      return c.json(
-        getFallbackResponse(parsed.message, "Gemini returned an empty response, so a fallback answer was used."),
-      );
-    }
-
-    return c.json({
-      answer,
-      sources: context.sources,
-      mode: "gemini",
-      confidence: "high",
-    });
+    result = await handleAIRequest(input);
   } catch (error) {
-    console.error("[NStep AI] Gemini generation error:", error);
-    return c.json(
-      getFallbackResponse(parsed.message, "Gemini generation failed, so the assistant used a local fallback."),
-    );
+    console.error("[NStep AI] Chat pipeline error:", error);
+    result = {
+      response: buildAssistantErrorMessage(error),
+      confidence: 0.25,
+      sources: [],
+      ui: {
+        type: "error",
+        route,
+        warning: "The assistant could not complete the request.",
+      },
+    };
   }
+
+  const finalRoute = typeof result.ui?.route === "string" ? result.ui.route : route;
+  await recordAiChatAnalytics(c, parsed.message, finalRoute, result);
+  return c.json(toPublicChatResponse(result));
 };
 
 async function parseChatRequest(c: Context): Promise<ParsedChatRequest> {
@@ -215,184 +216,73 @@ function enforceAiChatRateLimit(c: Context) {
   return null;
 }
 
-function buildPrompt(message: string, history: ChatMessage[], contextText: string) {
-  const conversationHistory = history.length
-    ? history.map((entry) => `${entry.role.toUpperCase()}: ${entry.content}`).join("\n")
-    : "No prior conversation.";
-
-  return `
-You are "NStep AI", the helpful public assistant for Northern Step Studio.
-Your goal is to answer questions about the studio's products, documentation, and public information using ONLY the provided context and prior conversation.
-
-BRAND VOICE:
-- Direct, concise, and practical.
-- Friendly but professional.
-- No fluff.
-
-CONSTRAINTS:
-- Do not expose private, admin, or user data.
-- Do not invent details not in the context.
-- If the answer is not in the context, say "I'm not sure about that specifically, but you can find more information here:" and provide a relevant link.
-- Keep answers short and scanable with bullet points if needed.
-
-PRIOR CONVERSATION:
-${conversationHistory}
-
-CONTEXT:
-${contextText || "No matching product or documentation context was found."}
-
-CURRENT USER QUESTION:
-${message}
-
-RESPONSE FORMAT:
-Return a concise answer. If you use information from a specific product or doc, mention it naturally or at the end.
-`.trim();
-}
-
-function tokenize(query: string) {
-  return Array.from(new Set(query.toLowerCase().match(/[a-z0-9]+/g) ?? [])).filter(
-    (token) => token.length > 2,
-  );
-}
-
-function scoreTextMatch(text: string, tokens: string[]) {
-  let score = 0;
-
-  for (const token of tokens) {
-    if (text.includes(token)) {
-      score += 1;
+function buildAssistantErrorMessage(error: unknown) {
+  if (error instanceof Error && error.message) {
+    if (error.message.startsWith("I'm sorry")) {
+      return error.message;
     }
+
+    return `I'm sorry, ${error.message.charAt(0).toLowerCase()}${error.message.slice(1)}`;
   }
 
-  return score;
+  return "I'm sorry, I'm having trouble connecting right now. Please try again or contact support if the issue persists.";
 }
 
-function retrieveContext(query: string) {
-  const normalizedQuery = query.toLowerCase();
-  const tokens = tokenize(query);
-
-  const appMatches = CATALOG_APPS.map((app) => {
-    const searchableText = [
-      app.name,
-      app.slug,
-      app.tagline,
-      app.description,
-      app.fullDescription,
-      app.category,
-      app.statusLabel,
-      app.techStack.join(" "),
-      app.features.join(" "),
-      app.monetization,
-      app.platform,
-    ]
-      .join(" ")
-      .toLowerCase();
-
-    let score = scoreTextMatch(searchableText, tokens);
-
-    if (normalizedQuery.includes(app.name.toLowerCase())) {
-      score += 8;
-    }
-
-    if (normalizedQuery.includes(app.slug.toLowerCase())) {
-      score += 6;
-    }
-
-    return {
-      score,
-      text: `PRODUCT: ${app.name} (${app.statusLabel})
-Tagline: ${app.tagline}
-Description: ${app.fullDescription || app.description}
-Features: ${app.features.join(", ")}
-Tech Stack: ${app.techStack.join(", ")}
-URL: /apps/${app.slug}`,
-      source: { title: app.name, url: `/apps/${app.slug}` } satisfies ChatSource,
-    };
-  }).filter((match) => match.score > 0);
-
-  const docMatches = docsArticles.map((doc) => {
-    const searchableText = [doc.slug, doc.category, doc.summary, doc.body].join(" ").toLowerCase();
-
-    let score = scoreTextMatch(searchableText, tokens);
-
-    if (normalizedQuery.includes(doc.slug.toLowerCase())) {
-      score += 6;
-    }
-
-    if (normalizedQuery.includes(doc.category.toLowerCase())) {
-      score += 4;
-    }
-
-    return {
-      score,
-      text: `DOC: ${doc.slug} (${doc.category})
-Summary: ${doc.summary}
-Content: ${doc.body}
-URL: /docs/${doc.slug}`,
-      source: { title: `Doc: ${doc.slug}`, url: `/docs/${doc.slug}` } satisfies ChatSource,
-    };
-  }).filter((match) => match.score > 0);
-
-  const rankedMatches = [...appMatches, ...docMatches]
-    .sort((left, right) => right.score - left.score)
-    .slice(0, 3);
-
-  if (rankedMatches.length === 0) {
-    const welcomeDoc = docsArticles.find((doc) => doc.slug === "welcome");
-
-    if (welcomeDoc) {
-      return {
-        text: `GENERAL INFO: ${welcomeDoc.body}`,
-        sources: [{ title: "About NSS", url: "/about" }],
-      };
-    }
-
-    return {
-      text: "",
-      sources: [],
-    };
-  }
-
-  return {
-    text: rankedMatches.map((match) => match.text).join("\n\n---\n\n"),
-    sources: rankedMatches.map((match) => match.source),
+function toPublicChatResponse(result: AgentOutput): Pick<ChatResponse, "answer" | "mode" | "confidence" | "warning" | "sources"> {
+  const confidence = toConfidenceLabel(result.confidence);
+  const response: Pick<ChatResponse, "answer" | "mode" | "confidence" | "warning" | "sources"> = {
+    answer: result.response,
+    mode: confidence === "low" ? "fallback" : "gemini",
+    confidence,
+    sources: result.sources,
   };
+
+  if (confidence === "low") {
+    response.warning = "The assistant may need human follow-up.";
+  }
+
+  return response;
 }
 
-function getFallbackResponse(query: string, warning?: string): ChatResponse {
-  const normalizedQuery = query.toLowerCase();
+async function recordAiChatAnalytics(c: Context, question: string, route: string, result: AgentOutput): Promise<void> {
+  try {
+    const sql = getDb(c.env);
+    await sql`
+      INSERT INTO analytics (event, app_id, app_uuid, user_id, metadata)
+      VALUES (
+        ${"nstep_ai.chat"},
+        ${"nstep-ai"},
+        ${"nstep-ai"},
+        ${null},
+        ${JSON.stringify({
+          route,
+          sourceCount: result.sources?.length ?? 0,
+          evidenceCount: result.evidence?.length ?? 0,
+          retrievalLane: result.ui && typeof result.ui === "object" ? (result.ui as { retrievalLane?: string }).retrievalLane ?? null : null,
+          matchedTopics: result.ui && typeof result.ui === "object" ? (result.ui as { matchedTopics?: string[] }).matchedTopics ?? [] : [],
+          warning: result.ui && typeof result.ui === "object" ? (result.ui as { warning?: string }).warning ?? null : null,
+          answerLength: result.response.length,
+          question: question.slice(0, 240),
+        })},
+      )
+    `;
+  } catch (error) {
+    console.error("[NStep AI] Failed to record analytics event:", error);
+  }
+}
 
-  if (normalizedQuery.includes("contact") || normalizedQuery.includes("support")) {
-    return {
-      answer:
-        "You can reach Northern Step Studio via the Contact page or email hello@northernstepstudio.com. We typically respond within 24-48 hours.",
-      sources: [{ title: "Contact Us", url: "/contact" }],
-      mode: "fallback",
-      confidence: "low",
-      warning,
-    };
+function toConfidenceLabel(confidence?: number): "low" | "medium" | "high" {
+  if (typeof confidence !== "number" || Number.isNaN(confidence) || confidence <= 0) {
+    return "low";
   }
 
-  if (normalizedQuery.includes("apps") || normalizedQuery.includes("products")) {
-    return {
-      answer:
-        "We have several active products including NexusBuild, Lead Recovery Service (Missed Call Text Back), and ProvLy. You can explore the full catalog in our App Hub.",
-      sources: [{ title: "App Hub", url: "/apps" }],
-      mode: "fallback",
-      confidence: "low",
-      warning,
-    };
+  if (confidence >= 0.75) {
+    return "high";
   }
 
-  return {
-    answer:
-      "I'm sorry, I couldn't find a specific answer to that right now. Please explore our documentation or contact our team for direct assistance.",
-    sources: [
-      { title: "Documentation", url: "/docs" },
-      { title: "Contact Us", url: "/contact" },
-    ],
-    mode: "fallback",
-    confidence: "low",
-    warning,
-  };
+  if (confidence >= 0.45) {
+    return "medium";
+  }
+
+  return "low";
 }

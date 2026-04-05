@@ -24,35 +24,7 @@ export type CatalogApp = {
 };
 
 export const CATALOG_APPS: CatalogApp[] = [
-  {
-    id: 1004,
-    name: "Lead Recovery Service",
-    slug: "missed-call-text-back",
-    tagline: "Every missed call becomes a second chance.",
-    description:
-      "Automated missed-call recovery that instantly texts, qualifies, and follows up with leads so you never lose a job again.",
-    fullDescription:
-      "NStep Missed Call Text Back is the lead recovery engine for local service businesses that cannot afford to lose jobs when the phone is missed. It responds immediately, qualifies the caller, and keeps the conversation moving until you can step in.",
-    category: "HOME",
-    status: "LIVE",
-    statusLabel: "Live",
-    targetDate: null,
-    techStack: ["ResponseOS", "Twilio", "Lead Routing", "SMS Automation"],
-    progress: [{ text: "Live lead recovery workflow", completed: true }],
-    logo: "/brand/studio-mark.png",
-    screenshots: [],
-    cta_url: "/request-setup-review",
-    video_url: null,
-    features: [
-      "Missed Call Recovery: Text back instantly when no one answers the phone",
-      "Smart Qualification: Ask short questions to route the lead correctly",
-      "Owner Summary: Keep the follow-up concise and actionable",
-    ],
-    platform: "web",
-    visibility: "published",
-    progressPercent: 100,
-    monetization: "Service",
-  },
+
   {
     id: 1001,
     name: "NexusBuild",
