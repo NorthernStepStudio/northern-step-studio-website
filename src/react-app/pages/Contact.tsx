@@ -4,12 +4,18 @@ import { useTranslation } from "react-i18next";
 import { AlertCircle, BookOpen, CheckCircle, Mail, MessageCircle, PhoneCall, Send, Sparkles } from "lucide-react";
 import GlitchedText from "@/react-app/components/GlitchedText";
 import SEO from "@/react-app/components/SEO";
-import { EXTERNAL_LINKS } from "@/react-app/lib/site";
+import { LOCKED_CONTACT_CHANNELS } from "@/react-app/lib/site";
 
 type FeedbackState = {
   type: "success" | "error";
   text: string;
 };
+
+const CONTACT_ICON_BY_KIND = {
+  mail: Mail,
+  updates: MessageCircle,
+  docs: BookOpen,
+} as const;
 
 async function parseResponse(response: Response) {
   return response.json().catch(() => null);
@@ -424,50 +430,30 @@ export default function Contact() {
             <div className="card-dark-wise">
               <h3 className="mb-4 text-lg font-black uppercase">{t("contact.info.title")}</h3>
               <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/20">
-                    <Mail className="h-5 w-5 text-accent" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted-foreground">{t("contact.general_label")}</p>
-                    <a href={EXTERNAL_LINKS.contactEmail} className="text-sm font-medium transition-colors hover:text-accent">
-                      hello@northernstepstudio.com
-                    </a>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/20">
-                    <Mail className="h-5 w-5 text-accent" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted-foreground">{t("contact.support_label")}</p>
-                    <a href={EXTERNAL_LINKS.supportEmail} className="text-sm font-medium transition-colors hover:text-accent">
-                      support@northernstepstudio.com
-                    </a>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/20">
-                    <MessageCircle className="h-5 w-5 text-accent" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted-foreground">{t("contact.updates_label")}</p>
-                    <Link to="/updates" className="text-sm font-medium transition-colors hover:text-accent">
-                      {t("contact.read_updates")}
-                    </Link>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/20">
-                    <BookOpen className="h-5 w-5 text-accent" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted-foreground">{t("contact.docs_label")}</p>
-                    <Link to="/docs" className="text-sm font-medium transition-colors hover:text-accent">
-                      {t("contact.open_docs")}
-                    </Link>
-                  </div>
-                </div>
+                {LOCKED_CONTACT_CHANNELS.map((channel) => {
+                  const Icon = CONTACT_ICON_BY_KIND[channel.icon];
+                  const isEmail = channel.icon === "mail";
+
+                  return (
+                    <div key={channel.label} className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/20">
+                        <Icon className="h-5 w-5 text-accent" />
+                      </div>
+                      <div>
+                        <p className="text-xs text-muted-foreground">{channel.label}</p>
+                        {isEmail ? (
+                          <a href={channel.href} className="text-sm font-medium transition-colors hover:text-accent">
+                            {channel.value}
+                          </a>
+                        ) : (
+                          <Link to={channel.href} className="text-sm font-medium transition-colors hover:text-accent">
+                            {channel.value}
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 

@@ -10,6 +10,7 @@ import LanguageSelector from "./LanguageSelector";
 import { usePermissions } from "@/react-app/hooks/usePermissions";
 import { Button } from "@/react-app/components/ui/button";
 import NStepBrand from "./NStepBrand";
+import { LOCKED_SITE_LINKS } from "@/react-app/lib/site";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -46,13 +47,6 @@ export default function PublicLayout() {
   const hasScheduledMaintenance = Boolean(maintenance?.scheduled_date) && showBanner;
   const accountButtonLabel = isModerator ? t("nav.console") : t("nav.profile");
   const setupReviewHref = "/contact?intent=setup-review";
-
-  const footerLinks = [
-    { label: t("footer.updates"), to: "/updates" },
-    { label: t("nav.workspace_ai"), to: "/workspace-ai" },
-    { label: t("footer.contact"), to: "/contact" },
-    { label: t("footer.docs"), to: "/docs" },
-  ];
 
   return (
     <div className="min-h-screen">
@@ -96,15 +90,15 @@ export default function PublicLayout() {
           </Link>
 
           <nav className="hidden md:flex items-center gap-5 xl:gap-7 min-w-0">
-            <Link to="/apps" className="text-[11px] xl:text-xs 2xl:text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black whitespace-nowrap">
-              {t("nav.apps")}
-            </Link>
-            <Link to="/contact" className="text-[11px] xl:text-xs 2xl:text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black whitespace-nowrap">
-              {t("nav.contact")}
-            </Link>
-            <Link to="/about" className="text-[11px] xl:text-xs 2xl:text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black whitespace-nowrap">
-              {t("nav.about")}
-            </Link>
+            {LOCKED_SITE_LINKS.header.map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                className="text-[11px] xl:text-xs 2xl:text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black whitespace-nowrap"
+              >
+                {item.label}
+              </Link>
+            ))}
           </nav>
 
           <div className="flex items-center gap-2 sm:gap-3">
@@ -175,27 +169,16 @@ export default function PublicLayout() {
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-border bg-background">
             <nav className="container mx-auto px-4 py-4 flex flex-col gap-2">
-              <Link
-                to="/apps"
-                className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black py-2 whitespace-nowrap"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {t("nav.apps")}
-              </Link>
-              <Link
-                to="/about"
-                className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black py-2 whitespace-nowrap"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {t("nav.about")}
-              </Link>
-              <Link
-                to="/contact"
-                className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black py-2 whitespace-nowrap"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {t("nav.contact")}
-              </Link>
+              {LOCKED_SITE_LINKS.header.map((item) => (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black py-2 whitespace-nowrap"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
               <div className="border-t border-border my-2"></div>
 
               <Link
@@ -282,17 +265,26 @@ export default function PublicLayout() {
             <div>
               <h4 className="text-sm font-black uppercase mb-4">{t("footer.products")}</h4>
               <ul className="space-y-2">
-                <li><Link to="/apps" className="text-sm text-muted-foreground hover:text-accent transition-colors font-normal">{t("nav.apps")}</Link></li>
-                <li><Link to="/docs" className="text-sm text-muted-foreground hover:text-accent transition-colors font-normal">{t("nav.docs")}</Link></li>
+                {LOCKED_SITE_LINKS.footerProducts.map((item) => (
+                  <li key={item.to}>
+                    <Link to={item.to} className="text-sm text-muted-foreground hover:text-accent transition-colors font-normal">
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
             <div>
               <h4 className="text-sm font-black uppercase mb-4">{t("footer.company")}</h4>
               <ul className="space-y-2">
-                <li><Link to="/about" className="text-sm text-muted-foreground hover:text-accent transition-colors font-normal">{t("footer.about")}</Link></li>
-                <li><Link to="/workspace-ai" className="text-sm text-muted-foreground hover:text-accent transition-colors font-normal">{t("nav.workspace_ai")}</Link></li>
-                <li><Link to="/contact" className="text-sm text-muted-foreground hover:text-accent transition-colors font-normal">{t("footer.contact")}</Link></li>
+                {LOCKED_SITE_LINKS.footerCompany.map((item) => (
+                  <li key={item.to}>
+                    <Link to={item.to} className="text-sm text-muted-foreground hover:text-accent transition-colors font-normal">
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -306,7 +298,7 @@ export default function PublicLayout() {
 
           <div className="mt-8 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-4 sm:gap-6">
-              {footerLinks.map((item) => (
+              {LOCKED_SITE_LINKS.footerQuick.map((item) => (
                 <Link
                   key={item.to}
                   to={item.to}

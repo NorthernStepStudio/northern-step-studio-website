@@ -1,7 +1,12 @@
 import { Context } from "hono";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { CATALOG_APPS } from "../shared/data/appsCatalog";
-import { docsArticles } from "../shared/data/docs";
+import {
+  buildStudioKnowledgeBundle,
+  buildStudioPrompt,
+  buildStudioSupervisorDecision,
+  evaluateStudioAnswer,
+  getStudioFallbackResponse,
+} from "./studio-supervisor";
 
 export interface ChatMessage {
   role: "user" | "assistant";
@@ -65,18 +70,33 @@ export const handleAiChat = async (c: Context) => {
     );
   }
 
+  const supervisorDecision = buildStudioSupervisorDecision(parsed.message, parsed.history);
   const geminiKey = typeof c.env.GEMINI_API_KEY === "string" ? c.env.GEMINI_API_KEY.trim() : "";
   if (!geminiKey) {
     warnMissingGeminiKey();
     return c.json(
-      getFallbackResponse(parsed.message, "Gemini API key is not configured on this deployment."),
+      getStudioFallbackResponse(
+        parsed.message,
+        supervisorDecision,
+        "Gemini API key is not configured on this deployment.",
+      ),
+    );
+  }
+
+  const knowledgeBundle = buildStudioKnowledgeBundle(parsed.message, parsed.history, supervisorDecision);
+  if (supervisorDecision.confidence === "low" && knowledgeBundle.sources.length === 0) {
+    return c.json(
+      getStudioFallbackResponse(
+        parsed.message,
+        supervisorDecision,
+        "The studio supervisor could not ground this answer in public studio context.",
+      ),
     );
   }
 
   const genAI = new GoogleGenerativeAI(geminiKey);
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-  const context = retrieveContext(parsed.message);
-  const prompt = buildPrompt(parsed.message, parsed.history, context.text);
+  const prompt = buildStudioPrompt(parsed.message, parsed.history, supervisorDecision, knowledgeBundle);
 
   try {
     const result = await model.generateContent(prompt);
@@ -85,20 +105,41 @@ export const handleAiChat = async (c: Context) => {
 
     if (!answer) {
       return c.json(
-        getFallbackResponse(parsed.message, "Gemini returned an empty response, so a fallback answer was used."),
+        getStudioFallbackResponse(
+          parsed.message,
+          supervisorDecision,
+          "Gemini returned an empty response, so the studio supervisor used a fallback answer.",
+        ),
+      );
+    }
+
+    const review = evaluateStudioAnswer(answer, supervisorDecision, knowledgeBundle);
+
+    if (review.confidence === "low" && knowledgeBundle.sources.length === 0) {
+      return c.json(
+        getStudioFallbackResponse(
+          parsed.message,
+          supervisorDecision,
+          review.warning || "The answer could not be grounded enough for a public response.",
+        ),
       );
     }
 
     return c.json({
       answer,
-      sources: context.sources,
+      sources: knowledgeBundle.sources,
       mode: "gemini",
-      confidence: "high",
+      confidence: review.confidence,
+      warning: review.warning,
     });
   } catch (error) {
     console.error("[NStep AI] Gemini generation error:", error);
     return c.json(
-      getFallbackResponse(parsed.message, "Gemini generation failed, so the assistant used a local fallback."),
+      getStudioFallbackResponse(
+        parsed.message,
+        supervisorDecision,
+        "Gemini generation failed, so the studio supervisor used a fallback answer.",
+      ),
     );
   }
 };
@@ -215,184 +256,3 @@ function enforceAiChatRateLimit(c: Context) {
   return null;
 }
 
-function buildPrompt(message: string, history: ChatMessage[], contextText: string) {
-  const conversationHistory = history.length
-    ? history.map((entry) => `${entry.role.toUpperCase()}: ${entry.content}`).join("\n")
-    : "No prior conversation.";
-
-  return `
-You are "NStep AI", the helpful public assistant for Northern Step Studio.
-Your goal is to answer questions about the studio's products, documentation, and public information using ONLY the provided context and prior conversation.
-
-BRAND VOICE:
-- Direct, concise, and practical.
-- Friendly but professional.
-- No fluff.
-
-CONSTRAINTS:
-- Do not expose private, admin, or user data.
-- Do not invent details not in the context.
-- If the answer is not in the context, say "I'm not sure about that specifically, but you can find more information here:" and provide a relevant link.
-- Keep answers short and scanable with bullet points if needed.
-
-PRIOR CONVERSATION:
-${conversationHistory}
-
-CONTEXT:
-${contextText || "No matching product or documentation context was found."}
-
-CURRENT USER QUESTION:
-${message}
-
-RESPONSE FORMAT:
-Return a concise answer. If you use information from a specific product or doc, mention it naturally or at the end.
-`.trim();
-}
-
-function tokenize(query: string) {
-  return Array.from(new Set(query.toLowerCase().match(/[a-z0-9]+/g) ?? [])).filter(
-    (token) => token.length > 2,
-  );
-}
-
-function scoreTextMatch(text: string, tokens: string[]) {
-  let score = 0;
-
-  for (const token of tokens) {
-    if (text.includes(token)) {
-      score += 1;
-    }
-  }
-
-  return score;
-}
-
-function retrieveContext(query: string) {
-  const normalizedQuery = query.toLowerCase();
-  const tokens = tokenize(query);
-
-  const appMatches = CATALOG_APPS.map((app) => {
-    const searchableText = [
-      app.name,
-      app.slug,
-      app.tagline,
-      app.description,
-      app.fullDescription,
-      app.category,
-      app.statusLabel,
-      app.techStack.join(" "),
-      app.features.join(" "),
-      app.monetization,
-      app.platform,
-    ]
-      .join(" ")
-      .toLowerCase();
-
-    let score = scoreTextMatch(searchableText, tokens);
-
-    if (normalizedQuery.includes(app.name.toLowerCase())) {
-      score += 8;
-    }
-
-    if (normalizedQuery.includes(app.slug.toLowerCase())) {
-      score += 6;
-    }
-
-    return {
-      score,
-      text: `PRODUCT: ${app.name} (${app.statusLabel})
-Tagline: ${app.tagline}
-Description: ${app.fullDescription || app.description}
-Features: ${app.features.join(", ")}
-Tech Stack: ${app.techStack.join(", ")}
-URL: /apps/${app.slug}`,
-      source: { title: app.name, url: `/apps/${app.slug}` } satisfies ChatSource,
-    };
-  }).filter((match) => match.score > 0);
-
-  const docMatches = docsArticles.map((doc) => {
-    const searchableText = [doc.slug, doc.category, doc.summary, doc.body].join(" ").toLowerCase();
-
-    let score = scoreTextMatch(searchableText, tokens);
-
-    if (normalizedQuery.includes(doc.slug.toLowerCase())) {
-      score += 6;
-    }
-
-    if (normalizedQuery.includes(doc.category.toLowerCase())) {
-      score += 4;
-    }
-
-    return {
-      score,
-      text: `DOC: ${doc.slug} (${doc.category})
-Summary: ${doc.summary}
-Content: ${doc.body}
-URL: /docs/${doc.slug}`,
-      source: { title: `Doc: ${doc.slug}`, url: `/docs/${doc.slug}` } satisfies ChatSource,
-    };
-  }).filter((match) => match.score > 0);
-
-  const rankedMatches = [...appMatches, ...docMatches]
-    .sort((left, right) => right.score - left.score)
-    .slice(0, 3);
-
-  if (rankedMatches.length === 0) {
-    const welcomeDoc = docsArticles.find((doc) => doc.slug === "welcome");
-
-    if (welcomeDoc) {
-      return {
-        text: `GENERAL INFO: ${welcomeDoc.body}`,
-        sources: [{ title: "About NSS", url: "/about" }],
-      };
-    }
-
-    return {
-      text: "",
-      sources: [],
-    };
-  }
-
-  return {
-    text: rankedMatches.map((match) => match.text).join("\n\n---\n\n"),
-    sources: rankedMatches.map((match) => match.source),
-  };
-}
-
-function getFallbackResponse(query: string, warning?: string): ChatResponse {
-  const normalizedQuery = query.toLowerCase();
-
-  if (normalizedQuery.includes("contact") || normalizedQuery.includes("support")) {
-    return {
-      answer:
-        "You can reach Northern Step Studio via the Contact page or email hello@northernstepstudio.com. We typically respond within 24-48 hours.",
-      sources: [{ title: "Contact Us", url: "/contact" }],
-      mode: "fallback",
-      confidence: "low",
-      warning,
-    };
-  }
-
-  if (normalizedQuery.includes("apps") || normalizedQuery.includes("products")) {
-    return {
-      answer:
-        "We have several active products including NexusBuild, Lead Recovery Service (Missed Call Text Back), and ProvLy. You can explore the full catalog in our App Hub.",
-      sources: [{ title: "App Hub", url: "/apps" }],
-      mode: "fallback",
-      confidence: "low",
-      warning,
-    };
-  }
-
-  return {
-    answer:
-      "I'm sorry, I couldn't find a specific answer to that right now. Please explore our documentation or contact our team for direct assistance.",
-    sources: [
-      { title: "Documentation", url: "/docs" },
-      { title: "Contact Us", url: "/contact" },
-    ],
-    mode: "fallback",
-    confidence: "low",
-    warning,
-  };
-}
