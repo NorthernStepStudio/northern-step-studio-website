@@ -9,48 +9,49 @@ export interface Env {
 
 let sql: any = null;
 
+// @ts-ignore - cloudflare:sockets is available in the Cloudflare Worker environment
+import { connect } from 'cloudflare:sockets';
+
 export function getDb(env: Env) {
   const connectionString = env.SUPABASE_DB_URL || env.DATABASE_URL;
 
-  // Prioritize Postgres and cache the instance
+  // 1. Prioritize Postgres with Cache
   if (connectionString && !connectionString.includes("YOUR_PASSWORD")) {
     if (!sql) {
       sql = postgres(connectionString, {
         ssl: { rejectUnauthorized: false },
         max: 1,
-        idle_timeout: 1, // Close connection immediately
+        // @ts-ignore - cloudflare:sockets bridge
+        connect: (opts: any) => {
+          return connect({ hostname: opts.hostname, port: opts.port }).writable;
+        },
+        idle_timeout: 1, 
         connect_timeout: 2,
       });
     }
-    const client = sql as any;
-    client.isPostgres = true;
-    client.isD1 = false;
-    return client;
+    const pgClient = sql as any;
+    pgClient.isPostgres = true;
+    pgClient.isD1 = false;
+    return pgClient;
   }
 
-  // Fallback to D1 if Postgres is not available
-  const d1 = env.DB;
-  if (d1 && typeof d1.prepare === "function") {
-    const client = createD1Client(d1);
-    client.isPostgres = false;
-    client.isD1 = true;
-    return client;
+  // 2. Fallback to D1
+  const d1Binding = env.DB;
+  if (d1Binding && typeof d1Binding.prepare === "function") {
+    const d1stack = createD1Client(d1Binding);
+    const d1Client = d1stack as any;
+    d1Client.isPostgres = false;
+    d1Client.isD1 = true;
+    return d1Client;
   }
 
-  // Final Fallback: Development Mock
-  console.warn("[Database] Using MOCK database for development.");
-  
-  const mockSql = ((_strings: TemplateStringsArray, ..._values: any[]) => {
-    // Return a proxy that looks like a promise/result
-    const result: any = Promise.resolve([]);
-    // Mock the tagged template behavior
-    return result;
-  }) as any;
-
-  // Add common properties used by the postgres client if any
+  // 3. Final Fallback: Development Mock
+  console.warn("[Database] Using MOCK database.");
+  const mockSql = ((_strings: TemplateStringsArray, ..._values: any[]) => Promise.resolve([])) as any;
+  mockSql.isPostgres = false;
+  mockSql.isD1 = false;
   mockSql.close = () => Promise.resolve();
   mockSql.begin = (cb: any) => cb(mockSql);
-  
   return mockSql;
 }
 
