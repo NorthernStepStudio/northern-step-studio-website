@@ -107,6 +107,26 @@ app.get("/api/health", async (c) => {
   });
 });
 
+// ─── Authentication Routing ──────────────────────────────────────────────────
+// These routes connect the helper functions in auth.ts/index.ts to the frontend
+
+app.post("/api/auth/login", (c) => handlePasswordLogin(c));
+app.post("/api/auth/signup", (c) => handlePasswordRegistration(c));
+app.post("/api/admin/login", (c) => handlePasswordLogin(c, { adminOnly: true }));
+
+app.get("/api/users/me", async (c) => {
+  const user = await getAuthenticatedUser(c);
+  if (!user) {
+    return c.json({ error: "Unauthorized" }, 401);
+  }
+  return c.json(user);
+});
+
+app.post("/api/auth/logout", async (c) => {
+  await clearAuthSessions(c);
+  return c.json({ success: true });
+});
+
 app.all("/api", (c) =>
   c.json({
     status: "ok",
@@ -3503,14 +3523,26 @@ app.get("/api/knowledge/search", async (c) => {
  * Use this as the go/no-go check after running seed:knowledge.
  */
 app.get("/api/knowledge/health", async (c) => {
-  const db = getDb(c.env);
-  const lanes = await getKnowledgeLaneHealth(db);
-  const total = lanes.reduce((sum, row) => sum + Number(row.chunk_count), 0);
-  return c.json({
-    status: total > 0 ? "ok" : "empty",
-    total_chunks: total,
-    lanes,
-  });
+  const sql = getDb(c.env);
+  try {
+    const counts = await sql<{ lane: string; count: number }[]>`
+      SELECT lane, count(*)::int as count 
+      FROM knowledge_chunks 
+      GROUP BY lane
+    `;
+
+    const totalCount = counts.reduce((acc: number, curr: any) => acc + (Number(curr.count) || 0), 0);
+    const laneCounts = Object.fromEntries(counts.map((c: any) => [c.lane, Number(c.count) || 0]));
+
+    return c.json({
+      status: "ok",
+      database: "supabase",
+      total_chunks: totalCount,
+      lanes: laneCounts,
+    });
+  } catch (error) {
+    return c.json({ status: "error", message: error instanceof Error ? error.message : String(error) }, 500);
+  }
 });
 
 // Global Not Found Handler (at the very end)
