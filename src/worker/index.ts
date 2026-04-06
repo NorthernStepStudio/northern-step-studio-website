@@ -832,8 +832,8 @@ async function getIntegrationStatus(env: Env) {
     },
     cloudflare: {
       d1Configured: Boolean(env.DB),
-      d1Connected: Boolean(env.DB && typeof env.DB.prepare === "function"),
-      r2Configured: Boolean(env.R2_BUCKET && typeof env.R2_BUCKET.put === "function"),
+      d1Connected: Boolean(env.DB?.prepare && typeof env.DB.prepare === "function"),
+      r2Configured: Boolean(env.R2_BUCKET?.put && typeof env.R2_BUCKET.put === "function"),
       assetsConfigured: Boolean(env.ASSETS),
       emailServiceConfigured: true, 
     },
