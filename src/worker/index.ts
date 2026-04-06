@@ -831,8 +831,11 @@ async function getIntegrationStatus(env: Env) {
       dbConnected,
     },
     cloudflare: {
+      d1Configured: Boolean(env.DB),
+      d1Connected: Boolean(env.DB && typeof env.DB.prepare === "function"),
       r2Configured: Boolean(env.R2_BUCKET && typeof env.R2_BUCKET.put === "function"),
-      emailServiceConfigured: true, // Integrated via sendEmail helper
+      assetsConfigured: Boolean(env.ASSETS),
+      emailServiceConfigured: true, 
     },
     supabase: {
       urlConfigured: Boolean(env.SUPABASE_URL),
