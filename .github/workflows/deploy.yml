@@ -10,6 +10,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     name: Build & Deploy
+    environment: VITE_STRIPE_PUBLISHABLE_KEY
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
