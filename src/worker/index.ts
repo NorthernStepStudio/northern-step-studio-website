@@ -93,7 +93,7 @@ app.get("/api/health", async (c) => {
 
   return c.json({
     status: "ok",
-    version: "1.0.4",
+    version: "1.0.5",
     path: c.req.path,
     url: c.req.url,
     environment: {
