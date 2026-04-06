@@ -1,0 +1,10 @@
+TTS
+numpy
+scipy
+soundfile
+fastapi
+uvicorn
+python-multipart
+diffusers
+transformers
+accelerate

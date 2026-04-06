@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DOOMED: A Very Silly Dungeon</title>
+<link rel="stylesheet" href="css/game.css">
+</head>
+<body>
+<canvas id="vfxc"></canvas>
+<div id="sflash"></div>
+
+<!-- TITLE -->
+<div id="title-screen">
+  <div class="title-content">
+    <div class="title-shell">
+      <div class="title-header">
+        <div class="title-kicker">Dungeon Run</div>
+        <div class="title-big">DOOMED</div>
+        <div class="title-sub">A VERY SILLY DUNGEON v3</div>
+      </div>
+      <div class="title-actions">
+        <button class="continue-btn hidden" id="continue-btn" onclick="loadGame()">CONTINUE RUN - FLOOR <span id="sfl">1</span></button>
+        <div class="title-meta-row">
+          <div class="title-meta-copy">Spend Doom Shards on permanent upgrades.</div>
+          <button id="title-meta-btn" onclick="openMetaScreen()"><span>META UPGRADES</span><span class="title-meta-count" id="title-shard-count">0</span></button>
+        </div>
+      </div>
+      <div class="fs-7 text-cyan text-center">PICK YOUR DOOMED HERO</div>
+      <div class="class-grid">
+        <div class="class-card" data-class="warrior" onclick="selectClass(this)">
+          <img src="assets/sprites/warrior.png" class="class-icon-img" alt="Warrior">
+          <span class="class-name">BONK KNIGHT</span>
+          <div class="class-desc">Hits things very hard. Strategy unknown.</div>
+          <div class="class-weapon">Iron Sword</div>
+          <div class="class-stats">HP 120 ATK 15 DEF 8 MP 30</div>
+        </div>
+        <div class="class-card" data-class="mage" onclick="selectClass(this)">
+          <img src="assets/sprites/mage.png" class="class-icon-img" alt="Mage">
+          <span class="class-name">CHAOS WIZARD</span>
+          <div class="class-desc">Spells may backfire. Glass cannon.</div>
+          <div class="class-weapon">Cursed Wand</div>
+          <div class="class-stats">HP 70 ATK 8 DEF 3 MP 100</div>
+        </div>
+        <div class="class-card" data-class="rogue" onclick="selectClass(this)">
+          <img src="assets/sprites/rogue.png" class="class-icon-img" alt="Rogue">
+          <span class="class-name">SNEAKY STABBER</span>
+          <div class="class-desc">Crits. Poison. Heroism optional.</div>
+          <div class="class-weapon">Shiv of Shame</div>
+          <div class="class-stats">HP 85 ATK 12 DEF 5 MP 50</div>
+        </div>
+        <div class="class-card" data-class="paladin" onclick="selectClass(this)">
+          <img src="assets/sprites/paladin.png" class="class-icon-img" alt="Paladin">
+          <span class="class-name">HOLY YELLER</span>
+          <div class="class-desc">Heals! Smites! Judges your choices.</div>
+          <div class="class-weapon">Holy Mallet</div>
+          <div class="class-stats">HP 100 ATK 10 DEF 12 MP 70</div>
+        </div>
+      </div>
+      <div class="title-footer">
+        <div class="sprite-row">
+          SPRITE:
+          <input type="file" id="sup" accept="image/*" class="fs-9 text-cyan" onchange="loadSprite(event)" title="Upload custom sprite.">
+        </div>
+        <div class="title-help">WASD or Arrows | Space Wait | G or Enter Interact | Q/E Potions | 1-6 Combat | Esc Flee/Close</div>
+      </div>
+      <button class="start-btn" id="start-btn" disabled onclick="startNewGame()">ENTER THE DUNGEON</button>
+    </div>
+  </div>
+</div>
+
+<!-- GAME SCREEN -->
+<div id="game-screen">
+  <div id="hud">
+    <div class="hud-sprite" id="hsprite">@</div>
+    <div class="hud-info">
+      <div class="hud-name" id="hname">HERO</div>
+      <div class="hud-level" id="hlvl">LV.1</div>
+      <div id="doom-strip">
+        <div id="doom-fill"></div>
+      </div>
+    </div>
+    <div class="hud-bars">
+      <div class="bar-row"><span class="bar-lbl">HP</span><div class="bar-track ht"><div class="bar-fill hp bhp" id="bhp"></div></div><span class="bar-val" id="thp">120/120</span></div>
+      <div class="bar-row"><span class="bar-lbl">MP</span><div class="bar-track mt"><div class="bar-fill mp bmp" id="bmp"></div></div><span class="bar-val" id="tmp">30/30</span></div>
+    </div>
+    <div class="hud-r">
+      <div class="hbadge fl" id="hfl">F1</div>
+      <div class="hbadge go" id="hgo">G 0</div>
+      <div class="hbadge ki" id="hki">K 0</div>
+    </div>
+  </div>
+
+  <div id="qs">
+    <div class="qs-slot qs-hp" onclick="usePot('hp')"><span class="qs-key">Q</span>H</div>
+    <div class="qs-slot qs-mp" onclick="usePot('mp')"><span class="qs-key">E</span>M</div>
+    <div class="qs-wpn" id="hwpn">No Weapon</div>
+    <div class="qs-right">
+      <div class="qs-atk" id="hatk">ATK 0</div>
+      <button class="zoom-btn" onclick="adjustZoom(-1)">-</button>
+      <button class="zoom-btn" onclick="adjustZoom(1)">+</button>
+    </div>
+  </div>
+
+  <div id="xp-strip">
+    <div id="xp-fill"></div>
+  </div>
+
+  <div id="map-wrap">
+    <div id="mmwrap"><canvas id="minimap-canvas"></canvas></div>
+    <div id="map-scroll"><canvas id="dungeon-canvas"></canvas></div>
+  </div>
+
+  <div id="ctrl">
+    <div id="abtns">
+      <button class="abtn" onclick="togglePanel('inv')"><span class="ai">INV</span>ITEMS</button>
+      <button class="abtn" onclick="togglePanel('shop')"><span class="ai">BUY</span>SHOP</button>
+      <button class="abtn" onclick="togglePanel('blacksmith')"><span class="ai">SMI</span>SMITH</button>
+      <button class="abtn" onclick="togglePanel('alchemist')"><span class="ai">ALC</span>BREW</button>
+      <button class="abtn" onclick="togglePanel('fuse')"><span class="ai">FX</span>FUSE</button>
+      <button class="abtn" onclick="togglePanel('stats')"><span class="ai">ST</span>STATS</button>
+      <button class="abtn" onclick="togglePanel('log')"><span class="ai">LG</span>LOG</button>
+      <button class="abtn" onclick="handleMove(G.player.x, G.player.y)"><span class="ai">..</span>WAIT</button>
+      <button class="abtn" onclick="grabItem()"><span class="ai">UP</span>GRAB</button>
+      <button class="abtn" onclick="togglePanel('menu')"><span class="ai">MN</span>MENU</button>
+    </div>
+  </div>
+</div>
+
+<!-- INVENTORY PANEL -->
+<div class="spanel" id="panel-inv">
+  <div class="sph"><div class="spt">INVENTORY (<span id="inv-count">0</span>/<span id="inv-max">8</span>)</div><button class="spc" onclick="closeAllPanels()">X</button></div>
+  <div class="spb">
+    <div id="inv-grid" class="grid-8 gap-4"></div>
+  </div>
+</div>
+
+<!-- SHOP PANEL -->
+<div class="spanel" id="panel-shop">
+  <div class="sph"><div class="spt">MERCHANT <span id="shop-gold-disp" class="text-gold">0G</span></div><button class="spc" onclick="closeAllPanels()">X</button></div>
+  <div class="spb">
+    <div class="shop-section">
+      <div class="shop-section-title">BUY ITEMS</div>
+      <div id="shop-buy-list"></div>
+    </div>
+    <div class="shop-section">
+      <div class="shop-section-title">EXPAND INVENTORY</div>
+      <div id="shop-expand"></div>
+    </div>
+  </div>
+</div>
+
+<!-- BLACKSMITH PANEL -->
+<div class="spanel" id="panel-blacksmith">
+  <div class="sph"><div class="spt">BLACKSMITH <span id="bs-gold" class="text-gold">0G</span></div><button class="spc" onclick="closeAllPanels()">X</button></div>
+  <div class="spb">
+    <div class="shop-section">
+      <div class="shop-desc lh-1-5">Turn dungeon junk into real gear. Materials are consumed when you craft.</div>
+    </div>
+    <div id="bs-content"></div>
+  </div>
+</div>
+
+<!-- ALCHEMIST PANEL -->
+<div class="spanel" id="panel-alchemist">
+  <div class="sph"><div class="spt">ALCHEMIST <span id="alch-gold" class="text-gold">0G</span></div><button class="spc" onclick="closeAllPanels()">X</button></div>
+  <div class="spb">
+    <div class="shop-section">
+      <div class="shop-desc lh-1-5">Brew potions and temporary floor buffs. Mage recipes unlock extra nonsense.</div>
+    </div>
+    <div id="alch-content"></div>
+  </div>
+</div>
+
+<!-- SHRINE PANEL -->
+<div class="spanel" id="panel-shrine">
+  <div class="sph"><div class="spt">VOID SHRINE</div><button class="spc" onclick="closeAllPanels()">X</button></div>
+  <div class="spb">
+    <div id="shrine-desc" class="shop-desc lh-1-5 mb-10">A room for reckless decisions.</div>
+    <div id="shrine-options" class="flex flex-col gap-6"></div>
+  </div>
+</div>
+
+<!-- FUSION PANEL -->
+<div class="spanel" id="panel-fuse">
+  <div class="sph"><div class="spt">ITEM FORGE</div><button class="spc" onclick="closeAllPanels()">X</button></div>
+  <div class="spb">
+    <div class="fusion-grid">
+      <div class="fusion-slot" id="fslot-0" onclick="openFuseSelect(0)">?</div>
+      <div class="fusion-arrow">TO</div>
+      <div class="fusion-slot" id="fslot-1" onclick="openFuseSelect(1)">?</div>
+    </div>
+    <div class="fusion-result" id="f-res">Select 2 items to forge...</div>
+    <button class="fusion-btn" id="f-btn" disabled onclick="doFusion()">FORGE ITEM</button>
+  </div>
+</div>
+
+<!-- FUSE SELECT MODAL -->
+<div id="fuse-select" class="hidden flex fixed-inset z-350 items-end justify-center">
+  <div class="bg-panel border-purple rounded-t p-14 w-full max-w-420">
+    <div class="flex justify-between items-center mb-10">
+      <div class="text-purple fs-8">SELECT ITEM TO FUSE</div>
+      <button class="spc" onclick="closeFuseSelect()">X</button>
+    </div>
+    <div id="fuse-select-grid" class="grid-4 gap-6"></div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="spanel" id="panel-stats">
+  <div class="sph"><div class="spt">CHARACTER</div><button class="spc" onclick="closeAllPanels()">X</button></div>
+  <div class="spb"><div id="sgrid" class="grid-2 gap-4 fs-7"></div></div>
+</div>
+
+<!-- LOG -->
+<div class="spanel" id="panel-log">
+  <div class="sph"><div class="spt">RUN LOG</div><button class="spc" onclick="closeAllPanels()">X</button></div>
+  <div class="spb"><div id="log-list" class="font-vt fs-14"></div></div>
+</div>
+
+<!-- MENU -->
+<div class="spanel" id="panel-menu">
+  <div class="sph"><div class="spt">MENU</div><button class="spc" onclick="closeAllPanels()">X</button></div>
+  <div class="spb flex flex-col gap-6">
+    <button class="shop-item btn-save" onclick="saveG();closeAllPanels()">SAVE GAME</button>
+    <button class="shop-item btn-quit" onclick="hardResetRun()">QUIT TO TITLE</button>
+  </div>
+</div>
+
+<!-- COMBAT -->
+<div id="combatov">
+  <div class="cbox">
+    <div class="ctitle">BATTLE</div>
+    <div class="combatants">
+      <div class="combatant">
+        <div class="cswrap" id="cpwrap"><span class="csprite" id="cpsprite">@</span></div>
+        <div class="cname" id="cpname">HERO</div>
+        <div class="chpbar"><div class="chpfill ph" id="cphp"></div></div>
+        <div class="chpval" id="cphpv">100/100</div>
+      </div>
+      <div class="vs">VS</div>
+      <div class="combatant">
+        <div class="cswrap" id="cewrap"><span class="csprite" id="cesprite">E</span></div>
+        <div class="cname" id="cename">ENEMY</div>
+        <div class="clvl" id="celvl">LV.?</div>
+        <div class="chpbar"><div class="chpfill eh" id="cehp"></div></div>
+        <div class="chpval" id="cehpv">50/50</div>
+      </div>
+    </div>
+    <div class="clog" id="clog"></div>
+    <div class="cactions">
+      <button class="cbtn" onclick="ca('attack')"><span class="ci">AT</span>ATK</button>
+      <button class="cbtn" id="cskill" onclick="ca('skill')" title="Skill 1">SKILL 1</button>
+      <button class="cbtn" id="cskill2" onclick="ca('skill2')" title="Skill 2">SKILL 2</button>
+      <button class="cbtn" id="cskill3" onclick="ca('skill3')" title="Skill 3">SKILL 3</button>
+      <button class="cbtn" id="cskill4" onclick="ca('skill4')" title="Skill 4">SKILL 4</button>
+      <button class="cbtn" onclick="ca('item')" title="Smart combat item">ITEM</button>
+      <button class="cbtn" onclick="ca('flee')" title="Try to escape">FLEE</button>
+    </div>
+  </div>
+</div>
+
+<!-- ITEM POPUP -->
+<div id="itempop">
+  <div class="icard">
+    <div class="icicon" id="icip">@</div>
+    <div class="icname" id="icname">ITEM NAME</div>
+    <div class="ictier" id="ictier">TIER 1 COMMON</div>
+    <div class="icdesc" id="icdesc">Item description goes here.</div>
+    <div class="icstats" id="icstats">ATK +0 DEF +0</div>
+    <div class="icbtns">
+      <button class="icbtn g" id="icbtn-action">EQUIP</button>
+      <button class="icbtn r" onclick="closeItemPop()">CLOSE</button>
+    </div>
+  </div>
+</div>
+
+<!-- RUN SUMMARY -->
+<div id="run-summary">
+  <div class="rs-box">
+    <div id="rs-title">RUN COMPLETE</div>
+    <div id="rs-sub"></div>
+    <div id="rs-stats"></div>
+    <div id="rs-shards">
+      <div class="rs-shards-label">DOOM SHARDS EARNED</div>
+      <div id="rs-shard-breakdown"></div>
+      <div id="rs-shard-total"></div>
+    </div>
+    <div class="flex gap-8 flex-wrap justify-center">
+      <button onclick="openMetaScreen()" class="btn-shards">SPEND SHARDS</button>
+      <button onclick="hardResetRun()" class="btn-new-run">NEW RUN</button>
+    </div>
+  </div>
+</div>
+
+<!-- META UPGRADES -->
+<div id="meta-screen">
+  <div class="meta-wrap">
+    <div class="meta-header">
+      <div class="meta-title">META UPGRADES</div>
+      <button class="close-meta" onclick="closeMetaScreen()">X</button>
+    </div>
+    <div id="meta-shards-display"></div>
+    <div id="meta-upgrades-list"></div>
+  </div>
+</div>
+
+<!-- SCRIPTS (Dependency Order is Critical) -->
+<script src="js/data.js"></script>
+<script src="js/vfx.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/map.js"></script>
+<script src="js/items.js"></script>
+<script src="js/combat.js"></script>
+
+</body>
+</html>

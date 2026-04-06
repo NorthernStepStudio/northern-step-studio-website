@@ -1,0 +1,18 @@
+{
+  "name": "nstep-workspace",
+  "private": true,
+  "workspaces": [
+    "apps/nstep-dashboard",
+    "packages/nstep-os"
+  ],
+  "scripts": {
+    "check": "npm run check --workspace packages/nstep-os && npm run check --workspace apps/nstep-dashboard",
+    "build": "npm run compile --workspace packages/nstep-os && npm run build --workspace apps/nstep-dashboard",
+    "test": "npm run test --workspace packages/nstep-os",
+    "dev": "node scripts/dev.mjs",
+    "dev:dashboard": "npm run dev --workspace apps/nstep-dashboard",
+    "dev:server": "npm run start --workspace packages/nstep-os",
+    "dev:worker": "npm run worker --workspace packages/nstep-os",
+    "worker": "npm run worker --workspace packages/nstep-os"
+  }
+}
