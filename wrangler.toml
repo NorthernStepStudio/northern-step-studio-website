@@ -3,10 +3,6 @@ main = "src/worker/index.ts"
 compatibility_date = "2025-06-17"
 compatibility_flags = ["nodejs_compat"]
 
-[[r2_buckets]]
-binding = "R2_BUCKET"
-bucket_name = "northern-step-studio-website"
-
 [assets]
 directory = "./dist"
 not_found_handling = "single-page-application"
