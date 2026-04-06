@@ -11,3 +11,6 @@ not_found_handling = "single-page-application"
 binding = "DB"
 database_name = "northern-step-studio-website"
 database_id = "73c9a931-0d76-4ecc-b32d-c1293ce5579c"
+
+[observability]
+enabled = true

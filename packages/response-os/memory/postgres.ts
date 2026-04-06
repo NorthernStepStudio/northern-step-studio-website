@@ -82,7 +82,7 @@ export async function appendSessionTurns(
 
   await sql.begin(async (tx) => {
     for (const turn of turns) {
-      await tx`
+      await (tx as any)`
         insert into ai_session_history (session_id, role, content, created_at)
         values (
           ${sessionId},

@@ -2,6 +2,8 @@ import type { MiddlewareHandler } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { getCookie, setCookie } from "hono/cookie";
 import { OWNER_EMAIL } from "../shared/auth";
+import { getDb, type Env } from "./db";
+import { normalizeMultilineText, normalizeSingleLineText } from "./utils";
 
 const PASSWORD_MIN_LENGTH = 8;
 // Cloudflare Workers currently rejects PBKDF2 iteration counts above 100,000.
@@ -177,10 +179,6 @@ export function getSessionCookieOptions(requestUrl: string) {
   };
 }
 
-import { getDb, type Env } from "./db";
-
-// ... (previous functions unchanged until findDatabaseUserByEmail)
-
 export async function findDatabaseUserByEmail(env: Env, email: string) {
   const sql = getDb(env);
   const [user] = await sql<DatabaseUser[]>`
@@ -331,8 +329,6 @@ export async function clearAuthSessions(c: { env: Env; req: { url: string } }) {
 export async function getAuthenticatedUser(c: { env: Env; req: { url: string } }): Promise<AppUser | null> {
   const sessionToken = getCookie(c as never, LOCAL_SESSION_TOKEN_COOKIE_NAME);
   
-  // Development Fallback: If DB URL is not configured (contains YOUR_PASSWORD placeholder),
-  // return a mock owner session to unblock UI testing on localhost.
   if (c.env.SUPABASE_DB_URL?.includes("YOUR_PASSWORD") || c.env.DATABASE_URL?.includes("YOUR_PASSWORD")) {
     return {
       id: "mock-owner",
@@ -361,17 +357,7 @@ export async function getAuthenticatedUser(c: { env: Env; req: { url: string } }
   try {
     const results = await sql<LocalSessionRow[]>`
       SELECT
-        u.id,
-        u.email,
-        u.role,
-        u.display_name,
-        u.bio,
-        u.avatar_url,
-        u.password_hash,
-        u.password_salt,
-        u.created_at,
-        u.updated_at,
-        s.last_seen_at
+        u.id, u.email, u.role, u.display_name, u.bio, u.avatar_url, u.password_hash, u.password_salt, u.created_at, u.updated_at, s.last_seen_at
       FROM user_sessions s
       JOIN users u ON u.id = s.user_id
       WHERE s.session_token_hash = ${sessionTokenHash}
@@ -384,16 +370,11 @@ export async function getAuthenticatedUser(c: { env: Env; req: { url: string } }
   }
 
   if (!row) {
-    setCookie(c as never, LOCAL_SESSION_TOKEN_COOKIE_NAME, "", {
-      ...getSessionCookieOptions(c.req.url),
-      maxAge: 0,
-    });
     return null;
   }
 
   await sql`
-    UPDATE user_sessions 
-    SET last_seen_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP 
+    UPDATE user_sessions SET last_seen_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP 
     WHERE session_token_hash = ${sessionTokenHash}
   `;
 
@@ -402,21 +383,31 @@ export async function getAuthenticatedUser(c: { env: Env; req: { url: string } }
 
 export const authMiddleware: MiddlewareHandler<{ Bindings: Env; Variables: { user: AppUser } }> = async (c, next) => {
   const user = await getAuthenticatedUser(c);
-
   if (!user) {
     throw new HTTPException(401, { message: "Unauthorized" });
   }
-
   c.set("user", user);
   await next();
 };
 
-export async function getGoogleOAuthRedirectUrl(
-  c: { env: Env; req: { url: string } },
-  redirectUri?: string | null,
-) {
+export function requireRole(roles: string[] | string): MiddlewareHandler<{ Bindings: Env; Variables: { user: AppUser } }> {
+  return async (c, next) => {
+    const user = c.get("user");
+    if (!user) {
+      throw new HTTPException(401, { message: "Unauthorized" });
+    }
+
+    const roleList = Array.isArray(roles) ? roles : [roles];
+    if (!roleList.includes(user.role) && user.role !== "owner") {
+      throw new HTTPException(403, { message: "Forbidden" });
+    }
+    await next();
+  };
+}
+
+export async function getGoogleOAuthRedirectUrl(c: { env: Env; req: { url: string } }, redirectUri?: string | null) {
   if (!c.env.GOOGLE_CLIENT_ID) {
-    throw new Error("GOOGLE_CLIENT_ID is not configured in environment variables");
+    throw new Error("GOOGLE_CLIENT_ID is not configured");
   }
   const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
   const resolvedRedirectUri = redirectUri?.trim() || new URL("/auth/callback", c.req.url).toString();
@@ -436,11 +427,7 @@ export async function getGoogleOAuthRedirectUrl(
   return `${rootUrl}?${qs.toString()}`;
 }
 
-export async function exchangeGoogleCodeForUser(
-  c: { env: Env; req: { url: string } },
-  code: string,
-  redirectUri?: string | null,
-) {
+export async function exchangeGoogleCodeForUser(c: { env: Env; req: { url: string } }, code: string, redirectUri?: string | null) {
   const url = "https://oauth2.googleapis.com/token";
   const resolvedRedirectUri = redirectUri?.trim() || new URL("/auth/callback", c.req.url).toString();
   const values = {
@@ -457,31 +444,13 @@ export async function exchangeGoogleCodeForUser(
     headers: { "Content-Type": "application/json" },
   });
 
-  if (!res.ok) {
-    const error = await res.json();
-    console.error("Failed to fetch Google OAuth token:", error);
-    throw new Error("Failed to fetch Google OAuth token");
-  }
-
+  if (!res.ok) throw new Error("Failed to fetch Google OAuth token");
   const { access_token } = (await res.json()) as { access_token: string };
 
   const userRes = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
     headers: { Authorization: `Bearer ${access_token}` },
   });
 
-  if (!userRes.ok) {
-    const error = await userRes.json();
-    console.error("Failed to fetch Google user info:", error);
-    throw new Error("Failed to fetch Google user info");
-  }
-
-  return (await userRes.json()) as {
-    sub: string;
-    name: string;
-    given_name: string;
-    family_name: string;
-    picture: string;
-    email: string;
-    email_verified: boolean;
-  };
+  if (!userRes.ok) throw new Error("Failed to fetch Google user info");
+  return (await userRes.json()) as any;
 }

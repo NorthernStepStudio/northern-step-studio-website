@@ -7,7 +7,7 @@ import featureToggles from "./feature-toggles";
 import maintenance from "./maintenance";
 import communityUploads from "./community-uploads";
 import revenue from "./revenue";
-// import appShellHtml from "../../dist/index.html"; // Removed to avoid build-time stale asset issues
+// // import appShellHtml from "../../dist/index.html"; // Removed to avoid build-time stale asset issues
 import { getDb } from "./db";
 import { handleAiChat } from "./ai-assistant";
 import { searchKnowledgeChunks, getKnowledgeLaneHealth } from "./knowledge";
@@ -93,7 +93,7 @@ app.get("/api/health", async (c) => {
 
   return c.json({
     status: "ok",
-    version: "1.0.6",
+    version: "1.0.8",
     path: c.req.path,
     url: c.req.url,
     environment: {
@@ -1601,7 +1601,7 @@ app.post("/api/apps/:id/upload-logo", authMiddleware, async (c) => {
 
   const id = c.req.param("id");
   const formData = await c.req.formData();
-  const file = formData.get("logo") as File;
+  const file = formData.get("logo") as unknown as File;
 
   if (!file) {
     return c.json({ error: "No file provided" }, 400);
@@ -1648,7 +1648,7 @@ app.post("/api/apps/:id/upload-screenshot", authMiddleware, async (c) => {
 
   const id = c.req.param("id");
   const formData = await c.req.formData();
-  const file = formData.get("screenshot") as File;
+  const file = formData.get("screenshot") as unknown as File;
 
   if (!file) {
     return c.json({ error: "No file provided" }, 400);
@@ -2612,7 +2612,7 @@ function isManagedProfileAvatarUrl(value: string, userId: number) {
   return value.startsWith(`/api/profile-files/${userId}/`);
 }
 
-async function deleteManagedProfileAvatar(bucket: R2Bucket, avatarUrl: string | null, userId: number) {
+async function deleteManagedProfileAvatar(bucket: any, avatarUrl: string | null, userId: number) {
   if (!avatarUrl || !isManagedProfileAvatarUrl(avatarUrl, userId)) {
     return;
   }
@@ -2764,9 +2764,8 @@ app.post("/api/user/profile/avatar", authMiddleware, async (c) => {
   }
 
   const formData = await c.req.formData();
-  const file = formData.get("avatar");
-
-  if (!(file instanceof File)) {
+  const file = formData.get("avatar") as any;
+  if (!file || typeof file === "string") {
     return c.json({ error: "No image file was provided." }, 400);
   }
 
@@ -3518,6 +3517,7 @@ app.notFound(async (c) => {
   const path = c.req.path;
   console.log(`[Worker NotFound] Path: ${path}`);
 
+  // API requests should never reach here if routes are correct, but if they do, 404
   if (path.startsWith("/api") || path.includes("/api/")) {
     return c.json({
       error: "API endpoint not found",
@@ -3526,14 +3526,23 @@ app.notFound(async (c) => {
     }, 404);
   }
 
+  // Handle SPA routing and static assets
   if (c.req.method === "GET" || c.req.method === "HEAD") {
     if (c.env.ASSETS && typeof c.env.ASSETS.fetch === "function") {
       const response = await c.env.ASSETS.fetch(c.req.raw);
+      
+      // If it's a known static asset (hashed by Vite), let it be cached long-term
       if (response && response.status !== 404) {
+        if (path.includes("/assets/")) {
+          const assetResponse = new Response(response.body, response);
+          assetResponse.headers.set("Cache-Control", "public, max-age=31536000, immutable");
+          return assetResponse;
+        }
         return response;
       }
 
       // If asset not found but it's a GET request, serve index.html (SPA routing)
+      // We ALWAYS fetch the fresh index.html to ensure the user gets the latest build pointers
       const indexRequest = new Request(new URL("/", c.req.url).toString(), c.req.raw);
       const indexResponse = await c.env.ASSETS.fetch(indexRequest);
       

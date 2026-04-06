@@ -45,7 +45,8 @@ export async function agentNode(state: StudioGraphState): Promise<StudioGraphSta
 
   const timestamp = new Date().toISOString();
   const evidence = result.evidence ?? buildEvidenceFromRetrieval(retrieval?.chunks ?? []);
-  const sources = result.sources?.length ? result.sources : deriveSourcesFromEvidence(evidence);
+  const sources = result.sources?.length ? result.sources : deriveSourcesFromEvidence(evidence ?? []);
+
 
   return {
     ...state,
@@ -83,7 +84,7 @@ function buildEvidenceFromRetrieval(chunks: RetrievedChunk[]): AgentOutput["evid
 }
 
 function deriveSourcesFromEvidence(evidence: NonNullable<AgentOutput["evidence"]>): string[] {
-  if (!evidence.length) {
+  if (!evidence || !evidence.length) {
     return [];
   }
 

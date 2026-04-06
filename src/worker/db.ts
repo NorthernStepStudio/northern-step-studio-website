@@ -7,41 +7,25 @@ export interface Env {
   [key: string]: any;
 }
 
-import pg from "pg";
-
 export function getDb(env: Env) {
   const connectionString = env.SUPABASE_DB_URL || env.DATABASE_URL;
 
-  // 1. Prioritize Postgres
+  // 1. Prioritize Postgres (Supabase)
   if (connectionString && !connectionString.includes("YOUR_PASSWORD")) {
-    const pgClient = ((strings: TemplateStringsArray, ...values: any[]) => {
-      // Create a fresh client for every query for 100% stability in the Worker
-      const client = new pg.Client({ connectionString });
-      
-      return client.connect()
-        .then(() => {
-          let query = strings[0] ?? "";
-          for (let i = 0; i < values.length; i++) {
-            query += `$${i + 1}${strings[i + 1] ?? ""}`;
-          }
-          return client.query(query, values);
-        })
-        .then((res: any) => {
-          client.end().catch(() => {}); // Fire and forget closure
-          return res.rows ?? [];
-        })
-        .catch((error: any) => {
-          client.end().catch(() => {});
-          throw error;
-        });
-    }) as any;
+    const sql = postgres(connectionString, {
+      ssl: "require",
+      max: 1, // Single connection for Cloudflare Worker efficiency
+      idle_timeout: 20,
+      connect_timeout: 10,
+    });
     
-    pgClient.isPostgres = true;
-    pgClient.isD1 = false;
-    return pgClient;
+    const client = sql as any;
+    client.isPostgres = true;
+    client.isD1 = false;
+    return client;
   }
 
-  // 2. Fallback to D1
+  // 2. Fallback to D1 (Cloudflare Native)
   const d1Binding = env.DB;
   if (d1Binding && typeof d1Binding.prepare === "function") {
     const d1stack = createD1Client(d1Binding);

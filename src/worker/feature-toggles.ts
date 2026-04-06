@@ -1,48 +1,39 @@
 import { Hono } from "hono";
 import { authMiddleware, type AppUser } from "./auth";
 import { OWNER_EMAIL } from "../shared/auth";
-import { getDb } from "./db";
+import { getDb, type Env } from "./db";
 
 const featureToggles = new Hono<{ Bindings: Env; Variables: { user: AppUser } }>();
 
-// Get all feature toggles
-featureToggles.get("/", async (c) => {
-  const sql = getDb(c.env);
-  const results = await sql`
-    SELECT * FROM feature_toggles ORDER BY feature_name ASC
-  `;
+featureToggles.get("/", authMiddleware, async (c) => {
+  const user = c.get("user");
+  if (user.email !== OWNER_EMAIL) {
+    return c.json({ error: "Forbidden" }, 403);
+  }
 
-  return c.json(results);
+  const sql = getDb(c.env);
+  const rows = await sql<{ key: string; enabled: number; description: string | null }[]>`
+    SELECT key, enabled, description FROM nstep_feature_toggles ORDER BY key ASC
+  `.catch(() => []);
+  
+  return c.json({ toggles: rows });
 });
 
-// Update feature toggle (owner/admin only)
-featureToggles.put("/:id", authMiddleware, async (c) => {
-  const authUser = c.get("user");
-  const featureId = c.req.param("id");
-  const body = await c.req.json();
-
-  if (!authUser) {
-    return c.json({ error: "Unauthorized" }, 401);
+featureToggles.patch("/:key", authMiddleware, async (c) => {
+  const user = c.get("user");
+  if (user.email !== OWNER_EMAIL) {
+    return c.json({ error: "Forbidden" }, 403);
   }
+
+  const key = c.req.param("key");
+  const body = await c.req.json().catch(() => null);
+  const enabled = body?.enabled === true ? 1 : 0;
 
   const sql = getDb(c.env);
-
-  // Check user role
-  const [dbUser] = await sql<{ role: string }[]>`
-    SELECT role FROM users WHERE email = ${authUser.email}
-  `;
-
-  const role = dbUser?.role || (authUser.email === OWNER_EMAIL ? "owner" : "user");
-
-  if (role !== "owner" && role !== "admin") {
-    return c.json({ error: "Forbidden: Only owner and admin can modify feature toggles" }, 403);
-  }
-
-  // Update the feature toggle
   await sql`
-    UPDATE feature_toggles 
-    SET is_enabled = ${body.is_enabled ? true : false}, updated_at = CURRENT_TIMESTAMP 
-    WHERE id = ${featureId}
+    UPDATE nstep_feature_toggles 
+    SET enabled = ${enabled}, updated_at = CURRENT_TIMESTAMP 
+    WHERE key = ${key}
   `;
 
   return c.json({ success: true });

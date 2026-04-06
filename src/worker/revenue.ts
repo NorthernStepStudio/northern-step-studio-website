@@ -10,7 +10,7 @@ import {
   type LeadRecoveryWorkspace,
 } from "../shared/lead-recovery";
 import { authMiddleware, type AppUser } from "./auth";
-import { getDb } from "./db";
+import { getDb, type Env } from "./db";
 import { normalizeMultilineText, normalizeSingleLineText } from "./utils";
 
 const revenue = new Hono<{ Bindings: Env; Variables: { user: AppUser } }>();

@@ -6,47 +6,54 @@ import { retrievalNode } from "./retrieval-node.ts";
 
 const StudioStateAnnotation = Annotation.Root({
   sessionId: Annotation<string>({
+    value: (_l, r) => r,
     default: () => "",
   }),
   userMessage: Annotation<string>({
+    value: (_l, r) => r,
     default: () => "",
   }),
   route: Annotation<StudioGraphState["route"]>({
+    value: (_l, r) => r,
     default: () => undefined,
   }),
   retrieval: Annotation<StudioGraphState["retrieval"]>({
+    value: (_l, r) => r,
     default: () => undefined,
   }),
   response: Annotation<string | undefined>({
+    value: (_l, r) => r,
     default: () => undefined,
   }),
   confidence: Annotation<number | undefined>({
+    value: (_l, r) => r,
     default: () => undefined,
   }),
   sources: Annotation<string[]>({
-    reducer: (_left = [], right = []) => (right.length ? right : _left),
+    value: (_left = [], right = []) => (right.length ? right : _left),
     default: () => [],
   }),
   evidence: Annotation<StudioGraphState["evidence"]>({
-    reducer: (_left = [], right = []) => (right?.length ? right : _left),
+    value: (_left = [], right = []) => (right?.length ? right : _left),
     default: () => [],
   }),
   ui: Annotation<StudioGraphState["ui"]>({
+    value: (_l, r) => r,
     default: () => undefined,
   }),
   history: Annotation<ConversationTurn[]>({
-    reducer: (left = [], right = []) => (right.length ? right : left),
+    value: (left = [], right = []) => (right.length ? right : left),
     default: () => [],
   }),
   metadata: Annotation<Record<string, any>>({
-    reducer: (left = {}, right = {}) => ({ ...left, ...right }),
+    value: (left = {}, right = {}) => ({ ...left, ...right }),
     default: () => ({}),
   }),
 });
 
 export type StudioStateAnnotationType = typeof StudioStateAnnotation;
 
-type StudioCompiledGraph = ReturnType<StateGraph<typeof StudioStateAnnotation>["compile"]>;
+type StudioCompiledGraph = any;
 
 const compiledGraphCache = new Map<string, Promise<StudioCompiledGraph>>();
 

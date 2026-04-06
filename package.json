@@ -1,7 +1,7 @@
 {
   "name": "northern-step-studio-website",
   "private": true,
-  "version": "1.0.7",
+  "version": "1.0.8",
   "type": "module",
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
@@ -32,6 +32,7 @@
     "zod": "^3.24.3"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260405.1",
     "@eslint/js": "9.25.1",
     "@types/node": "22.14.1",
     "@types/react": "19.0.10",
@@ -53,10 +54,11 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node ./scripts/sanitize-dist.mjs",
+    "build": "npx tsc -b && vite build && node ./scripts/sanitize-dist.mjs",
     "preview": "vite preview",
     "lint": "eslint .",
-    "deploy": "git add . && git commit -m 'update site' && git push origin main",
+    "deploy": "git add . && git commit -m 'Release 1.0.8' && git push origin main",
+    "deploy:manual": "npm run build && npx wrangler deploy",
     "seed:knowledge": "npx tsx scripts/seed-knowledge.ts"
   }
 }

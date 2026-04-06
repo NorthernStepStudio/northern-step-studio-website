@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { getDb } from './db';
+import { getDb, type Env } from "./db";
 import { sendEmail } from './email';
 import { 
   normalizeEmailAddress, 
@@ -11,11 +11,11 @@ import {
   testerRequestNotificationEmail, 
   testerApprovalEmail 
 } from './email-templates';
-import { requireRole } from './auth';
+import { authMiddleware, requireRole, type AppUser } from "./auth";
 
 const OWNER_EMAIL = "winston@northernstepstudio.com";
 
-export function registerTesterRoutes(app: Hono<any>) {
+export function registerTesterRoutes(app: Hono<{ Bindings: Env; Variables: { user: AppUser } }>) {
   // Public Signup
   app.post("/api/testers", async (c) => {
     try {
@@ -59,21 +59,27 @@ export function registerTesterRoutes(app: Hono<any>) {
     }
   });
 
-  // Admin List
-  app.get("/api/admin/testers", async (c) => {
-    const role = await requireRole(c, ["owner", "admin"]);
-    if (!role) return c.json({ error: "Unauthorized" }, 403);
+  // Admin Routes
+  const adminRoutes = new Hono<{ Bindings: Env; Variables: { user: AppUser } }>();
+  adminRoutes.use("*", authMiddleware);
+  adminRoutes.use("*", requireRole(["owner", "admin"]));
 
+  // Admin List
+  adminRoutes.get("/", async (c) => {
     const sql = getDb(c.env);
     const rows = await sql`SELECT * FROM nstep_testers ORDER BY created_at DESC`;
     return c.json(rows);
   });
 
-  // Admin Action
-  app.patch("/api/admin/testers/:id", async (c) => {
-    const role = await requireRole(c, ["owner", "admin"]);
-    if (!role) return c.json({ error: "Unauthorized" }, 403);
+  // Admin Stats
+  adminRoutes.get("/stats", async (c) => {
+    const sql = getDb(c.env);
+    const rows = await sql`SELECT status, app_slug, COUNT(*) as count FROM nstep_testers GROUP BY status, app_slug`;
+    return c.json(rows);
+  });
 
+  // Admin Action
+  adminRoutes.patch("/:id", async (c) => {
     const id = c.req.param("id");
     const body = await c.req.json();
     const { status, admin_notes } = body;
@@ -104,24 +110,13 @@ export function registerTesterRoutes(app: Hono<any>) {
     return c.json({ success: true });
   });
 
-  // Admin Stats
-  app.get("/api/admin/testers/stats", async (c) => {
-    const role = await requireRole(c, ["owner", "admin"]);
-    if (!role) return c.json({ error: "Unauthorized" }, 403);
-
-    const sql = getDb(c.env);
-    const rows = await sql`SELECT status, app_slug, COUNT(*) as count FROM nstep_testers GROUP BY status, app_slug`;
-    return c.json(rows);
-  });
-
   // Admin Delete
-  app.delete("/api/admin/testers/:id", async (c) => {
-    const role = await requireRole(c, ["owner", "admin"]);
-    if (!role) return c.json({ error: "Unauthorized" }, 403);
-
+  adminRoutes.delete("/:id", async (c) => {
     const id = c.req.param("id");
     const sql = getDb(c.env);
     await sql`DELETE FROM nstep_testers WHERE id = ${id}`;
     return c.json({ success: true });
   });
+
+  app.route("/api/admin/testers", adminRoutes);
 }

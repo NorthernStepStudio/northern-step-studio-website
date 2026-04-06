@@ -1,6 +1,7 @@
 import { Context } from "hono";
 import { type ChatMessage } from "./studio-supervisor.ts";
-import { getDb } from "./db.ts";
+import { getDb, type Env } from "./db.ts";
+import { type AppUser } from "./auth.ts";
 import { routeMessage } from "../../packages/response-os/router.ts";
 import { runStudioGraph } from "../../packages/response-os/graph/index.ts";
 import type { AgentInput, AgentOutput } from "../../packages/response-os/agents/types.ts";
@@ -45,10 +46,10 @@ export async function handleAIRequest(input: AgentInput): Promise<AgentOutput> {
   return runStudioGraph(input);
 }
 
-export const handleAiChat = async (c: Context) => {
+export const handleAiChat = async (c: Context<{ Bindings: Env; Variables: { user: AppUser } }>) => {
   const parsed = await parseChatRequest(c);
   if ("error" in parsed) {
-    return c.json({ error: parsed.error }, parsed.status);
+    return c.json({ error: (parsed as any).error }, (parsed as any).status);
   }
 
   const rateLimit = enforceAiChatRateLimit(c);
@@ -104,7 +105,7 @@ export const handleAiChat = async (c: Context) => {
   return c.json(toPublicChatResponse(result));
 };
 
-async function parseChatRequest(c: Context): Promise<ParsedChatRequest> {
+async function parseChatRequest(c: Context<{ Bindings: Env; Variables: { user: AppUser } }>): Promise<ParsedChatRequest> {
   let body: ChatRequest;
 
   try {
@@ -172,7 +173,7 @@ function warnMissingGeminiKey() {
   console.warn("[NStep AI] GEMINI_API_KEY is not configured. Serving fallback answers only.");
 }
 
-function getClientIdentifier(c: Context) {
+function getClientIdentifier(c: Context<{ Bindings: Env; Variables: { user: AppUser } }>) {
   const headerCandidates = [
     c.req.header("cf-connecting-ip"),
     c.req.header("x-real-ip"),
@@ -182,7 +183,7 @@ function getClientIdentifier(c: Context) {
   return headerCandidates.find((value) => Boolean(value && value.trim()))?.trim() || "local";
 }
 
-function enforceAiChatRateLimit(c: Context) {
+function enforceAiChatRateLimit(c: Context<{ Bindings: Env; Variables: { user: AppUser } }>) {
   const now = Date.now();
 
   for (const [key, bucket] of aiChatBuckets.entries()) {
@@ -244,7 +245,7 @@ function toPublicChatResponse(result: AgentOutput): Pick<ChatResponse, "answer" 
   return response;
 }
 
-async function recordAiChatAnalytics(c: Context, question: string, route: string, result: AgentOutput): Promise<void> {
+async function recordAiChatAnalytics(c: Context<{ Bindings: Env; Variables: { user: AppUser } }>, question: string, route: string, result: AgentOutput): Promise<void> {
   try {
     const sql = getDb(c.env);
     await sql`
