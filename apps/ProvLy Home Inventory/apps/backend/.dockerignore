@@ -1,0 +1,10 @@
+node_modules
+dist
+.env
+.env.*
+!.env.example
+.git
+.gitignore
+.expo
+backend_log.txt
+.tmp-tsconfig.json

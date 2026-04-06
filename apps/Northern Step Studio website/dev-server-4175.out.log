@@ -1,0 +1,74 @@
+
+> northern-step-studio-website@0.0.0 dev
+> vite --host 127.0.0.1 --port 4175
+
+Using secrets defined in .dev.vars
+
+  [32m[1mVITE[22m v7.3.1[39m  [2mready in [0m[1m3631[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://127.0.0.1:[1m4175[22m/[39m
+  [32m➜[39m  [1mDebug[22m:   [2m[33mhttp://127.0.0.1:[1m4175[22m[2m/__debug[39m[22m
+[2m9:49:00 PM[22m [36m[1m[vite][22m[39m [34m[2m(019c5ef5_a292_7ae5_970a_6d8d3d656c26)[22m[39m [32mhmr update [39m[2m/@id/virtual:cloudflare/worker-entry[22m
+[vite] hot updated: virtual:cloudflare/worker-entry
+[2m9:49:27 PM[22m [36m[1m[vite][22m[39m [34m[2m(019c5ef5_a292_7ae5_970a_6d8d3d656c26)[22m[39m [32mhmr update [39m[2m/@id/virtual:cloudflare/worker-entry[22m
+[vite] hot updated: virtual:cloudflare/worker-entry
+[2m9:49:37 PM[22m [36m[1m[vite][22m[39m [34m[2m(019c5ef5_a292_7ae5_970a_6d8d3d656c26)[22m[39m [32mhmr update [39m[2m/@id/virtual:cloudflare/worker-entry[22m
+[vite] hot updated: virtual:cloudflare/worker-entry
+[2m10:00:59 PM[22m [36m[1m[vite][22m[39m [34m[2m(019c5ef5_a292_7ae5_970a_6d8d3d656c26)[22m[39m [32mhmr update [39m[2m/@id/virtual:cloudflare/worker-entry[22m
+[vite] hot updated: virtual:cloudflare/worker-entry
+[2m10:01:30 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/EditProfile.tsx, /src/react-app/index.css[22m
+[2m10:01:53 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/UserProfile.tsx, /src/react-app/index.css[22m
+[2m10:04:53 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/EditProfile.tsx, /src/react-app/index.css[22m
+[2m10:18:44 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/index.css, /src/react-app/components/MentionInput.tsx[22m
+[2m10:28:55 PM[22m [36m[1m[vite][22m[39m [34m[2m(019c5ef5_a292_7ae5_970a_6d8d3d656c26)[22m[39m [32mhmr update [39m[2m/@id/virtual:cloudflare/worker-entry[22m
+[vite] hot updated: virtual:cloudflare/worker-entry
+[2m10:29:02 PM[22m [36m[1m[vite][22m[39m [34m[2m(019c5ef5_a292_7ae5_970a_6d8d3d656c26)[22m[39m [32mhmr update [39m[2m/@id/virtual:cloudflare/worker-entry[22m
+[vite] hot updated: virtual:cloudflare/worker-entry
+[2m10:29:18 PM[22m [36m[1m[vite][22m[39m [34m[2m(019c5ef5_a292_7ae5_970a_6d8d3d656c26)[22m[39m [32mhmr update [39m[2m/@id/virtual:cloudflare/worker-entry[22m
+[vite] hot updated: virtual:cloudflare/worker-entry
+[2m10:29:32 PM[22m [36m[1m[vite][22m[39m [34m[2m(019c5ef5_a292_7ae5_970a_6d8d3d656c26)[22m[39m [32mhmr update [39m[2m/@id/virtual:cloudflare/worker-entry[22m
+[vite] hot updated: virtual:cloudflare/worker-entry
+[2m10:30:34 PM[22m [36m[1m[vite][22m[39m [34m[2m(019c5ef5_a292_7ae5_970a_6d8d3d656c26)[22m[39m [32mhmr update [39m[2m/@id/virtual:cloudflare/worker-entry[22m
+[vite] hot updated: virtual:cloudflare/worker-entry
+[2m10:30:42 PM[22m [36m[1m[vite][22m[39m [34m[2m(019c5ef5_a292_7ae5_970a_6d8d3d656c26)[22m[39m [32mhmr update [39m[2m/@id/virtual:cloudflare/worker-entry[22m
+[vite] hot updated: virtual:cloudflare/worker-entry
+[2m10:30:54 PM[22m [36m[1m[vite][22m[39m [34m[2m(019c5ef5_a292_7ae5_970a_6d8d3d656c26)[22m[39m [32mhmr update [39m[2m/@id/virtual:cloudflare/worker-entry[22m
+[vite] hot updated: virtual:cloudflare/worker-entry
+[2m10:31:04 PM[22m [36m[1m[vite][22m[39m [34m[2m(019c5ef5_a292_7ae5_970a_6d8d3d656c26)[22m[39m [32mhmr update [39m[2m/@id/virtual:cloudflare/worker-entry[22m
+[vite] hot updated: virtual:cloudflare/worker-entry
+[2m10:31:39 PM[22m [36m[1m[vite][22m[39m [34m[2m(019c5ef5_a292_7ae5_970a_6d8d3d656c26)[22m[39m [32mhmr update [39m[2m/@id/virtual:cloudflare/worker-entry[22m
+[vite] hot updated: virtual:cloudflare/worker-entry
+[2m10:31:59 PM[22m [36m[1m[vite][22m[39m [34m[2m(019c5ef5_a292_7ae5_970a_6d8d3d656c26)[22m[39m [32mhmr update [39m[2m/@id/virtual:cloudflare/worker-entry[22m
+[vite] hot updated: virtual:cloudflare/worker-entry
+[2m10:32:47 PM[22m [36m[1m[vite][22m[39m [34m[2m(019c5ef5_a292_7ae5_970a_6d8d3d656c26)[22m[39m [32mhmr update [39m[2m/@id/virtual:cloudflare/worker-entry[22m
+[vite] hot updated: virtual:cloudflare/worker-entry
+[2m10:33:16 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/ThreadDetail.tsx, /src/react-app/index.css[22m
+[2m10:33:44 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/ThreadDetail.tsx, /src/react-app/index.css[22m
+[2m10:34:17 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/ThreadDetail.tsx, /src/react-app/index.css[22m
+[2m10:34:52 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/ThreadDetail.tsx, /src/react-app/index.css[22m
+[2m10:34:59 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/ThreadDetail.tsx, /src/react-app/index.css[22m
+[2m10:35:06 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/ThreadDetail.tsx, /src/react-app/index.css[22m
+[2m10:35:47 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/ThreadDetail.tsx, /src/react-app/index.css[22m
+[2m10:36:15 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/ThreadDetail.tsx, /src/react-app/index.css[22m
+[2m10:36:44 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/CategoryThreads.tsx, /src/react-app/index.css[22m
+[2m10:37:03 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/CategoryThreads.tsx, /src/react-app/index.css[22m
+[2m10:37:14 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/CategoryThreads.tsx, /src/react-app/index.css[22m
+[2m10:37:41 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/StudioDashboard.tsx, /src/react-app/index.css[22m
+[2m10:37:50 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/UserPreferences.tsx, /src/react-app/index.css[22m
+[2m10:38:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/index.css, /src/react-app/components/NotificationBell.tsx[22m
+[2m10:38:28 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/components/PublicLayout.tsx, /src/react-app/index.css[22m
+[2m10:38:46 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/Community.tsx, /src/react-app/index.css[22m
+[2m10:38:52 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/Community.tsx, /src/react-app/index.css[22m
+[2m10:39:01 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/admin/CommunityManager.tsx, /src/react-app/index.css[22m
+[2m10:40:53 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/index.css, /src/react-app/components/MentionInput.tsx[22m
+[2m10:41:14 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/ThreadDetail.tsx, /src/react-app/index.css[22m
+[2m10:41:14 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/CategoryThreads.tsx, /src/react-app/index.css[22m
+[2m10:41:14 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/StudioDashboard.tsx, /src/react-app/index.css[22m
+[2m10:41:23 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/StudioDashboard.tsx, /src/react-app/index.css[22m
+[2m11:18:29 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/App.tsx, /src/react-app/index.css[22m
+[2m11:18:41 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/components/PublicLayout.tsx, /src/react-app/index.css[22m
+[2m11:18:49 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/GameHub.tsx, /src/react-app/index.css[22m
+[2m11:18:56 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/index.css, /src/react-app/components/PublicLayout.tsx, /src/react-app/pages/KnowledgeBase.tsx, /src/react-app/pages/AppHub.tsx, /src/react-app/pages/MaintenancePage.tsx, /src/react-app/pages/GameHub.tsx, /src/react-app/pages/Home.tsx, /src/react-app/components/AdminLayout.tsx, /src/react-app/pages/About.tsx, /src/react-app/pages/Updates.tsx, /src/react-app/pages/Contact.tsx, /src/react-app/pages/Login.tsx, /src/react-app/components/SEO.tsx[22m
+[2m11:35:54 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/admin/Dashboard.tsx, /src/react-app/index.css[22m
+[2m11:36:12 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/admin/Dashboard.tsx, /src/react-app/index.css[22m
+[2m11:36:53 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/admin/Revenue.tsx, /src/react-app/index.css[22m

@@ -1,0 +1,9 @@
+dist/
+node_modules/
+.wrangler/
+.dev.vars
+.env.local
+worker-configuration.d.ts
+
+.vercel
+worker-dev.*.log

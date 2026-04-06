@@ -1,0 +1,3 @@
+ALTER TABLE apps DROP COLUMN platform;
+ALTER TABLE apps DROP COLUMN features;
+ALTER TABLE apps DROP COLUMN video_url;
