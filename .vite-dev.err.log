@@ -1,0 +1,576 @@
+Error: D1_ERROR: no such table: maintenance_settings: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:323:39
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/maintenance.ts:9:20)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: maintenance_settings: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:323:39
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/maintenance.ts:9:20)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: maintenance_settings: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:323:39
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/maintenance.ts:9:20)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: maintenance_settings: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:323:39
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/maintenance.ts:9:20)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: apps: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:1068:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: apps: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:1068:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: analytics: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:353:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:1402:3)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: analytics: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:353:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:1402:3)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: maintenance_settings: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:323:39
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/maintenance.ts:9:20)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: maintenance_settings: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:323:39
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/maintenance.ts:9:20)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: apps: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:1068:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: apps: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:1068:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: maintenance_settings: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:323:39
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/maintenance.ts:9:20)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: maintenance_settings: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:323:39
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/maintenance.ts:9:20)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: maintenance_settings: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:323:39
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/maintenance.ts:9:20)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: maintenance_settings: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:323:39
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/maintenance.ts:9:20)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: maintenance_settings: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:323:39
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/maintenance.ts:9:20)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: maintenance_settings: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:323:39
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/maintenance.ts:9:20)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: apps: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:1068:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: apps: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:1068:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: analytics: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:353:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:1402:3)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: analytics: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:353:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:1402:3)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: maintenance_settings: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:323:39
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/maintenance.ts:9:20)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: maintenance_settings: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:323:39
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/maintenance.ts:9:20)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: apps: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:1068:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: apps: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:1068:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: maintenance_settings: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:323:39
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/maintenance.ts:9:20)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: maintenance_settings: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:323:39
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/maintenance.ts:9:20)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: analytics: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:353:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:1402:3)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: analytics: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:353:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:1402:3)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: feature_toggles: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:366:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: feature_toggles: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:366:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/feature-toggles.ts:9:23)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: analytics: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:353:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:1402:3)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: analytics: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:353:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:1402:3)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: analytics: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:353:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:1402:3)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: analytics: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:353:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:1402:3)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Error: D1_ERROR: no such table: analytics: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:353:41
+    at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:1402:3)
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: analytics: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:353:41
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:1402:3)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Admin password login failed: Error: D1_ERROR: no such table: users: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:323:39
+    ... 2 lines matching cause stack trace ...
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: users: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:323:39
+      at handlePasswordLogin (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:282:16)
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:744:12)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Admin password login failed: Error: D1_ERROR: no such table: users: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:323:39
+    ... 2 lines matching cause stack trace ...
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: users: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:323:39
+      at handlePasswordLogin (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:282:16)
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:744:12)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Admin password login failed: Error: D1_ERROR: no such table: users: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:323:39
+    ... 2 lines matching cause stack trace ...
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: users: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:323:39
+      at handlePasswordLogin (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:282:16)
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:744:12)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}
+Admin password login failed: Error: D1_ERROR: no such table: users: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:139:19)
+    at cloudflare-internal:d1-api:323:39
+    ... 2 lines matching cause stack trace ...
+    at maybeCaptureError (workers/runner-worker.js:49:10) {
+  [cause]: Error: no such table: users: SQLITE_ERROR
+      at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:140:24)
+      at cloudflare-internal:d1-api:323:39
+      at handlePasswordLogin (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:282:16)
+      at Array.<anonymous> (D:/dev/Northern Step Studio/apps/Northern Step Studio website/src/worker/index.ts:744:12)
+      at maybeCaptureError (workers/runner-worker.js:49:10)
+}

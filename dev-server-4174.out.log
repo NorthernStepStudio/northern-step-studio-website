@@ -1,0 +1,37 @@
+
+> northern-step-studio-website@0.0.0 dev
+> vite --host 127.0.0.1 --port 4174
+
+Using secrets defined in .dev.vars
+
+  [32m[1mVITE[22m v7.3.1[39m  [2mready in [0m[1m2274[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://127.0.0.1:[1m4174[22m/[39m
+  [32m➜[39m  [1mDebug[22m:   [2m[33mhttp://127.0.0.1:[1m4174[22m[2m/__debug[39m[22m
+[2m[32m  ➜[39m[22m[2m  press [22m[1mb + enter[22m[2m to list configured Cloudflare bindings[22m
+[2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
+[2m10:29:41 PM[22m [36m[1m[vite][22m[39m [34m[2m(northern_step_studio_website)[22m[39m [32mhmr update [39m[2m/@id/virtual:cloudflare/worker-entry[22m
+[vite] hot updated: virtual:cloudflare/worker-entry
+[2m10:30:12 PM[22m [36m[1m[vite][22m[39m [34m[2m(northern_step_studio_website)[22m[39m [32mhmr update [39m[2m/@id/virtual:cloudflare/worker-entry[22m
+[vite] hot updated: virtual:cloudflare/worker-entry
+[2m10:30:50 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/EditProfile.tsx, /src/react-app/index.css[22m
+[2m10:33:53 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/index.css[22m
+[2m10:34:35 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/components/AccountSettingsLayout.tsx, /src/react-app/index.css[22m
+[2m10:35:08 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/EditProfile.tsx, /src/react-app/index.css[22m
+[2m10:35:15 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/EditProfile.tsx, /src/react-app/index.css[22m
+[2m10:35:48 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/UserPreferences.tsx, /src/react-app/index.css[22m
+[2m10:37:33 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/components/AccountSettingsLayout.tsx, /src/react-app/index.css[22m
+[2m10:38:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/index.css[22m
+[2m10:38:43 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/EditProfile.tsx, /src/react-app/index.css[22m
+[2m10:39:30 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/EditProfile.tsx, /src/react-app/index.css[22m
+[2m10:41:17 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/EditProfile.tsx, /src/react-app/index.css[22m
+[2m10:44:41 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/index.css[22m
+[2m10:44:41 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/components/PublicLayout.tsx, /src/react-app/index.css[22m
+[2m10:44:41 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/UserProfile.tsx, /src/react-app/index.css[22m
+[2m10:47:40 PM[22m [36m[1m[vite][22m[39m [34m[2m(northern_step_studio_website)[22m[39m [32mhmr update [39m[2m/@id/virtual:cloudflare/worker-entry[22m
+[2m10:47:40 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/Home.tsx, /src/react-app/index.css[22m
+[vite] hot updated: virtual:cloudflare/worker-entry
+[2m10:51:06 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/index.css[22m
+[2m10:51:06 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/Contact.tsx, /src/react-app/index.css[22m
+[2m10:54:32 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/index.css, /src/react-app/pages/DocsArticle.tsx[22m
+[2m10:54:32 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/react-app/pages/KnowledgeBase.tsx, /src/react-app/index.css[22m
