@@ -52,7 +52,7 @@
     "wrangler": "^4.33.0"
   },
   "scripts": {
-    "build": "tsc -b && vite build && node ./scripts/sanitize-dist.mjs",
+    "build": "npx tsc -b && vite build && node ./scripts/sanitize-dist.mjs",
     "check": "tsc && vite build",
     "dev": "vite",
     "knip": "knip",
