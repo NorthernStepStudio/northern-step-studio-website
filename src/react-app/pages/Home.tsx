@@ -26,6 +26,14 @@ type PortfolioItem = {
 
 const PORTFOLIO_ITEMS: PortfolioItem[] = [
   {
+    nameKey: "home.portfolio_lead_title",
+    descriptionKey: "home.portfolio_lead_desc",
+    outcomeKey: "home.portfolio_lead_outcome",
+    statusKey: "home.portfolio_lead_live_today",
+    link: "/missed-call-text-back",
+    icon: PhoneCall,
+  },
+  {
     nameKey: "home.portfolio_nexus_title",
     descriptionKey: "home.portfolio_nexus_desc",
     outcomeKey: "home.portfolio_nexus_outcome",
@@ -123,9 +131,17 @@ function PortfolioCard({
   );
 }
 
-function FeaturedPortfolioCard(props: PortfolioItem) {
+function FeaturedPortfolioCard({
+  nameKey,
+  descriptionKey,
+  outcomeKey,
+  statusKey,
+  link,
+  image,
+  icon: Icon,
+}: PortfolioItem) {
   const { t } = useTranslation();
-  const isService = props.nameKey === "home.portfolio_lead_title";
+  const isService = nameKey === "home.portfolio_lead_title";
 
   return (
     <div className="relative overflow-hidden rounded-[2rem] border border-accent/35 bg-card p-6 sm:p-8 lg:p-10 transition-all hover:border-accent/60 hover:shadow-[0_24px_60px_rgba(88,171,255,0.18)]">
@@ -133,7 +149,7 @@ function FeaturedPortfolioCard(props: PortfolioItem) {
         <div className="flex min-w-0 flex-1 flex-col gap-5 text-left">
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-[10px] font-black uppercase tracking-[0.22em] text-accent">
-              {t(props.statusKey)}
+              {t(statusKey)}
             </span>
             <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
               {isService ? t("home.portfolio_type_service") : t("home.portfolio_type_app")}
@@ -142,22 +158,22 @@ function FeaturedPortfolioCard(props: PortfolioItem) {
 
           <div className="flex items-start gap-4">
             <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-3xl border border-accent/30 bg-accent/10 shadow-[0_0_0_1px_rgba(177,225,85,0.15)]">
-              {props.image ? (
-                <img src={props.image} alt="" className="h-full w-full object-contain p-3" />
+              {image ? (
+                <img src={image} alt="" className="h-full w-full object-contain p-3" />
               ) : (
-                <PhoneCall className="h-7 w-7 text-accent" />
+                <Icon className="h-7 w-7 text-accent" />
               )}
             </div>
 
             <div className="min-w-0 flex-1">
               <h3 className="text-2xl sm:text-3xl lg:text-5xl font-black uppercase tracking-tighter text-foreground">
-                {t(props.nameKey)}
+                {t(nameKey)}
               </h3>
               <p className="mt-4 max-w-2xl text-sm sm:text-base leading-relaxed text-muted-foreground">
-                {t(props.descriptionKey)}
+                {t(descriptionKey)}
               </p>
               <p className="mt-6 text-sm font-black uppercase tracking-[0.24em] text-accent">
-                {t(props.outcomeKey)}
+                {t(outcomeKey)}
               </p>
             </div>
           </div>
@@ -165,10 +181,10 @@ function FeaturedPortfolioCard(props: PortfolioItem) {
 
         <div className="flex flex-row items-center gap-4 border-t border-border/60 pt-5 lg:flex-col lg:items-end lg:border-t-0 lg:border-l lg:pl-6 lg:pt-0">
           <p className="text-xs sm:text-sm font-bold uppercase tracking-[0.18em] text-muted-foreground">
-            {t(props.statusKey)}
+            {t(statusKey)}
           </p>
           <Link
-            to={props.link!}
+            to={link!}
             className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-black uppercase text-accent-foreground transition-colors hover:bg-accent/90"
           >
             {t("apps.open")}
