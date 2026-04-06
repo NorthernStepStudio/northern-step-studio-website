@@ -9,30 +9,33 @@ export interface Env {
 
 import pg from "pg";
 
+let pool: pg.Pool | null = null;
+
 export function getDb(env: Env) {
   const connectionString = env.SUPABASE_DB_URL || env.DATABASE_URL;
 
   // 1. Prioritize Postgres
   if (connectionString && !connectionString.includes("YOUR_PASSWORD")) {
+    if (!pool) {
+      pool = new pg.Pool({ 
+        connectionString,
+        max: 10,
+        idleTimeoutMillis: 30000,
+        connectionTimeoutMillis: 2000,
+      });
+    }
+    
     const pgClient = ((strings: TemplateStringsArray, ...values: any[]) => {
-      // Create a fresh client for every query for 100% stability in the Worker
-      const client = new pg.Client({ connectionString });
+      let query = strings[0] ?? "";
+      for (let i = 0; i < values.length; i++) {
+        query += `$${i + 1}${strings[i + 1] ?? ""}`;
+      }
       
-      return client.connect()
-        .then(() => {
-          let query = strings[0] ?? "";
-          for (let i = 0; i < values.length; i++) {
-            query += `$${i + 1}${strings[i + 1] ?? ""}`;
-          }
-          return client.query(query, values);
-        })
-        .then((res: any) => {
-          client.end().catch(() => {}); // Fire and forget closure
-          return res.rows ?? [];
-        })
-        .catch((error: any) => {
-          client.end().catch(() => {});
-          throw error;
+      return pool!.query(query, values)
+        .then((res: any) => res.rows ?? [])
+        .catch((err: any) => {
+          console.error("[DB Error]", err);
+          throw err;
         });
     }) as any;
     
