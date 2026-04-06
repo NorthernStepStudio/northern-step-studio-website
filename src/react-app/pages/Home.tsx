@@ -22,6 +22,7 @@ type PortfolioItem = {
   link?: string;
   image?: string;
   icon: typeof PhoneCall;
+  key?: string;
 };
 
 const PORTFOLIO_ITEMS: PortfolioItem[] = [

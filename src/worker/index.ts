@@ -7,7 +7,7 @@ import featureToggles from "./feature-toggles";
 import maintenance from "./maintenance";
 import communityUploads from "./community-uploads";
 import revenue from "./revenue";
-import appShellHtml from "../../dist/index.html";
+// import appShellHtml from "../../dist/index.html"; // Removed to avoid build-time stale asset issues
 import { getDb } from "./db";
 import { handleAiChat } from "./ai-assistant";
 import { searchKnowledgeChunks, getKnowledgeLaneHealth } from "./knowledge";
@@ -93,7 +93,7 @@ app.get("/api/health", async (c) => {
 
   return c.json({
     status: "ok",
-    version: "1.0.3",
+    version: "1.0.6",
     path: c.req.path,
     url: c.req.url,
     environment: {
@@ -3514,7 +3514,7 @@ app.get("/api/knowledge/health", async (c) => {
 });
 
 // Global Not Found Handler (at the very end)
-app.notFound((c) => {
+app.notFound(async (c) => {
   const path = c.req.path;
   console.log(`[Worker NotFound] Path: ${path}`);
 
@@ -3528,10 +3528,25 @@ app.notFound((c) => {
 
   if (c.req.method === "GET" || c.req.method === "HEAD") {
     if (c.env.ASSETS && typeof c.env.ASSETS.fetch === "function") {
-      return c.env.ASSETS.fetch(c.req.raw);
+      const response = await c.env.ASSETS.fetch(c.req.raw);
+      if (response && response.status !== 404) {
+        return response;
+      }
+
+      // If asset not found but it's a GET request, serve index.html (SPA routing)
+      const indexRequest = new Request(new URL("/", c.req.url).toString(), c.req.raw);
+      const indexResponse = await c.env.ASSETS.fetch(indexRequest);
+      
+      // Set headers to ensure the app shell is NEVER cached
+      const finalResponse = new Response(indexResponse.body, indexResponse);
+      finalResponse.headers.set("Cache-Control", "no-cache, no-store, must-revalidate");
+      finalResponse.headers.set("Pragma", "no-cache");
+      finalResponse.headers.set("Expires", "0");
+      
+      return finalResponse;
     }
 
-    return c.html(appShellHtml);
+    return c.text("Asset serving misconfigured. Check ASSETS binding.", 500);
   }
 
   return c.text("Not Found", 404);
