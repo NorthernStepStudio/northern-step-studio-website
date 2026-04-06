@@ -27,7 +27,7 @@ export default function AppHub() {
   const remoteApps = curatedApps.filter((app) => !featuredSlugs.has(app.slug) && !isHidden(app));
 
   const filters = [
-    { key: "ALL", label: "All" },
+    { key: "ALL", label: t("apps.filters.all", { defaultValue: "All" }) },
     ...Array.from(
       new Set(
         curatedApps
@@ -36,7 +36,7 @@ export default function AppHub() {
       )
     ).map((category) => ({
       key: category,
-      label: getAppCategoryLabel(category),
+      label: t(`apps.categories.${category}`, { defaultValue: getAppCategoryLabel(category) }),
     })),
   ];
 
@@ -112,9 +112,9 @@ export default function AppHub() {
 
         <div className="mb-6 flex flex-wrap items-center gap-2">
           {[
-            { key: "ALL", label: "All Apps" },
-            { key: "BETA", label: "Beta" },
-            { key: "LIVE", label: "Live" },
+            { key: "ALL", label: t("apps.status_filters.all", { defaultValue: "All Apps" }) },
+            { key: "BETA", label: t("apps.status_filters.beta", { defaultValue: "Beta" }) },
+            { key: "LIVE", label: t("apps.status_filters.live", { defaultValue: "Live" }) },
           ].map((filter) => (
             <button
               key={filter.key}
@@ -139,8 +139,8 @@ export default function AppHub() {
           <div className="space-y-10">
             <div>
               <div className="mb-4 flex items-center justify-between gap-4">
-                <h2 className="text-sm font-black uppercase tracking-[0.24em] text-accent">Featured apps</h2>
-                <p className="text-xs text-muted-foreground">{curatedApps.length} curated products</p>
+                <h2 className="text-sm font-black uppercase tracking-[0.24em] text-accent">{t("apps.featured.title", { defaultValue: "Featured apps" })}</h2>
+                <p className="text-xs text-muted-foreground">{t("apps.featured.count", { count: curatedApps.length, defaultValue: `${curatedApps.length} curated products` })}</p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                   {filteredApps
@@ -154,7 +154,7 @@ export default function AppHub() {
             {remoteApps.length > 0 && (
               <div>
                 <h2 className="mb-4 text-sm font-black uppercase tracking-[0.24em] text-muted-foreground">
-                  More from the studio
+                  {t("apps.featured.more", { defaultValue: "More from the studio" })}
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                   {filteredApps

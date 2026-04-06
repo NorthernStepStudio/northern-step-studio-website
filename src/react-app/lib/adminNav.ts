@@ -141,6 +141,14 @@ export const ADMIN_NAV_ITEMS: AdminNavItem[] = [
     page: "settings",
     section: "settings",
   },
+  {
+    path: "/admin/proposals",
+    label: "Proposals",
+    description: "Reference our core offerings and client proposals.",
+    icon: FileText,
+    page: "proposals",
+    section: "internal",
+  },
 ];
 
 export const ADMIN_ROUTE_TO_PAGE = Object.fromEntries(

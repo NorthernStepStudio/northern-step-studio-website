@@ -98,8 +98,8 @@ function getLoadingStatus(input: string): string {
     return "Consulting ProvLy expert...";
   if (lower.includes("noobs") || lower.includes("invest") || lower.includes("finance"))
     return "Consulting Finance expert...";
-  if (lower.includes("neuromove") || lower.includes("therapy") || lower.includes("ot"))
-    return "Consulting Guided Support expert...";
+  if (lower.includes("neuromove") || lower.includes("learning") || lower.includes("guided"))
+    return "Consulting Learning Support expert...";
   if (lower.includes("paso") || lower.includes("credit"))
     return "Consulting PasoScore expert...";
   if (lower.includes("price") || lower.includes("cost") || lower.includes("product"))

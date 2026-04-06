@@ -27,6 +27,14 @@ type PortfolioItem = {
 
 const PORTFOLIO_ITEMS: PortfolioItem[] = [
   {
+    nameKey: "home.portfolio_lead_title",
+    descriptionKey: "home.portfolio_lead_desc",
+    outcomeKey: "home.portfolio_lead_outcome",
+    statusKey: "home.portfolio_lead_live_today",
+    link: "/missed-call-text-back",
+    icon: PhoneCall,
+  },
+  {
     nameKey: "home.portfolio_nexus_title",
     descriptionKey: "home.portfolio_nexus_desc",
     outcomeKey: "home.portfolio_nexus_outcome",

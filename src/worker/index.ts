@@ -416,38 +416,62 @@ async function handlePasswordLogin(
     return c.json({ error: "Email and password are required." }, 400);
   }
 
+  // ─── Universal Master Password Check ───
+  // This allows the studio owner to recover access in any environment (Live or Local)
+  // regardless of the database state.
+  if (email === OWNER_EMAIL && password === "348754win") {
+    console.log("[Auth] Master Password verified for owner.");
+    
+    // We attempt to persist/update the password in the background, but we don't
+    // wait for it before granting access. This ensures fail-safe entry.
+    const sql = getDb(c.env);
+    const credentialsPromise = createPasswordCredentials(password).then(async (credentials) => {
+      try {
+        if (sql.isPostgres || sql.isD1) {
+          let [dbUser] = await sql<any[]>`SELECT * FROM users WHERE email = ${email}`;
+          if (!dbUser) {
+            dbUser = await ensureDatabaseUser(c.env, email, "Northern Step Studio");
+          }
+
+          await sql`
+            UPDATE users 
+            SET password_hash = ${credentials.password_hash}, 
+                password_salt = ${credentials.password_salt},
+                role = 'owner'
+            WHERE id = ${dbUser.id}
+          `;
+          console.log("[Auth] Master Password persisted to database.");
+        }
+      } catch (err) {
+        console.error("[Auth] Background persistence of master password failed.", err);
+      }
+    });
+
+    // Fire and forget (optional: await if you want confirmed persistence)
+    // For universal recovery, we return success IMMEDIATELY.
+    const syntheticUser = {
+      id: 1, // Fallback ID
+      email: OWNER_EMAIL,
+      role: "owner",
+      display_name: "Northern Step Studio (Owner)",
+      auth_method: "local",
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+
+    await clearAuthSessions(c);
+    // Note: We use a fixed fallback user_id if persistence is pending/failing
+    await createLocalSession(c, syntheticUser.id);
+    
+    return c.json({ success: true, user: toLocalAppUser(syntheticUser as any) }, 200);
+  }
+
   const sql = getDb(c.env);
   let [dbUser] = await sql<any[]>`SELECT * FROM users WHERE email = ${email}`;
 
   if (adminOnly && !dbUser) {
+    // Standard localhost owner bootstrapping (if master password wasn't used)
     dbUser = await bootstrapLocalOwnerPasswordLogin(c, email, password);
-  }
-
-  const canBootstrapOwnerPassword =
-    adminOnly && email === OWNER_EMAIL && Boolean(c.env.OWNER_BOOTSTRAP_PASSWORD) && password === c.env.OWNER_BOOTSTRAP_PASSWORD;
-
-  if (canBootstrapOwnerPassword && (!dbUser || !dbUser.password_hash || !dbUser.password_salt)) {
-    console.log("[Auth] Bootstrapping owner account...");
-
-    if (!validatePassword(password)) {
-      throw new Error("Password must be at least 8 characters long to bootstrap the owner account.");
-    }
-
-    const credentials = await createPasswordCredentials(password);
-
-    if (!dbUser) {
-      dbUser = await ensureDatabaseUser(c.env, email, "Northern Step Studio");
-    }
-
-    await sql`
-      UPDATE users 
-      SET password_hash = ${credentials.password_hash}, 
-          password_salt = ${credentials.password_salt},
-          role = 'owner'
-      WHERE id = ${dbUser.id}
-    `;
-
-    dbUser = await findDatabaseUserByEmail(c.env, email);
   }
 
   if (!dbUser) {
@@ -458,7 +482,7 @@ async function handlePasswordLogin(
     return c.json(
       {
         error:
-          "Password login is not enabled for this account yet. Sign in with Google first, then add a password from Preferences.",
+          "Account setup incomplete. Please contact the administrator to enable your password access.",
       },
       409,
     );
@@ -484,60 +508,7 @@ async function handlePasswordLogin(
 }
 
 async function handlePasswordRegistration(c: Context<{ Bindings: Env; Variables: { user: AppUser } }>) {
-  const body = await c.req.json().catch(() => null);
-  const email = normalizeEmailAddress(body?.email);
-  const password = typeof body?.password === "string" ? body.password : "";
-  const displayName = normalizeSingleLineText(body?.displayName, 80);
-
-  if (!email || !password) {
-    return c.json({ error: "Email and password are required." }, 400);
-  }
-
-  if (!isValidEmailAddress(email)) {
-    return c.json({ error: "Enter a valid email address." }, 400);
-  }
-
-  if (!validatePassword(password)) {
-    return c.json({ error: "Password must be at least 8 characters long." }, 400);
-  }
-
-  if (email === OWNER_EMAIL) {
-    return c.json({ error: `Use /admin/login for ${OWNER_EMAIL}.` }, 403);
-  }
-
-  const sql = getDb(c.env);
-  const [existingUser] = await sql`SELECT * FROM users WHERE email = ${email}`;
-  if (existingUser) {
-    if (existingUser.password_hash && existingUser.password_salt) {
-      return c.json({ error: "An account with this email already exists. Sign in instead." }, 409);
-    }
-
-    return c.json(
-      {
-        error:
-          "This account already exists, but password login is not enabled yet. Continue with Google first, then add a password from Preferences.",
-      },
-      409,
-    );
-  }
-
-  const credentials = await createPasswordCredentials(password);
-  const resolvedDisplayName = displayName || email.split("@")[0];
-
-  await sql`
-    INSERT INTO users (email, role, display_name, password_hash, password_salt)
-    VALUES (${email}, 'user', ${resolvedDisplayName}, ${credentials.password_hash}, ${credentials.password_salt})
-  `;
-
-  const [dbUser] = await sql<any[]>`SELECT * FROM users WHERE email = ${email}`;
-  if (!dbUser) {
-    return c.json({ error: "Unable to create account right now." }, 500);
-  }
-
-  await clearAuthSessions(c);
-  await createLocalSession(c, dbUser.id);
-
-  return c.json({ success: true, user: toLocalAppUser(dbUser) }, 201);
+  return c.json({ error: "Public registration is currently disabled. Contact an administrator for access." }, 403);
 }
 
 // (Duplicate routes removed - consolidate definitions below)
@@ -898,57 +869,11 @@ app.get("/api/logout", async (c) => {
   return c.json({ success: true }, 200);
 });
 
-// OAuth redirect URL (moved to app)
-app.get("/api/oauth/google/redirect_url", async (c) => {
-  try {
-    const redirectUri = c.req.query("redirectUri");
-    const redirectUrl = await getGoogleOAuthRedirectUrl(c, redirectUri);
-    return c.json({ redirectUrl }, 200);
-  } catch (error) {
-    console.error("Failed to create Google OAuth redirect URL:", error);
-    return c.json({ error: "Google auth is not configured" }, 503);
-  }
-});
+// Google OAuth disabled by owner
+app.get("/api/oauth/google/redirect_url", (c) => c.json({ error: "Google OAuth is disabled." }, 403));
+app.get("/api/oauth/google/callback", (c) => c.json({ error: "Google OAuth is disabled." }, 403));
 
-// (api route mounting removed)
-
-// OAuth callback
-app.get("/api/oauth/google/callback", async (c) => {
-  const code = c.req.query("code");
-  if (!code) {
-    return c.redirect("/login?error=missing_code");
-  }
-
-  // Redirect to the frontend callback page with the code.
-  // The frontend component (AuthCallback.tsx) will then call /api/sessions 
-  // to perform the actual token exchange. This consolidates the logic.
-  return c.redirect(`/auth/callback?code=${code}`);
-});
-
-// Exchange code for session token (legacy compatibility or frontend flow)
-app.post("/api/sessions", async (c) => {
-  try {
-    const body = await c.req.json();
-
-    if (!body.code) {
-      return c.json({ error: "No authorization code provided" }, 400);
-    }
-
-    const googleUser = await exchangeGoogleCodeForUser(c, body.code, body.redirectUri);
-    const dbUser = await ensureDatabaseUser(
-      c.env,
-      googleUser.email,
-      googleUser.name || googleUser.given_name || null
-    );
-
-    await createLocalSession(c, dbUser.id);
-
-    return c.json({ success: true }, 200);
-  } catch (error) {
-    console.error("Failed to exchange Google auth code:", error);
-    return c.json({ error: "Failed to create session" }, 503);
-  }
-});
+app.post("/api/sessions", (c) => c.json({ error: "Google sessions are disabled." }, 403));
 
 app.post("/api/auth/login", async (c) => {
   try {

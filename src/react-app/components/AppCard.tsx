@@ -67,7 +67,7 @@ export default function AppCard({
         </div>
         <div className="flex items-center gap-2">
           <span className="text-label px-3 py-1 rounded-full bg-secondary border border-border">
-            {getAppCategoryLabel(category)}
+            {t(`apps.categories.${category}`, { defaultValue: getAppCategoryLabel(category) })}
           </span>
           <span
             className={`text-label px-3 py-1 rounded-full ${
@@ -78,7 +78,7 @@ export default function AppCard({
                 : "bg-muted/10 text-muted-foreground border border-border"
             }`}
           >
-            {getStatusLabel(status)}
+            {status.trim().toUpperCase() === "LIVE" ? t("apps.status_filters.live", { defaultValue: "Live" }) : status.trim().toUpperCase() === "BETA" ? t("apps.status_filters.beta", { defaultValue: "Beta" }) : t("apps.status_filters.coming_soon", { defaultValue: "Coming soon" })}
           </span>
         </div>
       </div>
@@ -88,13 +88,13 @@ export default function AppCard({
       </h3>
 
       <p className="text-sm text-muted-foreground font-normal mb-6 line-clamp-2">
-        {description || "No description available"}
+        {description || t("apps.no_description", { defaultValue: "No description available" })}
       </p>
 
       {typeof progressPercent === "number" && (
         <div className="mb-4">
           <div className="mb-2 flex items-center justify-between text-[11px] font-black uppercase tracking-wide text-muted-foreground">
-            <span>Completion</span>
+            <span>{t("apps.completion", { defaultValue: "Completion" })}</span>
             <span>{progressPercent}%</span>
           </div>
           <div className="h-2 overflow-hidden rounded-full bg-secondary">

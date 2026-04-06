@@ -6,6 +6,7 @@
     "blog": "Blog",
     "docs": "Docs",
     "about": "About",
+    "services": "Services",
     "contact": "Contact",
     "login": "Login",
     "updates": "Updates",
@@ -83,7 +84,33 @@
     "filter_game": "GAME",
     "filter_ai_tool": "AI TOOL",
     "filter_tool": "TOOL",
-    "empty_cta": "Contact the Studio"
+    "empty_cta": "Contact the Studio",
+    "categories": {
+      "TOOL": "Tool",
+      "GAME": "Game",
+      "AI TOOL": "AI Tool",
+      "EDUCATION": "Education",
+      "FINANCE": "Finance",
+      "HOME": "Home",
+      "LEARNING": "Learning",
+      "AUTOMATION": "Automation"
+    },
+    "filters": {
+      "all": "All"
+    },
+    "status_filters": {
+      "all": "All Apps",
+      "beta": "Beta",
+      "live": "Live",
+      "coming_soon": "Coming soon"
+    },
+    "featured": {
+      "title": "Featured apps",
+      "count": "{{count}} curated products",
+      "more": "More from the studio"
+    },
+    "no_description": "No description available",
+    "completion": "Completion"
   },
   "games": {
     "label": "Interactive Projects",
@@ -243,15 +270,15 @@
       }
     },
     "neuromoves": {
-      "tagline": "Guided OT Companion for Children",
-      "description": "Neuromove is a guided occupational therapy companion for young children, with structured routines, parent tools, and progress tracking.",
+      "tagline": "Guided Learning Companion for Children",
+      "description": "Neuromove is a guided learning companion for young children, with structured routines, parent tools, and progress tracking.",
       "features": {
         "0": "Guided Activities: Step children through structured tasks with supportive prompts",
         "1": "Parent Tools: Manage child profiles, routines, and progress notes in one place",
-        "2": "Progress Tracking: Keep therapy goals, journals, and milestones organized"
+        "2": "Progress Tracking: Keep learning goals, journals, and milestones organized"
       },
       "progress": {
-        "0": "Core OT activity flows and onboarding",
+        "0": "Core learning activity flows and onboarding",
         "1": "Child profiles and routine setup",
         "2": "Guided prompts and accessibility support",
         "3": "Progress journals and rewards systems"
@@ -329,7 +356,7 @@
       "provly_desc": "A digital home inventory system that helps users document possessions and generate claim-ready reports when needed.",
       "nexusbuild_desc": "A PC planning and hardware decision tool designed to help users build balanced systems without guesswork.",
       "noobs_desc": "A beginner-friendly investing education platform focused on helping new investors understand markets step-by-step.",
-      "neuromoves_desc": "A guided occupational therapy companion for young children, with structured routines, parent tools, and progress tracking.",
+      "neuromoves_desc": "A guided learning companion for young children, with structured routines, parent tools, and progress tracking.",
       "pasoscore_desc": "A credit guidance platform designed to help users navigate financial improvement strategies with clarity.",
       "mctb_desc": "An automation tool that instantly responds to missed business calls with a text message so potential customers are never lost."
     }
@@ -337,7 +364,7 @@
   "about": {
     "label": "Who We Are",
     "title": "Northern Step Studio",
-    "subtitle": "Northern Step Studio is a hands-on product studio building practical software across home readiness, learning, therapy support, hardware planning, and service automation.",
+    "subtitle": "Northern Step Studio is a hands-on product studio building practical software across home readiness, learning, hardware planning, and service automation.",
     "story": {
       "title": "What This Studio Actually Is",
       "p1": "Northern Step Studio is a hands-on product studio, not a generic agency. We build software around specific real-world jobs: protecting a home inventory, planning a PC build, making investing easier to learn, supporting guided routines for children, and helping people improve credit with clearer next steps.",
@@ -393,7 +420,7 @@
   "contact": {
     "label": "Talk to the Studio",
     "title": "Contact Northern Step Studio",
-    "subtitle": "Use this page for product access requests, beta interest, support questions, partnership ideas, or Missed Call Text Back service inquiries.",
+    "subtitle": "Product access requests, beta interest, support questions, partnership ideas, or Missed Call Text Back service inquiries.",
     "form": {
       "name": "Your Name",
       "email": "Your Email",
@@ -704,16 +731,16 @@
     "portfolio_neuromove_title": "Neuromove",
     "portfolio_neuromove_desc": "A guided occupational therapy companion for young children, with structured routines, parent tools, and progress tracking.",
     "portfolio_neuromove_outcome": "Structured support for daily growth.",
-      "portfolio_provly_title": "ProvLy",
-      "portfolio_provly_desc": "A clear dashboard for sales analytics and day-to-day decisions.",
-      "portfolio_provly_outcome": "Insights delivered in real time",
-      "portfolio_noobs_title": "NooBS Investing",
-      "portfolio_noobs_desc": "A step-by-step investing companion built to feel clear and approachable.",
-      "portfolio_noobs_outcome": "Guided learning for first-time investors",
-      "portfolio_pasoscore_title": "PasoScore",
-      "portfolio_pasoscore_desc": "A guided credit improvement companion built to make monthly progress clear.",
-      "portfolio_pasoscore_outcome": "Simple steps for better credit",
-      "portfolio_lead_title": "Lead Recovery Service",
+    "portfolio_provly_title": "ProvLy",
+    "portfolio_provly_desc": "A clear dashboard for sales analytics and day-to-day decisions.",
+    "portfolio_provly_outcome": "Insights delivered in real time",
+    "portfolio_noobs_title": "NooBS Investing",
+    "portfolio_noobs_desc": "A step-by-step investing companion built to feel clear and approachable.",
+    "portfolio_noobs_outcome": "Guided learning for first-time investors",
+    "portfolio_pasoscore_title": "PasoScore",
+    "portfolio_pasoscore_desc": "A guided credit improvement companion built to make monthly progress clear.",
+    "portfolio_pasoscore_outcome": "Simple steps for better credit",
+    "portfolio_lead_title": "Lead Recovery Service",
     "portfolio_lead_desc": "Missed Call Text Back keeps new leads moving with fast SMS follow-up.",
     "portfolio_lead_outcome": "Faster response to missed calls",
     "about_title": "Studio Philosophy",
@@ -842,5 +869,111 @@
       "recommendation_title": "Recommendation",
       "recommendation_text": "Most businesses should start with Starter, prove the workflow, and expand later."
     }
+  },
+  "services": {
+    "hero": {
+      "title": "We build apps, websites, and automation systems",
+      "subtitle": "Professional systems for modern businesses.",
+      "positioning": "We build systems that automate your business and help you capture more customers without extra work."
+    },
+    "offers": {
+      "title": "Our 3 Core Offers",
+      "systems": {
+        "title": "Business Systems",
+        "desc": "Apps",
+        "items": [
+          "Mobile apps",
+          "Booking systems",
+          "Customer dashboards"
+        ]
+      },
+      "websites": {
+        "title": "Websites",
+        "desc": "High-converting sites",
+        "items": [
+          "Lead capture",
+          "Brand presence",
+          "Responsive design"
+        ]
+      },
+      "automation": {
+        "title": "Automation",
+        "desc": "Your secret weapon",
+        "items": [
+          "Missed-call recovery",
+          "Follow-ups",
+          "AI systems"
+        ]
+      }
+    },
+    "proposal": {
+      "title": "Client Proposal",
+      "badge": "Core Offer",
+      "overview": "NStep builds modern applications, websites, and automation systems designed to help businesses operate efficiently and generate more revenue.",
+      "subtitle": "We don’t just build software—we build working business systems.",
+      "what_you_get": {
+        "title": "What You Get",
+        "website": "Professional business website (your domain), Mobile-friendly design, Service pages + contact system, Lead capture forms, SEO-ready structure.",
+        "mobile": "iOS / Android compatible (APK or store-ready), User accounts, Booking / ordering system, Notifications, Simple, clean UI.",
+        "backend": "Secure database, Admin dashboard, Order / customer tracking, API connecting everything.",
+        "automation": "Missed-call text-back, Lead follow-ups, Appointment reminders, Customer re-engagement."
+      },
+      "features": {
+        "website": "Website",
+        "mobile": "Mobile App",
+        "backend": "Backend",
+        "automation": "Automation"
+      },
+      "revenue_driver": "We don’t just build software—we build working business systems.",
+      "why_matters": "Why this Matters",
+      "process_label": "Process",
+      "timeline_label": "Timeline",
+      "process": {
+        "title": "Our Process",
+        "items": [
+          "Planning",
+          "Design",
+          "Development",
+          "Testing",
+          "Launch"
+        ]
+      },
+      "timeline": {
+        "title": "Timeline",
+        "basic": "Basic: 2–4 weeks",
+        "full": "Full system: 4–8 weeks",
+        "note": "(for simple App/Website/AI System)"
+      },
+      "pricing": {
+        "title": "Pricing",
+        "starter": "Starter ($500–$1,500)",
+        "standard": "Standard ($1,500–$3,500)",
+        "advanced": "Advanced ($3,500–$7,500+)",
+        "monthly": {
+          "title": "Monthly (Optional)",
+          "desc": "Hosting, Updates, Automation management",
+          "price": "$50–$300/month"
+        }
+      },
+      "positioning": "We build systems that automate your business and help you capture more customers without extra work."
+    },
+    "use_cases": {
+      "title": "Example Use Cases",
+      "laundry": "Laundry service app",
+      "local": "Local service automation",
+      "booking": "Booking platforms"
+    },
+    "cta": {
+      "title": "Ready to Build Your next system?",
+      "subtitle": "Tell us about your project—whether it's a high-performance website, a custom mobile app, or an AI-powered automation workflow.",
+      "quote": "Get a Custom Quote",
+      "start": "Start Your Project"
+    }
+  },
+  "proposals_admin": {
+    "title": "Proposals",
+    "subtitle": "Reference our core offerings and client proposals.",
+    "view_full": "View Full Proposal details",
+    "core_offer": "Core Offer Details"
   }
 }

@@ -99,6 +99,9 @@ export default function PublicLayout() {
             <Link to="/apps" className="text-[11px] xl:text-xs 2xl:text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black whitespace-nowrap">
               {t("nav.apps")}
             </Link>
+            <Link to="/services" className="text-[11px] xl:text-xs 2xl:text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black whitespace-nowrap">
+              {t("nav.services")}
+            </Link>
             <Link to="/contact" className="text-[11px] xl:text-xs 2xl:text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black whitespace-nowrap">
               {t("nav.contact")}
             </Link>
@@ -181,6 +184,13 @@ export default function PublicLayout() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t("nav.apps")}
+              </Link>
+              <Link
+                to="/services"
+                className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black py-2 whitespace-nowrap"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {t("nav.services")}
               </Link>
               <Link
                 to="/about"
@@ -283,6 +293,7 @@ export default function PublicLayout() {
               <h4 className="text-sm font-black uppercase mb-4">{t("footer.products")}</h4>
               <ul className="space-y-2">
                 <li><Link to="/apps" className="text-sm text-muted-foreground hover:text-accent transition-colors font-normal">{t("nav.apps")}</Link></li>
+                <li><Link to="/services" className="text-sm text-muted-foreground hover:text-accent transition-colors font-normal">{t("nav.services")}</Link></li>
                 <li><Link to="/docs" className="text-sm text-muted-foreground hover:text-accent transition-colors font-normal">{t("nav.docs")}</Link></li>
               </ul>
             </div>
@@ -299,7 +310,7 @@ export default function PublicLayout() {
             <div>
               <h4 className="text-sm font-black uppercase mb-4">{t("footer.legal")}</h4>
               <ul className="space-y-2">
-                <li><Link to="/terms" className="text-sm text-muted-foreground hover:text-accent transition-colors font-normal">Terms & Privacy</Link></li>
+                <li><Link to="/terms" className="text-sm text-muted-foreground hover:text-accent transition-colors font-normal">{t("footer.terms")} & {t("footer.privacy")}</Link></li>
               </ul>
             </div>
           </div>

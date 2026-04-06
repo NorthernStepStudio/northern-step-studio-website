@@ -5,7 +5,7 @@ export const APP_CATEGORY_OPTIONS = [
   { value: "EDUCATION", label: "Education" },
   { value: "FINANCE", label: "Finance" },
   { value: "HOME", label: "Home" },
-  { value: "THERAPY", label: "Therapy" },
+  { value: "LEARNING", label: "Learning" },
 ] as const;
 
 export function getAppCategoryLabel(category: string) {

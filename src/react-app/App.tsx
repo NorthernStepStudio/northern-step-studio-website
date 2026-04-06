@@ -15,6 +15,7 @@ import Blog from "@/react-app/pages/Blog";
 import BlogPost from "@/react-app/pages/BlogPost";
 import About from "@/react-app/pages/About";
 import Contact from "@/react-app/pages/Contact";
+import Services from "@/react-app/pages/Services";
 import KnowledgeBase from "@/react-app/pages/KnowledgeBase";
 import TermsOfService from "@/react-app/pages/TermsOfService";
 import NStepMissedCallTextBack from "@/react-app/pages/NStepMissedCallTextBack";
@@ -46,6 +47,7 @@ import MaintenancePage from "@/react-app/pages/MaintenancePage";
 import NStepWorkspaceAI from "@/react-app/pages/NStepWorkspaceAI";
 import TesterSignup from "@/react-app/pages/TesterSignup";
 import TesterManager from "@/react-app/pages/admin/TesterManager";
+import AdminProposals from "@/react-app/pages/admin/Proposals";
 import NotFound from "@/react-app/pages/NotFound";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/react-app/lib/auth";
@@ -118,6 +120,7 @@ export default function App() {
               <Route path="/blog" element={<ProtectedRoute feature="blog"><Blog /></ProtectedRoute>} />
               <Route path="/blog/:slug" element={<ProtectedRoute feature="blog"><BlogPost /></ProtectedRoute>} />
               <Route path="/about" element={<ProtectedRoute feature="about"><About /></ProtectedRoute>} />
+              <Route path="/services" element={<Services />} />
               <Route path="/contact" element={<ProtectedRoute feature="contact"><Contact /></ProtectedRoute>} />
               <Route path="/docs" element={<ProtectedRoute feature="docs"><KnowledgeBase /></ProtectedRoute>} />
               <Route path="/docs/:slug" element={<ProtectedRoute feature="docs"><DocsArticle /></ProtectedRoute>} />
@@ -165,6 +168,7 @@ export default function App() {
               <Route path="users" element={<Users />} />
               <Route path="permissions" element={<Permissions />} />
               <Route path="revenue" element={<Revenue />} />
+              <Route path="proposals" element={<AdminProposals />} />
               <Route path="testers" element={<TesterManager />} />
               <Route path="studio" element={<StudioDashboard />} />
               <Route path="community" element={<CommunityManager />} />

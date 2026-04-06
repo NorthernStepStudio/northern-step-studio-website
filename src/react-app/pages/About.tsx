@@ -22,7 +22,7 @@ export default function About() {
   const pageTitle = t("about_page.title", { defaultValue: "Northern Step Studio" });
   const pageSubtitle = t("about_page.subtitle", {
     defaultValue:
-      "Northern Step Studio is a hands-on product studio building practical software across home readiness, learning, therapy support, hardware planning, and service automation.",
+      "Northern Step Studio is a hands-on product studio building practical software across home readiness, learning, hardware planning, and service automation.",
   });
   const storyTitle = t("about_page.story.title", { defaultValue: "What This Studio Actually Is" });
   const storyParagraphs = [

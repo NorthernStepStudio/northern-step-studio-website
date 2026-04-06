@@ -258,14 +258,7 @@ export default function Contact() {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2">
             <div className="card-dark-wise">
-              <div className="mb-6 rounded-2xl border border-accent/20 bg-accent/10 p-4">
-                <p className="text-xs font-black uppercase tracking-wider text-accent">Fastest way to get a useful reply</p>
-                <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-                  <li>Tell us the business type and service area.</li>
-                  <li>Include the phone number or call path you want reviewed.</li>
-                  <li>Describe what should happen after a missed call.</li>
-                </ul>
-              </div>
+
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

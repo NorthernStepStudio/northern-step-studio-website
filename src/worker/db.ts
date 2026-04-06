@@ -12,17 +12,21 @@ export function getDb(env: Env) {
 
   // 1. Prioritize Postgres (Supabase)
   if (connectionString && !connectionString.includes("YOUR_PASSWORD")) {
-    const sql = postgres(connectionString, {
-      ssl: "require",
-      max: 1, // Single connection for Cloudflare Worker efficiency
-      idle_timeout: 20,
-      connect_timeout: 10,
-    });
-    
-    const client = sql as any;
-    client.isPostgres = true;
-    client.isD1 = false;
-    return client;
+    try {
+      const sql = postgres(connectionString, {
+        ssl: "require",
+        max: 1, // Single connection for Cloudflare Worker efficiency
+        idle_timeout: 20,
+        connect_timeout: 10,
+      });
+      
+      const client = sql as any;
+      client.isPostgres = true;
+      client.isD1 = false;
+      return client;
+    } catch (e) {
+      console.error("[Database] Connection initialization failed. Falling back.", e);
+    }
   }
 
   // 2. Fallback to D1 (Cloudflare Native)
