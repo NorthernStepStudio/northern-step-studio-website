@@ -4,10 +4,28 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://northern-step-studio-website.proyectgate.workers.dev/api/:path*"
+      "destination": "/api/index"
     },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ],
-  "installCommand": "npm install",
-  "buildCommand": "npm run build"
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, s-maxage=1, stale-while-revalidate=59"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0, must-revalidate"
+        }
+      ]
+    }
+  ]
 }
