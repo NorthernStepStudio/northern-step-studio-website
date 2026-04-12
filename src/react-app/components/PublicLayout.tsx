@@ -45,7 +45,7 @@ export default function PublicLayout() {
   const currentLocale = i18n.language || "en";
   const hasScheduledMaintenance = Boolean(maintenance?.scheduled_date) && showBanner;
   const accountButtonLabel = isModerator ? t("nav.console") : t("nav.profile");
-  const setupReviewHref = "/contact?intent=setup-review";
+  const contactCtaHref = "/contact?intent=start-project";
 
   const footerLinks = [
     { label: t("footer.updates"), to: "/updates" },
@@ -125,8 +125,8 @@ export default function PublicLayout() {
             </Button>
 
             <div className="hidden md:flex items-center gap-3">
-              <Link to={setupReviewHref} className="btn-pill-primary-compact">
-                {t("common.setup_review_short")}
+              <Link to={contactCtaHref} className="btn-pill-primary-compact">
+                {t("nav.contact")}
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
               {user ? (
@@ -209,11 +209,11 @@ export default function PublicLayout() {
               <div className="border-t border-border my-2"></div>
 
               <Link
-                to={setupReviewHref}
+                to={contactCtaHref}
                 className="btn-pill-primary-compact mt-1"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                {t("common.setup_review_short")}
+                {t("nav.contact")}
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
 

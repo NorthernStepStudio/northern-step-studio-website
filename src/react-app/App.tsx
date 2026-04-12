@@ -18,8 +18,7 @@ import Contact from "@/react-app/pages/Contact";
 import Services from "@/react-app/pages/Services";
 import KnowledgeBase from "@/react-app/pages/KnowledgeBase";
 import TermsOfService from "@/react-app/pages/TermsOfService";
-import NStepMissedCallTextBack from "@/react-app/pages/NStepMissedCallTextBack";
-import NStepMissedCallTextBackDemo from "@/react-app/pages/NStepMissedCallTextBackDemo";
+
 import Updates from "@/react-app/pages/Updates";
 import UserProfile from "@/react-app/pages/UserProfile";
 import UserPreferences from "@/react-app/pages/UserPreferences";
@@ -37,7 +36,7 @@ import PromoManager from "@/react-app/pages/admin/PromoManager";
 import Users from "@/react-app/pages/admin/Users";
 import Permissions from "@/react-app/pages/admin/Permissions";
 import Revenue from "@/react-app/pages/admin/Revenue";
-import LeadRecovery from "@/react-app/pages/admin/LeadRecovery";
+
 import StudioDashboard from "@/react-app/pages/StudioDashboard";
 import CommunityManager from "@/react-app/pages/admin/CommunityManager";
 import FeatureToggles from "@/react-app/pages/admin/FeatureToggles";
@@ -129,8 +128,7 @@ export default function App() {
               <Route path="/community/thread/:slug" element={<Navigate to="/" replace />} />
               <Route path="/user/:userId" element={<ProtectedRoute feature="user_profiles"><UserProfile /></ProtectedRoute>} />
               <Route path="/profile" element={<UserProfile isOwnProfile />} />
-              <Route path="/missed-call-text-back" element={<NStepMissedCallTextBack />} />
-              <Route path="/missed-call-text-back/demo" element={<NStepMissedCallTextBackDemo />} />
+
               <Route path="/workspace-ai" element={<NStepWorkspaceAI />} />
               <Route path="/ai" element={<Navigate to="/" replace />} />
               <Route path="/testers" element={<TesterSignup />} />
@@ -145,9 +143,6 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
-            <Route path="/lead-recovery" element={<AdminLayout />}>
-              <Route index element={<LeadRecovery />} />
-            </Route>
 
             {/* Account settings */}
             <Route element={<AccountSettingsLayout />}>
@@ -161,7 +156,7 @@ export default function App() {
               <Route path="apps" element={<AppManager />} />
               <Route path="analytics" element={<Analytics />} />
               <Route path="leads" element={<Leads />} />
-              <Route path="lead-recovery" element={<LeadRecovery />} />
+
               <Route path="content" element={<ContentManager />} />
               <Route path="promos" element={<PromoManager />} />
               <Route path="updates" element={<UpdatesManager />} />

@@ -15,9 +15,7 @@
     "preferences": "Preferenze",
     "logout": "Esci",
     "console": "Console",
-    "profile": "Profilo",
-    "lead_recovery": "Recupero Lead",
-    "lead_recovery_short": "Lead"
+    "profile": "Profilo"
   },
   "hero": {
     "label": "Studio Indie",
@@ -59,13 +57,9 @@
     "privacy": "Privacy Policy",
     "terms": "Termini di Servizio",
     "copyright": "Â© {{year}} Northern Step Studio. Tutti i diritti riservati.",
-    "missed_call": "Missed Call Text Back",
     "updates": "Aggiornamenti",
     "community": "ComunitÃ ",
-    "docs": "Documentazione",
-    "lead_recovery_badge": "Lead recovery attivo",
-    "lead_recovery_title": "Trasforma le chiamate perse in conversazioni attive.",
-    "lead_recovery_desc": "Se la tua attivitÃ  perde lavori quando il telefono non viene risposto, Northern Step Studio puÃ² configurare un flusso di acquisizione e risposta che mantiene il lead coinvolto finchÃ© richiami."
+    "docs": "Documentazione"
   },
   "apps": {
     "label": "Catalogo Prodotti",
@@ -161,8 +155,6 @@
     "coming_soon": "Prossimamente",
     "view": "Vedi",
     "notify_me": "Avvisami",
-    "setup_review": "Richiedi revisione configurazione",
-    "setup_review_short": "Revisione",
     "more": "Altro"
   },
   "building": {
@@ -283,11 +275,11 @@
     },
     "automation": {
       "name": "Automazione dei Servizi",
-      "tagline": "Recupero automatizzato delle chiamate perse.",
-      "desc": "Missed Call Text Back Ã¨ il motore di esecuzione dello studio per una risposta piÃ¹ rapida ai lead, qualificazione, prenotazione e follow-through operativo.",
+      "tagline": "Automazione dei flussi di servizio.",
+      "desc": "L'automazione dello studio aiuta a rispondere pi? rapidamente, qualificare richieste e gestire il follow-through operativo.",
       "tag1": "Risposta ai Lead",
       "tag2": "Ops di Servizio",
-      "cta": "Vedi Recupero Lead"
+      "cta": "Vedi automazione"
     },
     "studio_tech": {
       "name": "Sistemi dello Studio",
@@ -330,8 +322,7 @@
       "nexusbuild_desc": "Uno strumento di pianificazione PC e decisioni hardware progettato per aiutare gli utenti a costruire sistemi bilanciati senza congetture.",
       "noobs_desc": "Una piattaforma di educazione agli investimenti amichevole per principianti focalizzata sull'aiutare i nuovi investitori a capire i mercati passo dopo passo.",
       "neuromoves_desc": "Un compagno di terapia occupazionale guidata per bambini piccoli, con routine strutturate, strumenti per i genitori e tracciamento dei progressi.",
-      "pasoscore_desc": "Una piattaforma di orientamento creditizio progettata per aiutare gli utenti a navigare strategie di miglioramento finanziario con chiarezza.",
-      "mctb_desc": "Uno strumento di automazione che risponde istantaneamente alle chiamate commerciali perse con un messaggio di testo affinchÃ© nessun potenziale cliente venga perso."
+      "pasoscore_desc": "Una piattaforma di orientamento creditizio progettata per aiutare gli utenti a navigare strategie di miglioramento finanziario con chiarezza."
     }
   },
   "about": {
@@ -393,7 +384,7 @@
   "contact": {
     "label": "Parla con lo Studio",
     "title": "Contatta Northern Step Studio",
-    "subtitle": "Usa questa pagina per richieste di accesso ai prodotti, interesse per la beta, domande di supporto, idee di partnership o richieste sul servizio Missed Call Text Back.",
+    "subtitle": "Usa questa pagina per richieste di accesso ai prodotti, interesse per la beta, domande di supporto e idee di partnership.",
     "form": {
       "name": "Il Tuo Nome",
       "email": "La Tua Email",
@@ -415,11 +406,11 @@
     },
     "beta": {
       "title": "Interesse per Accesso Anticipato",
-      "desc": "Se vuoi l'accesso anticipato a prodotti come ProvLy, NexusBuild, Neuromove, PasoScore, NooBS Investing o Missed Call Text Back, iscriviti alla lista e dicci quale prodotto o flusso di lavoro stai seguendo.",
+      "desc": "Se vuoi l'accesso anticipato a prodotti come ProvLy, NexusBuild, Neuromove, PasoScore o NooBS Investing, iscriviti alla lista e dicci quale prodotto o flusso di lavoro stai seguendo.",
       "join": "Unisciti al Programma Beta",
       "placeholder": "Inserisci la tua email",
       "interest_label": "Cosa stai seguendo?",
-      "interest_placeholder": "Esportazioni assicurative ProvLy, routine Neuromove, lancio Recupero Lead, ecc.",
+      "interest_placeholder": "Esportazioni assicurative ProvLy, routine Neuromove, lancio NexusBuild, ecc.",
       "success": "Sei nella lista.",
       "saved_only": "Sei nella lista. L'inoltro email Ã¨ ancora in sospeso, usa hello@northernstepstudio.com se Ã¨ urgente.",
       "updated": "Eri giÃ  nella lista. La tua nota Ã¨ stata aggiornata.",
@@ -434,17 +425,7 @@
     "docs_label": "Documentazione e configurazione",
     "read_updates": "Leggi ultimi aggiornamenti",
     "open_docs": "Apri documentazione supporto",
-    "lead_recovery_title": "Richieste Pilota Recupero Lead",
-    "lead_recovery_desc": "Se vuoi un'installazione guidata di Recupero Lead, includi le informazioni di base che ci permettono di valutare il flusso di lavoro rapidamente.",
-    "lead_recovery_items": {
-      "0": "Nome dell'attivitÃ  e sito web",
-      "1": "Numero di telefono principale e area di servizio",
-      "2": "Cosa succede oggi quando viene persa una chiamata",
-      "3": "Se desideri il menu strutturato per chiamate perse: 1 prenota, 2 preventivo, 3 urgente, 4 domanda",
-      "4": "Eventuali strumenti di telefono, calendario o prenotazione giÃ  in uso"
-    },
-    "lead_recovery_note": "Le installazioni pilota pubbliche vengono esaminate caso per caso. Se Ã¨ adatto, faremo seguito con i dettagli dei prossimi passi.",
-    "legal_note": "Le domande sul pilota di Recupero Lead sono coperte anche dalla nostra",
+    "legal_note": "Le richieste inviate tramite questo modulo sono coperte anche dalla nostra",
     "legal_and": "e"
   },
   "support": {
@@ -652,27 +633,24 @@
   "seo": {
     "default_title": "Northern Step Studio | Prodotti Software Pratici e Automazione dei Servizi",
     "default_description": "Northern Step Studio sviluppa applicazioni pratiche in produttivitÃ , apprendimento, finanza e automazioneâ€”aiutando individui e aziende a passare dalle idee all'azione.",
-    "default_keywords": "Northern Step Studio, ProvLy, NexusBuild, NooBS Investing, Neuromove, PasoScore, NStep Workspace AI, generatore proposte IA, missed call text back, automazione servizi, app inventario casa, pianificatore PC, app educazione investimenti, app routine guidate, app miglioramento credito, recupero lead",
+    "default_keywords": "Northern Step Studio, ProvLy, NexusBuild, NooBS Investing, Neuromove, PasoScore, NStep Workspace AI, generatore proposte IA, automazione servizi, app inventario casa, pianificatore PC, app educazione investimenti, app routine guidate, app miglioramento credito",
     "apps_title": "Catalogo Prodotti",
     "apps_description": "Esplora i prodotti di Northern Step Studio in inventario domestico, pianificazione PC, apprendimento finanziario, supporto guidato, miglioramento creditizio e automazione delle risposte.",
-    "apps_keywords": "Northern Step Studio app, catalogo prodotti, ProvLy, NexusBuild, NooBS Investing, Neuromove, PasoScore, missed call text back",
+    "apps_keywords": "Northern Step Studio app, catalogo prodotti, ProvLy, NexusBuild, NooBS Investing, Neuromove, PasoScore",
     "games_description": "Vedi i concept di gioco e le build pubbliche di Northern Step Studio quando sono pronte per i test insieme al resto del portfolio dello studio.",
-    "contact_description": "Contatta Northern Step Studio per richieste di accesso ai prodotti, domande di supporto, idee di partnership o revisione del servizio Missed Call Text Back.",
+    "contact_description": "Contatta Northern Step Studio per richieste di accesso ai prodotti, domande di supporto o idee di partnership.",
     "kb_description": "Documentazione per i prodotti di Northern Step Studio, flussi account, note di rilascio e percorsi di supporto.",
-    "mctb_description": "NStep Missed Call Text Back Ã¨ il sistema automatizzato costruito per le attivitÃ  di servizi locali per recuperare i lead che normalmente sparirebbero dopo una chiamata persa.",
-    "mctb_keywords": "missed call text back, NStep, Northern Step Studio, recupero lead, automazione servizi, risposta automatizzata lead",
     "workspace_description": "Northern Step Studio sviluppa software pratico progettato per risolvere problemi del mondo reale usando ingegneria moderna e IA attentamente applicata.",
-    "workspace_keywords": "Northern Step Studio, tecnologia, sviluppo software, IA, ProvLy, NexusBuild, NooBS Investing, Neuromove, PasoScore, Missed Call Text Back"
+    "workspace_keywords": "Northern Step Studio, tecnologia, sviluppo software, IA, ProvLy, NexusBuild, NooBS Investing, Neuromove, PasoScore"
   },
   "home": {
     "hero_title": "NStep costruisce software pratico.",
     "hero_line_1": "Costruire software focalizzato",
     "hero_line_2": "Che risolve problemi reali",
-    "hero_subtitle": "Northern Step Studio crea sistemi di recupero lead e app focalizzate.",
+    "hero_subtitle": "Northern Step Studio crea software pratico e app focalizzate.",
     "hero_pitch": "Software pratico con un portfolio piccolo e uno scopo chiaro.",
     "hero_primary": "Vedi portfolio",
     "hero_secondary": "Contatti",
-    "lead_recovery": "Recupero Lead",
     "studio_ai": "IA dello Studio",
     "focus_areas_count": 6,
     "cta_view_work": "Vedi lavoro",
@@ -681,20 +659,19 @@
     "focus_subtitle": "Prodotti focalizzati, tenuti semplici.",
     "focus_area_apps_title": "App focalizzate",
     "focus_area_apps_desc": "NexusBuild, ProvLy e NooBS Investing restano piccole e utili.",
-    "focus_area_gaming_title": "Recupero lead",
-    "focus_area_gaming_desc": "Missed Call Text Back mantiene i nuovi lead in movimento.",
+    "focus_area_gaming_title": "Automazione",
+    "focus_area_gaming_desc": "Strumenti pratici che mantengono i flussi operativi in movimento.",
     "focus_area_ai_title": "Automazione semplice",
     "focus_area_ai_desc": "Strumenti che eliminano passaggi manuali senza rumore.",
     "focus_area_systems_title": "Sistemi puliti",
     "focus_area_systems_desc": "Prodotti diretti, facili da usare.",
     "portfolio_title": "Lavoro attuale",
-    "portfolio_subtitle": "Il sistema di recupero lead live viene prima, seguito dalle app vicine al lancio.",
+    "portfolio_subtitle": "App e sistemi pratici, vicini al lancio o gi? disponibili.",
     "portfolio_status_close_to_launch": "Fase beta",
     "portfolio_status_almost_ready": "Fase beta",
-    "portfolio_status_service": "Recupero lead",
+    "portfolio_status_service": "Automazione",
     "portfolio_type_app": "App",
     "portfolio_type_service": "Sistema",
-    "portfolio_lead_live_today": "Attivo oggi",
     "portfolio_empty": "Nessun contenuto pubblico disponibile al momento.",
     "portfolio_disabled": "Accesso al portfolio in arrivo presto.",
     "portfolio_default_description": "Prossimi passi orientati ai risultati e agli apprendimenti.",
@@ -710,139 +687,17 @@
     "portfolio_noobs_title": "NooBS Investing",
     "portfolio_noobs_desc": "Un compagno di investimento passo dopo passo, chiaro e facile da seguire.",
     "portfolio_noobs_outcome": "Guida per investitori alle prime armi",
-      "portfolio_pasoscore_title": "PasoScore",
-      "portfolio_pasoscore_desc": "Un compagno guidato per il miglioramento del credito pensato per rendere chiari i progressi mensili.",
-      "portfolio_pasoscore_outcome": "Passi semplici per migliorare il credito",
-      "portfolio_lead_title": "Servizio di Recupero Lead",
-    "portfolio_lead_desc": "Missed Call Text Back mantiene i lead in movimento con un rapido follow-up SMS.",
-    "portfolio_lead_outcome": "Risposta piÃ¹ rapida alle chiamate perse",
+    "portfolio_pasoscore_title": "PasoScore",
+    "portfolio_pasoscore_desc": "Un compagno guidato per il miglioramento del credito pensato per rendere chiari i progressi mensili.",
+    "portfolio_pasoscore_outcome": "Passi semplici per migliorare il credito",
     "about_title": "Cosa fa NStep",
-    "about_text": "NStep mantiene la homepage piccola per far vedere chiaramente il lavoro. Il focus Ã¨ il recupero lead prima di tutto, poi poche app pratiche.",
-    "about_point_1_title": "Prima il recupero lead",
-    "about_point_1_desc": "Missed Call Text Back evita che le chiamate perse diventino lead persi.",
+    "about_text": "NStep mantiene la homepage piccola per mostrare chiaramente il lavoro: pochi prodotti pratici con obiettivi concreti.",
+    "about_point_1_title": "Software pratico",
+    "about_point_1_desc": "Ogni prodotto punta a ridurre complessit? e migliorare il flusso operativo.",
     "about_point_2_title": "Un servizio live e cinque app",
-      "about_point_2_desc": "Il sistema di recupero lead è già live, e NexusBuild, ProvLy, NooBS Investing, Neuromove e PasoScore sono le app principali mostrate qui.",
+    "about_point_2_desc": "NexusBuild, ProvLy, NooBS Investing, Neuromove e PasoScore sono le app principali mostrate qui.",
     "final_cta_title": "Ti serve una build pulita?",
     "final_cta_subtitle": "Scrivici se vuoi che NStep costruisca un prodotto, un'app o un sistema di automazione.",
     "final_cta_button": "Avvia un progetto"
-  },
-  "mctb": {
-    "label": "Automazione dei Servizi",
-    "title": "NStep Missed Call Text Back",
-    "hero_subtitle": "Trasforma Ogni Chiamata Persa in una Conversazione.",
-    "hero_description": "NStep Missed Call Text Back Ã¨ il modo piÃ¹ veloce per le attivitÃ  di servizi locali di recuperare i lead. Se un cliente chiama e nessuno risponde, il sistema attiva un messaggio di risposta immediato e un menu di risposta strutturato per mantenere il lead in movimento.",
-    "request_setup": "Richiedi Revisione Configurazione",
-    "talk_studio": "Parla con lo Studio",
-    "never_miss": "Non Perdere Mai PiÃ¹ un Lead",
-    "never_miss_p1": "NStep Missed Call Text Back Ã¨ costruito per le attivitÃ  di servizi locali che hanno bisogno di recuperare i lead piÃ¹ velocemente senza aggiungere livelli complessi di software.",
-    "never_miss_p2": "Quando sei in un lavoro o guidi tra appuntamenti, le chiamate perse sono ricavi persi. Il nostro sistema assicura che ogni chiamante riceva una risposta immediata con cui puÃ² interagire.",
-    "never_miss_p3": "Catturando l'intento attraverso un semplice menu di risposta, sai esattamente cosa serve al cliente prima ancora di prendere il telefono per richiamare.",
-    "features": {
-      "recovery_title": "Recupero Chiamate Perse",
-      "recovery_desc": "Trasforma le chiamate senza risposta in conversazioni di testo attive invece di lead persi.",
-      "qualification_title": "Qualificazione Intelligente",
-      "qualification_desc": "Raccogli ciÃ² di cui il cliente ha bisogno prima che il proprietario debba intervenire.",
-      "followthrough_title": "Follow-Through PiÃ¹ Veloce",
-      "followthrough_desc": "Muovi i clienti interessati verso preventivi, prenotazioni o un passaggio umano.",
-      "fallback_title": "Fallback Protetto",
-      "fallback_desc": "Crea task umani quando l'automazione deve fermarsi invece di perdere il lead."
-    },
-    "flow_title": "Come Funziona il Flusso",
-    "flow_desc": "L'interazione Ã¨ semplice di proposito. Se perdi una chiamata, il cliente riceve un testo a cui puÃ² rispondere in secondi senza digitare un messaggio completo.",
-    "sample_title": "Esempio di testo per chiamata persa",
-    "sample_text": "Ciao, scusa se abbiamo perso la tua chiamata. Rispondi 1 per prenotare, 2 per un preventivo, 3 per aiuto urgente, o 4 per fare una domanda.",
-    "reply_menu": {
-      "schedule_title": "Prenota appuntamento",
-      "schedule_desc": "Muovi il cliente nel percorso di prenotazione invece di aspettare un richiamo.",
-      "quote_title": "Richiedi preventivo",
-      "quote_desc": "Cattura l'intento di preventivo velocemente e chiedi i dettagli senza perdere il lead.",
-      "emergency_title": "Servizio di emergenza",
-      "emergency_desc": "Segna il lavoro urgente rapidamente cosÃ¬ il proprietario o dispatcher puÃ² rispondere piÃ¹ velocemente.",
-      "question_title": "Fai una domanda",
-      "question_desc": "Mantieni la conversazione aperta quando il cliente non Ã¨ ancora pronto a prenotare."
-    },
-    "compliance_title": "Avviso di Messaggistica",
-    "compliance": {
-      "0": "NStep Missed Call Text Back Ã¨ configurato per le attivitÃ  che comunicano con persone che hanno contattato l'attivitÃ  per prime o hanno richiesto servizio.",
-      "1": "I flussi di lavoro supportati possono includere follow-up chiamate perse, aggiornamenti prenotazioni, messaggi di supporto e notifiche di servizio.",
-      "2": "La frequenza dei messaggi varia in base al flusso di lavoro. Possono applicarsi tariffe per messaggi e dati.",
-      "3": "Rispondi STOP per cancellarti e HELP per aiuto dove i flussi SMS sono attivi.",
-      "4": "Il consenso a ricevere messaggi non Ã¨ una condizione di acquisto."
-    },
-    "legal_note": "Consulta la nostra",
-    "legal_and": "e",
-    "legal_detail": "per maggiori dettagli.",
-    "cta_title": "Inizia con il Recupero Lead",
-    "cta_desc": "Pronto a smettere di perdere lead per chiamate perse? Raccontaci della tua attivitÃ  e vedremo se il sistema NStep Missed Call Text Back Ã¨ adatto al tuo flusso di lavoro.",
-    "cta_button": "Contatta lo Studio"
-  },
-  "mctb_page": {
-    "hero": {
-      "badge": "Automazione iniziale per team di servizi locali",
-      "title": "Smetti di perdere lavori per chiamate perse",
-      "subtitle": "Un flusso di risposta 24/7 che risponde via SMS all'istante, qualifica il lavoro e invia al titolare un riepilogo pulito.",
-      "description": "Questa non Ã¨ una pagina chatbot generica. Ãˆ un sistema mirato di recupero lead per vere attivitÃ  di servizi che non possono permettersi di perdere una chiamata e il lavoro successivo. L'idraulica Ã¨ il playbook iniziale attuale perchÃ© Ã¨ la versione piÃ¹ veloce da vendere e mostrare, non perchÃ© il sistema sia limitato agli idraulici.",
-      "demo_badge": "Demo iniziale attuale: idraulica",
-      "summary_badge": "Riepilogo del titolare incluso",
-      "compliance_badge": "Flusso SMS attento alla conformitÃ ",
-      "verticals_badge": "Espandibile ad altri settori di servizi"
-    },
-    "value_cards": {
-      "title": "CiÃ² che un acquirente deve capire in meno di un minuto",
-      "description": "La pagina dovrebbe rispondere velocemente a tre domande: cos'Ã¨, cosa fa e perchÃ© vale la pena pagarla prima che il cliente chiami qualcun altro.",
-      "what_is": {
-        "label": "Cos'Ã¨",
-        "title": "Un sistema di recupero delle chiamate perse",
-        "desc": "Quando un'attivitÃ  perde una chiamata, il sistema risponde via SMS all'istante, avvia l'acquisizione e mantiene il lead ingaggiato finchÃ© il titolare richiama."
-      },
-      "what_does": {
-        "label": "Cosa fa",
-        "title": "Qualifica il lead prima che tu lo gestisca",
-        "desc": "Fa domande brevi sul servizio, controlla l?urgenza, acquisisce la posizione del lavoro e trasforma lo scambio in un riepilogo pulito pronto per il titolare."
-      },
-      "who_for": {
-        "label": "Per chi Ã¨",
-        "title": "AttivitÃ  di servizi locali che perdono chiamate",
-        "desc": "Gli idraulici sono la demo iniziale attuale, ma la stessa struttura si adatta a imprese edili, HVAC, elettricisti, garage door, pulizie, soccorso stradale e altri operatori che non possono stare al telefono tutto il giorno."
-      }
-    },
-    "roi": {
-      "line": "Linea ROI",
-      "text": "Se fa risparmiare un solo lavoro perso a settimana, pu? ripagarsi da solo.",
-      "tags": "Risposta piÃ¹ veloce. Filtraggio migliore. PiÃ¹ richiamate."
-    },
-    "workflow": {
-      "title": "Il flusso live dovrebbe sembrare ovvio",
-      "desc": "Non costringere il visitatore a immaginare il sistema. Mostra il trigger della chiamata, l'acquisizione, la classificazione e il riepilogo del titolare nello stesso percorso di scroll.",
-      "step1": {
-        "title": "La chiamata persa attiva la risposta",
-        "desc": "Il cliente chiama la linea dell'attivitÃ , nessuno risponde e il sistema apre la conversazione via testo senza aspettare il titolare."
-      },
-      "step2": {
-        "title": "Il cliente riceve un'acquisizione breve",
-        "desc": "Lo script fa una domanda alla volta, resta sul tema e mantiene il cliente in movimento invece di scaricargli un paragrafo lungo."
-      },
-      "step3": {
-        "title": "Il lavoro viene classificato",
-        "desc": "Tipo di problema, gravitÃ , urgenza, posizione e nome del cliente vengono raccolti cosÃ¬ il titolare puÃ² agire su qualcosa di utile."
-      },
-      "step4": {
-        "title": "Il titolare riceve il riepilogo",
-        "desc": "Invece di indovinare da una segreteria o da testi grezzi, il titolare vede il riepilogo del lead e sa se chiamare subito o metterlo in coda normalmente."
-      }
-    },
-    "summary": {
-      "badge": "CiÃ² che vede il titolare",
-      "title": "Il riepilogo Ã¨ il punto di vendita",
-      "desc": "Questo Ã¨ il momento che fa capire il prodotto. Il titolare non deve leggere una trascrizione della segreteria. Ha bisogno di una vista chiara del lavoro e del passo successivo."
-    },
-    "pricing": {
-      "title": "I piani chiari battono i prezzi personalizzati vaghi",
-      "desc": "Gli acquirenti dovrebbero vedere subito dove si collocano. I piani servono a semplificare la vendita, non a far sembrare il sistema piÃ¹ complicato.",
-      "recommendation_title": "Raccomandazione",
-      "recommendation_text": "La maggior parte delle attivitÃ  dovrebbe iniziare con Starter, validare il flusso di lavoro e poi espandersi."
-    }
   }
 }
-
-

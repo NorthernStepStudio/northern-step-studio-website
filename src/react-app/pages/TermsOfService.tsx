@@ -11,12 +11,11 @@ const defaultLegalContent = `
 Welcome to Northern Step Studio (NStep). These Terms & Privacy guidelines govern your access to and use of our services. By accessing or using any of our products, applications, or communication tools, you agree to the following terms.
 
 ### 1. Service Description
-Northern Step Studio provides mobile applications, games, and automated communication tools, including missed call text-back systems, lead recovery messaging, and workflow automation tools designed for business use.
+Northern Step Studio provides mobile applications, games, and focused utility tools designed for both individual and business use.
 
 ### 2. Messaging Consent
 By providing your phone number and opting in through our forms, applications, or services, you consent to receive SMS messages from Northern Step Studio (NStep) related to:
 
-- Missed call follow-ups
 - Appointment coordination
 - Service-related communication
 
@@ -66,7 +65,7 @@ const summaryCards = [
   {
     icon: MessageSquare,
     title: "Messaging consent",
-    description: "SMS follow-ups, appointment coordination, and service communication.",
+    description: "Appointment coordination and service communication.",
   },
   {
     icon: Users,
@@ -241,7 +240,7 @@ export default function TermsOfService() {
               </h3>
               <ul className="mt-5 space-y-3">
                 {[
-                  "SMS consent and opt-out rules",
+                  "Messaging consent and opt-out rules",
                   "Business use and eligibility",
                   "Acceptable use and messaging responsibility",
                   "Availability and liability limits",

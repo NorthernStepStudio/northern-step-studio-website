@@ -7,9 +7,14 @@ import path from 'path';
 dotenv.config({ path: path.join(process.cwd(), '.dev.vars') });
 
 const connectionString = 
-  process.env.DATABASE_URL || 
-  process.env.SUPABASE_DB_URL || 
-  `postgresql://postgres.frlcnipgnxzeemitzkmd:w2c7Z^86t#m4K@aws-0-us-east-1.pooler.supabase.com:6543/postgres`;
+  process.env.DATABASE_URL?.trim() || 
+  process.env.SUPABASE_DB_URL?.trim() || 
+  '';
+
+if (!connectionString) {
+  console.error('Missing DATABASE_URL or SUPABASE_DB_URL. Set one in env or .dev.vars before running.');
+  process.exit(1);
+}
 
 async function migrate() {
   const sql = postgres(connectionString, { ssl: 'require' });
@@ -23,8 +28,10 @@ async function migrate() {
       );
     `;
 
-    console.log('Reading local server-data.json...');
-    const dataPath = path.join(process.cwd(), '../NSS Missed Call Text Back/server-data/responseos-store.json');
+    console.log('Reading local responseos-store.json...');
+    const dataPath =
+      process.env.RESPONSEOS_STORE_PATH?.trim() ||
+      path.join(process.cwd(), '../responseos/server-data/responseos-store.json');
     let rawData = '{}';
     try {
       rawData = await fs.readFile(dataPath, 'utf8');

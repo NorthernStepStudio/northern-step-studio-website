@@ -27,14 +27,6 @@ type PortfolioItem = {
 
 const PORTFOLIO_ITEMS: PortfolioItem[] = [
   {
-    nameKey: "home.portfolio_lead_title",
-    descriptionKey: "home.portfolio_lead_desc",
-    outcomeKey: "home.portfolio_lead_outcome",
-    statusKey: "home.portfolio_lead_live_today",
-    link: "/missed-call-text-back",
-    icon: PhoneCall,
-  },
-  {
     nameKey: "home.portfolio_nexus_title",
     descriptionKey: "home.portfolio_nexus_desc",
     outcomeKey: "home.portfolio_nexus_outcome",
@@ -93,7 +85,6 @@ function PortfolioCard({
   icon: Icon,
 }: PortfolioCardProps) {
   const { t } = useTranslation();
-  const isService = nameKey === "home.portfolio_lead_title";
 
   return (
     <Link
@@ -114,7 +105,7 @@ function PortfolioCard({
               {t(statusKey)}
             </span>
             <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-              {isService ? t("home.portfolio_type_service") : t("home.portfolio_type_app")}
+              {t("home.portfolio_type_app")}
             </span>
           </div>
           <h3 className="text-base sm:text-lg font-black uppercase tracking-tight text-foreground">
@@ -134,7 +125,6 @@ function PortfolioCard({
 
 function FeaturedPortfolioCard(props: PortfolioItem) {
   const { t } = useTranslation();
-  const isService = props.nameKey === "home.portfolio_lead_title";
 
   return (
     <div className="relative overflow-hidden rounded-[2rem] border border-accent/35 bg-card p-6 sm:p-8 lg:p-10 transition-all hover:border-accent/60 hover:shadow-[0_24px_60px_rgba(88,171,255,0.18)]">
@@ -145,7 +135,7 @@ function FeaturedPortfolioCard(props: PortfolioItem) {
               {t(props.statusKey)}
             </span>
             <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-              {isService ? t("home.portfolio_type_service") : t("home.portfolio_type_app")}
+              {t("home.portfolio_type_app")}
             </span>
           </div>
 
@@ -154,7 +144,7 @@ function FeaturedPortfolioCard(props: PortfolioItem) {
               {props.image ? (
                 <img src={props.image} alt="" className="h-full w-full object-contain p-3" />
               ) : (
-                <PhoneCall className="h-7 w-7 text-accent" />
+                <props.icon className="h-7 w-7 text-accent" />
               )}
             </div>
 

@@ -22,7 +22,7 @@ export default function About() {
   const pageTitle = t("about_page.title", { defaultValue: "Northern Step Studio" });
   const pageSubtitle = t("about_page.subtitle", {
     defaultValue:
-      "Northern Step Studio is a hands-on product studio building practical software across home readiness, learning, hardware planning, and service automation.",
+      "Northern Step Studio is a hands-on product studio building practical software across home readiness, learning, hardware planning, and focused consumer utility.",
   });
   const storyTitle = t("about_page.story.title", { defaultValue: "What This Studio Actually Is" });
   const storyParagraphs = [
@@ -36,7 +36,7 @@ export default function About() {
     }),
     t("about_page.story.p3", {
       defaultValue:
-        "We also build operational systems for automated lead recovery, where speed and execution matter for service businesses. Across all of it, the studio is shaped by small-team discipline, real product iteration, and a bias toward building things people can keep using.",
+        "The studio is shaped by small-team discipline, real product iteration, and a bias toward building things people can keep using with clarity and confidence.",
     }),
   ];
   const mission = {
@@ -116,14 +116,7 @@ export default function About() {
           "Products like Neuromove turn structured routines, progress tracking, and support workflows into approachable experiences.",
       }),
     },
-    {
-      icon: Sparkles,
-      title: t("about_page.focus.ops.title", { defaultValue: "Automation for Service Work" }),
-      description: t("about_page.focus.ops.desc", {
-        defaultValue:
-          "Internal systems and Lead Recovery tools focus on faster response, qualification, and operational follow-through.",
-      }),
-    },
+
   ];
 
   const studioProducts = useMemo(() => {
@@ -142,8 +135,8 @@ export default function About() {
     <div className="min-h-screen pt-16 sm:pt-20 px-4 sm:px-6 pb-12">
       <SEO
         title="About Us"
-        description="Learn how Northern Step Studio builds practical software across home readiness, finance education, guided support experiences, hardware planning, and lead recovery automation."
-        keywords="about northern step studio, indie development studio, mobile app developers, game developers, lead recovery, business automation"
+        description="Learn how Northern Step Studio builds practical software across home readiness, finance education, guided support experiences, and hardware planning."
+        keywords="about northern step studio, indie development studio, mobile app developers, game developers, business automation"
         canonicalUrl="/about"
       />
       <div className="container mx-auto max-w-5xl">

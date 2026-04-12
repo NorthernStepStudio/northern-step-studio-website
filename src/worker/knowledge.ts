@@ -240,7 +240,6 @@ CREATE TABLE IF NOT EXISTS knowledge_chunks (
                              'noobs',
                              'neuromove',
                              'pasoscore',
-                             'mctb',
                              'automation'
                            )),
   status       TEXT        NOT NULL DEFAULT 'active'
@@ -271,7 +270,7 @@ CREATE TABLE IF NOT EXISTS knowledge_chunks (
 -- Patch existing tables: drop and recreate lane constraint with correct values
 ALTER TABLE knowledge_chunks DROP CONSTRAINT IF EXISTS knowledge_chunks_lane_check;
 ALTER TABLE knowledge_chunks ADD CONSTRAINT knowledge_chunks_lane_check
-  CHECK (lane IN ('studio','nexusbuild','provly','noobs','neuromove','pasoscore','mctb','automation'));
+  CHECK (lane IN ('studio','nexusbuild','provly','noobs','neuromove','pasoscore','automation'));
 
 -- Performance indexes
 CREATE INDEX IF NOT EXISTS idx_knowledge_lane   ON knowledge_chunks (lane);

@@ -7,7 +7,6 @@ export type KnowledgeLane =
   | "noobs"
   | "neuromove"
   | "pasoscore"
-  | "mctb"
   | "automation";
 
 export function routeToLane(route: AgentRoute): KnowledgeLane {
@@ -22,8 +21,6 @@ export function routeToLane(route: AgentRoute): KnowledgeLane {
       return "neuromove";
     case "pasoscore":
       return "pasoscore";
-    case "mctb":
-      return "mctb";
     case "automation":
       return "automation";
     case "general":

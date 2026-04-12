@@ -1,14 +1,13 @@
 import postgres from "postgres";
-import { CATALOG_APPS, type CatalogApp } from "../../../src/shared/data/appsCatalog.ts";
-import { docsArticles } from "../../../src/shared/data/docs.ts";
-import { siteFaqEntries } from "../../../src/shared/data/faq.ts";
-import { createDemoLeadRecoveryWorkspace } from "../../../src/shared/lead-recovery.ts";
 import {
-  STUDIO_APP_FAMILIES,
-  STUDIO_EXPERTS,
   STUDIO_GLOBAL_CONTEXT,
+  STUDIO_EXPERTS,
+  STUDIO_APP_FAMILIES,
   STUDIO_IDENTITY,
 } from "../../../src/shared/data/studioKnowledge.ts";
+import { CATALOG_APPS, type CatalogApp } from "../../../src/shared/data/appsCatalog.ts";
+import { siteFaqEntries } from "../../../src/shared/data/faq.ts";
+import { docsArticles } from "../../../src/shared/data/docs.ts";
 import type { AgentRoute } from "../agents/types.ts";
 import type { KnowledgeLane } from "./lane-map.ts";
 import { routeToLane } from "./lane-map.ts";
@@ -20,6 +19,7 @@ type SeedChunk = Omit<RetrievedChunk, "score"> & {
 
 type SqlClient = ReturnType<typeof postgres>;
 
+const MAX_SQL_CLIENTS = 4;
 const sqlCache = new Map<string, SqlClient>();
 const STATIC_CORPUS = buildStaticCorpus();
 
@@ -132,8 +132,25 @@ async function loadDatabaseCorpus(databaseUrl: string | undefined, lane: Knowled
 }
 
 
+function sanitizeDatabaseUrl(value?: string): string {
+  const candidate = typeof value === "string" ? value.trim() : "";
+  if (!candidate) {
+    return "";
+  }
+
+  try {
+    const parsed = new URL(candidate);
+    if (parsed.protocol !== "postgres:" && parsed.protocol !== "postgresql:") {
+      return "";
+    }
+    return candidate;
+  } catch {
+    return "";
+  }
+}
+
 function getSqlClient(databaseUrl?: string): SqlClient | null {
-  const resolved = typeof databaseUrl === "string" ? databaseUrl.trim() : "";
+  const resolved = sanitizeDatabaseUrl(databaseUrl);
   if (!resolved) {
     return null;
   }
@@ -147,6 +164,15 @@ function getSqlClient(databaseUrl?: string): SqlClient | null {
     ssl: "require",
     max: 1,
   });
+
+  if (sqlCache.size >= MAX_SQL_CLIENTS) {
+    const oldestUrl = sqlCache.keys().next().value;
+    if (typeof oldestUrl === "string") {
+      const oldestClient = sqlCache.get(oldestUrl);
+      sqlCache.delete(oldestUrl);
+      void (oldestClient as any)?.end?.({ timeout: 1 });
+    }
+  }
 
   sqlCache.set(resolved, sql);
   return sql;
@@ -219,81 +245,9 @@ function buildStaticCorpus(): SeedChunk[] {
   }
 
   for (const app of CATALOG_APPS) {
-    const lane = appToLane(app);
-    corpus.push(createCatalogChunk(app, lane));
-    corpus.push(createFeatureChunk(app, lane));
+    corpus.push(createCatalogChunk(app, appToLane(app)));
+    corpus.push(createFeatureChunk(app, appToLane(app)));
   }
-
-  const leadRecovery = createDemoLeadRecoveryWorkspace();
-
-  corpus.push({
-    id: "mctb.workspace",
-    lane: "mctb",
-    sourceId: "lead-recovery-workspace",
-    sourceTitle: "Lead Recovery Workspace",
-    content: [
-      `Business: ${leadRecovery.profile.businessName}`,
-      `Main number: ${leadRecovery.profile.mainBusinessNumber}`,
-      `Callback number: ${leadRecovery.profile.callbackNumber}`,
-      `Services: ${leadRecovery.profile.services.join(", ")}`,
-      `Service area: ${leadRecovery.profile.serviceArea}`,
-      `Reply copy: ${leadRecovery.profile.missedCallReply}`,
-      `Automation mode: ${leadRecovery.settings.automation.mode}`,
-      `SMS status: ${leadRecovery.settings.sms.status}`,
-      `Email status: ${leadRecovery.settings.email.status}`,
-      `Calendar status: ${leadRecovery.settings.calendar.status}`,
-      `Recovered leads: ${leadRecovery.metrics.missedCallsRecovered}`,
-    ].join("\n"),
-    url: "/missed-call-text-back",
-    metadata: {
-      keywords: [
-        "lead recovery",
-        "missed call",
-        "text back",
-        "sms",
-        "twilio",
-        "automation",
-        "owner alert",
-      ],
-    },
-    keywords: [
-      "lead recovery",
-      "missed call",
-      "text back",
-      "sms",
-      "twilio",
-      "automation",
-      "owner alert",
-      leadRecovery.profile.businessName,
-    ],
-  });
-
-  corpus.push({
-    id: "automation.lead-recovery",
-    lane: "automation",
-    sourceId: "automation-lead-recovery",
-    sourceTitle: "Lead Recovery Automation Settings",
-    content: [
-      `Automation tier: ${leadRecovery.settings.automation.tier}`,
-      `Automation mode: ${leadRecovery.settings.automation.mode}`,
-      `Max requests per day: ${leadRecovery.settings.automation.maxRequestsPerDay}`,
-      `Fallback on failure: ${leadRecovery.settings.automation.fallbackOnFailure ? "yes" : "no"}`,
-      `Implementation status: ${leadRecovery.settings.automation.implementationStatus}`,
-      `Emergency route: ${leadRecovery.profile.emergencyPolicy.emergencyRoute}`,
-    ].join("\n"),
-    url: "/missed-call-text-back",
-    metadata: {
-      keywords: [
-        "automation",
-        "workflow",
-        "orchestration",
-        "responseos",
-        "lead recovery",
-        "sms",
-      ],
-    },
-    keywords: ["automation", "workflow", "orchestration", "responseos", "lead recovery", "sms"],
-  });
 
   corpus.push({
     id: "automation.studio",

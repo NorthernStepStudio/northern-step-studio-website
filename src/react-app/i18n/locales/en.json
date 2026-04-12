@@ -16,9 +16,7 @@
     "preferences": "Preferences",
     "logout": "Logout",
     "console": "Console",
-    "profile": "Profile",
-    "lead_recovery": "Lead Recovery",
-    "lead_recovery_short": "Lead"
+    "profile": "Profile"
   },
   "hero": {
     "label": "Northern Step Studio",
@@ -28,10 +26,7 @@
     "cta_secondary": "View Games",
     "main_title_1": "Building",
     "main_title_2": "Intelligent Software",
-    "main_title_3": "& Systems to Execute",
-    "main_subtitle": "Apps. Games. AI Systems. Business Automation.",
-    "explore_products": "Explore Our Products",
-    "install_automation": "Service Automation"
+    "main_subtitle": "Apps. Games. AI Systems."
   },
   "featured": {
     "label": "Featured",
@@ -60,18 +55,12 @@
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
     "copyright": "© {{year}} Northern Step Studio. All rights reserved.",
-    "missed_call": "Missed Call Text Back",
-    "updates": "Updates",
-    "community": "Community",
-    "docs": "Docs",
-    "lead_recovery_badge": "Live Lead Recovery",
-    "lead_recovery_title": "Turn missed calls into live conversations.",
-    "lead_recovery_desc": "If your business loses jobs when the phone is missed, Northern Step Studio can set up an intake and response flow that keeps the lead engaged until you call back."
+    "docs": "Docs"
   },
   "apps": {
     "label": "Product Catalog",
     "title": "Apps, Tools, and Systems",
-    "subtitle": "Browse the studio's current product lineup across home inventory, PC planning, finance education, guided support, credit improvement, and service automation.",
+    "subtitle": "Browse the studio's current product lineup across home inventory, PC planning, finance education, guided support, and credit improvement.",
     "no_apps": "No matching products yet.",
     "download": "Download",
     "join_beta": "Join Beta",
@@ -92,8 +81,7 @@
       "EDUCATION": "Education",
       "FINANCE": "Finance",
       "HOME": "Home",
-      "LEARNING": "Learning",
-      "AUTOMATION": "Automation"
+      "LEARNING": "Learning"
     },
     "filters": {
       "all": "All"
@@ -115,14 +103,14 @@
   "games": {
     "label": "Interactive Projects",
     "title": "Games and Play Systems",
-    "subtitle": "Game projects live here when they are ready for public testing. Most current studio work is utility, learning, and automation software, so this page may stay light between releases.",
+    "subtitle": "Game projects live here when they are ready for public testing. Most current studio work is focused on utility and learning software, so this page may stay light between releases.",
     "total": "Total Games",
     "live": "Live Now",
     "beta": "In Beta",
     "filter": "Filter by Genre",
     "all": "All",
     "no_games": "Game builds are still selective",
-    "no_games_desc": "The studio is currently heavier on apps, guided support products, and service automation than on public game releases. When a game build is ready, it will appear here with the same milestone transparency as the rest of the catalog.",
+    "no_games_desc": "The studio is currently heavier on apps and guided support products than on public game releases. When a game build is ready, it will appear here with the same milestone transparency as the rest of the catalog.",
     "browse_apps": "Browse All Apps",
     "community": "Join Community",
     "community_desc": "Follow studio updates, share ideas, and join early discussion as interactive projects move closer to release.",
@@ -188,9 +176,7 @@
     "coming_soon": "Coming Soon",
     "view": "View",
     "notify_me": "Notify Me",
-    "more": "More",
-    "setup_review": "Request Setup Review",
-    "setup_review_short": "Setup Review"
+    "more": "More"
   },
   "building": {
     "label": "Products in Motion",
@@ -308,14 +294,6 @@
       "tag2": "Progress Systems",
       "cta": "See Studio Work"
     },
-    "automation": {
-      "name": "Service Automation",
-      "tagline": "Automated recovery for missed calls.",
-      "desc": "Missed Call Text Back is the studio's execution engine for faster lead response, qualification, booking, and operational follow-through.",
-      "tag1": "Lead Response",
-      "tag2": "Service Ops",
-      "cta": "View Lead Recovery"
-    },
     "studio_tech": {
       "name": "Studio Systems",
       "tagline": "AI-driven operational tools.",
@@ -351,20 +329,18 @@
     "footer_note": "Built with modern web technologies, cloud infrastructure, and carefully integrated AI where it adds real value.",
     "explore_products": "Explore Products",
     "talk_to_studio": "Talk to the Studio",
-    "recovery_system": "Recovery System",
     "products": {
       "provly_desc": "A digital home inventory system that helps users document possessions and generate claim-ready reports when needed.",
       "nexusbuild_desc": "A PC planning and hardware decision tool designed to help users build balanced systems without guesswork.",
       "noobs_desc": "A beginner-friendly investing education platform focused on helping new investors understand markets step-by-step.",
       "neuromoves_desc": "A guided learning companion for young children, with structured routines, parent tools, and progress tracking.",
-      "pasoscore_desc": "A credit guidance platform designed to help users navigate financial improvement strategies with clarity.",
-      "mctb_desc": "An automation tool that instantly responds to missed business calls with a text message so potential customers are never lost."
+      "pasoscore_desc": "A credit guidance platform designed to help users navigate financial improvement strategies with clarity."
     }
   },
   "about": {
     "label": "Who We Are",
     "title": "Northern Step Studio",
-    "subtitle": "Northern Step Studio is a hands-on product studio building practical software across home readiness, learning, hardware planning, and service automation.",
+    "subtitle": "Northern Step Studio is a hands-on product studio building practical software across home readiness, learning, and hardware planning.",
     "story": {
       "title": "What This Studio Actually Is",
       "p1": "Northern Step Studio is a hands-on product studio, not a generic agency. We build software around specific real-world jobs: protecting a home inventory, planning a PC build, making investing easier to learn, supporting guided routines for children, and helping people improve credit with clearer next steps.",
@@ -420,16 +396,16 @@
   "contact": {
     "label": "Talk to the Studio",
     "title": "Contact Northern Step Studio",
-    "subtitle": "Product access requests, beta interest, support questions, partnership ideas, or Missed Call Text Back service inquiries.",
+    "subtitle": "Product access requests, beta interest, support questions, or partnership ideas.",
     "form": {
       "name": "Your Name",
       "email": "Your Email",
       "phone": "Mobile Phone",
       "phone_placeholder": "+1 (555) 123-4567",
-      "phone_note": "Add a mobile number if you want text follow-up for setup review, support, or service automation questions.",
+      "phone_note": "Add a mobile number if you want text follow-up for support or service automation questions.",
       "subject": "Subject",
       "message": "Your Message",
-      "sms_opt_in_label": "I agree to receive conversational SMS from Northern Step Studio about my inquiry, setup review, onboarding, or support request.",
+      "sms_opt_in_label": "I agree to receive conversational SMS from Northern Step Studio about my inquiry, onboarding, or support request.",
       "sms_opt_in_note": "Message frequency varies. Message and data rates may apply. Reply STOP to opt out and HELP for help. Consent is not a condition of purchase.",
       "send": "Send Message",
       "sending": "Sending..."
@@ -442,11 +418,11 @@
     },
     "beta": {
       "title": "Early Access Interest",
-      "desc": "If you want early access to products like ProvLy, NexusBuild, Neuromove, PasoScore, NooBS Investing, or Missed Call Text Back, join the list and tell us what product or workflow you are watching.",
+      "desc": "If you want early access to products like ProvLy, NexusBuild, Neuromove, PasoScore, or NooBS Investing, join the list and tell us what product or workflow you are watching.",
       "join": "Join Beta Program",
       "placeholder": "Enter your email",
       "interest_label": "What are you watching?",
-      "interest_placeholder": "ProvLy insurance exports, Neuromove routines, Lead Recovery rollout, etc.",
+      "interest_placeholder": "ProvLy insurance exports, Neuromove routines, etc.",
       "success": "You are on the list.",
       "saved_only": "You are on the list. Email forwarding is still pending, so use hello@northernstepstudio.com if this is urgent.",
       "updated": "You were already on the list. Your note was updated.",
@@ -460,19 +436,7 @@
     "updates_label": "Build updates",
     "docs_label": "Docs and setup",
     "read_updates": "Read latest updates",
-    "open_docs": "Open support docs",
-    "lead_recovery_title": "Lead Recovery Pilot Requests",
-    "lead_recovery_desc": "If you want a guided Lead Recovery install, include the basics that let us evaluate the workflow quickly.",
-    "lead_recovery_items": {
-      "0": "Business name and website",
-      "1": "Main phone number and service area",
-      "2": "What happens today when a call is missed",
-      "3": "Whether you want the structured missed-call menu: 1 schedule, 2 quote, 3 urgent, 4 question",
-      "4": "Any current phone, calendar, or booking tools already in place"
-    },
-    "lead_recovery_note": "Public pilot installs are reviewed case by case. If the fit is right, we will follow up with next-step setup details.",
-    "legal_note": "Lead Recovery pilot questions are also covered by our",
-    "legal_and": "and"
+    "open_docs": "Open support docs"
   },
   "support": {
     "title": "Still Need Help?",
@@ -677,51 +641,43 @@
     }
   },
   "seo": {
-    "default_title": "Northern Step Studio | Practical Software Products and Service Automation",
-    "default_description": "Northern Step Studio develops practical applications across productivity, learning, finance, and automation—helping individuals and businesses move from ideas to action.",
-    "default_keywords": "Northern Step Studio, ProvLy, NexusBuild, NooBS Investing, Neuromove, PasoScore, NStep Workspace AI, AI Proposal Generator, missed call text back, service automation, home inventory app, PC build planner, investing education app, guided routines app, credit builder app, lead recovery",
+    "default_title": "Northern Step Studio | Practical Software Products",
+    "default_description": "Northern Step Studio develops practical applications across productivity, learning, and finance—helping individuals and businesses move from ideas to action.",
+    "default_keywords": "Northern Step Studio, ProvLy, NexusBuild, NooBS Investing, Neuromove, PasoScore, NStep Workspace AI, AI Proposal Generator, home inventory app, PC build planner, investing education app, guided routines app, credit builder app",
     "apps_title": "Product Catalog",
-    "apps_description": "Browse Northern Step Studio products across home inventory, PC planning, finance learning, guided support, credit improvement, and response automation.",
-    "apps_keywords": "Northern Step Studio apps, product catalog, ProvLy, NexusBuild, NooBS Investing, Neuromove, PasoScore, missed call text back",
+    "apps_description": "Browse Northern Step Studio products across home inventory, PC planning, finance learning, guided support, and credit improvement.",
+    "apps_keywords": "Northern Step Studio apps, product catalog, ProvLy, NexusBuild, NooBS Investing, Neuromove, PasoScore",
     "games_description": "View Northern Step Studio game concepts and public game builds when they are ready for testing alongside the rest of the studio portfolio.",
-    "contact_description": "Contact Northern Step Studio for product access requests, support questions, partnership ideas, or Missed Call Text Back service review.",
+    "contact_description": "Contact Northern Step Studio for product access requests, support questions, or partnership ideas.",
     "kb_description": "Documentation for Northern Step Studio products, account flows, release notes, and support paths.",
-    "mctb_description": "NStep Missed Call Text Back is the automated system built for local service businesses to recover leads that would normally disappear after a missed call.",
-    "mctb_keywords": "missed call text back, NStep, Northern Step Studio, lead recovery, service automation, automated lead response",
     "workspace_description": "Northern Step Studio builds practical software designed to solve real-world problems using modern engineering and carefully applied AI.",
-    "workspace_keywords": "Northern Step Studio, technology, software development, AI, ProvLy, NexusBuild, NooBS Investing, Neuromove, PasoScore, Missed Call Text Back"
+    "workspace_keywords": "Northern Step Studio, technology, software development, AI, ProvLy, NexusBuild, NooBS Investing, Neuromove, PasoScore"
   },
   "home": {
     "hero_title": "NStep builds practical software.",
     "hero_line_1": "Building Focused Software",
     "hero_line_2": "That Solves Real Problems",
-    "hero_subtitle": "Northern Step Studio builds lead recovery systems and focused apps.",
+    "hero_subtitle": "Northern Step Studio builds focused apps and practical tools.",
     "hero_pitch": "Practical software with a small portfolio and a clear purpose.",
     "hero_primary": "View Portfolio",
     "hero_secondary": "Contact",
-    "lead_recovery": "Lead Recovery",
     "studio_ai": "Studio AI",
-    "focus_areas_count": 6,
+    "focus_areas_count": 4,
     "cta_view_work": "View Work",
     "cta_get_quote": "Get a Quote",
     "focus_title": "What NStep does",
     "focus_subtitle": "Focused products, kept simple.",
     "focus_area_apps_title": "Focused apps",
     "focus_area_apps_desc": "NexusBuild, ProvLy, and NooBS Investing stay small and useful.",
-    "focus_area_gaming_title": "Lead recovery",
-    "focus_area_gaming_desc": "Missed Call Text Back keeps new leads moving.",
     "focus_area_ai_title": "Simple automation",
     "focus_area_ai_desc": "Tools that remove manual steps without noise.",
     "focus_area_systems_title": "Clean systems",
     "focus_area_systems_desc": "Straightforward products that are easy to use.",
     "portfolio_title": "Current work",
-    "portfolio_subtitle": "The live lead recovery system comes first, followed by the apps close to launch.",
+    "portfolio_subtitle": "Our latest apps and tools in development.",
     "portfolio_status_close_to_launch": "Beta phase",
     "portfolio_status_almost_ready": "Beta phase",
-    "portfolio_status_service": "Lead recovery",
-    "portfolio_lead_live_today": "Live today",
     "portfolio_type_app": "App",
-    "portfolio_type_service": "System",
     "portfolio_empty": "Nothing public is live right now.",
     "portfolio_disabled": "Portfolio access is coming soon.",
     "portfolio_default_description": "Outcome-driven next steps and measurable learnings.",
@@ -740,144 +696,24 @@
     "portfolio_pasoscore_title": "PasoScore",
     "portfolio_pasoscore_desc": "A guided credit improvement companion built to make monthly progress clear.",
     "portfolio_pasoscore_outcome": "Simple steps for better credit",
-    "portfolio_lead_title": "Lead Recovery Service",
-    "portfolio_lead_desc": "Missed Call Text Back keeps new leads moving with fast SMS follow-up.",
-    "portfolio_lead_outcome": "Faster response to missed calls",
     "about_title": "Studio Philosophy",
-    "about_text": "Northern Step Studio is dedicated to building high-performance lead recovery systems and a curated portfolio of specialized applications. Our approach prioritizes precision, utility, and seamless automation.",
-    "about_point_1_title": "Automated Recovery",
-    "about_point_1_desc": "Our flagship Missed Call Text Back system ensures every lead is captured and engaged immediately.",
+    "about_text": "Northern Step Studio is dedicated to building high-performance applications and a curated portfolio of specialized tools. Our approach prioritizes precision, utility, and seamless user experiences.",
+    "about_point_1_title": "Deliberate Progress",
+    "about_point_1_desc": "We build with intentionality, ensuring every update adds clear value to the user experience.",
     "about_point_2_title": "Curated Portfolio",
     "about_point_2_desc": "From system planning to consumer tools, every studio product is built with an uncompromising focus on real-world impact.",
     "final_cta_title": "Need a clean build?",
-    "final_cta_subtitle": "Reach out if you want NStep to build a product, app, or automation system.",
+    "final_cta_subtitle": "Reach out if you want NStep to build a product, app, or utility system.",
     "final_cta_button": "Start a Project"
-  },
-  "mctb": {
-    "label": "Service Automation",
-    "title": "NStep Missed Call Text Back",
-    "hero_subtitle": "Turn Every Missed Call Into a Conversation.",
-    "hero_description": "NStep Missed Call Text Back is the fastest way for local service businesses to recover leads. If a customer calls and no one answers, the system triggers an immediate text-back and structured reply menu to keep the lead moving.",
-    "request_setup": "Request Setup Review",
-    "talk_studio": "Talk to the Studio",
-    "never_miss": "Never Miss a Lead Again",
-    "never_miss_p1": "NStep Missed Call Text Back is built for local service businesses that need to recover leads faster without adding complex software layers.",
-    "never_miss_p2": "When you're out on a job or driving between appointments, missed calls are lost revenue. Our system ensures every caller gets an immediate response they can interact with.",
-    "never_miss_p3": "By capturing intent through a simple reply menu, you know exactly what the customer needs before you even pick up the phone to call them back.",
-    "features": {
-      "recovery_title": "Missed Call Recovery",
-      "recovery_desc": "Turn unanswered calls into active text conversations instead of lost leads.",
-      "qualification_title": "Smart Qualification",
-      "qualification_desc": "Collect what the customer needs before the owner has to step in.",
-      "followthrough_title": "Faster Follow-Through",
-      "followthrough_desc": "Move interested customers toward quotes, booking, or a human handoff.",
-      "fallback_title": "Protected Fallback",
-      "fallback_desc": "Create human tasks when automation should stop instead of dropping the lead."
-    },
-    "flow_title": "How the Flow Works",
-    "flow_desc": "The interaction is simple on purpose. If you miss a call, the customer gets a text they can reply to in seconds without typing out a full message.",
-    "sample_title": "Sample missed-call text",
-    "sample_text": "Hi, sorry we missed your call. Reply 1 to schedule, 2 for a quote, 3 for urgent help, or 4 to ask a question.",
-    "reply_menu": {
-      "schedule_title": "Schedule appointment",
-      "schedule_desc": "Move the customer into the booking path instead of waiting for a callback.",
-      "quote_title": "Request quote",
-      "quote_desc": "Capture quote intent fast and ask for the next details without losing the lead.",
-      "emergency_title": "Emergency service",
-      "emergency_desc": "Mark urgent work quickly so the owner or dispatcher can respond faster.",
-      "question_title": "Ask a question",
-      "question_desc": "Keep the conversation open when the customer is not ready to book yet."
-    },
-    "compliance_title": "Messaging Notice",
-    "compliance": {
-      "0": "NStep Missed Call Text Back is configured for businesses communicating with people who contacted the business first or requested service.",
-      "1": "Supported workflows can include missed-call follow-up, booking updates, support messages, and service notifications.",
-      "2": "Message frequency varies by workflow. Message and data rates may apply.",
-      "3": "Reply STOP to opt out and HELP for help where SMS workflows are active.",
-      "4": "Consent to receive messages is not a condition of purchase."
-    },
-    "legal_note": "See our",
-    "legal_and": "and",
-    "legal_detail": "for more detail.",
-    "cta_title": "Get Started with Lead Recovery",
-    "cta_desc": "Ready to stop losing leads to missed calls? Tell us about your business and we'll see if the NStep Missed Call Text Back system is a fit for your workflow.",
-    "cta_button": "Contact the Studio"
-  },
-  "mctb_page": {
-    "hero": {
-      "badge": "Starter automation for local service teams",
-      "title": "Stop losing service jobs to missed calls",
-      "subtitle": "A 24/7 response flow that texts back instantly, qualifies the job, and sends the owner a clean summary.",
-      "description": "This is not a generic chatbot page. It is a focused lead-recovery system for real service businesses that cannot afford to miss the phone and lose the next job. Plumbing is the current starter playbook because it is the fastest version to sell and demo, not because the system is limited to plumbers.",
-      "demo_badge": "Current starter demo: plumbing",
-      "summary_badge": "Owner summary included",
-      "compliance_badge": "Compliance-aware SMS flow",
-      "verticals_badge": "Expandable to other service verticals"
-    },
-    "value_cards": {
-      "title": "What a buyer needs to understand in under a minute",
-      "description": "The page should answer three questions fast: what this is, what it does, and why it is worth paying for before the customer calls someone else.",
-      "what_is": {
-        "label": "What it is",
-        "title": "A missed-call recovery system",
-        "desc": "When a business misses a call, the system texts back immediately, starts the intake, and keeps the lead engaged until the owner calls back."
-      },
-      "what_does": {
-        "label": "What it does",
-        "title": "Qualifies the lead before you touch it",
-        "desc": "It asks short service questions, checks urgency, captures the job location, and turns the exchange into a clean owner-ready summary."
-      },
-      "who_for": {
-        "label": "Who it is for",
-        "title": "Local service businesses that miss calls",
-        "desc": "Plumbers are the current starter demo, but the same structure fits contractors, HVAC, electrical, garage door, cleaning, towing, and other service operators who cannot sit on the phone all day."
-      }
-    },
-    "roi": {
-      "line": "ROI line",
-      "text": "If it saves one missed job per week, it can pay for itself.",
-      "tags": "Faster response. Better filtering. More callbacks."
-    },
-    "workflow": {
-      "title": "The live flow should feel obvious",
-      "desc": "Do not make the visitor imagine the system. Show the call trigger, the intake, the classification, and the owner summary in the same scroll path.",
-      "step1": {
-        "title": "Missed call triggers the response",
-        "desc": "The customer calls the business line, nobody picks up, and the system opens the text conversation without waiting on the owner."
-      },
-      "step2": {
-        "title": "The customer gets a short intake",
-        "desc": "The script asks one question at a time, stays on topic, and keeps the customer moving instead of dumping a long paragraph on them."
-      },
-      "step3": {
-        "title": "The job gets classified",
-        "desc": "Issue type, severity, urgency, location, and customer name are captured so the owner can act on something useful."
-      },
-      "step4": {
-        "title": "The owner gets the summary",
-        "desc": "Instead of guessing from voicemail or raw texts, the owner sees the lead summary and knows whether to call immediately or queue it normally."
-      }
-    },
-    "summary": {
-      "badge": "What the owner sees",
-      "title": "The summary is the selling point",
-      "desc": "This is the moment that makes the product make sense. The owner does not need to read a voicemail transcript. They need a clean snapshot of the job and what to do next."
-    },
-    "pricing": {
-      "title": "Clear tiers beat vague custom pricing",
-      "desc": "Buyers should be able to see where they fit. The tiers are there to simplify the sale, not to make the system look more complicated.",
-      "recommendation_title": "Recommendation",
-      "recommendation_text": "Most businesses should start with Starter, prove the workflow, and expand later."
-    }
   },
   "services": {
     "hero": {
-      "title": "We build apps, websites, and automation systems",
+      "title": "We build apps and websites",
       "subtitle": "Professional systems for modern businesses.",
-      "positioning": "We build systems that automate your business and help you capture more customers without extra work."
+      "positioning": "We build systems that help you stay organized and capture more customers without extra work."
     },
     "offers": {
-      "title": "Our 3 Core Offers",
+      "title": "Our Offers",
       "systems": {
         "title": "Business Systems",
         "desc": "Apps",
@@ -898,10 +734,10 @@
       },
       "automation": {
         "title": "Automation",
-        "desc": "Your secret weapon",
+        "desc": "Efficiency first",
         "items": [
-          "Missed-call recovery",
-          "Follow-ups",
+          "Workflow automation",
+          "Data sync",
           "AI systems"
         ]
       }
@@ -909,14 +745,14 @@
     "proposal": {
       "title": "Client Proposal",
       "badge": "Core Offer",
-      "overview": "NStep builds modern applications, websites, and automation systems designed to help businesses operate efficiently and generate more revenue.",
+      "overview": "NStep builds modern applications and websites designed to help businesses operate efficiently and generate more revenue.",
       "subtitle": "We don’t just build software—we build working business systems.",
       "what_you_get": {
         "title": "What You Get",
         "website": "Professional business website (your domain), Mobile-friendly design, Service pages + contact system, Lead capture forms, SEO-ready structure.",
         "mobile": "iOS / Android compatible (APK or store-ready), User accounts, Booking / ordering system, Notifications, Simple, clean UI.",
         "backend": "Secure database, Admin dashboard, Order / customer tracking, API connecting everything.",
-        "automation": "Missed-call text-back, Lead follow-ups, Appointment reminders, Customer re-engagement."
+        "automation": "Workflow automation, Appointment reminders, Customer re-engagement."
       },
       "features": {
         "website": "Website",
@@ -951,21 +787,21 @@
         "advanced": "Advanced ($3,500–$7,500+)",
         "monthly": {
           "title": "Monthly (Optional)",
-          "desc": "Hosting, Updates, Automation management",
+          "desc": "Hosting, Updates, Support",
           "price": "$50–$300/month"
         }
       },
-      "positioning": "We build systems that automate your business and help you capture more customers without extra work."
+      "positioning": "We build systems that help you stay organized and capture more customers without extra work."
     },
     "use_cases": {
       "title": "Example Use Cases",
       "laundry": "Laundry service app",
-      "local": "Local service automation",
+      "local": "Business automation",
       "booking": "Booking platforms"
     },
     "cta": {
       "title": "Ready to Build Your next system?",
-      "subtitle": "Tell us about your project—whether it's a high-performance website, a custom mobile app, or an AI-powered automation workflow.",
+      "subtitle": "Tell us about your project—whether it's a high-performance website, a custom mobile app, or an automation workflow.",
       "quote": "Get a Custom Quote",
       "start": "Start Your Project"
     }
