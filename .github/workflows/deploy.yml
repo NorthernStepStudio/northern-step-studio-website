@@ -1,9 +1,13 @@
-name: Cloudflare Production Deploy
+﻿name: Cloudflare Production Deploy
 
 on:
   push:
     branches:
       - main
+
+defaults:
+  run:
+    working-directory: apps/Northern Step Studio website
 
 jobs:
   deploy:
@@ -35,3 +39,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy
+          workingDirectory: apps/Northern Step Studio website
