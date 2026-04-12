@@ -52,20 +52,9 @@ export async function routeMessage(message: string): Promise<AgentRoute> {
   }
 
   if (
-    msg.includes("missed call") ||
-    msg.includes("missed-call") ||
-    msg.includes("lead recovery") ||
-    msg.includes("lead-recovery") ||
-    msg.includes("sms") ||
-    msg.includes("text back") ||
-    msg.includes("text-back") ||
-    msg.includes("follow-up")
-  ) {
-    return "mctb";
-  }
-
-  if (
     msg.includes("automation") ||
+    msg.includes("sms") ||
+    msg.includes("follow-up") ||
     msg.includes("workflow") ||
     msg.includes("orchestration") ||
     msg.includes("system")

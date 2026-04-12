@@ -30,7 +30,6 @@ export type RetrievalRoute = "support" | "docs" | "faq" | "products" | "general"
 
 export type StudioAgentRole =
   | "supervisor"
-  | "service-automation-expert"
   | "utility-expert"
   | "finance-expert"
   | "support-expert"
@@ -874,10 +873,6 @@ function buildSearchHints(route: RetrievalRoute, selectedLanes: readonly StudioL
   }
 
   for (const lane of selectedLanes) {
-    if (lane === "service_automation") {
-      hints.add("/missed-call-text-back");
-    }
-
     if (lane === "consumer_utility" || lane === "finance" || lane === "guided_support") {
       hints.add("/apps");
     }
@@ -917,18 +912,11 @@ function collectFallbackSources(
     add("About Northern Step Studio", "/about");
   }
 
-  if (query.includes("lead recovery") || query.includes("missed call") || query.includes("text back")) {
-    const leadRecovery = getStudioProductFamily("lead-recovery");
-    add(leadRecovery?.name ?? "Lead Recovery Service", leadRecovery?.path ?? "/missed-call-text-back");
-  }
+
 
   for (const lane of decision?.selectedLanes ?? []) {
     const expert = getStudioDomainByLane(lane);
-    if (lane === "service_automation") {
-      const family = getStudioProductFamily("lead-recovery");
-      add(family?.name ?? expert?.label ?? "Lead Recovery Service", family?.path ?? "/missed-call-text-back");
-      continue;
-    }
+
 
     if (lane === "consumer_utility") {
       add("NexusBuild", getStudioProductFamily("nexusbuild")?.path ?? "/apps/nexusbuild");
@@ -956,9 +944,7 @@ function collectFallbackSources(
       add("Docs", hint);
     } else if (hint === "/contact") {
       add("Contact", hint);
-    } else if (hint === "/missed-call-text-back") {
-      const family = getStudioProductFamily("lead-recovery");
-      add(family?.name ?? "Lead Recovery Service", hint);
+
     }
   }
 
@@ -976,8 +962,6 @@ function buildConversationSignal(message: string, history: readonly ChatMessage[
 
 function laneRoleForLane(lane: StudioLane): Exclude<StudioAgentRole, "supervisor" | "studio-expert" | "verifier"> {
   switch (lane) {
-    case "service_automation":
-      return "service-automation-expert";
     case "consumer_utility":
       return "utility-expert";
     case "finance":
@@ -1013,13 +997,11 @@ function scoreLane(signal: string, route: RetrievalRoute, expert: (typeof STUDIO
     score += 0.75;
   }
 
-  if (route === "docs" && (expert.lane === "service_automation" || expert.lane === "consumer_utility")) {
+  if (route === "docs" && expert.lane === "consumer_utility") {
     score += 0.9;
   }
 
-  if (route === "support" && expert.lane === "service_automation") {
-    score += 1.25;
-  }
+
 
   if (route === "faq" && expert.lane === "consumer_utility") {
     score += 0.75;
@@ -1100,22 +1082,22 @@ function truncateText(value: string, maxLength: number) {
 
 function laneBoost(route: RetrievalRoute, lane: StudioLane) {
   if (route === "products") {
-    return lane === "consumer_utility" ? 1.45 : lane === "finance" ? 1.3 : lane === "service_automation" ? 1.25 : 1.15;
+    return lane === "consumer_utility" ? 1.45 : lane === "finance" ? 1.3 : 1.15;
   }
 
   if (route === "docs") {
-    return lane === "service_automation" ? 1.4 : lane === "consumer_utility" ? 1.3 : lane === "finance" ? 1.15 : 1.25;
+    return lane === "consumer_utility" ? 1.3 : lane === "finance" ? 1.15 : 1.25;
   }
 
   if (route === "support") {
-    return lane === "service_automation" ? 1.45 : 1.2;
+    return 1.2;
   }
 
   if (route === "faq") {
     return lane === "consumer_utility" ? 1.3 : lane === "finance" ? 1.2 : 1.1;
   }
 
-  return lane === "consumer_utility" ? 1.15 : lane === "service_automation" ? 1.1 : lane === "finance" ? 1.05 : 1;
+  return lane === "consumer_utility" ? 1.15 : lane === "finance" ? 1.05 : 1;
 }
 
 function toCatalogAppSummary(app: CatalogApp): AppSummary {

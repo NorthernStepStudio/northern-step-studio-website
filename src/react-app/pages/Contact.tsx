@@ -40,18 +40,11 @@ export default function Contact() {
 
   const requestPresets = [
     {
-      key: "setup-review",
-      label: "Setup Review",
-      subject: "Request setup review",
+      key: "start-project",
+      label: "Start Project",
+      subject: "Start a new project",
       message:
-        "Business name:\nIndustry:\nBest callback number:\nCurrent business line:\nAverage missed calls per day:\nWhat happens today when a call is missed:\n",
-    },
-    {
-      key: "lead-recovery-demo",
-      label: "Live Demo",
-      subject: "Request live lead recovery demo",
-      message:
-        "Business name:\nWho should join the demo:\nBest callback number:\nWhat type of calls you miss most often:\nWhat you want to see in the demo:\n",
+        "Project name:\nIndustry:\nMain goal:\nCurrent tools:\nTarget launch window:\n",
     },
     {
       key: "automation-build",
@@ -108,7 +101,7 @@ export default function Contact() {
 
     let message = preset.message;
     message = fillTemplateLine(message, "Industry", normalizedIndustry);
-    message = fillTemplateLine(message, "Best callback number", phoneKey);
+    message = fillTemplateLine(message, "Mobile Phone", phoneKey);
     message = fillTemplateLine(message, "Requested tier", normalizedTier);
 
     setFormState((current) => ({
@@ -211,7 +204,7 @@ export default function Contact() {
       <SEO
         title={t("contact.title")}
         description={t("seo.contact_description")}
-        keywords="contact northern step studio, lead recovery pilot, missed call text back, app support, partnership inquiries, customer service"
+        keywords="contact northern step studio, app support, partnership inquiries, customer service"
         canonicalUrl="/contact"
       />
       <div className="container mx-auto max-w-5xl">
@@ -234,10 +227,10 @@ export default function Contact() {
                 Best use of this form
               </div>
               <h2 className="text-2xl font-black uppercase tracking-tight text-foreground">
-                Request a setup review, not a vague quote.
+                Share project goals, not a vague quote request.
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                If you want missed-call recovery or service automation, send the business name, industry, phone line, and what currently happens when a new call is missed. Plumbing is the current starter demo, but the review is not limited to plumbers. That gives us enough to scope the first version fast.
+                If you need support, have a partnership idea, or want to discuss a custom build, use the form below. We respond to all inquiries within 24-48 business hours.
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -375,44 +368,7 @@ export default function Contact() {
           </div>
 
           <div className="space-y-4">
-            <div className="card-dark-wise border-accent/30">
-              <div className="mb-4 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/20">
-                  <PhoneCall className="h-5 w-5 text-accent" />
-                </div>
-                <h3 className="text-lg font-black uppercase">{t("contact.lead_recovery_title")}</h3>
-              </div>
-              <p className="mb-4 text-sm text-muted-foreground">
-                {t("contact.lead_recovery_desc")}
-              </p>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                {[0, 1, 2, 3, 4].map((i) => (
-                  <li key={i}>{t(`contact.lead_recovery_items.${i}`)}</li>
-                ))}
-              </ul>
-              <p className="mt-4 text-xs text-muted-foreground">
-                {t("contact.lead_recovery_note")}
-              </p>
-            </div>
 
-            <div className="card-dark-wise border-yellow-500/30">
-              <div className="mb-4 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-yellow-500/10">
-                  <Sparkles className="h-5 w-5 text-yellow-400" />
-                </div>
-                <h3 className="text-lg font-black uppercase">Setup review checklist</h3>
-              </div>
-              <ul className="space-y-3 text-sm text-muted-foreground">
-                <li>Business name and industry</li>
-                <li>Main line or routing path to review</li>
-                <li>How many calls you miss in a normal week</li>
-                <li>What questions the first response should ask</li>
-                <li>Where the owner summary should be delivered</li>
-              </ul>
-              <p className="mt-4 text-xs text-muted-foreground">
-                Current demo vertical: plumbing. Easy next fits: HVAC, electrical, garage door, cleaning, towing, locksmith, and similar service businesses.
-              </p>
-            </div>
 
             <div className="card-dark-wise">
               <h3 className="mb-4 text-lg font-black uppercase">{t("contact.info.title")}</h3>

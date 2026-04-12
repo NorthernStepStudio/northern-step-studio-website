@@ -21,7 +21,7 @@ import {
 import { usePermissions } from "@/react-app/hooks/usePermissions";
 
 type LeadStatus = "new" | "contacted" | "qualified" | "closed";
-type LeadIntent = "setup-review" | "lead-recovery-demo" | "automation-build" | "general-support" | null;
+type LeadIntent = "automation-build" | "general-support" | null;
 
 interface LeadItem {
   id: number;
@@ -82,8 +82,6 @@ const STATUS_OPTIONS: Array<{ value: LeadStatus | "all"; label: string }> = [
 
 const INTENT_OPTIONS: Array<{ value: LeadIntent | "all"; label: string }> = [
   { value: "all", label: "All intents" },
-  { value: "setup-review", label: "Setup review" },
-  { value: "lead-recovery-demo", label: "Live demo" },
   { value: "automation-build", label: "Automation build" },
   { value: "general-support", label: "General support" },
 ];
@@ -108,8 +106,6 @@ const STATUS_META: Record<LeadStatus, { label: string; className: string }> = {
 };
 
 const INTENT_LABELS: Record<Exclude<LeadIntent, null>, string> = {
-  "setup-review": "Setup review",
-  "lead-recovery-demo": "Live demo",
   "automation-build": "Automation build",
   "general-support": "General support",
 };
@@ -119,12 +115,6 @@ function buildSummary(items: LeadItem[]): LeadSummary {
     (acc, item) => {
       acc.total += 1;
       acc.byStatus[item.status] += 1;
-      if (item.intent === "setup-review") {
-        acc.setupReviews += 1;
-      }
-      if (item.intent === "lead-recovery-demo") {
-        acc.liveDemos += 1;
-      }
       if (item.status === "new") {
         acc.needsReply += 1;
       }
@@ -381,18 +371,6 @@ export default function Leads() {
             tone: "from-yellow-500/20 to-yellow-500/5 text-yellow-400",
           },
           {
-            label: "Setup reviews",
-            value: summary.setupReviews,
-            icon: Sparkles,
-            tone: "from-blue-500/20 to-blue-500/5 text-blue-400",
-          },
-          {
-            label: "Live demos",
-            value: summary.liveDemos,
-            icon: MessageSquareText,
-            tone: "from-purple-500/20 to-purple-500/5 text-purple-400",
-          },
-          {
             label: "Qualified",
             value: summary.byStatus.qualified,
             icon: UserCheck,
@@ -420,7 +398,7 @@ export default function Leads() {
               Lead inbox filters
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Search across setup reviews, live demo requests, and inbound contact leads.
+              Search across inbound contact leads and project inquiries.
             </p>
           </div>
 

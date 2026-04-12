@@ -1,6 +1,5 @@
 import { automationAgent } from "./automation.ts";
 import { generalAgent } from "./general.ts";
-import { mctbAgent } from "./mctb.ts";
 import { neuroMoveAgent } from "./neuromove.ts";
 import { nexusBuildAgent } from "./nexusbuild.ts";
 import { noobsAgent } from "./noobs.ts";
@@ -23,8 +22,6 @@ export async function runAgent(options: {
       return neuroMoveAgent(options.input);
     case "pasoscore":
       return pasoScoreAgent(options.input);
-    case "mctb":
-      return mctbAgent(options.input);
     case "automation":
       return automationAgent(options.input);
     case "general":

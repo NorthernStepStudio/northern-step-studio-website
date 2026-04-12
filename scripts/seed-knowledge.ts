@@ -493,7 +493,7 @@ function docCategoryToLane(category: string): string {
   if (lower.includes("noob") || lower.includes("invest")) return "noobs";
   if (lower.includes("neuro") || lower.includes("therapy")) return "neuromove";
   if (lower.includes("paso") || lower.includes("credit")) return "pasoscore";
-  if (lower.includes("mctb") || lower.includes("lead") || lower.includes("sms")) return "mctb";
+  if (lower.includes("automation") || lower.includes("sms")) return "automation";
   return "studio";
 }
 
@@ -504,7 +504,7 @@ function faqTagsToLane(tags: readonly string[]): string {
   if (joined.includes("noobs") || joined.includes("invest") || joined.includes("finance")) return "noobs";
   if (joined.includes("neuro") || joined.includes("therapy") || joined.includes("ot")) return "neuromove";
   if (joined.includes("paso") || joined.includes("credit") || joined.includes("score")) return "pasoscore";
-  if (joined.includes("mctb") || joined.includes("sms") || joined.includes("lead")) return "mctb";
+  if (joined.includes("automation") || joined.includes("sms")) return "automation";
   return "studio";
 }
 

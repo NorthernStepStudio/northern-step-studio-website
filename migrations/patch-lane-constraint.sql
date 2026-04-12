@@ -15,7 +15,6 @@ ALTER TABLE knowledge_chunks
     'noobs',
     'neuromove',
     'pasoscore',
-    'mctb',
     'automation'
   ));
 

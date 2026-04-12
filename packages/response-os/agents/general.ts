@@ -47,17 +47,10 @@ function detectStudioTopic(message: string): string[] {
 
   if (
     msg.includes("automation") ||
-    msg.includes("lead") ||
     msg.includes("sms") ||
-    msg.includes("missed call") ||
-    msg.includes("missed-call") ||
-    msg.includes("lead recovery") ||
-    msg.includes("lead-recovery") ||
-    msg.includes("text back") ||
-    msg.includes("text-back") ||
     msg.includes("follow-up")
   ) {
-    topics.push("MCTB");
+    topics.push("Automation");
   }
 
   return [...new Set(topics)];
@@ -93,7 +86,7 @@ Studio products:
 - NooBS Investing: beginner-friendly investing education and simulation
 - Neuromove: routines, support tools, skills and therapy-adjacent workflow support
 - PasoScore: score/tracking/productivity or sports-adjacent experience
-- MCTB: automation, communication, lead recovery, missed-call text-back systems
+- Automation: workflow automation and communication system support
 
 Response style:
 - Clear

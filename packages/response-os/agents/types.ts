@@ -5,7 +5,6 @@ export type AgentRoute =
   | "noobs"
   | "neuromove"
   | "pasoscore"
-  | "mctb"
   | "automation";
 
 export interface AgentInput {

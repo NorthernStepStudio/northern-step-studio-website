@@ -1,6 +1,6 @@
 import type { DocsArticle } from "./docs";
 
-export type StudioLane = "service_automation" | "consumer_utility" | "finance" | "guided_support";
+export type StudioLane = "consumer_utility" | "finance" | "guided_support";
 
 export interface StudioExpertConfig {
   readonly lane: StudioLane;
@@ -54,26 +54,6 @@ export const STUDIO_GLOBAL_CONTEXT = [
 
 export const STUDIO_EXPERTS: readonly StudioExpertConfig[] = [
   {
-    lane: "service_automation",
-    label: "Service Automation Expert",
-    summary:
-      "Lead Recovery, missed-call workflows, SMS follow-up, ResponseOS-style automation, and SMB lead capture.",
-    keywords: [
-      "lead recovery",
-      "missed call",
-      "text back",
-      "sms",
-      "automation",
-      "responseos",
-      "lead capture",
-      "setup review",
-    ],
-    aliases: ["mctb", "missed call text back", "lead recovery service"],
-    productSlugs: ["lead-recovery"],
-    docCategories: ["getting-started", "apps", "ai-tools"],
-    theme: "green",
-  },
-  {
     lane: "consumer_utility",
     label: "Consumer Utility Expert",
     summary: "NexusBuild, ProvLy, home organization, and asset documentation workflows.",
@@ -108,15 +88,6 @@ export const STUDIO_EXPERTS: readonly StudioExpertConfig[] = [
 export const STUDIO_DOMAINS = STUDIO_EXPERTS;
 
 export const STUDIO_APP_FAMILIES: readonly StudioAppFamily[] = [
-  {
-    slug: "lead-recovery",
-    name: "Lead Recovery Service",
-    lane: "service_automation",
-    summary: "Missed-call text back and fast lead follow-up for local service businesses.",
-    path: "/missed-call-text-back",
-    keywords: ["lead recovery", "missed call", "text back", "mctb"],
-    aliases: ["missed call text back", "service automation"],
-  },
   {
     slug: "nexusbuild",
     name: "NexusBuild",
