@@ -2,14 +2,17 @@ import postgres from 'postgres';
 import fs from 'fs/promises';
 import path from 'path';
 
-const sql = postgres({
-  host: 'db.frlcnipgnxzeemitzkmd.supabase.co',
-  port: 5432,
-  database: 'postgres',
-  user: 'postgres',
-  password: '348754Win!',
-  ssl: 'require'
-});
+const connectionString =
+  process.env.DATABASE_URL?.trim() ||
+  process.env.SUPABASE_DB_URL?.trim() ||
+  '';
+
+if (!connectionString) {
+  console.error('Missing DATABASE_URL or SUPABASE_DB_URL.');
+  process.exit(1);
+}
+
+const sql = postgres(connectionString, { ssl: 'require' });
 
 async function migrate() {
 
@@ -22,8 +25,10 @@ async function migrate() {
       );
     `;
 
-    console.log('Reading local server-data.json...');
-    const dataPath = path.resolve(process.cwd(), '../NSS Missed Call Text Back/server-data/responseos-store.json');
+    console.log('Reading local responseos-store.json...');
+    const dataPath =
+      process.env.RESPONSEOS_STORE_PATH?.trim() ||
+      path.resolve(process.cwd(), '../responseos/server-data/responseos-store.json');
     let rawData = '{}';
     try {
       rawData = await fs.readFile(dataPath, 'utf8');
