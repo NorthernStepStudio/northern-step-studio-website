@@ -12,7 +12,7 @@ export const docsArticles: DocsArticle[] = [
     summary: "Understand what Northern Step Studio builds and how the public site is organized.",
     body: `# Welcome to Northern Step Studio
 
-Northern Step Studio builds practical software products across mobile apps, guided learning tools, lightweight games, and business automation.
+Northern Step Studio builds practical software products across mobile apps, guided learning tools, lightweight games, and decision-support tools.
 
 ## What you can do here
 
@@ -35,7 +35,7 @@ Use the **Contact** page for support, partnership questions, or access requests.
     summary: "Find the right product, understand its status, and follow the safest path to access.",
     body: `# Download Your First App
 
-Not every product on the site is in the same release stage. Some are live, some are in beta, and some are still moving through internal milestones.
+Not every product on the site is in the same release stage. Some are live, some are in development, and some are still moving through internal milestones.
 
 ## Before you click download
 
@@ -96,7 +96,7 @@ Every product page on the site is structured around three things: scope, readine
 ## What the product page shows
 
 - Core description and positioning
-- Current status, such as Beta or Alpha
+- Current status, such as Coming Soon or Alpha
 - Platform and target timeline
 - Milestone checklist
 - Key features that are already planned or implemented
@@ -162,7 +162,7 @@ Use the **Updates** page for current movement, then open the linked product page
   {
     slug: "ai-introduction",
     category: "ai-tools",
-    summary: "What the studio means by AI tools and where automation fits into the product lineup.",
+    summary: "What the studio means by AI tools and how assistive features fit into the product lineup.",
     body: `# Introduction to AI Tools
 
 Northern Step Studio uses AI where it makes the product faster, clearer, or more adaptive.
@@ -170,9 +170,9 @@ Northern Step Studio uses AI where it makes the product faster, clearer, or more
 ## Typical AI use cases in the studio
 
 - Recommendations and guided choices
-- Automation for repetitive tasks
+- Assistive help for repetitive tasks
 - Assisted categorization or parsing
-- Faster response workflows for business systems
+- Faster guidance inside product workflows
 
 ## What AI is not used for
 

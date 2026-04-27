@@ -20,7 +20,7 @@ export const siteFaqEntries: readonly SiteFaqEntry[] = [
     question: "What should I do if a product is not public yet?",
     answer:
       "Use the product CTA or the Contact page to request access. The public site does not treat every product as ready at the same time.",
-    tags: ["access", "public", "beta", "contact"],
+    tags: ["access", "public", "coming-soon", "contact"],
     url: "/contact",
   },
   {
@@ -44,7 +44,7 @@ export const siteFaqEntries: readonly SiteFaqEntry[] = [
     question: "How do AI tools fit into the studio?",
     answer:
       "AI is used where it makes the product clearer, faster, or more adaptive. We keep deterministic flows where accuracy matters and layer AI on top when it helps.",
-    tags: ["ai", "tools", "privacy", "automation"],
+    tags: ["ai", "tools", "privacy", "guidance"],
     url: "/docs/ai-introduction",
   },
   {

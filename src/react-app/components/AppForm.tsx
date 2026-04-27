@@ -11,7 +11,7 @@ interface AppFormProps {
   onSuccess: () => void;
 }
 
-const STATUS_OPTIONS = ["COMING_SOON", "ALPHA", "BETA", "LIVE", "ARCHIVED"] as const;
+const STATUS_OPTIONS = ["COMING_SOON", "ALPHA", "LIVE", "ARCHIVED"] as const;
 const VISIBILITY_OPTIONS = ["draft", "published", "hidden"] as const;
 const PLATFORM_OPTIONS = ["mobile", "desktop", "web"] as const;
 const MONETIZATION_OPTIONS = ["Free", "Subscription", "Tokens", "Affiliate", "Paid"] as const;

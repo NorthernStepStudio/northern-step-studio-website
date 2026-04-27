@@ -392,7 +392,7 @@ RESPONSE RULES:
 export function evaluateStudioAnswer(answer: string, state: StudioAgentState): StudioAnswerReview {
   const lower = answer.toLowerCase();
   const sourceText = state.bundle.hits.map((hit) => hit.text.toLowerCase()).join(" ");
-  const suspiciousClaims = ["pricing", "price", "download", "beta", "release date", "launch date", "support", "login"];
+  const suspiciousClaims = ["pricing", "price", "download", "early access", "release date", "launch date", "support", "login"];
 
   if (!state.bundle.sources.length) {
     return { allowed: false, reason: "no grounded sources", confidence: "low" };
