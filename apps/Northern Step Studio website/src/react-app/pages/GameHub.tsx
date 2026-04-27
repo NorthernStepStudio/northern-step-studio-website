@@ -27,7 +27,7 @@ export default function GameHub() {
   const stats = useMemo(() => ({
     totalGames: games.length,
     liveGames: games.filter(g => g.status === "LIVE").length,
-    betaGames: games.filter(g => g.status === "BETA").length,
+    inDevGames: games.filter(g => g.status !== "LIVE").length,
   }), [games]);
 
   const getPlatformIcon = (platform: string) => {
@@ -77,8 +77,8 @@ export default function GameHub() {
             <div className="text-xs sm:text-sm text-muted-foreground font-normal">{t("games.live")}</div>
           </div>
           <div className="card-dark-wise text-center py-4 sm:py-6">
-            <div className="text-2xl sm:text-3xl font-black text-accent mb-1">{stats.betaGames}</div>
-            <div className="text-xs sm:text-sm text-muted-foreground font-normal">{t("games.beta")}</div>
+            <div className="text-2xl sm:text-3xl font-black text-accent mb-1">{stats.inDevGames}</div>
+            <div className="text-xs sm:text-sm text-muted-foreground font-normal">{t("games.in_development", { defaultValue: "In Development" })}</div>
           </div>
         </div>
 
@@ -166,7 +166,7 @@ export default function GameHub() {
                       className={`text-[10px] sm:text-xs px-2.5 py-1 rounded-full ${
                         game.status === "LIVE"
                           ? "bg-success/10 text-success border border-success/30"
-                          : game.status === "BETA"
+                          : game.status === "COMING_SOON"
                           ? "bg-accent/10 text-accent border border-accent/30"
                           : "bg-muted/10 text-muted-foreground border border-border"
                       }`}
@@ -178,7 +178,7 @@ export default function GameHub() {
                   {game.cta_url && (
                     <div className="mt-4 pt-4 border-t border-border">
                       <span className="btn-pill-primary w-full text-center text-xs sm:text-sm inline-flex items-center justify-center gap-2">
-                        {game.status === "LIVE" ? t("games.play_now") : t("apps.join_beta")}
+                        {game.status === "LIVE" ? t("games.play_now") : t("apps.learn_more")}
                         <ExternalLink className="w-3.5 h-3.5" />
                       </span>
                     </div>

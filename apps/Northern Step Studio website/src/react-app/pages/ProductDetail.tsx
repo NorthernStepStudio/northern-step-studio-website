@@ -144,7 +144,7 @@ export default function ProductDetail() {
   const getStatusColor = () => {
     const label = app.statusLabel?.toLowerCase() || "";
     if (label === "live" || label === "released") return "text-success bg-success/10 border-success/30";
-    if (label === "beta") return "text-accent bg-accent/10 border-accent/30";
+    if (label === "coming soon") return "text-muted-foreground bg-muted/10 border-border";
     if (label === "alpha") return "text-blue-400 bg-blue-400/10 border-blue-400/30";
     if (label === "prototype") return "text-violet-400 bg-violet-400/10 border-violet-400/30";
     if (label === "design") return "text-amber-400 bg-amber-400/10 border-amber-400/30";
@@ -154,7 +154,7 @@ export default function ProductDetail() {
   const getStatusIcon = () => {
     const label = app.statusLabel?.toLowerCase() || "";
     if (label === "live" || label === "released") return Rocket;
-    if (label === "beta" || label === "alpha") return Zap;
+    if (label === "coming soon" || label === "alpha") return Clock;
     if (label === "prototype") return Hammer;
     if (label === "design") return Target;
     return Clock;
@@ -345,92 +345,19 @@ export default function ProductDetail() {
                   )}
                 </div>
               </div>
-              <h3 className="text-sm font-black uppercase text-muted-foreground mb-4">{t("product.milestones")}</h3>
-              {progress.map((step, i) => {
-                const isNext = !step.completed && (i === 0 || progress[i - 1]?.completed);
-                return (
-                  <div 
-                    key={i} 
-                    className={`flex items-center gap-4 p-4 rounded-xl transition-all ${
-                      step.completed 
-                        ? "bg-accent/5 border border-accent/20" 
-                        : isNext
-                        ? "bg-amber-400/5 border border-amber-400/30"
-                        : "bg-secondary/30 border border-border/50"
-                    }`}
-                  >
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                      step.completed 
-                        ? "bg-accent/20" 
-                        : isNext
-                        ? "bg-amber-400/20"
-                        : "bg-secondary"
-                    }`}>
-                      {step.completed ? (
-                        <Check className="w-4 h-4 text-accent" />
-                      ) : isNext ? (
-                        <Circle className="w-4 h-4 text-amber-400 animate-pulse" />
-                      ) : (
-                        <Circle className="w-4 h-4 text-muted-foreground/30" />
-                      )}
-                    </div>
-                    <span className={`font-medium text-sm ${
-                      step.completed 
-                        ? "text-foreground" 
-                        : isNext
-                        ? "text-amber-400"
-                        : "text-muted-foreground"
-                    }`}>
-                      {step.text}
-                    </span>
-                    {isNext && (
-                      <span className="ml-auto text-xs font-black uppercase text-amber-400 bg-amber-400/10 px-2 py-1 rounded">
-                        {t("product.in_progress")}
-                      </span>
-                    )}
-                    {step.completed && (
-                      <span className="ml-auto text-xs font-black uppercase text-accent bg-accent/10 px-2 py-1 rounded">
-                        {t("product.done")}
-                      </span>
-                    )}
-                  </div>
-                );
-              })}
             </div>
           )}
         </div>
-
-        {/* Tech Stack Full */}
-        {app.techStack && app.techStack.length > 0 && (
-          <div className="card-dark-wise mb-6">
-            <h2 className="text-xl sm:text-2xl font-black uppercase mb-6 flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
-                <Code2 className="w-5 h-5 text-accent" />
-              </div>
-              {t("product.tech_stack")}
-            </h2>
-            <div className="flex flex-wrap gap-3">
-              {app.techStack.map((tech, i) => (
-                <span 
-                  key={i} 
-                  className="px-4 py-2 rounded-xl bg-gradient-to-br from-secondary to-secondary/50 border border-border text-sm font-bold"
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
 
         {/* CTA Section */}
         <div className="card-dark-wise mb-6">
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 p-6 rounded-2xl bg-gradient-to-r from-accent/5 via-accent/10 to-accent/5 border border-accent/20">
             <div className="flex-1">
               <p className="text-sm text-muted-foreground mb-1">
-                {app.status === "LIVE" ? t("product.available_now") : app.status === "BETA" ? t("product.join_beta") : `Target: ${app.targetDate || "TBA"}`}
+                {app.status === "LIVE" ? t("product.available_now") : `Target: ${app.targetDate || "TBA"}`}
               </p>
               <p className="font-black uppercase text-lg">
-                {app.status === "LIVE" ? t("product.get_app") : app.status === "BETA" ? t("product.be_first") : t("product.follow_build")}
+                {app.status === "LIVE" ? t("product.get_app") : t("product.follow_build")}
               </p>
             </div>
             {app.cta_url ? (
@@ -440,7 +367,7 @@ export default function ProductDetail() {
                   className="btn-pill-primary inline-flex items-center justify-center gap-3 text-sm animate-neon-pulse min-w-[200px]"
                 >
                   <Download className="w-5 h-5" />
-                  {app.status === "LIVE" ? t("product.download_now") : <GlitchedText text={t("apps.join_beta")} speed={150} duration={2400} />}
+                  {app.status === "LIVE" ? t("product.download_now") : <GlitchedText text={t("apps.learn_more")} speed={150} duration={2400} />}
                   <ExternalLink className="w-4 h-4" />
                 </Link>
               ) : (
@@ -452,7 +379,7 @@ export default function ProductDetail() {
                   className="btn-pill-primary inline-flex items-center justify-center gap-3 text-sm animate-neon-pulse min-w-[200px]"
                 >
                   <Download className="w-5 h-5" />
-                  {app.status === "LIVE" ? t("product.download_now") : <GlitchedText text={t("apps.join_beta")} speed={150} duration={2400} />}
+                  {app.status === "LIVE" ? t("product.download_now") : <GlitchedText text={t("apps.learn_more")} speed={150} duration={2400} />}
                   <ExternalLink className="w-4 h-4" />
                 </a>
               )
@@ -569,7 +496,7 @@ export default function ProductDetail() {
                 className="btn-pill-primary w-full flex items-center justify-center gap-3 text-sm py-4"
               >
                 <Download className="w-5 h-5" />
-                {app.status === "LIVE" ? t("product.download_now") : <GlitchedText text={t("apps.join_beta")} speed={150} duration={2400} />}
+                {app.status === "LIVE" ? t("product.download_now") : <GlitchedText text={t("apps.learn_more")} speed={150} duration={2400} />}
                 <ExternalLink className="w-4 h-4" />
               </Link>
             ) : (
@@ -581,7 +508,7 @@ export default function ProductDetail() {
                 className="btn-pill-primary w-full flex items-center justify-center gap-3 text-sm py-4"
               >
                 <Download className="w-5 h-5" />
-                {app.status === "LIVE" ? t("product.download_now") : <GlitchedText text={t("apps.join_beta")} speed={150} duration={2400} />}
+                {app.status === "LIVE" ? t("product.download_now") : <GlitchedText text={t("apps.learn_more")} speed={150} duration={2400} />}
                 <ExternalLink className="w-4 h-4" />
               </a>
             )}

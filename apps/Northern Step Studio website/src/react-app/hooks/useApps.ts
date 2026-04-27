@@ -89,7 +89,7 @@ function normalizeStatus(status: string | null | undefined) {
   if (!value) return "COMING_SOON";
   if (value === "COMING SOON") return "COMING_SOON";
   if (value === "PUBLISHED") return "LIVE";
-  if (value === "DRAFT") return "BETA";
+  if (value === "DRAFT") return "COMING_SOON";
   if (value === "HIDDEN") return "COMING_SOON";
   return value;
 }
@@ -142,9 +142,15 @@ function withCatalogFallback(app: App): App {
     return app;
   }
 
+  const hasScreenshots = Array.isArray(app.screenshots) && app.screenshots.length > 0;
+
   return {
-    ...app,
+    ...fallback,
+    id: app.id,
+    uuid: app.uuid || null,
     logo: app.logo || fallback.logo,
+    screenshots: hasScreenshots ? app.screenshots : fallback.screenshots,
+    visibility: app.visibility || fallback.visibility,
   };
 }
 
@@ -288,7 +294,7 @@ export function useApp(slug: string) {
         }
 
         const data = await response.json();
-        setApp(normalizeApp(data as AppRecord));
+        setApp(withCatalogFallback(normalizeApp(data as AppRecord)));
         setError(null);
       } catch (err) {
         setApp(null);

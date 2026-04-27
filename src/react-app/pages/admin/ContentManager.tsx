@@ -134,13 +134,24 @@ export default function ContentManager() {
   }
 
   async function deletePost(id: number) {
-    if (!confirm("Are you sure you want to delete this post?")) return;
+    const shouldDelete =
+      typeof window === "undefined" ? true : window.confirm("Are you sure you want to delete this post?");
+    if (!shouldDelete) return;
 
     try {
-      await apiFetch(`/api/blog/${id}`, { method: "DELETE" });
+      const res = await apiFetch(`/api/blog/${id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const payload = await res.json().catch(() => null);
+        throw new Error(payload?.error || "Failed to delete post");
+      }
+
+      setPosts((prev) => prev.filter((post) => post.id !== id));
       await fetchPosts();
     } catch (err) {
       console.error("Failed to delete post:", err);
+      if (typeof window !== "undefined") {
+        window.alert(err instanceof Error ? err.message : "Failed to delete post");
+      }
     }
   }
 

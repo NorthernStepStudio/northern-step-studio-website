@@ -30,8 +30,11 @@ async function setup() {
       );
       CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
       CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);
+
+      ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+      ALTER TABLE users FORCE ROW LEVEL SECURITY;
     `);
-    console.log("✅  Users table ready.");
+    console.log("✅  Users table ready (RLS enabled).");
 
     // 2. User Sessions Table
     await sql.unsafe(`
@@ -46,8 +49,11 @@ async function setup() {
       );
       CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON user_sessions(user_id);
       CREATE INDEX IF NOT EXISTS idx_sessions_token_hash ON user_sessions(session_token_hash);
+
+      ALTER TABLE user_sessions ENABLE ROW LEVEL SECURITY;
+      ALTER TABLE user_sessions FORCE ROW LEVEL SECURITY;
     `);
-    console.log("✅  User sessions table ready.");
+    console.log("✅  User sessions table ready (RLS enabled).");
 
     // 3. Knowledge Chunks Table
     await sql.unsafe(`
@@ -72,8 +78,11 @@ async function setup() {
       CREATE INDEX IF NOT EXISTS idx_knowledge_lane ON knowledge_chunks(lane);
       CREATE INDEX IF NOT EXISTS idx_knowledge_status ON knowledge_chunks(status);
       CREATE INDEX IF NOT EXISTS idx_knowledge_doc_id ON knowledge_chunks(doc_id);
+
+      ALTER TABLE knowledge_chunks ENABLE ROW LEVEL SECURITY;
+      ALTER TABLE knowledge_chunks FORCE ROW LEVEL SECURITY;
     `);
-    console.log("✅  Knowledge chunks table ready.");
+    console.log("✅  Knowledge chunks table ready (RLS enabled).");
 
     await sql.end();
     console.log("\n🟢  Supabase Setup Complete.");

@@ -394,6 +394,14 @@ export async function startNStepOsServer(runtime?: NStepOsRuntime, requestedPort
         return;
       }
 
+      if (request.method === "POST" && url.pathname === "/v1/workflows/neurormoves/run") {
+        const body = await readJsonBody(request);
+        const goal = buildNeuroMovesGoal(body, resolvePrincipalRole(request, "operator"));
+        const job = await currentRuntime.runGoal(goal);
+        sendJson(response, 200, { job });
+        return;
+      }
+
         if (request.method === "POST" && url.pathname === "/v1/workflows/provly/upload") {
           const formBody = await readMultipartBody(request);
           const goal = buildProvLyGoal(formBody, resolvePrincipalRole(request, "operator"));
@@ -1309,6 +1317,49 @@ async function listenOnPort(server: ReturnType<typeof createServer>, port: numbe
 
 function isAddressInUseError(error: unknown): error is NodeJS.ErrnoException {
   return error instanceof Error && "code" in error && (error as NodeJS.ErrnoException).code === "EADDRINUSE";
+}
+
+function buildNeuroMovesGoal(body: Record<string, unknown>, requestedByRole: PrincipalRole = "operator"): GoalInput {
+  const goal = body.goal as GoalInput | undefined;
+  if (goal && goal.product === "neurormoves") {
+    return {
+      ...goal,
+      requestedByRole: goal.requestedByRole || requestedByRole,
+    };
+  }
+
+  const tenantId = stringField(body, "tenantId") || "default";
+  const childName = stringField(body, "childName") || "Child";
+  const focus = stringField(body, "focus") || "support routine";
+
+  return {
+    goal: stringField(body, "goal") || `Generate ${focus} routine for ${childName}`,
+    product: "neurormoves",
+    priority: stringField(body, "priority") === "critical" ? "critical" : "medium",
+    constraints: [
+      "create a supportive and clear routine",
+      "leverage strengths while addressing challenges",
+      "provide family-facing summaries",
+    ],
+    mode: stringField(body, "mode") === "autonomous" ? "autonomous" : "assist",
+    tenantId,
+    requestedBy: stringField(body, "requestedBy") || `api:${tenantId}`,
+    requestedByRole,
+    source: "system",
+    payload: {
+      neurormoves: {
+        childName,
+        ageGroup: stringField(body, "ageGroup"),
+        focus,
+        strengths: body.strengths,
+        challenges: body.challenges,
+        preferredTone: stringField(body, "preferredTone") || "warm",
+        parentEmail: stringField(body, "parentEmail"),
+        nextCheckInDays: numberField(body, "nextCheckInDays") || 7,
+        routineWindow: stringField(body, "routineWindow"),
+      },
+    },
+  };
 }
 
 async function main(): Promise<void> {

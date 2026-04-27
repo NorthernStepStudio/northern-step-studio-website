@@ -11,52 +11,35 @@ const defaultLegalContent = `
 Welcome to Northern Step Studio (NStep). These Terms & Privacy guidelines govern your access to and use of our services. By accessing or using any of our products, applications, or communication tools, you agree to the following terms.
 
 ### 1. Service Description
-Northern Step Studio provides mobile applications, games, and automated communication tools, including missed call text-back systems, lead recovery messaging, and workflow automation tools designed for business use.
+Northern Step Studio provides software products, website experiences, and studio-managed tools designed for both individual and business use.
 
-### 2. Messaging Consent
-By providing your phone number and opting in through our forms, applications, or services, you consent to receive SMS messages from Northern Step Studio (NStep) related to:
-
-- Missed call follow-ups
-- Appointment coordination
-- Service-related communication
-
-Message frequency may vary. Message and data rates may apply. Consent is not a condition of purchase.
-
-### 3. Opt-Out Instructions
-You can opt out of SMS communications at any time by replying STOP.  
-For assistance, reply HELP.
-
-### 4. Use of Services & Eligibility
+### 2. Use of Services & Eligibility
 You must be at least 18 years old to use our Services. Our services are intended for business and commercial use only. You are responsible for maintaining the confidentiality of your account and for all activities that occur under your account.
 
-### 5. Acceptable Use Policy
+### 3. Acceptable Use Policy
 You agree not to use our services for any unlawful, harmful, or abusive purpose. This includes:
 
 - Harassment, fraud, or deceptive practices
 - Unauthorized access, interference, or disruption of systems
 - Reverse engineering or attempting to extract source code
-- Sending spam or unsolicited messages using automation tools
 - Misrepresenting your identity or business
 
-### 6. Customer Responsibility for Messaging
-If you use our messaging or automation services, you are solely responsible for:
+### 4. Content, Accounts, and Access
+Some features may require an account, an approved role, or a specific release stage before access is granted. We may change, suspend, or remove features when products evolve, enter maintenance, or are not yet ready for public release.
 
-- Obtaining proper consent from recipients before sending messages
-- Complying with all applicable laws and regulations (including TCPA and carrier requirements)
-- Ensuring all communications are related to a valid business relationship
+### 5. Availability
+We do not guarantee that our services will be uninterrupted, secure, or error-free. Some features may be provided as early access or experimental and may change or be discontinued at any time.
 
-Northern Step Studio does not assume responsibility for how users implement or operate messaging workflows.
+### 6. Privacy and Data Handling
+Privacy boundaries vary by product. Review the relevant product page, privacy disclosures, and this policy together before uploading data or relying on any service behavior.
 
-### 7. Availability
-We do not guarantee that our services will be uninterrupted, secure, or error-free. Some features may be provided as beta or experimental and may change or be discontinued at any time.
-
-### 8. Limitation of Liability
+### 7. Limitation of Liability
 To the maximum extent permitted by law, Northern Step Studio shall not be liable for any indirect, incidental, special, or consequential damages arising from the use of or inability to use our services.
 
-### 9. Changes to Terms
+### 8. Changes to Terms
 We may update or modify these terms at any time. Continued use of the Services after changes become effective constitutes your acceptance of the revised Terms.
 
-### 10. Contact
+### 9. Contact
 For support, questions, or service-related inquiries:
 
 [hello@northernstepstudio.com](mailto:hello@northernstepstudio.com)
@@ -65,8 +48,8 @@ For support, questions, or service-related inquiries:
 const summaryCards = [
   {
     icon: MessageSquare,
-    title: "Messaging consent",
-    description: "SMS follow-ups, appointment coordination, and service communication.",
+    title: "Service scope",
+    description: "How the studio defines products, access, and supported use.",
   },
   {
     icon: Users,
@@ -75,8 +58,8 @@ const summaryCards = [
   },
   {
     icon: Shield,
-    title: "Opt-out controls",
-    description: "Reply STOP to unsubscribe or HELP for assistance.",
+    title: "Acceptable use",
+    description: "No abuse, fraud, disruption, or impersonation.",
   },
   {
     icon: Mail,
@@ -168,7 +151,7 @@ export default function TermsOfService() {
             </h1>
 
             <p className="mt-4 max-w-2xl text-base sm:text-lg leading-8 text-muted-foreground">
-              Clear rules for messaging consent, service use, and responsible business communication.
+              Clear rules for service use, account access, privacy expectations, and support contact.
             </p>
           </div>
 
@@ -232,28 +215,6 @@ export default function TermsOfService() {
           </div>
 
           <aside className="space-y-6 lg:sticky lg:top-28 h-fit">
-            <div className="card-dark-wise p-6">
-              <p className="text-sm font-black uppercase tracking-wider text-accent">
-                At a glance
-              </p>
-              <h3 className="mt-2 text-xl font-black uppercase tracking-tight text-foreground">
-                What this page covers
-              </h3>
-              <ul className="mt-5 space-y-3">
-                {[
-                  "SMS consent and opt-out rules",
-                  "Business use and eligibility",
-                  "Acceptable use and messaging responsibility",
-                  "Availability and liability limits",
-                ].map((item) => (
-                  <li key={item} className="flex gap-3 text-sm leading-6 text-muted-foreground">
-                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
             <div className="rounded-3xl border border-accent/20 bg-accent/5 p-6">
               <p className="text-sm font-black uppercase tracking-wider text-accent">
                 Need help?
@@ -272,10 +233,10 @@ export default function TermsOfService() {
 
             <div className="card-dark-wise p-6">
               <p className="text-sm font-black uppercase tracking-wider text-accent">
-                Compliance note
+                Operations note
               </p>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                STOP and HELP handling is included here so the SMS guidance is explicit and easy to follow.
+                Product-specific privacy and access details may change as individual tools move between internal, development, and public release stages.
               </p>
             </div>
           </aside>
