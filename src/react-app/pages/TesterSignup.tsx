@@ -104,7 +104,7 @@ export default function TesterSignup() {
               <ShieldCheck className="mb-4 h-8 w-8 text-accent" />
               <h2 className="text-lg font-black uppercase tracking-tight">Priority access</h2>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                Get early access to finished builds, beta releases, and the services that are ready
+                Get early access to finished builds, preview releases, and the services that are ready
                 for tester feedback.
               </p>
             </div>

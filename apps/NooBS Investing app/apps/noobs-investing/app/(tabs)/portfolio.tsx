@@ -478,7 +478,7 @@ export default function Portfolio() {
                                 <MaterialCommunityIcons name="chart-areaspline" size={40} color={theme.colors.accent + '60'} />
                                 <Text style={{ color: theme.colors.text, fontSize: 16, fontWeight: '900', textAlign: 'center' }}>Unlock Advanced Analytics</Text>
                                 <Text style={{ color: theme.colors.muted, fontSize: 13, textAlign: 'center', lineHeight: 20 }}>
-                                    See your Time-Weighted Return, volatility (Beta), and detailed sector composition.
+                                    See your Time-Weighted Return, volatility score, and detailed sector composition.
                                 </Text>
                                 <View style={{ backgroundColor: theme.colors.accent, paddingHorizontal: 20, paddingVertical: 10, borderRadius: 12, marginTop: 8 }}>
                                     <Text style={{ color: theme.colors.buttonText, fontWeight: '900', fontSize: 13 }}>VIEW PRO STATS</Text>

@@ -27,7 +27,7 @@ const catalog = [
         slug: 'provly',
         name: 'ProvLy',
         tagline: 'See what you own before you need it.',
-        status: 'BETA',
+        status: 'PREVIEW',
         accent: '#38bdf8',
     },
 ];
@@ -197,8 +197,8 @@ describe('tester pipeline routes', () => {
         await requestJson('/api/testers', {
             method: 'POST',
             body: JSON.stringify({
-                email: 'beta@example.com',
-                name: 'Beta',
+                email: 'preview@example.com',
+                name: 'Preview',
                 app_slug: 'provly',
                 reason: 'Second request',
             }),

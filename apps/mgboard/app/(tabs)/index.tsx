@@ -188,7 +188,7 @@ export default function DashboardScreen() {
 
   const activeWorkProjects = React.useMemo(() => {
     return projects
-      .filter((project) => (project.status === 'building' || project.status === 'beta'))
+      .filter((project) => (project.status === 'building' || project.status === 'preview'))
       .filter((project) => !staleProjectSet.has(project.id))
       .sort((a, b) => {
         const left = a.priority === 'high' ? 0 : a.priority === 'medium' ? 1 : 2;

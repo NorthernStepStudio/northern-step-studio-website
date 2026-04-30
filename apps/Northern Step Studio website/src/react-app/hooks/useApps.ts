@@ -297,8 +297,14 @@ export function useApp(slug: string) {
         setApp(withCatalogFallback(normalizeApp(data as AppRecord)));
         setError(null);
       } catch (err) {
-        setApp(null);
-        setError(err instanceof Error ? err.message : "Failed to fetch app");
+        const fallback = getCatalogApp(slug);
+        if (fallback) {
+          setApp(fallback as App);
+          setError(null); // Clear error since we have a fallback
+        } else {
+          setApp(null);
+          setError(err instanceof Error ? err.message : "Failed to fetch app");
+        }
       } finally {
         setIsLoading(false);
       }

@@ -64,7 +64,7 @@
                  "subtitle":  "Browse the studio\u0027s current product lineup across home inventory, PC planning, finance education, guided support, and credit improvement.",
                  "no_apps":  "No matching products yet.",
                  "download":  "Download",
-                 "join_beta":  "Learn More",
+                 "early_access":  "Learn More",
                  "learn_more":  "Learn More",
                  "open":  "Open",
                  "search_placeholder":  "Search products, features, or use cases...",
@@ -89,7 +89,7 @@
                              },
                  "status_filters":  {
                                         "all":  "All Apps",
-                                        "beta":  "Coming Soon",
+                                        "preview":  "Coming Soon",
                                         "live":  "Live",
                                         "coming_soon":  "Coming soon"
                                     },
@@ -107,7 +107,7 @@
                   "subtitle":  "Game projects live here when they are ready for public testing. Most current studio work is focused on utility and learning software, so this page may stay light between releases.",
                   "total":  "Total Games",
                   "live":  "Live Now",
-                  "beta":  "In Development",
+                  "in_development":  "In Development",
                   "filter":  "Filter by Genre",
                   "all":  "All",
                   "no_games":  "Game builds are still selective",
@@ -133,7 +133,7 @@
                     "features_soon":  "Feature details coming soon",
                     "download_now":  "Download Now",
                     "available_now":  "Available now",
-                    "join_beta":  "Coming soon",
+                    "early_access":  "Coming soon",
                     "get_app":  "Get the app today",
                     "be_first":  "Follow the build",
                     "follow_build":  "Follow the build",
@@ -175,6 +175,7 @@
                    "desktop":  "Desktop",
                    "web":  "Web",
                    "coming_soon":  "Coming Soon",
+                   "setup_review_short":  "Setup Review",
                    "view":  "View",
                    "notify_me":  "Notify Me",
                    "more":  "More"
@@ -199,7 +200,7 @@
                      "done":  "Done",
                      "tech_stack":  "Tech Stack",
                      "available_now":  "Available now",
-                     "join_beta_desc":  "Coming soon",
+                     "early_access_desc":  "Coming soon",
                      "target_tba":  "Target: {{date}}",
                      "get_app":  "Get the app today",
                      "be_first":  "Follow the build",
@@ -401,8 +402,13 @@
                     "form":  {
                                  "name":  "Your Name",
                                  "email":  "Your Email",
+                                 "phone":  "Mobile Phone",
+                                 "phone_placeholder":  "+1 (555) 555-5555",
+                                 "phone_note":  "Include a number if you want text follow-up for this request.",
                                  "subject":  "Subject",
                                  "message":  "Your Message",
+                                 "sms_opt_in_label":  "I agree to receive conversational SMS follow-up for this request under the",
+                                 "sms_opt_in_note":  "Message frequency varies. Message and data rates may apply. Reply STOP to opt out and HELP for help.",
                                  "send":  "Send Message",
                                  "sending":  "Sending..."
                              },
@@ -421,7 +427,19 @@
                     "read_updates":  "Read latest updates",
                     "open_docs":  "Open support docs",
                     "legal_note":  "Requests sent through this form are also covered by our",
-                    "legal_and":  "and"
+                    "legal_and":  "and",
+                    "early_access":  {
+                                           "title":  "Early Access",
+                                           "desc":  "Request product updates, preview access, or launch notifications.",
+                                           "placeholder":  "your@email.com",
+                                           "interest_label":  "What are you interested in?",
+                                           "interest_placeholder":  "Product, platform, or use case...",
+                                           "join":  "Submit request",
+                                           "joining":  "Submitting...",
+                                           "success":  "Request received. We will follow up when the next access window opens.",
+                                           "updated":  "Request updated. We will use your latest details.",
+                                           "saved_only":  "Request saved. Email forwarding is still pending, so use hello@northernstepstudio.com if this is urgent."
+                                       }
                 },
     "support":  {
                     "title":  "Still Need Help?",

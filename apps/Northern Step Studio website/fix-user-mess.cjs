@@ -55,7 +55,7 @@ try {
   data.apps.filters = { "all": "Todos" };
   data.apps.status_filters = {
     "all": "Todas las Apps",
-    "beta": "Beta",
+    "preview": "Preview",
     "live": "En Vivo",
     "coming_soon": "Próximamente"
   };

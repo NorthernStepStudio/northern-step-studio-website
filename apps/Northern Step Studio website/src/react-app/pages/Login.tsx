@@ -112,7 +112,7 @@ export default function Login({ mode = "admin" }: LoginProps) {
               </div>
             </div>
 
-            <form onSubmit={handlePasswordAuth} className="space-y-4">
+            <form onSubmit={handlePasswordAuth} autoComplete="off" className="space-y-4">
               <div>
                 <label htmlFor="email" className="block text-xs font-black uppercase tracking-wide mb-2 opacity-50">
                   Email Address
@@ -120,7 +120,7 @@ export default function Login({ mode = "admin" }: LoginProps) {
                 <input
                   id="email"
                   type="email"
-                  autoComplete="username"
+                  autoComplete="off"
                   value={credentials.email}
                   disabled
                   className="w-full rounded-2xl border border-border bg-background/50 px-4 py-3 text-sm outline-none transition-colors text-muted-foreground cursor-not-allowed"

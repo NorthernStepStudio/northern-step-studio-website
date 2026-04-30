@@ -342,7 +342,7 @@ export default function Settings() {
                     source={require('../assets/branding/logo_horizontal.png')}
                     style={{ width: 140, height: 40, resizeMode: 'contain', marginBottom: 8 }}
                 />
-                <Text style={{ color: theme.colors.faint, fontSize: 10, fontWeight: '700' }}>{t("settings.versionBeta")}</Text>
+                <Text style={{ color: theme.colors.faint, fontSize: 10, fontWeight: '700' }}>{t("settings.versionLabel")}</Text>
             </View>
             <View style={{ height: 60 }} />
 

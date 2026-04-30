@@ -17,7 +17,7 @@ export function getStatusLabel(status: ProjectStatus): string {
   const labels: Record<ProjectStatus, string> = {
     idea: 'Idea',
     building: 'Building',
-    beta: 'Beta',
+    preview: 'Preview',
     paused: 'Paused',
     launched: 'Launched',
   };

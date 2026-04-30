@@ -13,7 +13,7 @@ import { handleAiChat } from "./ai-assistant";
 import { searchKnowledgeChunks, getKnowledgeLaneHealth } from "./knowledge";
 import { sendEmail } from "./email";
 import {
-  betaInterestNotificationEmail,
+  earlyAccessInterestNotificationEmail,
   contactSubmissionNotificationEmail,
   mentionNotificationEmail,
   studioInvitationEmail,
@@ -988,7 +988,7 @@ app.post("/api/contact", async (c) => {
   }
 });
 
-app.post("/api/contact/beta", async (c) => {
+app.post("/api/contact/early-access", async (c) => {
   try {
     const body = await c.req.json().catch(() => null);
     const email = normalizeEmailAddress(body?.email);
@@ -1005,12 +1005,12 @@ app.post("/api/contact/beta", async (c) => {
 
     const sql = getDb(c.env);
     const [existing] = await sql<{ id: number; email_sent: boolean; email_error: string | null }[]>`
-      SELECT id, email_sent, email_error FROM beta_interest WHERE email = ${email}
+      SELECT id, email_sent, email_error FROM early_access_interest WHERE email = ${email}
     `;
 
     if (existing) {
       await sql`
-        UPDATE beta_interest
+        UPDATE early_access_interest
          SET interest = ${interest || null}, source = ${source}, updated_at = CURRENT_TIMESTAMP
          WHERE id = ${existing.id}
       `;
@@ -1026,7 +1026,7 @@ app.post("/api/contact/beta", async (c) => {
     }
 
     const [inserted] = await sql<{ id: number }[]>`
-      INSERT INTO beta_interest (email, interest, source)
+      INSERT INTO early_access_interest (email, interest, source)
        VALUES (${email}, ${interest || null}, ${source})
        RETURNING id
     `;
@@ -1041,7 +1041,7 @@ app.post("/api/contact/beta", async (c) => {
         to: STUDIO_CONTACT_EMAIL,
         subject: "[Early Access] New signup",
         reply_to: email,
-        html_body: betaInterestNotificationEmail({
+        html_body: earlyAccessInterestNotificationEmail({
           email,
           interest: interest || null,
         }),
@@ -1063,7 +1063,7 @@ app.post("/api/contact/beta", async (c) => {
     }
 
     await sql`
-      UPDATE beta_interest
+      UPDATE early_access_interest
        SET email_sent = ${emailSent ? true : false}, email_error = ${emailError}, 
            email_message_id = ${providerMessageId}, updated_at = CURRENT_TIMESTAMP
        WHERE id = ${interestId}

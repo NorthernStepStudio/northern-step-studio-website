@@ -43,7 +43,7 @@ export const colors = {
   status: {
     idea: '#F59E0B',
     building: '#7B72FF',
-    beta: '#2EA8FF',
+    preview: '#2EA8FF',
     paused: '#6B778D',
     launched: '#22C55E',
   } as Record<string, string>,

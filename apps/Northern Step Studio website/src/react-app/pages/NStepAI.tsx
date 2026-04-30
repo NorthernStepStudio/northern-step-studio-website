@@ -63,7 +63,6 @@ const LANE_COLORS: Record<string, string> = {
   noobs:              "text-amber-400 border-amber-500/30 bg-amber-500/10",
   neuromove:          "text-violet-400 border-violet-500/30 bg-violet-500/10",
   pasoscore:          "text-rose-400 border-rose-500/30 bg-rose-500/10",
-  mctb:               "text-green-400 border-green-500/30 bg-green-500/10",
   studio:             "text-studio-accent border-accent/30 bg-accent/10",
   automation:         "text-green-400 border-green-500/30 bg-green-500/10",
   service_automation: "text-green-400 border-green-500/30 bg-green-500/10",

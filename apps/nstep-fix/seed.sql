@@ -340,8 +340,8 @@ INSERT OR IGNORE INTO apps (
   'ProvLy is a privacy-first home inventory vault that helps households document belongings, attach receipts and warranties, build organized insurance claim packs, and stay ahead of maintenance reminders.',
   'ProvLy is a privacy-first home inventory vault designed for insurance readiness and long-term household care. It keeps inventory records, receipts, warranties, exports, and reminders in one place without turning the product into a bloated enterprise platform.',
   'HOME',
-  'BETA',
-  'Beta',
+  'PREVIEW',
+  'Preview',
   'Q4 2026',
   '["React Native","SQLite","Claim Pack Export"]',
   '[{"text":"Homes, rooms, and item capture flow","completed":true},{"text":"Receipt, warranty, and document attachment flow","completed":true},{"text":"Claim Pack export for insurance-ready reports","completed":true},{"text":"Maintenance reminder engine","completed":true},{"text":"Opt-in AI receipt parsing and scan assist","completed":false},{"text":"Subscription billing and production export delivery","completed":false}]',
@@ -363,8 +363,8 @@ INSERT OR IGNORE INTO apps (
   'NexusBuild helps PC builders compare parts, validate compatibility, manage builds, and use AI-assisted recommendations without losing visibility into the real hardware tradeoffs.',
   'NexusBuild is a full-stack PC building companion spanning mobile, web, backend services, and deal tracking workflows. It is built for enthusiasts who want compatibility confidence, cleaner build planning, and smarter part selection support.',
   'AI TOOL',
-  'BETA',
-  'Beta',
+  'PREVIEW',
+  'Preview',
   'Q3 2026',
   '["React Native","React","PostgreSQL"]',
   '[{"text":"Mobile app, web app, and backend foundation","completed":true},{"text":"Compatibility engine and build management","completed":true},{"text":"AI recommendation workflow","completed":true},{"text":"Price tracking and deal alert surfaces","completed":true},{"text":"Subscription and entitlement rollout","completed":false},{"text":"Production affiliate and notification wiring","completed":false}]',
@@ -386,8 +386,8 @@ INSERT OR IGNORE INTO apps (
   'NooBS Investing teaches core market concepts through guided lessons, behavioral simulations, mini-games, and visual progress systems designed for first-time investors.',
   'NooBS Investing is a mobile-first learning companion built to make intimidating finance concepts easier to absorb. It blends structured lessons, interactive practice, and premium visual feedback into a product that feels approachable instead of academic.',
   'FINANCE',
-  'BETA',
-  'Beta',
+  'PREVIEW',
+  'Preview',
   'Q2 2026',
   '["React Native","Interactive Lessons","Gamified Learning"]',
   '[{"text":"Language-first onboarding and lesson flow","completed":true},{"text":"Core mini-games and learning modules","completed":true},{"text":"Portfolio analytics and progress systems","completed":true},{"text":"Premium paywall and entitlement scaffold","completed":true},{"text":"Production billing and legal link cleanup","completed":false},{"text":"Launch QA across translations and settings","completed":false}]',
@@ -409,8 +409,8 @@ INSERT OR IGNORE INTO apps (
   'NeuroMoves is a guided occupational therapy companion for young children, combining errorless-learning activities, routines, parent tools, and progress tracking in a friendly mobile experience.',
   'NeuroMoves is designed around structured movement, communication, and routine-building activities for children. It combines approachable visuals, guided prompts, parent-facing tools, and therapy-friendly reporting to keep the app useful outside of a single session.',
   'EDUCATION',
-  'BETA',
-  'Beta',
+  'PREVIEW',
+  'Preview',
   'Q2 2026',
   '["React Native","Therapy Activities","Parent Profiles"]',
   '[{"text":"Core OT activity flows, auth, and onboarding","completed":true},{"text":"Child profile management and routine setup","completed":true},{"text":"Text-to-speech guidance and haptic feedback","completed":true},{"text":"Progress reports, journal, and rewards systems","completed":true},{"text":"Production billing and auth hardening","completed":false},{"text":"Therapy content QA and launch cleanup","completed":false}]',
@@ -474,7 +474,7 @@ CREATE TABLE IF NOT EXISTS contact_messages (
 CREATE INDEX IF NOT EXISTS idx_contact_messages_created_at ON contact_messages(created_at);
 CREATE INDEX IF NOT EXISTS idx_contact_messages_email ON contact_messages(email);
 
-CREATE TABLE IF NOT EXISTS beta_interest (
+CREATE TABLE IF NOT EXISTS preview_interest (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   email TEXT NOT NULL UNIQUE,
   interest TEXT,
@@ -486,7 +486,7 @@ CREATE TABLE IF NOT EXISTS beta_interest (
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX IF NOT EXISTS idx_beta_interest_created_at ON beta_interest(created_at);
+CREATE INDEX IF NOT EXISTS idx_preview_interest_created_at ON preview_interest(created_at);
 ALTER TABLE contact_messages ADD COLUMN phone TEXT;
 ALTER TABLE contact_messages ADD COLUMN sms_consent INTEGER NOT NULL DEFAULT 0;
 ALTER TABLE contact_messages ADD COLUMN source TEXT NOT NULL DEFAULT 'contact_page';
@@ -510,8 +510,8 @@ SET
   cta_url = '/apps/nexusbuild/app',
   platform = 'web',
   description = 'NexusBuild helps PC builders compare parts, validate compatibility, and craft perfect setups with AI recommendations, now fully integrated into the Northern Step Studio ecosystem.',
-  status = 'BETA',
-  status_label = 'Beta (Integrated)',
+  status = 'PREVIEW',
+  status_label = 'Preview (Integrated)',
   visibility = 'published'
 WHERE slug = 'nexusbuild';
 -- Migration: Add Site Content Table for CMS

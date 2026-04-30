@@ -46,7 +46,7 @@ type TranslationKey =
   | "settings.termsOfService"
   | "settings.readRules"
   | "settings.resetAllData"
-  | "settings.versionBeta"
+  | "settings.versionLabel"
   | "settings.languageSection";
 
 type Dictionary = Record<TranslationKey, string>;
@@ -90,7 +90,7 @@ const TRANSLATIONS: Record<AppLanguage, Dictionary> = {
     "settings.termsOfService": "Terms of Service",
     "settings.readRules": "Read the NooBS Rules",
     "settings.resetAllData": "RESET ALL DATA",
-    "settings.versionBeta": "VERSION 1.0.0 (BETA)",
+    "settings.versionLabel": "VERSION 1.0.0",
     "settings.languageSection": "Language"
   },
   es: {
@@ -131,7 +131,7 @@ const TRANSLATIONS: Record<AppLanguage, Dictionary> = {
     "settings.termsOfService": "Terminos de servicio",
     "settings.readRules": "Leer reglas NooBS",
     "settings.resetAllData": "REINICIAR TODO",
-    "settings.versionBeta": "VERSION 1.0.0 (BETA)",
+    "settings.versionLabel": "VERSION 1.0.0",
     "settings.languageSection": "Idioma"
   }
 };

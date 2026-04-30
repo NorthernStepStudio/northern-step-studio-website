@@ -61,7 +61,7 @@ const M_CORE_RUNTIME = createMCoreRuntime({
   geminiBaseUrl:
     (process.env.M_CORE_GEMINI_BASE_URL ||
       process.env.RESPONSE_OS_GEMINI_BASE_URL ||
-      'https://generativelanguage.googleapis.com/v1beta').trim(),
+      'https://generativelanguage.googleapis.com/v1').trim(),
   requestTimeoutMs: Number(
     process.env.M_CORE_REQUEST_TIMEOUT_MS ||
       process.env.RESPONSE_OS_REQUEST_TIMEOUT_MS ||

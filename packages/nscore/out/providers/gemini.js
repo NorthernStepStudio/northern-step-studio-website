@@ -13,7 +13,7 @@ function createGeminiProvider(config) {
                 throw new Error("Gemini mode requires a Gemini API key.");
             }
             const model = config.geminiModel ?? "gemini-2.5-flash";
-            const baseUrl = ensureTrailingSlash(config.geminiBaseUrl ?? "https://generativelanguage.googleapis.com/v1beta");
+            const baseUrl = ensureTrailingSlash(config.geminiBaseUrl ?? "https://generativelanguage.googleapis.com/v1");
             const response = await fetch(new URL(`models/${model}:generateContent`, baseUrl), {
                 method: "POST",
                 headers: {

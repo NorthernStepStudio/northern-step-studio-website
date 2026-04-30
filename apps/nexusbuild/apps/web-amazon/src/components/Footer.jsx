@@ -21,10 +21,10 @@ export default function Footer() {
                     <h3 className="footer-title">
                         <span className="logo-icon">NB</span>
                         Nexus<span className="logo-accent">Build</span>
-                        <span className="beta-badge">BETA</span>
+                        <span className="preview-badge">PREVIEW</span>
                     </h3>
                     <p className="footer-text">
-                        NexusBuild is currently in beta. We are building the ultimate PC building
+                        NexusBuild is in Preview. We are building the ultimate PC building
                         companion for enthusiasts and professionals.
                     </p>
                 </div>
@@ -59,7 +59,7 @@ export default function Footer() {
                 <div className="container">
                     <p className="footer-copyright">
                         © {currentYear} NexusBuild. All rights reserved. | NexusBuild is
-                        currently in BETA.
+                        currently in Preview.
                     </p>
                 </div>
             </div>

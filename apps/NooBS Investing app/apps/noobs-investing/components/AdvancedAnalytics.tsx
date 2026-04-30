@@ -109,28 +109,28 @@ export function AdvancedAnalytics({
         const concentrationRisk = totalPositions <= 2 ? 'HIGH' :
             totalPositions <= 5 ? 'MEDIUM' : 'LOW';
 
-        // Estimate Beta (Volatility relative to VOO/S&P 500)
-        let totalBetaVal = 0;
-        let weightedBeta = 0;
+        // Estimate market volatility relative to VOO/S&P 500.
+        let totalVolatilityVal = 0;
+        let weightedVolatility = 0;
         items.forEach(h => {
             const sym = h.asset_name.split(/[\s(]/)[0].toUpperCase();
             if (h.asset_name === 'CASH') return;
 
 
-            // Heuristic Beta values based on type
-            let beta = 1.0;
-            if (h.asset_type === 'Stock') beta = 1.3;
-            if (h.asset_type === 'Fund') beta = 0.8;
-            if (h.asset_type === 'REIT') beta = 1.1;
+            // Heuristic volatility values based on type
+            let volatilityMultiplier = 1.0;
+            if (h.asset_type === 'Stock') volatilityMultiplier = 1.3;
+            if (h.asset_type === 'Fund') volatilityMultiplier = 0.8;
+            if (h.asset_type === 'REIT') volatilityMultiplier = 1.1;
 
             // Specific overrides for known assets
-            if (sym === 'VOO' || sym === 'VTI') beta = 1.0;
-            if (sym === 'BND') beta = 0.2;
+            if (sym === 'VOO' || sym === 'VTI') volatilityMultiplier = 1.0;
+            if (sym === 'BND') volatilityMultiplier = 0.2;
 
-            totalBetaVal += h.amount;
-            weightedBeta += h.amount * beta;
+            totalVolatilityVal += h.amount;
+            weightedVolatility += h.amount * volatilityMultiplier;
         });
-        const beta = totalBetaVal > 0 ? weightedBeta / totalBetaVal : 1.0;
+        const volatilityScore = totalVolatilityVal > 0 ? weightedVolatility / totalVolatilityVal : 1.0;
 
         // 2. Estimate Time-Weighted Return (TWR)
         // Since we don't have full historical cash flow logs here, 
@@ -149,7 +149,7 @@ export function AdvancedAnalytics({
             stockCount,
             fundCount,
             reitCount,
-            beta,
+            volatilityScore,
             twr
         };
     }, [items, summary, yieldAmount]);
@@ -251,13 +251,13 @@ export function AdvancedAnalytics({
                         <Text style={styles.metricLabel}>Time-Weighted Return</Text>
                     </View>
 
-                    {/* Beta (Volatility) */}
+                    {/* Volatility Score */}
                     <View style={[styles.metricCard, { minWidth: '45%' }]}>
                         <View style={styles.metricIcon}>
-                            <MaterialCommunityIcons name="pulse" size={24} color={riskMetrics.beta > 1.1 ? theme.colors.danger : theme.colors.accent} />
+                            <MaterialCommunityIcons name="pulse" size={24} color={riskMetrics.volatilityScore > 1.1 ? theme.colors.danger : theme.colors.accent} />
                         </View>
-                        <Text style={styles.metricValue}>{riskMetrics.beta.toFixed(2)}</Text>
-                        <Text style={styles.metricLabel}>Volatility (Beta)</Text>
+                        <Text style={styles.metricValue}>{riskMetrics.volatilityScore.toFixed(2)}</Text>
+                        <Text style={styles.metricLabel}>Volatility Score</Text>
                     </View>
 
                     {/* Diversification Score */}

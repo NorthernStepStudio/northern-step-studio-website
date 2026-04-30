@@ -192,7 +192,7 @@ export default function TermsOfService() {
                   <section className="group card-dark-wise p-6 bg-secondary/10 border-none">
                     <h2 className="text-sm font-black uppercase tracking-widest text-accent mb-4">6. Availability</h2>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      We do not guarantee uninterrupted or error-free service. Services may be offered as beta programs with varying support scope.
+                      We do not guarantee uninterrupted or error-free service. Services may be offered as preview programs with varying support scope.
                     </p>
                   </section>
 

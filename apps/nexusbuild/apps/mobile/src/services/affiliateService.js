@@ -74,7 +74,7 @@ export const MERCHANT_CONFIG = {
 // Backend API base URL (for redirect layer)
 const API_BASE = 'https://api.nexusbuild.app';
 
-// Use direct links for beta (backend not deployed)
+// Use direct links until the redirect backend is deployed.
 const USE_DIRECT_LINKS = true;
 
 // ============================================================
@@ -85,7 +85,7 @@ const USE_DIRECT_LINKS = true;
 export const affiliateService = {
     /**
      * Get affiliate URL for a merchant + SKU
-     * Uses redirect layer in production, direct links in beta
+     * Uses redirect layer in production, direct links before backend launch.
      * 
      * @param merchant - 'amazon', 'newegg', etc.
      * @param sku - Product SKU/ASIN

@@ -104,7 +104,7 @@ export default function TesterSignup() {
               <ShieldCheck className="mb-4 h-8 w-8 text-accent" />
               <h2 className="text-lg font-black uppercase tracking-tight">Priority access</h2>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                Get early access to finished builds, beta releases, and the services that are ready
+                Get early access to finished builds, preview releases, and the services that are ready
                 for tester feedback.
               </p>
             </div>
@@ -125,7 +125,7 @@ export default function TesterSignup() {
           </div>
 
           <div className="card-dark-wise">
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} autoComplete="off" className="space-y-6">
               <div className="grid gap-6 sm:grid-cols-2">
                 <div>
                   <label className="mb-2 flex items-center gap-2 text-sm font-black uppercase tracking-wide text-muted-foreground">
@@ -149,6 +149,7 @@ export default function TesterSignup() {
                   </label>
                   <input
                     type="email"
+                    autoComplete="off"
                     required
                     placeholder="john@example.com"
                     className="w-full rounded-2xl border border-border bg-background/70 px-4 py-3 text-foreground outline-none transition-all placeholder:text-muted-foreground focus:border-accent focus:ring-2 focus:ring-accent/30"

@@ -33,7 +33,7 @@ export function loadRuntimeConfig(env: NodeJS.ProcessEnv = process.env): Runtime
     openaiBaseUrl: trimOptional(env.NSTEP_OS_OPENAI_BASE_URL) || "https://api.openai.com/v1",
     geminiApiKey: trimOptional(env.NSTEP_OS_GEMINI_API_KEY),
     geminiModel: trimOptional(env.NSTEP_OS_GEMINI_MODEL) || "gemini-2.5-flash",
-    geminiBaseUrl: trimOptional(env.NSTEP_OS_GEMINI_BASE_URL) || "https://generativelanguage.googleapis.com/v1beta",
+    geminiBaseUrl: trimOptional(env.NSTEP_OS_GEMINI_BASE_URL) || "https://generativelanguage.googleapis.com/v1",
     ocr: {
       provider: resolveOcrProvider(env.NSTEP_OS_OCR_PROVIDER, ocrEndpoint),
       endpoint: ocrEndpoint,

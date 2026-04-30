@@ -4,8 +4,8 @@ This is the Amazon-compliant web version for affiliate approval.
 
 ## Features
 
-- ✅ BETA badge in header and footer
-- ✅ "NexusBuild is currently in beta" disclaimer
+- ✅ Preview badge in header and footer
+- ✅ "NexusBuild is in Preview" disclaimer
 - ✅ "As an Amazon Associate, I earn from qualifying purchases" disclosure
 - ✅ No live deals or price tracking claims
 - ✅ Clean, professional design

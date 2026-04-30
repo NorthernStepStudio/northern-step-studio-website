@@ -234,6 +234,7 @@ export default function Users() {
               <label className="block text-sm font-medium mb-2">Email Address</label>
               <Input
                 type="email"
+                autoComplete="off"
                 placeholder="user@example.com"
                 value={inviteEmail}
                 onChange={(e) => setInviteEmail(e.target.value)}

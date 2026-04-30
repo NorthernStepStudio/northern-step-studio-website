@@ -125,42 +125,6 @@ const MOCK_THREADS: CommunityThreadMock[] = [
     ],
   },
   {
-    id: 103,
-    title: "Missed-call follow-up: keep it simple",
-    slug: "missed-call-follow-up-keep-it-simple",
-    content:
-      "For lead recovery, the best sample discussion is about what happens after the first text.\n\nOne reply flow, one owner summary, no extra noise.",
-    category_name: "Lead Recovery",
-    category_slug: "lead-recovery",
-    author_id: 8,
-    author_name: "Drew",
-    is_pinned: false,
-    is_locked: false,
-    view_count: 62,
-    post_count: 2,
-    created_at: daysAgo(1),
-    updated_at: hoursAgo(8),
-    last_post_at: hoursAgo(8),
-    posts: [
-      {
-        id: 1006,
-        content: "I like the short reply menu approach. It reads fast on mobile.",
-        author_id: 9,
-        author_name: "Morgan",
-        created_at: hoursAgo(20),
-        updated_at: hoursAgo(20),
-      },
-      {
-        id: 1007,
-        content: "Yes, and the summary should be short enough to scan in one glance.",
-        author_id: 10,
-        author_name: "Jamie",
-        created_at: hoursAgo(8),
-        updated_at: hoursAgo(8),
-      },
-    ],
-  },
-  {
     id: 104,
     title: "Simple layout notes for the community card",
     slug: "simple-layout-notes-for-the-community-card",
@@ -288,42 +252,6 @@ const MOCK_THREADS: CommunityThreadMock[] = [
       },
     ],
   },
-  {
-    id: 108,
-    title: "Lead recovery demo: the first text matters most",
-    slug: "lead-recovery-demo-the-first-text-matters-most",
-    content:
-      "For sample content, the lead recovery category should show the simplest possible workflow.\n\nFast response, clear choices, and one owner summary.",
-    category_name: "Lead Recovery",
-    category_slug: "lead-recovery",
-    author_id: 21,
-    author_name: "Dylan",
-    is_pinned: false,
-    is_locked: false,
-    view_count: 74,
-    post_count: 2,
-    created_at: daysAgo(1),
-    updated_at: hoursAgo(4),
-    last_post_at: hoursAgo(4),
-    posts: [
-      {
-        id: 1014,
-        content: "The first text should answer the call quickly and sound human.",
-        author_id: 22,
-        author_name: "Skyler",
-        created_at: hoursAgo(18),
-        updated_at: hoursAgo(18),
-      },
-      {
-        id: 1015,
-        content: "Yep. That is the core behavior the page should show.",
-        author_id: 23,
-        author_name: "Finley",
-        created_at: hoursAgo(4),
-        updated_at: hoursAgo(4),
-      },
-    ],
-  },
 ];
 
 const BASE_CATEGORIES = [
@@ -343,14 +271,7 @@ const BASE_CATEGORIES = [
     icon: "📱",
     sort_order: 2,
   },
-  {
-    id: 3,
-    name: "Lead Recovery",
-    slug: "lead-recovery",
-    description: "Missed-call text back, response flows, and service follow-up.",
-    icon: "📞",
-    sort_order: 3,
-  },
+
 ] satisfies Array<{
   id: number;
   name: string;

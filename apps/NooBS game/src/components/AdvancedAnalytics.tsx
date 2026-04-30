@@ -20,7 +20,7 @@ export function AdvancedAnalytics({
 }: AdvancedAnalyticsProps) {
 
     // Heuristic metrics based on simulated residency performance
-    const beta = 1.0 + (100 - ruleIntegrity) / 100; // Lower integrity = higher perceived volatility
+    const volatilityScore = 1.0 + (100 - ruleIntegrity) / 100; // Lower integrity = higher perceived volatility
     const diversificationScore = Math.round(ruleIntegrity); // Mocked alignment
     const alpha = (ruleIntegrity - 50) / 10; // Positive alpha only for disciplined residents
 
@@ -39,9 +39,9 @@ export function AdvancedAnalytics({
 
                 <View style={styles.metricsGrid}>
                     <View style={styles.metricCard}>
-                        <MaterialCommunityIcons name="pulse" size={24} color={beta > 1.2 ? theme.colors.danger : theme.colors.accent} />
-                        <Text style={styles.metricValue}>{beta.toFixed(2)}</Text>
-                        <Text style={styles.metricLabel}>Volatility (Beta)</Text>
+                        <MaterialCommunityIcons name="pulse" size={24} color={volatilityScore > 1.2 ? theme.colors.danger : theme.colors.accent} />
+                        <Text style={styles.metricValue}>{volatilityScore.toFixed(2)}</Text>
+                        <Text style={styles.metricLabel}>Volatility Score</Text>
                     </View>
 
                     <View style={styles.metricCard}>

@@ -60,7 +60,7 @@ export default function AppCard({
             className={`text-label px-3 py-1 rounded-full ${
               status === "LIVE"
                 ? "bg-success/10 text-success border border-success/30"
-                : status === "BETA"
+                : status === "PREVIEW"
                 ? "bg-accent/10 text-accent border border-accent/30"
                 : "bg-muted/10 text-muted-foreground border border-border"
             }`}
@@ -79,7 +79,7 @@ export default function AppCard({
       </p>
 
       <div className="w-full py-3 rounded-full bg-secondary border border-border group-hover:bg-accent group-hover:text-accent-foreground group-hover:border-accent transition-all font-black uppercase text-sm text-center">
-        {status === "LIVE" ? t("apps.open") : status === "BETA" ? t("apps.join_beta") : t("apps.learn_more")}
+        {status === "LIVE" ? t("apps.open") : status === "PREVIEW" ? t("apps.join_preview") : t("apps.learn_more")}
       </div>
     </Link>
   );

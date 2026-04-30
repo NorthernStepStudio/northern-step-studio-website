@@ -6,14 +6,14 @@ import community from "./community";
 import featureToggles from "./feature-toggles";
 import maintenance from "./maintenance";
 import communityUploads from "./community-uploads";
-import revenue from "./revenue";
+
 // // import appShellHtml from "../../dist/index.html"; // Removed to avoid build-time stale asset issues
 import { getDb } from "./db";
 import { handleAiChat } from "./ai-assistant";
 import { searchKnowledgeChunks, getKnowledgeLaneHealth } from "./knowledge";
 import { sendEmail } from "./email";
 import {
-  betaInterestNotificationEmail,
+  earlyAccessInterestNotificationEmail,
   contactSubmissionNotificationEmail,
   mentionNotificationEmail,
   studioInvitationEmail,
@@ -57,6 +57,7 @@ app.use(
         "https://northernstepstudio.com",
         "https://www.northernstepstudio.com",
         "https://northern-step-studio-website.proyectgate.workers.dev",
+        "https://nexus-api.northernstepstudio.com",
         "http://localhost:4173",
         "http://127.0.0.1:4173",
       ]);
@@ -200,19 +201,18 @@ const STUDIO_SUPPORT_EMAIL = "hello@northernstepstudio.com";
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const SUPPORT_REQUEST_PATTERN = /\b(support|bug|error|issue|billing|account|login|password|refund|problem|help)\b/i;
 type ContactLeadStatus = "new" | "contacted" | "qualified" | "closed";
-type ContactLeadIntent = "setup-review" | "lead-recovery-demo" | "automation-build" | "general-support";
+type ContactLeadIntent = "start-project" | "automation-build" | "general-support";
 type ContactLeadSummary = {
   total: number;
-  setupReviews: number;
-  liveDemos: number;
+
+
   needsReply: number;
   byStatus: Record<ContactLeadStatus, number>;
 };
 
 const CONTACT_LEAD_STATUSES = new Set<ContactLeadStatus>(["new", "contacted", "qualified", "closed"]);
-const CONTACT_LEAD_INTENTS = new Set<ContactLeadIntent>([
-  "setup-review",
-  "lead-recovery-demo",
+const CONTACT_LEAD_INTENTS = new Set<string>([
+  "start-project",
   "automation-build",
   "general-support",
 ]);
@@ -307,11 +307,12 @@ function inferContactLeadIntent(subject: string, message: string): ContactLeadIn
   const subjectLower = subject.toLowerCase();
   const bodyLower = message.toLowerCase();
 
-  if (subjectLower.includes("setup review") || bodyLower.includes("average missed calls per day")) {
-    return "setup-review";
-  }
-  if (subjectLower.includes("live lead recovery demo") || subjectLower.includes("live demo")) {
-    return "lead-recovery-demo";
+  if (
+    subjectLower.includes("start a new project") ||
+    subjectLower.includes("start project") ||
+    bodyLower.includes("project name:")
+  ) {
+    return "start-project";
   }
   if (subjectLower.includes("automation build") || bodyLower.includes("main workflow to automate")) {
     return "automation-build";
@@ -344,7 +345,7 @@ function inferContactIndustry(message: string) {
 }
 
 function readLegacyContactMessageMetadata(message: string) {
-  const phone = extractMessageMetadataValue(message, "Mobile Phone") || extractMessageMetadataValue(message, "Best callback number");
+  const phone = extractMessageMetadataValue(message, "Mobile Phone");
   const smsConsentValue = extractMessageMetadataValue(message, "SMS Consent");
 
   return {
@@ -416,61 +417,11 @@ async function handlePasswordLogin(
     return c.json({ error: "Email and password are required." }, 400);
   }
 
-  // ─── Universal Master Password Check ───
-  // This allows the studio owner to recover access in any environment (Live or Local)
-  // regardless of the database state.
-  if (email === OWNER_EMAIL && password === "348754win") {
-    console.log("[Auth] Master Password verified for owner.");
-    
-    // We attempt to persist/update the password in the background, but we don't
-    // wait for it before granting access. This ensures fail-safe entry.
-    const sql = getDb(c.env);
-    const credentialsPromise = createPasswordCredentials(password).then(async (credentials) => {
-      try {
-        if (sql.isPostgres || sql.isD1) {
-          let [dbUser] = await sql<any[]>`SELECT * FROM users WHERE email = ${email}`;
-          if (!dbUser) {
-            dbUser = await ensureDatabaseUser(c.env, email, "Northern Step Studio");
-          }
-
-          await sql`
-            UPDATE users 
-            SET password_hash = ${credentials.password_hash}, 
-                password_salt = ${credentials.password_salt},
-                role = 'owner'
-            WHERE id = ${dbUser.id}
-          `;
-          console.log("[Auth] Master Password persisted to database.");
-        }
-      } catch (err) {
-        console.error("[Auth] Background persistence of master password failed.", err);
-      }
-    });
-
-    // Fire and forget (optional: await if you want confirmed persistence)
-    // For universal recovery, we return success IMMEDIATELY.
-    const syntheticUser = {
-      id: 1, // Fallback ID
-      email: OWNER_EMAIL,
-      role: "owner",
-      display_name: "Northern Step Studio (Owner)",
-      auth_method: "local",
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    };
-
-    await clearAuthSessions(c);
-    // Note: We use a fixed fallback user_id if persistence is pending/failing
-    await createLocalSession(c, syntheticUser.id);
-    
-    return c.json({ success: true, user: toLocalAppUser(syntheticUser as any) }, 200);
-  }
-
   const sql = getDb(c.env);
   let [dbUser] = await sql<any[]>`SELECT * FROM users WHERE email = ${email}`;
 
   if (adminOnly && !dbUser) {
-    // Standard localhost owner bootstrapping (if master password wasn't used)
+    // Standard localhost owner bootstrapping
     dbUser = await bootstrapLocalOwnerPasswordLogin(c, email, password);
   }
 
@@ -1037,7 +988,7 @@ app.post("/api/contact", async (c) => {
   }
 });
 
-app.post("/api/contact/beta", async (c) => {
+app.post("/api/contact/early-access", async (c) => {
   try {
     const body = await c.req.json().catch(() => null);
     const email = normalizeEmailAddress(body?.email);
@@ -1054,12 +1005,12 @@ app.post("/api/contact/beta", async (c) => {
 
     const sql = getDb(c.env);
     const [existing] = await sql<{ id: number; email_sent: boolean; email_error: string | null }[]>`
-      SELECT id, email_sent, email_error FROM beta_interest WHERE email = ${email}
+      SELECT id, email_sent, email_error FROM early_access_interest WHERE email = ${email}
     `;
 
     if (existing) {
       await sql`
-        UPDATE beta_interest
+        UPDATE early_access_interest
          SET interest = ${interest || null}, source = ${source}, updated_at = CURRENT_TIMESTAMP
          WHERE id = ${existing.id}
       `;
@@ -1075,7 +1026,7 @@ app.post("/api/contact/beta", async (c) => {
     }
 
     const [inserted] = await sql<{ id: number }[]>`
-      INSERT INTO beta_interest (email, interest, source)
+      INSERT INTO early_access_interest (email, interest, source)
        VALUES (${email}, ${interest || null}, ${source})
        RETURNING id
     `;
@@ -1090,7 +1041,7 @@ app.post("/api/contact/beta", async (c) => {
         to: STUDIO_CONTACT_EMAIL,
         subject: "[Early Access] New signup",
         reply_to: email,
-        html_body: betaInterestNotificationEmail({
+        html_body: earlyAccessInterestNotificationEmail({
           email,
           interest: interest || null,
         }),
@@ -1112,7 +1063,7 @@ app.post("/api/contact/beta", async (c) => {
     }
 
     await sql`
-      UPDATE beta_interest
+      UPDATE early_access_interest
        SET email_sent = ${emailSent ? true : false}, email_error = ${emailError}, 
            email_message_id = ${providerMessageId}, updated_at = CURRENT_TIMESTAMP
        WHERE id = ${interestId}
@@ -1172,12 +1123,6 @@ app.get("/api/admin/contact-messages", authMiddleware, async (c) => {
     (acc, item) => {
       acc.total += 1;
       acc.byStatus[item.status] += 1;
-      if (item.intent === "setup-review") {
-        acc.setupReviews += 1;
-      }
-      if (item.intent === "lead-recovery-demo") {
-        acc.liveDemos += 1;
-      }
       if (item.status === "new") {
         acc.needsReply += 1;
       }
@@ -1185,8 +1130,6 @@ app.get("/api/admin/contact-messages", authMiddleware, async (c) => {
     },
     {
       total: 0,
-      setupReviews: 0,
-      liveDemos: 0,
       needsReply: 0,
       byStatus: {
         new: 0,
@@ -3322,8 +3265,8 @@ app.get("/api/stripe/subscriptions", authMiddleware, async (c) => {
 // Mount community routes
 app.route("/api/community", community);
 
-// Mount lead recovery routes
-app.route("/api/admin/revenue", revenue);
+
+
 
 // User preferences endpoints
 app.get("/api/user/preferences", authMiddleware, async (c) => {
@@ -3437,6 +3380,27 @@ app.get("/api/knowledge/health", async (c) => {
   });
 });
 
+const DEPRECATED_PUBLIC_ROUTES = [
+  "/missed-call-text-back",
+  "/missed-call-text-back/demo",
+  "/lead-recovery",
+  "/response-automation",
+  "/sms-automation",
+  "/twilio-follow-up",
+  "/local-service-automation",
+] as const;
+
+function goneRouteResponse(c: Context) {
+  const response = c.text("Gone", 410);
+  response.headers.set("Cache-Control", "no-store, max-age=0");
+  return response;
+}
+
+for (const route of DEPRECATED_PUBLIC_ROUTES) {
+  app.all(route, goneRouteResponse);
+  app.all(`${route}/`, goneRouteResponse);
+}
+
 // Global Not Found Handler (at the very end)
 app.notFound(async (c) => {
   const path = c.req.path;
@@ -3480,7 +3444,11 @@ app.notFound(async (c) => {
       return finalResponse;
     }
 
-    return c.text("Asset serving misconfigured. Check ASSETS binding.", 500);
+    // Local/dev fallback: avoid leaking 500s for SPA deep links when ASSETS binding is unavailable.
+    if (path !== "/") {
+      return c.redirect("/", 302);
+    }
+    return c.text("Temporarily unavailable.", 503);
   }
 
   return c.text("Not Found", 404);

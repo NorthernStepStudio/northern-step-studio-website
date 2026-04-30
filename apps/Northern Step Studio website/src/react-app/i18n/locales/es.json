@@ -64,7 +64,7 @@
                  "subtitle":  "Explora la lÃ­nea actual de productos del estÃ¡udio: inventario del hogar, planificaciÃ³n de PCs, educaciÃ³n financiera, soporte guiado y mejora crediticia.",
                  "no_apps":  "AÃºn no hay productos que coincidan.",
                  "download":  "Descargar",
-                 "join_beta":  "Más Información",
+                 "early_access":  "Más Información",
                  "learn_more":  "MÃ¡s Info",
                  "open":  "Abrir",
                  "search_placeholder":  "Buscar productos, funciones o casos de uso...",
@@ -89,7 +89,7 @@
                              },
                  "status_filters":  {
                                         "all":  "Todas las Apps",
-                                        "beta":  "Próximamente",
+                                        "preview":  "Próximamente",
                                         "live":  "En Vivo",
                                         "coming_soon":  "PrÃ³ximamente"
                                     },
@@ -107,7 +107,7 @@
                   "subtitle":  "Los proyectos de juegos estÃ¡Ã¡n aquÃ­Ã­ cuando estÃ¡Ã¡n listos para pruebas pÃºblicas. La mayorÃ­a del trabajo actual del estÃ¡udio es software de utilidad y aprendizaje, asÃ­ que esta pÃ¡gina puede estar liviana entre lanzamientos.",
                   "total":  "Total de Juegos",
                   "live":  "En Vivo",
-                  "beta":  "En Desarrollo",
+                  "in_development":  "En Desarrollo",
                   "filter":  "Filtrar por GÃ©nero",
                   "all":  "Todos",
                   "no_games":  "Las versiones de juegos aÃºn son selectivas",
@@ -133,7 +133,7 @@
                     "features_soon":  "Detalles prÃ³ximamente",
                     "download_now":  "Descargar Ahora",
                     "available_now":  "Disponible ahora",
-                    "join_beta":  "Próximamente",
+                    "early_access":  "Próximamente",
                     "get_app":  "ObtÃ©n la app hoy",
                     "be_first":  "SÃ© de los primeros",
                     "follow_build":  "Sigue el desarrollo",
@@ -199,7 +199,7 @@
                      "done":  "Listo",
                      "tech_stack":  "TecnologÃ­as",
                      "available_now":  "Disponible ahora",
-                     "join_beta_desc":  "Próximamente",
+                     "early_access_desc":  "Próximamente",
                      "target_tba":  "Objetivo: {{date}}",
                      "get_app":  "ObtÃ©n la app hoy",
                      "be_first":  "SÃ© de los primeros",
@@ -402,7 +402,19 @@
                     "read_updates":  "Leer Ãºltimas actualizaciones",
                     "open_docs":  "Abrir documentaciÃ³n de soporte",
                     "legal_note":  "Las solicitudes enviadas por este formulario tambien estan cubiertas por nuestra",
-                    "legal_and":  "y"
+                    "legal_and":  "y",
+                    "early_access":  {
+                                           "title":  "Acceso Anticipado",
+                                           "desc":  "Solicita actualizaciones de productos, acceso previo o avisos de lanzamiento.",
+                                           "placeholder":  "tu@email.com",
+                                           "interest_label":  "Que te interesa?",
+                                           "interest_placeholder":  "Producto, plataforma o caso de uso...",
+                                           "join":  "Enviar solicitud",
+                                           "joining":  "Enviando...",
+                                           "success":  "Solicitud recibida. Haremos seguimiento cuando se abra la siguiente ventana de acceso.",
+                                           "updated":  "Solicitud actualizada. Usaremos tus detalles mas recientes.",
+                                           "saved_only":  "Solicitud guardada. El reenvio de email aun esta pendiente, usa support@northernstepstudio.com si es urgente."
+                                       }
                 },
     "support":  {
                     "title":  "Â¿AÃºn Necesitas Ayuda?",

@@ -27,7 +27,7 @@ Define your "Freedom Number"—the exact point where your investments cover your
 
 ### ⚡ PRO FEATURES FOR THE SERIOUS
 - **Live Heartbeat Feed**: See real-time market sentiment and "Reactions" from the global NooBS community.
-- **Dossier Analytics**: Deep-dive into sector breakdowns, Volatility (Beta) scores, and Diversification health.
+- **Dossier Analytics**: Deep-dive into sector breakdowns, volatility scores, and diversification health.
 - **Limit Orders**: Master the technical friction of the market with precision entry tools.
 
 ### 🚫 NO ACCOUNTS. NO BROWSER. NO ADS.

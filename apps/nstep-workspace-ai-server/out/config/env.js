@@ -48,7 +48,7 @@ function getServerConfig(env = process.env) {
             providerMode: resolveProviderMode(requestedMode, geminiApiKey),
             geminiApiKey,
             geminiModel,
-            geminiBaseUrl: firstDefined(trimOptional(env.M_CORE_GEMINI_BASE_URL), trimOptional(env.RESPONSE_OS_GEMINI_BASE_URL), "https://generativelanguage.googleapis.com/v1beta"),
+            geminiBaseUrl: firstDefined(trimOptional(env.M_CORE_GEMINI_BASE_URL), trimOptional(env.RESPONSE_OS_GEMINI_BASE_URL), "https://generativelanguage.googleapis.com/v1"),
             requestTimeoutMs: parseNumber(firstDefined(env.M_CORE_REQUEST_TIMEOUT_MS, env.RESPONSE_OS_REQUEST_TIMEOUT_MS, env.NSS_WORKSPACE_AI_REQUEST_TIMEOUT_MS), 30_000),
         },
     };

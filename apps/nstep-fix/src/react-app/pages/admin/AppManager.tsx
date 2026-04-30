@@ -119,7 +119,7 @@ export default function AppManager() {
                         className={`text-label text-[10px] sm:text-xs px-2 sm:px-3 py-1 rounded-full ${
                           app.status === "LIVE"
                             ? "bg-success/10 text-success border border-success/30"
-                            : app.status === "BETA"
+                            : app.status === "PREVIEW"
                             ? "bg-accent/10 text-accent border border-accent/30"
                             : "bg-muted/10 text-muted-foreground border border-border"
                         }`}

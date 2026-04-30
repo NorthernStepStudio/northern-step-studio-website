@@ -7,7 +7,7 @@ import { GlassCard } from '../ui/GlassCard';
 import { getStatusColor, getStatusLabel, getPriorityColor, getPriorityLabel } from '../../utils/status';
 import type { ProjectCreate, ProjectStatus, Priority } from '../../types';
 
-const STATUSES: ProjectStatus[] = ['idea', 'building', 'beta', 'paused', 'launched'];
+const STATUSES: ProjectStatus[] = ['idea', 'building', 'preview', 'paused', 'launched'];
 const PRIORITIES: Priority[] = ['low', 'medium', 'high'];
 const FORM_MAX_WIDTH = 520;
 

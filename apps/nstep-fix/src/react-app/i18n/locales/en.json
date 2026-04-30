@@ -72,7 +72,7 @@
     "subtitle": "Browse the studio's current product lineup across home inventory, PC planning, finance education, guided support, credit improvement, and service automation.",
     "no_apps": "No matching products yet.",
     "download": "Download",
-    "join_beta": "Join Beta",
+    "join_preview": "Join Preview",
     "learn_more": "Learn More",
     "open": "Open",
     "search_placeholder": "Search products, features, or use cases...",
@@ -90,7 +90,7 @@
     "subtitle": "Game projects live here when they are ready for public testing. Most current studio work is utility, learning, and automation software, so this page may stay light between releases.",
     "total": "Total Games",
     "live": "Live Now",
-    "beta": "In Beta",
+    "preview": "In Preview",
     "filter": "Filter by Genre",
     "all": "All",
     "no_games": "Game builds are still selective",
@@ -116,7 +116,7 @@
     "features_soon": "Feature details coming soon",
     "download_now": "Download Now",
     "available_now": "Available now",
-    "join_beta": "Join the beta program",
+    "join_preview": "Join the preview program",
     "get_app": "Get the app today",
     "be_first": "Be among the first",
     "follow_build": "Follow the build",
@@ -183,7 +183,7 @@
     "done": "Done",
     "tech_stack": "Tech Stack",
     "available_now": "Available now",
-    "join_beta_desc": "Join the beta program",
+    "join_preview_desc": "Join the preview program",
     "target_tba": "Target: {{date}}",
     "get_app": "Get the app today",
     "be_first": "Be among the first",
@@ -237,7 +237,7 @@
         "2": "Mini-game framework",
         "3": "Visual portfolio analytics",
         "4": "Market data integration",
-        "5": "Beta testing"
+        "5": "Preview testing"
       }
     },
     "neuromoves": {
@@ -391,7 +391,7 @@
   "contact": {
     "label": "Talk to the Studio",
     "title": "Contact Northern Step Studio",
-    "subtitle": "Use this page for product access requests, beta interest, support questions, partnership ideas, or Missed Call Text Back service inquiries.",
+    "subtitle": "Use this page for product access requests, preview interest, support questions, partnership ideas, or Missed Call Text Back service inquiries.",
     "form": {
       "name": "Your Name",
       "email": "Your Email",
@@ -409,12 +409,12 @@
       "title": "Best Ways to Reach Us",
       "email": "Email",
       "social": "Social Media",
-      "beta": "Beta Testing"
+      "preview": "Preview Testing"
     },
-    "beta": {
+    "preview": {
       "title": "Early Access Interest",
       "desc": "If you want early access to products like ProvLy, NexusBuild, NeuroMoves, PasoScore, NooBS Investing, or Missed Call Text Back, join the list and tell us what product or workflow you are watching.",
-      "join": "Join Beta Program",
+      "join": "Join Preview Program",
       "placeholder": "Enter your email",
       "interest_label": "What are you watching?",
       "interest_placeholder": "ProvLy insurance exports, NeuroMoves routines, Lead Recovery rollout, etc.",
@@ -631,9 +631,9 @@
     "faq_title": "Common Questions",
     "faqs": {
       "q1": "Are all products public right now?",
-      "a1": "No. Some products are public, some are beta-only, and some are still represented on the site before wide release. The product page is the source of truth for readiness.",
+      "a1": "No. Some products are public, some are preview-only, and some are still represented on the site before wide release. The product page is the source of truth for readiness.",
       "q2": "How do I know which products are stable enough to try?",
-      "a2": "Read the status badge, milestone checklist, platform, and CTA on the product page first. We use those signals to show whether something is live, in beta, or still moving through internal work.",
+      "a2": "Read the status badge, milestone checklist, platform, and CTA on the product page first. We use those signals to show whether something is live, in preview, or still moving through internal work.",
       "q3": "Are these all the same kind of app?",
       "a3": "No. The studio spans home inventory, PC planning, investing education, guided support for children, credit improvement, and service automation. The site is meant to make those lanes obvious instead of hiding them behind vague studio language.",
       "q4": "Does the studio use AI in every product?",
@@ -687,8 +687,8 @@
     "focus_area_systems_desc": "Straightforward products that are easy to use.",
     "portfolio_title": "Current work",
     "portfolio_subtitle": "Three apps close to launch, plus the lead recovery system.",
-    "portfolio_status_close_to_launch": "Beta phase",
-    "portfolio_status_almost_ready": "Beta phase",
+    "portfolio_status_close_to_launch": "Preview phase",
+    "portfolio_status_almost_ready": "Preview phase",
     "portfolio_status_service": "Lead recovery",
     "portfolio_type_app": "App",
     "portfolio_type_service": "System",

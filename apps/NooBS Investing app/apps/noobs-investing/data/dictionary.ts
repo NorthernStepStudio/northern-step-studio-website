@@ -394,9 +394,9 @@ export const DICTIONARY: DictionaryEntry[] = [
         isPro: true
     },
     {
-        term: "Beta",
-        slickVersion: "A measure of a stock's volatility in relation to the overall market.",
-        noobsTruth: "The 'Jerkiness' score. A Beta of 2.0 means if the market goes up 1%, the stock jumps 2%. But if the market drops 1%, your stock crashes 2%. High beta is a roller coaster; low beta is a bicycle.",
+        term: "Market Volatility",
+        slickVersion: "A measure of how sharply a stock moves in relation to the overall market.",
+        noobsTruth: "The 'Jerkiness' score. A reading of 2.0 means if the market goes up 1%, the stock jumps 2%. But if the market drops 1%, your stock crashes 2%. High volatility is a roller coaster; low volatility is a bicycle.",
         category: 'Market',
         isPro: true
     },

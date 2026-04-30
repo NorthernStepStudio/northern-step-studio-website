@@ -41,7 +41,7 @@
     color: var(--color-accent-primary);
 }
 
-.beta-badge {
+.preview-badge {
     background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
     color: white;
     font-size: 0.6rem;

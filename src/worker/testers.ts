@@ -101,7 +101,7 @@ export function registerTesterRoutes(app: Hono<{ Bindings: Env; Variables: { use
     if (status === "approved") {
       await sendEmail(c.env, {
         to: tester.email,
-        subject: `Welcome to the ${tester.app_slug} Beta!`,
+        subject: `Welcome to ${tester.app_slug} early access!`,
         html_body: testerApprovalEmail({ name: tester.name, appSlug: tester.app_slug, adminNotes: admin_notes }),
         text_body: `Your request for ${tester.app_slug} has been approved!`
       }).catch(err => console.error(err));

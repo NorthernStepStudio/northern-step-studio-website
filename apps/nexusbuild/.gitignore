@@ -42,6 +42,8 @@ CREDENTIALS.md
 CREDENTIALS.txt
 CREDENTIALS.json
 **/*.credentials.*
+apps/mobile/google-services.json
+apps/mobile/analytics.settings
 
 # Build artifacts & private workspace
 NexusBuild.apk

@@ -9,7 +9,7 @@ export default function Layout() {
                     <Link to="/" className="logo">
                         <span className="logo-icon">⚡</span>
                         <span className="logo-text">NexusBuild</span>
-                        <span className="beta-badge">BETA</span>
+                        <span className="preview-badge">PREVIEW</span>
                     </Link>
                     <nav className="nav">
                         <Link to="/" className="nav-link">Home</Link>
@@ -28,7 +28,7 @@ export default function Layout() {
                     <div className="footer-content">
                         <div className="footer-brand">
                             <span className="logo-icon">⚡</span> NexusBuild
-                            <span className="beta-badge-small">BETA</span>
+                            <span className="preview-badge-small">PREVIEW</span>
                         </div>
                         <nav className="footer-nav">
                             <Link to="/legal">Privacy Policy</Link>
@@ -36,8 +36,8 @@ export default function Layout() {
                             <Link to="/disclosure">Affiliate Disclosure</Link>
                         </nav>
                     </div>
-                    <div className="footer-beta-notice">
-                        NexusBuild is currently in beta. Features and data may change.
+                    <div className="footer-preview-notice">
+                        NexusBuild is in Preview. Features and data may change.
                     </div>
                     <div className="footer-disclosure">
                         As an Amazon Associate, I earn from qualifying purchases.

@@ -1,4 +1,4 @@
-export type ProjectStatus = 'idea' | 'building' | 'beta' | 'paused' | 'launched';
+export type ProjectStatus = 'idea' | 'building' | 'preview' | 'paused' | 'launched';
 export type Priority = 'low' | 'medium' | 'high';
 export type TaskStatus =
   | 'todo'

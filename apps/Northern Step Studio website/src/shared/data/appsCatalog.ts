@@ -195,6 +195,37 @@ export const CATALOG_APPS: CatalogApp[] = [
     progressPercent: 74,
     monetization: "Freemium",
   },
+  {
+    id: 1007,
+    name: "DOOMED",
+    slug: "doomed",
+    tagline: "A Very Silly Dungeon",
+    description: "A browser-playable roguelike game with meta upgrades and doom corruption.",
+    fullDescription: "A browser-playable roguelike game with meta upgrades and doom corruption. Choose your doomed hero and survive as long as you can.",
+    category: "GAME",
+    status: "LIVE",
+    statusLabel: "Live",
+    targetDate: null,
+    techStack: ["HTML5 Canvas", "Vanilla JS"],
+    progress: [
+      { text: "Infinite dungeon generation", completed: true },
+      { text: "Meta upgrades system", completed: true },
+      { text: "Web deployment", completed: true }
+    ],
+    logo: "/games/nexus-roguelike/smoke_title.png",
+    screenshots: ["/games/nexus-roguelike/smoke_after_start.png"],
+    cta_url: "/games/doomed",
+    video_url: null,
+    features: [
+      "Pick Your Doomed Hero",
+      "Meta Upgrades & Doom Shards",
+      "Infinite floors"
+    ],
+    platform: "web",
+    visibility: "published",
+    progressPercent: 100,
+    monetization: "Free",
+  },
 ];
 
 export function getCatalogApp(slug: string) {

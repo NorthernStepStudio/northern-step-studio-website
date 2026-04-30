@@ -13,7 +13,7 @@ export default function AppHub() {
   const { t } = useTranslation();
   const { apps, isLoading } = useApps();
   const [activeFilter, setActiveFilter] = useState("ALL");
-  const [activeStatus, setActiveStatus] = useState<"ALL" | "BETA" | "LIVE">("ALL");
+  const [activeStatus, setActiveStatus] = useState<"ALL" | "PREVIEW" | "LIVE">("ALL");
   const [searchQuery, setSearchQuery] = useState("");
   const fallbackApps = CATALOG_APPS;
   const curatedApps = apps.length > 0
@@ -49,7 +49,7 @@ export default function AppHub() {
     const status = (app.status || "").toUpperCase();
     const matchesStatus =
       activeStatus === "ALL" ||
-      (activeStatus === "BETA" && status === "BETA") ||
+      (activeStatus === "PREVIEW" && status === "PREVIEW") ||
       (activeStatus === "LIVE" && status === "LIVE");
     const matchesCategory = activeFilter === "ALL" || app.category === activeFilter;
     const matchesSearch = searchQuery === "" || 
@@ -114,13 +114,13 @@ export default function AppHub() {
         <div className="mb-6 flex flex-wrap items-center gap-2">
           {[
             { key: "ALL", label: "All Apps" },
-            { key: "BETA", label: "Beta" },
+            { key: "PREVIEW", label: "Preview" },
             { key: "LIVE", label: "Live" },
           ].map((filter) => (
             <button
               key={filter.key}
               type="button"
-              onClick={() => setActiveStatus(filter.key as "ALL" | "BETA" | "LIVE")}
+              onClick={() => setActiveStatus(filter.key as "ALL" | "PREVIEW" | "LIVE")}
               className={`rounded-full px-4 py-2 text-xs sm:text-sm font-black uppercase tracking-wide transition-all ${
                 activeStatus === filter.key
                   ? "bg-accent text-accent-foreground"

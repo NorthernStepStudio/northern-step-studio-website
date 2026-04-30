@@ -171,7 +171,7 @@ export function contactSubmissionNotificationEmail(params: {
   `);
 }
 
-export function betaInterestNotificationEmail(params: {
+export function earlyAccessInterestNotificationEmail(params: {
   email: string;
   interest?: string | null;
 }) {

@@ -35,7 +35,7 @@ Use the **Contact** page for support, partnership questions, or access requests.
     summary: "Find the right product, understand its status, and follow the safest path to access.",
     body: `# Download Your First App
 
-Not every product on the site is in the same release stage. Some are live, some are in beta, and some are still moving through internal milestones.
+Not every product on the site is in the same release stage. Some are live, some are in preview, and some are still moving through internal milestones.
 
 ## Before you click download
 
@@ -96,7 +96,7 @@ Every product page on the site is structured around three things: scope, readine
 ## What the product page shows
 
 - Core description and positioning
-- Current status, such as Beta or Alpha
+- Current status, such as Preview or Alpha
 - Platform and target timeline
 - Milestone checklist
 - Key features that are already planned or implemented

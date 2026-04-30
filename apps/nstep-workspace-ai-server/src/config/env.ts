@@ -38,7 +38,7 @@ export function getServerConfig(env: NodeJS.ProcessEnv = process.env): NssWorksp
       geminiBaseUrl: firstDefined(
         trimOptional(env.M_CORE_GEMINI_BASE_URL),
         trimOptional(env.RESPONSE_OS_GEMINI_BASE_URL),
-        "https://generativelanguage.googleapis.com/v1beta",
+        "https://generativelanguage.googleapis.com/v1",
       ),
       requestTimeoutMs: parseNumber(
         firstDefined(env.M_CORE_REQUEST_TIMEOUT_MS, env.RESPONSE_OS_REQUEST_TIMEOUT_MS, env.NSS_WORKSPACE_AI_REQUEST_TIMEOUT_MS),

@@ -44,6 +44,7 @@
     "eslint-plugin-react-refresh": "0.4.19",
     "globals": "15.15.0",
     "knip": "^5.51.0",
+    "playwright": "^1.59.1",
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
     "tailwindcss-animate": "^1.0.7",
@@ -55,10 +56,19 @@
   "scripts": {
     "dev": "vite",
     "build": "npx tsc -b && vite build && node ./scripts/sanitize-dist.mjs",
+    "guard:forbidden-content": "node ./scripts/guard-forbidden-content.mjs",
+    "guard:i18n": "node ./scripts/guard-i18n-integrity.mjs",
+    "guard:rendered-content": "node ./scripts/guard-rendered-content.cjs",
+    "guard:route-health": "node ./scripts/guard-route-health.cjs",
+    "verify:production": "npm run guard:forbidden-content && npm run guard:i18n && npm run guard:rendered-content && npm run guard:route-health",
+    "sync:roguelike": "powershell -ExecutionPolicy Bypass -File ./scripts/sync-nexus-roguelike.ps1",
+    "build:with-roguelike": "npm run sync:roguelike && npm run build",
+    "verify:roguelike:prod": "node ./scripts/run-nexus-prod-checklist.cjs",
+    "verify:roguelike:migrations": "node ./scripts/check-nexus-save-migrations.cjs",
     "preview": "vite preview",
     "lint": "eslint .",
     "deploy": "git add . && git commit -m 'Release 1.0.8' && git push origin main",
-    "deploy:manual": "npm run build && npx wrangler deploy",
+    "deploy:manual": "npm run build:with-roguelike && npx wrangler deploy",
     "seed:knowledge": "npx tsx scripts/seed-knowledge.ts"
   }
 }

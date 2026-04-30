@@ -29,6 +29,9 @@ jobs:
           VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
           VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
 
+      - name: Production Guards
+        run: npm run verify:production
+
       - name: Deploy to Cloudflare
         uses: cloudflare/wrangler-action@v3
         with:

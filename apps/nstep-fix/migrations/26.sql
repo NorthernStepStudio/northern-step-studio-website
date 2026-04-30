@@ -4,7 +4,7 @@ SET
   cta_url = '/apps/nexusbuild/app',
   platform = 'web',
   description = 'NexusBuild helps PC builders compare parts, validate compatibility, and craft perfect setups with AI recommendations, now fully integrated into the Northern Step Studio ecosystem.',
-  status = 'BETA',
-  status_label = 'Beta (Integrated)',
+  status = 'PREVIEW',
+  status_label = 'Preview (Integrated)',
   visibility = 'published'
 WHERE slug = 'nexusbuild';

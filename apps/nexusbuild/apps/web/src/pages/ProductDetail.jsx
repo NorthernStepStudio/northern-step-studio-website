@@ -56,7 +56,7 @@ export default function ProductDetail() {
     const statusTone =
         app.status === 'LIVE'
             ? { bg: 'rgba(34,197,94,0.14)', color: '#4ade80' }
-            : app.status === 'BETA'
+            : app.status === 'PREVIEW'
                 ? { bg: 'rgba(245,158,11,0.14)', color: '#fbbf24' }
                 : { bg: 'rgba(148,163,184,0.14)', color: '#cbd5e1' };
 

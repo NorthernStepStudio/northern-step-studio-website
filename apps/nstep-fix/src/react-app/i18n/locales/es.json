@@ -72,7 +72,7 @@
     "subtitle": "Explora la línea actual de productos del estudio: inventario del hogar, planificación de PCs, educación financiera, soporte guiado, mejora crediticia y automatización de servicios.",
     "no_apps": "Aún no hay productos que coincidan.",
     "download": "Descargar",
-    "join_beta": "Unirse a Beta",
+    "join_preview": "Unirse a Preview",
     "learn_more": "Más Info",
     "open": "Abrir",
     "search_placeholder": "Buscar productos, funciones o casos de uso...",
@@ -90,7 +90,7 @@
     "subtitle": "Los proyectos de juegos están aquí cuando están listos para pruebas públicas. La mayoría del trabajo actual del estudio es software de utilidad, aprendizaje y automatización, así que esta página puede estar liviana entre lanzamientos.",
     "total": "Total de Juegos",
     "live": "En Vivo",
-    "beta": "En Beta",
+    "preview": "En Preview",
     "filter": "Filtrar por Género",
     "all": "Todos",
     "no_games": "Las versiones de juegos aún son selectivas",
@@ -116,7 +116,7 @@
     "features_soon": "Detalles próximamente",
     "download_now": "Descargar Ahora",
     "available_now": "Disponible ahora",
-    "join_beta": "Únete al programa beta",
+    "join_preview": "Únete al programa preview",
     "get_app": "Obtén la app hoy",
     "be_first": "Sé de los primeros",
     "follow_build": "Sigue el desarrollo",
@@ -182,7 +182,7 @@
     "done": "Listo",
     "tech_stack": "Tecnologías",
     "available_now": "Disponible ahora",
-    "join_beta_desc": "Únete al programa beta",
+    "join_preview_desc": "Únete al programa preview",
     "target_tba": "Objetivo: {{date}}",
     "get_app": "Obtén la app hoy",
     "be_first": "Sé de los primeros",
@@ -236,7 +236,7 @@
         "2": "Marco de mini-juegos",
         "3": "Analíticas de portafolio visual",
         "4": "Integración de datos de mercado",
-        "5": "Pruebas beta"
+        "5": "Pruebas preview"
       }
     },
     "neuromoves": {
@@ -390,7 +390,7 @@
   "contact": {
     "label": "Hablar con el Estudio",
     "title": "Contactar Northern Step Studio",
-    "subtitle": "Usa esta página para solicitudes de acceso a productos, interés en beta, preguntas de soporte, ideas de colaboración o consultas sobre Missed Call Text Back.",
+    "subtitle": "Usa esta página para solicitudes de acceso a productos, interés en preview, preguntas de soporte, ideas de colaboración o consultas sobre Missed Call Text Back.",
     "form": {
       "name": "Tu Nombre",
       "email": "Tu Email",
@@ -408,12 +408,12 @@
       "title": "Mejores Formas de Contactarnos",
       "email": "Email",
       "social": "Redes Sociales",
-      "beta": "Beta Testing"
+      "preview": "Preview Testing"
     },
-    "beta": {
+    "preview": {
       "title": "Interés en Acceso Anticipado",
       "desc": "Si quieres acceso anticipado a productos como ProvLy, NexusBuild, NeuroMoves, PasoScore, NooBS Investing o Missed Call Text Back, únete a la lista y cuéntanos qué producto o flujo de trabajo estás siguiendo.",
-      "join": "Unirse al Programa Beta",
+      "join": "Unirse al Programa Preview",
       "placeholder": "Ingresa tu email",
       "interest_label": "¿Qué estás siguiendo?",
       "interest_placeholder": "Exportaciones de seguros de ProvLy, rutinas de NeuroMoves, lanzamiento de Recuperación de Prospectos, etc.",
@@ -630,9 +630,9 @@
     "faq_title": "Preguntas Frecuentes",
     "faqs": {
       "q1": "¿Todos los productos están públicos ahora?",
-      "a1": "No. Algunos productos son públicos, algunos son solo beta, y algunos aún están representados en el sitio antes de su lanzamiento amplio. La página del producto es la fuente de verdad para la disponibilidad.",
+      "a1": "No. Algunos productos son públicos, algunos son solo preview, y algunos aún están representados en el sitio antes de su lanzamiento amplio. La página del producto es la fuente de verdad para la disponibilidad.",
       "q2": "¿Cómo sé qué productos son lo suficientemente estables para probar?",
-      "a2": "Lee la insignia de estado, lista de hitos, plataforma y CTA en la página del producto primero. Usamos esas señales para mostrar si algo está en vivo, en beta, o aún en trabajo interno.",
+      "a2": "Lee la insignia de estado, lista de hitos, plataforma y CTA en la página del producto primero. Usamos esas señales para mostrar si algo está en vivo, en preview, o aún en trabajo interno.",
       "q3": "¿Son todas apps del mismo tipo?",
       "a3": "No. El estudio abarca inventario del hogar, planificación de PCs, educación en inversiones, soporte guiado para niños, mejora crediticia y automatización de servicios. El sitio está diseñado para hacer esos caminos obvios.",
       "q4": "¿El estudio usa IA en todos los productos?",
@@ -686,8 +686,8 @@
     "focus_area_systems_desc": "Productos directos, f?ciles de usar.",
     "portfolio_title": "Trabajo actual",
     "portfolio_subtitle": "Tres apps cerca del lanzamiento, m?s el sistema de recuperaci?n de prospectos.",
-    "portfolio_status_close_to_launch": "Fase beta",
-    "portfolio_status_almost_ready": "Fase beta",
+    "portfolio_status_close_to_launch": "Fase preview",
+    "portfolio_status_almost_ready": "Fase preview",
     "portfolio_status_service": "Recuperaci?n de prospectos",
     "portfolio_type_app": "App",
     "portfolio_type_service": "Sistema",

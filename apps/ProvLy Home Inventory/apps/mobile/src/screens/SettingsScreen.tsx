@@ -330,7 +330,7 @@ export default function SettingsScreen() {
                         <Text style={[styles.signOutText, { color: colors.error }]}>{t('settings.signOut', 'Sign Out')}</Text>
                     </TouchableOpacity>
 
-                    <Text style={[styles.versionText, { color: colors.textSecondary }]}>{t('settings.version', 'Version')} 1.0.0 (Beta)</Text>
+                    <Text style={[styles.versionText, { color: colors.textSecondary }]}>{t('settings.version', 'Version')} 1.0.0</Text>
                     <LegalFooter />
                 </View>
             </ScrollView>

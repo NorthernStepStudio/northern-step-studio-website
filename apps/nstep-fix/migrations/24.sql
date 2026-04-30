@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS contact_messages (
 CREATE INDEX IF NOT EXISTS idx_contact_messages_created_at ON contact_messages(created_at);
 CREATE INDEX IF NOT EXISTS idx_contact_messages_email ON contact_messages(email);
 
-CREATE TABLE IF NOT EXISTS beta_interest (
+CREATE TABLE IF NOT EXISTS preview_interest (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   email TEXT NOT NULL UNIQUE,
   interest TEXT,
@@ -27,4 +27,4 @@ CREATE TABLE IF NOT EXISTS beta_interest (
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX IF NOT EXISTS idx_beta_interest_created_at ON beta_interest(created_at);
+CREATE INDEX IF NOT EXISTS idx_preview_interest_created_at ON preview_interest(created_at);

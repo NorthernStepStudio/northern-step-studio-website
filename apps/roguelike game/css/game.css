@@ -790,6 +790,107 @@ pointer-events:none;}
 .chpfill.ph{background:linear-gradient(90deg,var(--green),#44ff88); width:100%;}
 .chpfill.eh{background:linear-gradient(90deg,#ff8800,#ffaa44); width:100%;}
 .bhp, .bmp{width:100%;}
+
+/* ATMOSPHERIC DUNGEON RENDERING */
+:root {
+  --wall-stone: #2c2c34;
+  --wall-stone-top: #4a4a55;
+  --wall-stone-bottom: #1a1a20;
+  --floor-stone: #15151a;
+  --floor-accent: rgba(255, 255, 255, 0.03);
+  --torch-glow: radial-gradient(circle at center, rgba(255, 200, 100, 0.15) 0%, transparent 70%);
+}
+
+#map-container {
+  background: var(--dungeon-depth);
+  position: relative;
+  overflow: visible;
+}
+
+#dungeon-map {
+  display: grid;
+  background: #000;
+  box-shadow: 0 0 100px rgba(0,0,0,1);
+}
+
+/* CELL BASE */
+.cell {
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* ARCHITECTURAL WALLS (Autotiling Support) */
+.wall {
+  background: var(--wall-stone);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.wall.w-n { border-top: 3px solid var(--wall-stone-top); }
+.wall.w-s { border-bottom: 4px solid var(--wall-stone-bottom); }
+.wall.w-e { border-right: 2px solid rgba(0,0,0,0.3); }
+.wall.w-w { border-left: 2px solid rgba(255,255,255,0.1); }
+
+/* Room Shadows */
+.wall.inner-corner { box-shadow: inset 0 0 10px #000; }
+
+/* FLOOR VARIATIONS */
+.floor {
+  background: var(--floor-stone);
+  background-image: var(--floor-texture);
+}
+.floor::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--floor-accent);
+  opacity: 0.5;
+}
+
+.floor.mossy { filter: sepia(0.5) hue-rotate(80deg) brightness(0.8); }
+.floor.cracked { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><path d="M0 10 L10 15 L5 32" stroke="rgba(0,0,0,0.3)" fill="none"/></svg>'); }
+.floor.bloody { filter: saturate(2) hue-rotate(-40deg); }
+
+/* ENVIRONMENTAL PROPS */
+.prop {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  font-size: 0.8em;
+  opacity: 0.6;
+}
+
+/* DYNAMIC LIGHTING */
+#map-lighting {
+  position: absolute;
+  inset: -1000px;
+  pointer-events: none;
+  z-index: 50;
+  background: radial-gradient(circle 200px at var(--px) var(--py), transparent 0%, rgba(0,0,0,0.8) 100%);
+  transition: none; /* Instant follow for player movement */
+}
+
+.cell.fog { background: #000 !important; border: none !important; }
+.cell.seen { opacity: 0.3; filter: grayscale(1) brightness(0.5); }
+
+/* OVERWORLD ENTITY SILHOUETTES */
+.monster-sprite {
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.8));
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.monster-sprite:hover {
+  transform: scale(1.1) translateY(-4px);
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.9)) brightness(1.2);
+}
+
+/* CRT SCANLINE REFINEMENT */
+#crt-overlay {
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+  background-size: 100% 3px, 3px 100%;
+}
+
 #run-summary {
   display: none;
   position: fixed;

@@ -13,7 +13,7 @@ export default function Navigation() {
                     <span className="logo-text">
                         Nexus<span className="logo-accent">Build</span>
                     </span>
-                    <span className="beta-badge">BETA</span>
+                    <span className="preview-badge">PREVIEW</span>
                 </Link>
 
                 <div className={`nav-links ${mobileMenuOpen ? 'active' : ''}`}>

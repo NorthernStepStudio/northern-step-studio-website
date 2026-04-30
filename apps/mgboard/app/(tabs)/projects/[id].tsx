@@ -21,7 +21,7 @@ import * as ProjectService from '../../../src/services/projects';
 import * as TaskService from '../../../src/services/tasks';
 import type { ProjectStatus, Task } from '../../../src/types';
 
-const STATUSES: ProjectStatus[] = ['idea', 'building', 'beta', 'paused', 'launched'];
+const STATUSES: ProjectStatus[] = ['idea', 'building', 'preview', 'paused', 'launched'];
 const CONTENT_MAX_WIDTH = 640;
 
 export default function ProjectDetailScreen() {

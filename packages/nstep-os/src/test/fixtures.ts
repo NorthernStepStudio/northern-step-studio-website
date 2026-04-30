@@ -32,7 +32,7 @@ export function makeRuntimeConfig(overrides: Partial<RuntimeConfig> = {}): Runti
     openaiBaseUrl: "https://api.openai.com/v1",
     geminiApiKey: undefined,
     geminiModel: "gemini-2.5-flash",
-    geminiBaseUrl: "https://generativelanguage.googleapis.com/v1beta",
+    geminiBaseUrl: "https://generativelanguage.googleapis.com/v1",
     ocr: {
       provider: "mock",
       endpoint: undefined,

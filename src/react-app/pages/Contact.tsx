@@ -31,12 +31,12 @@ export default function Contact() {
     message: "",
     smsConsent: false,
   });
-  const [betaEmail, setBetaEmail] = useState("");
-  const [betaInterest, setBetaInterest] = useState("");
+  const [earlyAccessEmail, setEarlyAccessEmail] = useState("");
+  const [earlyAccessInterest, setEarlyAccessInterest] = useState("");
   const [sending, setSending] = useState(false);
-  const [betaSending, setBetaSending] = useState(false);
+  const [earlyAccessSending, setEarlyAccessSending] = useState(false);
   const [formFeedback, setFormFeedback] = useState<FeedbackState | null>(null);
-  const [betaFeedback, setBetaFeedback] = useState<FeedbackState | null>(null);
+  const [earlyAccessFeedback, setEarlyAccessFeedback] = useState<FeedbackState | null>(null);
 
   const requestPresets = [
     {
@@ -158,18 +158,18 @@ export default function Contact() {
     }
   };
 
-  const handleBetaSubmit = async (event: React.FormEvent) => {
+  const handleEarlyAccessSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    setBetaSending(true);
-    setBetaFeedback(null);
+    setEarlyAccessSending(true);
+    setEarlyAccessFeedback(null);
 
     try {
-      const response = await fetch("/api/contact/beta", {
+      const response = await fetch("/api/contact/early-access", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: betaEmail,
-          interest: betaInterest,
+          email: earlyAccessEmail,
+          interest: earlyAccessInterest,
           source: "contact_page",
         }),
       });
@@ -179,23 +179,23 @@ export default function Contact() {
         throw new Error(data?.error || t("contact.error"));
       }
 
-      let text: string = t("contact.beta.success");
+      let text: string = t("contact.early_access.success");
       if (data?.already_exists) {
-        text = t("contact.beta.updated");
+        text = t("contact.early_access.updated");
       } else if (data?.delivery_status === "saved_only") {
-        text = t("contact.beta.saved_only");
+        text = t("contact.early_access.saved_only");
       }
 
-      setBetaFeedback({ type: "success", text });
-      setBetaEmail("");
-      setBetaInterest("");
+      setEarlyAccessFeedback({ type: "success", text });
+      setEarlyAccessEmail("");
+      setEarlyAccessInterest("");
     } catch (error) {
-      setBetaFeedback({
+      setEarlyAccessFeedback({
         type: "error",
         text: error instanceof Error ? error.message : t("contact.error"),
       });
     } finally {
-      setBetaSending(false);
+      setEarlyAccessSending(false);
     }
   };
 
@@ -425,45 +425,45 @@ export default function Contact() {
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/20">
                   <Sparkles className="h-5 w-5 text-accent" />
                 </div>
-                <h3 className="text-lg font-black uppercase">{t("contact.beta.title")}</h3>
+                <h3 className="text-lg font-black uppercase">{t("contact.early_access.title")}</h3>
               </div>
-              <p className="mb-4 text-sm text-muted-foreground">{t("contact.beta.desc")}</p>
-              <form onSubmit={handleBetaSubmit} className="space-y-3">
+              <p className="mb-4 text-sm text-muted-foreground">{t("contact.early_access.desc")}</p>
+              <form onSubmit={handleEarlyAccessSubmit} className="space-y-3">
                 <input
                   type="email"
                   required
-                  placeholder={t("contact.beta.placeholder")}
-                  value={betaEmail}
-                  onChange={(event) => setBetaEmail(event.target.value)}
+                  placeholder={t("contact.early_access.placeholder")}
+                  value={earlyAccessEmail}
+                  onChange={(event) => setEarlyAccessEmail(event.target.value)}
                   className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-accent/50"
                 />
                 <div>
                   <label className="mb-2 block text-xs font-black uppercase tracking-wide text-muted-foreground">
-                    {t("contact.beta.interest_label")}
+                    {t("contact.early_access.interest_label")}
                   </label>
                   <textarea
                     rows={3}
-                    value={betaInterest}
-                    onChange={(event) => setBetaInterest(event.target.value)}
-                    placeholder={t("contact.beta.interest_placeholder")}
+                    value={earlyAccessInterest}
+                    onChange={(event) => setEarlyAccessInterest(event.target.value)}
+                    placeholder={t("contact.early_access.interest_placeholder")}
                     className="theme-scrollbar w-full resize-none rounded-2xl border border-border bg-background px-4 py-3 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-accent/50"
                   />
                 </div>
-                <button type="submit" disabled={betaSending} className="btn-pill-primary w-full text-sm disabled:opacity-50">
-                  {betaSending ? t("contact.beta.joining") : t("contact.beta.join")}
+                <button type="submit" disabled={earlyAccessSending} className="btn-pill-primary w-full text-sm disabled:opacity-50">
+                  {earlyAccessSending ? t("contact.early_access.joining") : t("contact.early_access.join")}
                 </button>
-                {betaFeedback && (
+                {earlyAccessFeedback && (
                   <div
                     className={`flex items-start gap-2 rounded-2xl px-4 py-3 text-sm ${
-                      betaFeedback.type === "success" ? "bg-accent/10 text-accent" : "bg-red-500/10 text-red-400"
+                      earlyAccessFeedback.type === "success" ? "bg-accent/10 text-accent" : "bg-red-500/10 text-red-400"
                     }`}
                   >
-                    {betaFeedback.type === "success" ? (
+                    {earlyAccessFeedback.type === "success" ? (
                       <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
                     ) : (
                       <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
                     )}
-                    <span>{betaFeedback.text}</span>
+                    <span>{earlyAccessFeedback.text}</span>
                   </div>
                 )}
               </form>

@@ -70,7 +70,7 @@ const SUPPORT_TIERS = [
     tokens: 120,
     label: "Backer",
     price: "$10",
-    subtitle: "Fuel beta progress + tokens",
+    subtitle: "Fuel Early Access progress + tokens",
   },
   {
     tokens: 260,
@@ -218,10 +218,10 @@ export default function UpgradeScreen({ navigation }) {
       }
       await refreshBalance();
       await refreshEntitlements?.();
-      Alert.alert("Beta Bonus", `${packageLabel} added to your token balance.`);
+      Alert.alert("Founders Bonus", `${packageLabel} added to your token balance.`);
     } catch (error) {
       Alert.alert(
-        "Beta Bonus failed",
+        "Founders Bonus failed",
         error?.message || "Unable to add tokens right now.",
       );
     } finally {
@@ -345,30 +345,30 @@ export default function UpgradeScreen({ navigation }) {
           </View>
         </GlassCard>
 
-        <GlassCard style={styles.betaCard}>
-          <View style={styles.betaHeader}>
+        <GlassCard style={styles.previewCard}>
+          <View style={styles.previewHeader}>
             <Ionicons
               name="alert-circle"
               size={18}
               color={theme.colors.accentPrimary}
             />
             <Text
-              style={[styles.betaTitle, { color: theme.colors.textPrimary }]}
+              style={[styles.previewTitle, { color: theme.colors.textPrimary }]}
             >
-              Founders Beta (Jan-Apr 2026)
+              Founders Preview (Jan-Apr 2026)
             </Text>
           </View>
           <Text
-            style={[styles.betaText, { color: theme.colors.textSecondary }]}
+            style={[styles.previewText, { color: theme.colors.textSecondary }]}
           >
-            You&apos;re testing early features! Some AI responses may use local
+            You&apos;re testing Early Access features! Some AI responses may use local
             fallback if our servers are busy. Tokens are non-refundable during
-            beta but will carry over to launch.
+            preview but will carry over to launch.
           </Text>
-          <View style={styles.betaButtons}>
+          <View style={styles.previewButtons}>
             <TouchableOpacity
               style={[
-                styles.betaBtn,
+                styles.previewBtn,
                 { backgroundColor: theme.colors.bgSecondary },
               ]}
               onPress={openFeedback}
@@ -380,7 +380,7 @@ export default function UpgradeScreen({ navigation }) {
               />
               <Text
                 style={[
-                  styles.betaBtnText,
+                  styles.previewBtnText,
                   { color: theme.colors.accentPrimary },
                 ]}
               >
@@ -389,7 +389,7 @@ export default function UpgradeScreen({ navigation }) {
             </TouchableOpacity>
             <TouchableOpacity
               style={[
-                styles.betaBtn,
+                styles.previewBtn,
                 { backgroundColor: theme.colors.bgSecondary },
               ]}
               onPress={() =>
@@ -402,7 +402,7 @@ export default function UpgradeScreen({ navigation }) {
                 color={theme.colors.textMuted}
               />
               <Text
-                style={[styles.betaBtnText, { color: theme.colors.textMuted }]}
+                style={[styles.previewBtnText, { color: theme.colors.textMuted }]}
               >
                 Terms
               </Text>
@@ -416,7 +416,7 @@ export default function UpgradeScreen({ navigation }) {
             <Text
               style={[styles.claimTitle, { color: theme.colors.textPrimary }]}
             >
-              Founders Beta
+              Founders Preview
             </Text>
           </View>
           <Text
@@ -429,9 +429,9 @@ export default function UpgradeScreen({ navigation }) {
           </Text>
           <TouchableOpacity
             style={[styles.claimBtn, { backgroundColor: "#18c38a" }]}
-            onPress={() => claimBonus("Claim +273 Beta Bonus", 273)}
+            onPress={() => claimBonus("Claim +273 Founders Bonus", 273)}
           >
-            <Text style={styles.claimBtnText}>Claim +273 Beta Bonus</Text>
+            <Text style={styles.claimBtnText}>Claim +273 Founders Bonus</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.claimBtn, { backgroundColor: "#ff1414" }]}
@@ -444,7 +444,7 @@ export default function UpgradeScreen({ navigation }) {
         <Text
           style={[styles.sectionTitle, { color: theme.colors.textPrimary }]}
         >
-          Support the Beta
+          Support Early Access
         </Text>
 
         <GlassCard style={styles.supportIntroCard}>
@@ -465,7 +465,7 @@ export default function UpgradeScreen({ navigation }) {
               { color: theme.colors.textSecondary },
             ]}
           >
-            Join the exclusive Founders Club during our 3-month beta. Your
+            Join the exclusive Founders Club during Early Access. Your
             support accelerates development and grants you permanent Founder
             status.
           </Text>
@@ -694,12 +694,12 @@ const styles = StyleSheet.create({
   balanceTextWrap: { flex: 1 },
   balanceLabel: { fontSize: 13, marginBottom: 4 },
   balanceValue: { fontSize: 28, fontWeight: "800" },
-  betaCard: { padding: 18, borderRadius: 18, gap: 10, marginTop: 2 },
-  betaHeader: { flexDirection: "row", alignItems: "center", gap: 8 },
-  betaTitle: { fontSize: 16, fontWeight: "800" },
-  betaText: { fontSize: 13, lineHeight: 19 },
-  betaButtons: { flexDirection: "row", gap: 10, flexWrap: "wrap" },
-  betaBtn: {
+  previewCard: { padding: 18, borderRadius: 18, gap: 10, marginTop: 2 },
+  previewHeader: { flexDirection: "row", alignItems: "center", gap: 8 },
+  previewTitle: { fontSize: 16, fontWeight: "800" },
+  previewText: { fontSize: 13, lineHeight: 19 },
+  previewButtons: { flexDirection: "row", gap: 10, flexWrap: "wrap" },
+  previewBtn: {
     flexDirection: "row",
     alignItems: "center",
     gap: 6,
@@ -707,7 +707,7 @@ const styles = StyleSheet.create({
     paddingVertical: 9,
     borderRadius: 12,
   },
-  betaBtnText: { fontSize: 12, fontWeight: "700" },
+  previewBtnText: { fontSize: 12, fontWeight: "700" },
   claimCard: {
     padding: 18,
     borderRadius: 18,

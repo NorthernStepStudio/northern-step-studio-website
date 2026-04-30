@@ -16,7 +16,9 @@
     "dev:dashboard": "npm run dev --workspace apps/nstep-dashboard",
     "dev:server": "npm run start --workspace packages/nstep-os",
     "dev:worker": "npm run worker --workspace packages/nstep-os",
-    "worker": "npm run worker --workspace packages/nstep-os"
+    "worker": "npm run worker --workspace packages/nstep-os",
+    "hygiene:check": "node scripts/repo-hygiene-check.mjs",
+    "hygiene:clean": "node scripts/repo-hygiene-clean.mjs --apply"
   },
   "overrides": {
     "react": "19.1.0",

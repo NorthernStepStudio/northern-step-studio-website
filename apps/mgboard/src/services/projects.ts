@@ -25,7 +25,7 @@ function inferStatusFromRepo(repo: { last_commit_date?: string | null }): Projec
   const daysOld = Math.floor((Date.now() - stamp) / (24 * 60 * 60 * 1000));
   if (daysOld >= 21) return 'paused';
   if (daysOld <= 3) return 'building';
-  return 'beta';
+  return 'preview';
 }
 
 function inferPriorityFromRepo(repo: { open_issues_count?: number | null }): Project['priority'] {
@@ -172,7 +172,7 @@ export async function getActiveProjects(): Promise<Project[]> {
     .from(TABLE)
     .select('*')
     .eq('user_id', userId)
-    .in('status', ['building', 'beta'])
+    .in('status', ['building', 'preview'])
     .order('priority', { ascending: true })
     .limit(5);
 
@@ -182,7 +182,7 @@ export async function getActiveProjects(): Promise<Project[]> {
 
   const bootstrapped = await bootstrapProjectsFromRepos(userId);
   return bootstrapped
-    .filter((project) => project.status === 'building' || project.status === 'beta')
+    .filter((project) => project.status === 'building' || project.status === 'preview')
     .sort((a, b) => {
       const order = { high: 0, medium: 1, low: 2 };
       return order[a.priority] - order[b.priority];
