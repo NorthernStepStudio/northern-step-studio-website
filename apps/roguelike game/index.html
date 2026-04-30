@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -10,7 +10,7 @@
 <link rel="manifest" href="manifest.webmanifest?v=20260429r1">
 <link rel="stylesheet" href="css/app/base.css?v=20260429r1">
 <link rel="stylesheet" href="css/app/layout-controls.css?v=20260429r1">
-
+<link rel="stylesheet" href="css/app/startup.css?v=20260429r1">
 </head>
 <body>
 <canvas id="vfxc"></canvas>
@@ -18,38 +18,73 @@
 <div id="zone-flash"></div>
 <div id="zone-tint"></div>
 
-<!-- TITLE -->
-<div id="title-screen">
-  <div><div class="title-big">⚔ DOOMED ⚔</div><div class="title-sub" style="margin-top:6px">A VERY SILLY DUNGEON v3</div></div>
-  <button class="continue-btn" id="continue-btn" style="display:none" onclick="loadGame()">▶ CONTINUE (Floor <span id="sfl">?</span>)</button>
-  <button class="continue-btn" id="title-save-btn" onclick="togglePanel('save')">💾 SAVE / LOAD / BACKUP</button>
-  <button id="title-meta-btn" onclick="openMetaScreen()">💠 META UPGRADES — <span id="title-shard-count">0</span> Doom Shards</button>
-  <div style="font-size:7px;color:var(--cyan);text-align:center">— PICK YOUR DOOMED HERO —</div>
-  <div class="class-grid">
-    <div class="class-card" data-class="warrior" onclick="selectClass(this)">
-      <span class="class-icon" id="ci-warrior">🛡</span><span class="class-name">BONK KNIGHT</span>
-      <div class="class-desc">Hits things very hard. Strategy unknown.</div>
-      <div class="class-weapon">🛡 Iron Sword</div><div class="class-stats">♥120 ⚔15 💰8 ✪30</div>
-    </div>
-    <div class="class-card" data-class="mage" onclick="selectClass(this)">
-      <span class="class-icon" id="ci-mage">🧙</span><span class="class-name">CHAOS WIZARD</span>
-      <div class="class-desc">Spells may backfire. Glass cannon.</div>
-      <div class="class-weapon">🔮 Cursed Wand</div><div class="class-stats">♥70 ⚔8 💰3 ✪100</div>
-    </div>
-    <div class="class-card" data-class="rogue" onclick="selectClass(this)">
-      <span class="class-icon" id="ci-rogue">🗡</span><span class="class-name">SNEAKY STABBER</span>
-      <div class="class-desc">Crits. Poison. Heroism optional.</div>
-      <div class="class-weapon">🗡 Shiv of Shame</div><div class="class-stats">♥85 ⚔12 💰5 ✪50</div>
-    </div>
-    <div class="class-card" data-class="paladin" onclick="selectClass(this)">
-      <span class="class-icon" id="ci-paladin">⚔</span><span class="class-name">HOLY YELLER</span>
-      <div class="class-desc">Heals! Smites! Judges your choices.</div>
-      <div class="class-weapon">🔨 Holy Mallet</div><div class="class-stats">♥100 ⚔10 💰12 ✪70</div>
+<!-- STARTUP FLOW -->
+<div id="startup-container">
+  <!-- 1. Studio Splash -->
+  <div id="studio-splash" class="startup-view active">
+    <img src="/brand/nstep-logo.svg" alt="Northern Step Studio" onerror="this.src=''; this.alt='NORTHERN STEP STUDIO'; this.style.fontSize='16px'; this.style.letterSpacing='4px';" />
+  </div>
+
+  <!-- 2. Title Reveal -->
+  <div id="title-reveal-view" class="startup-view" onclick="showMainMenu()">
+    <img src="assets/doomed_logo.png" alt="DOOMED" class="game-logo" />
+    <div class="press-start">Click to Start</div>
+  </div>
+
+  <!-- 3. Main Menu -->
+  <div id="main-menu-view" class="startup-view">
+    <img src="assets/doomed_logo.png" alt="DOOMED" class="menu-logo" style="max-width: 250px; margin-bottom: 40px;" />
+    <div class="menu-list">
+      <button class="menu-btn" id="menu-continue-btn" onclick="continueGame()">Continue</button>
+      <button class="menu-btn" onclick="showProfileSelect()">Start Run</button>
+      <button class="menu-btn" onclick="showProfiles()">Profiles</button>
+      <button class="menu-btn" onclick="openMetaScreen()">Codex (<span id="title-shard-count">0</span> Shards)</button>
     </div>
   </div>
-  <button class="start-btn" id="start-btn" disabled onclick="startNewGame()">▶ ENTER THE DUNGEON</button>
-  <div style="font-size:6px;color:var(--gray);text-align:center;margin-top:-6px">WASD/Arrows or D-Pad • Q=HP • E=MP • +/-=Zoom • M=Menu</div>
+
+  <!-- 4. Profile Select -->
+  <div id="profile-select-view" class="startup-view">
+    <h2>Select Profile</h2>
+    <div class="profile-grid" id="profile-slots-container">
+      <!-- Slots injected by JS -->
+    </div>
+    <button class="back-btn" onclick="showMainMenu()">Back to Menu</button>
+  </div>
+
+  <!-- 5. Hero Select -->
+  <div id="hero-select-view" class="startup-view">
+    <div style="font-size:24px;color:var(--accent);text-align:center;margin-bottom:10px;text-transform:uppercase;letter-spacing:2px;font-weight:bold;">AWAITING DOOM</div>
+    <div style="font-size:12px;color:var(--cyan);text-align:center;margin-bottom:30px;letter-spacing:1px;">— PICK YOUR DOOMED HERO —</div>
+    <div class="class-grid">
+      <div class="class-card" data-class="warrior" onclick="selectClass(this)">
+        <span class="class-icon" id="ci-warrior">🛡</span><span class="class-name">BONK KNIGHT</span>
+        <div class="class-desc">Hits things very hard. Strategy unknown.</div>
+        <div class="class-weapon">🛡 Iron Sword</div><div class="class-stats">♥120 ⚔15 💰8 ✪30</div>
+      </div>
+      <div class="class-card" data-class="mage" onclick="selectClass(this)">
+        <span class="class-icon" id="ci-mage">🧙</span><span class="class-name">CHAOS WIZARD</span>
+        <div class="class-desc">Spells may backfire. Glass cannon.</div>
+        <div class="class-weapon">🔮 Cursed Wand</div><div class="class-stats">♥70 ⚔8 💰3 ✪100</div>
+      </div>
+      <div class="class-card" data-class="rogue" onclick="selectClass(this)">
+        <span class="class-icon" id="ci-rogue">🗡</span><span class="class-name">SNEAKY STABBER</span>
+        <div class="class-desc">Crits. Poison. Heroism optional.</div>
+        <div class="class-weapon">🗡 Shiv of Shame</div><div class="class-stats">♥85 ⚔12 💰5 ✪50</div>
+      </div>
+      <div class="class-card" data-class="paladin" onclick="selectClass(this)">
+        <span class="class-icon" id="ci-paladin">⚔</span><span class="class-name">HOLY YELLER</span>
+        <div class="class-desc">Heals! Smites! Judges your choices.</div>
+        <div class="class-weapon">🔨 Holy Mallet</div><div class="class-stats">♥100 ⚔10 💰12 ✪70</div>
+      </div>
+    </div>
+    <button class="start-btn" id="start-btn" disabled onclick="startNewGame()">▶ ENTER THE DUNGEON</button>
+    <button class="back-btn" onclick="showMainMenu()">Back to Menu</button>
+  </div>
 </div>
+
+<!-- Old title screen (Hidden, but keeping if required by JS temporarily) -->
+<div id="title-screen" style="display:none"></div>
+
 
 <!-- GAME SCREEN -->
 <div id="game-screen">
@@ -457,6 +492,7 @@
   <button class="gobtn" onclick="showRunSummary(false)">📊 RUN SUMMARY</button>
 </div>
 
+<script src="js/app/startup.js?v=20260429r1"></script>
 <script src="js/app/vfx.js?v=20260429r1"></script>
 <script src="js/app/data.js?v=20260429r1"></script>
 <script src="js/app/core.js?v=20260429r1"></script>

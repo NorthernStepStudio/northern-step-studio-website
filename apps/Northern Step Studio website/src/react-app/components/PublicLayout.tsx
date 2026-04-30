@@ -96,6 +96,9 @@ export default function PublicLayout() {
           </Link>
 
           <nav className="hidden md:flex items-center gap-5 xl:gap-7 min-w-0">
+            <Link to="/games" className="text-[11px] xl:text-xs 2xl:text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black whitespace-nowrap">
+              {t("nav.games", "GAMES")}
+            </Link>
             <Link to="/apps" className="text-[11px] xl:text-xs 2xl:text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black whitespace-nowrap">
               {t("nav.apps")}
             </Link>
@@ -178,6 +181,13 @@ export default function PublicLayout() {
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-border bg-background">
             <nav className="container mx-auto px-4 py-4 flex flex-col gap-2">
+              <Link
+                to="/games"
+                className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black py-2 whitespace-nowrap"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {t("nav.games", "GAMES")}
+              </Link>
               <Link
                 to="/apps"
                 className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase font-black py-2 whitespace-nowrap"
@@ -292,6 +302,7 @@ export default function PublicLayout() {
             <div>
               <h4 className="text-sm font-black uppercase mb-4">{t("footer.products")}</h4>
               <ul className="space-y-2">
+                <li><Link to="/games" className="text-sm text-muted-foreground hover:text-accent transition-colors font-normal">{t("nav.games", "Games")}</Link></li>
                 <li><Link to="/apps" className="text-sm text-muted-foreground hover:text-accent transition-colors font-normal">{t("nav.apps")}</Link></li>
                 <li><Link to="/services" className="text-sm text-muted-foreground hover:text-accent transition-colors font-normal">{t("nav.services")}</Link></li>
                 <li><Link to="/docs" className="text-sm text-muted-foreground hover:text-accent transition-colors font-normal">{t("nav.docs")}</Link></li>
