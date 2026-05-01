@@ -10,6 +10,7 @@ import LanguageSelector from "./LanguageSelector";
 import { usePermissions } from "@/react-app/hooks/usePermissions";
 import { Button } from "@/react-app/components/ui/button";
 import NStepBrand from "./NStepBrand";
+import { BRAND_ASSETS } from "@/react-app/lib/site";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -91,8 +92,16 @@ export default function PublicLayout() {
       <header className={`fixed left-0 right-0 z-40 border-b border-border bg-background/80 backdrop-blur-xl ${hasScheduledMaintenance ? "top-[52px]" : "top-0"}`}>
         <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <NStepBrand className="hidden sm:inline-flex" markClassName="h-10 w-10" wordmarkClassName="text-sm" />
-            <NStepBrand className="sm:hidden" markClassName="h-10 w-10" showWordmark={false} />
+            <img 
+              src={BRAND_ASSETS.studioLogoHorizontal} 
+              alt="Northern Step Studio" 
+              className="hidden sm:block h-10 w-auto object-contain" 
+            />
+            <img 
+              src={BRAND_ASSETS.studioMark} 
+              alt="Northern Step Studio" 
+              className="sm:hidden h-10 w-10 object-contain rounded-xl" 
+            />
           </Link>
 
           <nav className="hidden md:flex items-center gap-5 xl:gap-7 min-w-0">
@@ -289,7 +298,11 @@ export default function PublicLayout() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="md:col-span-1">
               <Link to="/" className="inline-block">
-                <NStepBrand markClassName="h-10 w-10" wordmarkClassName="text-sm" />
+                <img 
+                  src={BRAND_ASSETS.studioLogo} 
+                  alt="Northern Step Studio" 
+                  className="h-16 w-auto object-contain" 
+                />
               </Link>
               <p className="mt-3 text-xs font-black uppercase tracking-[0.24em] text-foreground">
                 {brandifyText("Northern Step Studio")}

@@ -33,7 +33,7 @@ export default function SEO({
   const finalDescription = description || defaultDescription;
   const finalKeywords = keywords || defaultKeywords;
   const finalCanonicalUrl = resolveSiteUrl(canonicalUrl || baseUrl);
-  const finalOgImage = resolveSiteUrl(ogImage || BRAND_ASSETS.studioLogo);
+  const finalOgImage = resolveSiteUrl(ogImage || BRAND_ASSETS.studioPreview);
 
   return (
     <Helmet>
