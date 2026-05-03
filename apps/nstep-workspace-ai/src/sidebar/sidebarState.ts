@@ -4,6 +4,6 @@ export interface SidebarScaffoldState {
 }
 
 export const DEFAULT_SIDEBAR_SCAFFOLD_STATE: SidebarScaffoldState = {
-  title: "NSS Workspace AI",
+  title: "Matterhorn",
   description: "Sidebar state mapping and derived view helpers belong here.",
 };

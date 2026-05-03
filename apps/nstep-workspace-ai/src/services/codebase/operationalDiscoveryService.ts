@@ -38,7 +38,7 @@ export async function discoverOperationalConfig(): Promise<{ path: string; summa
         });
       }
     } catch (err) {
-      console.error(`NSS: Operational discovery failed for ${pattern}`, err);
+      console.error(`Matterhorn: Operational discovery failed for ${pattern}`, err);
     }
   }
 

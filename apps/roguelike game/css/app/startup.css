@@ -1,0 +1,314 @@
+/* STARTUP FLOW UX */
+
+#startup-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000;
+  background: #04000a;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  text-align: center;
+}
+
+.startup-view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease-in-out;
+  background: #04000a;
+  padding: 20px;
+}
+
+.startup-view.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 1. Studio Splash */
+.studio-branding {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2vh;
+  animation: studioReveal 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.studio-logo-img {
+  width: min(80px, 15vh);
+  height: auto;
+  filter: drop-shadow(0 0 20px rgba(0, 210, 255, 0.4));
+}
+
+.studio-name {
+  font-size: min(2rem, 5vh);
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin: 0;
+  background: linear-gradient(to right, #fff 20%, #3a7bd5 40%, #3a7bd5 60%, #fff 80%);
+  background-size: 200% auto;
+  color: #000;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 4s linear infinite;
+}
+
+.studio-name .accent {
+  color: #3a7bd5;
+  -webkit-text-fill-color: #3a7bd5;
+}
+
+.studio-tagline {
+  font-size: min(0.8rem, 2vh);
+  letter-spacing: 0.6em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* 2. Title Reveal */
+#title-reveal-view {
+  background: radial-gradient(circle at center, #1a0033 0%, #04000a 80%);
+}
+.game-logo {
+  max-width: 80%;
+  width: min(380px, 45vh);
+  height: auto;
+  filter: drop-shadow(0 0 30px rgba(255, 100, 0, 0.2));
+  animation: logoFloat 6s ease-in-out infinite;
+}
+@keyframes logoFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-1vh) scale(1.02); }
+}
+.press-start {
+  margin-top: 3vh;
+  font-size: min(13px, 2.5vh);
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: #ffaa00;
+  text-shadow: 0 0 10px rgba(255, 170, 0, 0.5);
+  animation: blink 2s infinite;
+  cursor: pointer;
+}
+
+/* 3. Main Menu */
+#main-menu-view {
+  background: linear-gradient(180deg, #0a0014 0%, #04000a 100%);
+}
+.menu-logo {
+  max-width: 60%;
+  width: min(280px, 20vh);
+  margin-bottom: 4vh;
+}
+.menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5vh;
+  width: min(280px, 80vw);
+}
+.menu-btn {
+  background: rgba(20, 0, 30, 0.5);
+  border: 1px solid #440022;
+  color: #dddddd;
+  padding: min(12px, 2vh) 20px;
+  font-size: min(14px, 2vh);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 4px;
+}
+.menu-btn:hover {
+  background: rgba(50, 0, 40, 0.8);
+  border-color: #ff2266;
+  color: #fff;
+  transform: translateX(5px);
+  box-shadow: 0 0 15px rgba(255, 34, 102, 0.4);
+}
+.menu-btn::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #ff2266;
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+}
+.menu-btn:hover::before {
+  transform: scaleY(1);
+}
+
+/* 4. Save Profile Select */
+#profile-select-view h2 {
+  font-size: 24px;
+  color: #ffaa00;
+  margin-bottom: 30px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+.profile-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 400px;
+  max-width: 90vw;
+}
+.profile-slot {
+  background: #11001a;
+  border: 1px solid #330033;
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.profile-slot:hover {
+  border-color: #ffaa00;
+  background: #1a0026;
+  box-shadow: 0 0 20px rgba(255, 170, 0, 0.2);
+}
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.profile-title {
+  font-size: 18px;
+  color: #fff;
+  font-weight: bold;
+}
+.profile-stats {
+  font-size: 12px;
+  color: #888;
+}
+.profile-empty {
+  color: #555;
+  font-style: italic;
+}
+.back-btn {
+  margin-top: 40px;
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 14px;
+}
+.back-btn:hover {
+  color: #fff;
+}
+
+/* 5. Hero Select View Overlay */
+#hero-select-view {
+  background: #04000a;
+}
+#hero-select-view .class-grid {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* 5. Loading View */
+#loading-view {
+  background: #04000a;
+}
+.loading-content {
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+}
+.loading-glitch {
+  font-size: min(24px, 5vh);
+  font-weight: 900;
+  letter-spacing: 10px;
+  color: #ff2266;
+  position: relative;
+  text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75),
+    -0.025em -0.05em 0 rgba(0, 255, 0, 0.75),
+    0.025em 0.05em 0 rgba(0, 0, 255, 0.75);
+  animation: loadingGlitch 500ms infinite;
+}
+.loading-glitch::before,
+.loading-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.8;
+}
+.loading-glitch::before {
+  animation: loadingGlitch 650ms infinite;
+  color: #00ffff;
+  z-index: -1;
+}
+.loading-glitch::after {
+  animation: loadingGlitch 375ms infinite;
+  color: #ff00ff;
+  z-index: -2;
+}
+
+@keyframes loadingGlitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-3px, 3px); }
+  40% { transform: translate(-3px, -3px); }
+  60% { transform: translate(3px, 3px); }
+  80% { transform: translate(3px, -3px); }
+  100% { transform: translate(0); }
+}
+
+.loading-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 34, 102, 0.1);
+  margin: 30px 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+}
+.loading-progress {
+  width: 0%;
+  height: 100%;
+  background: #ff2266;
+  box-shadow: 0 0 20px #ff2266;
+  animation: progressFill 2s ease-in-out forwards;
+}
+@keyframes progressFill {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+.loading-tagline {
+  font-size: min(10px, 2vh);
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  animation: fadeInOut 2s infinite;
+}
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}

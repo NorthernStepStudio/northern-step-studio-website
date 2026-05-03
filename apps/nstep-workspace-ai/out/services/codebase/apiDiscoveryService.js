@@ -70,7 +70,7 @@ async function discoverApiRoutes() {
             }
         }
         catch (err) {
-            console.error(`NSS: API route discovery failed for ${pattern}`, err);
+            console.error(`Matterhorn: API route discovery failed for ${pattern}`, err);
         }
     }
     return apiMaps;

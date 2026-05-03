@@ -1,0 +1,48 @@
+[/] NAME:Fix bugs and push v0.5.0 AAB build DESCRIPTION:Root task for conversation __NEW_AGENT__
+-[/] NAME:Diagnose Smart Build and part browsing failures DESCRIPTION:Inspect the mobile Smart Build normalization/add flow, part selection UI behavior, and related data/navigation paths to identify root causes.
+-[ ] NAME:Implement targeted fixes DESCRIPTION:Apply minimal code changes to correct category normalization, part card/detail behavior, and any related broken logic.
+-[ ] NAME:Validate with focused tests DESCRIPTION:Run the smallest relevant tests/checks and confirm the reported behaviors are fixed.
+-[/] NAME:Fix Smart Build normalization for RAM/PSU and other category aliases DESCRIPTION:Inspect mobile smart-build normalization and update it so AI/build responses consistently map aliases like memory/power supply to internal categories used by the builder.
+-[ ] NAME:Fix part selection navigation so tapping a part opens details DESCRIPTION:Confirm current part card handlers and route names, then update the primary tap behavior to open the part details screen instead of adding the part or opening an external link.
+-[ ] NAME:Diagnose and fix broken part catalog loading path DESCRIPTION:Trace mobile parts API usage and backend parts route/schema enough to identify why the app falls back to mock data or misreads catalog responses, then implement the safest fix and validate it.
+-[/] NAME:Fix Smart Build part normalization DESCRIPTION:Patch Smart Build normalization so AI responses consistently preserve RAM/PSU categories and map alias categories correctly.
+-[ ] NAME:Fix part catalog loading and search behavior DESCRIPTION:Patch part selection/catalog loading so API search results are used for targeted queries and backend price payloads normalize correctly.
+-[ ] NAME:Fix part card navigation and validate DESCRIPTION:Make part cards open internal Part Details by default, keep add/buy on explicit buttons, and run focused mobile validation tests.
+-[x] NAME:Fix Build Performance Score DESCRIPTION:Investigate why performance score shows wrong details. Check benchmark scoring for parts from Smart Build (Intel i5-12400F, RX 7600, etc.) - likely missing from AI_BENCHMARK_ALIASES.
+-[x] NAME:Fix missing AI Full Build Review DESCRIPTION:The AI full build review/roast feature is missing from the BuilderScreen below the performance score. Need to find if it exists and is broken, or needs to be added.
+-[x] NAME:Update Builder Screen action buttons to match UI mockup DESCRIPTION:Change action buttons to: Row 1 = [Clear, Share, Buy Parts], Row 2 = [AI Review 100🪙, Save]. Remove inline AIBuildReview component. Add Upgrade & Save section below.
+-[x] NAME:Update Chat Screen to add missing feature badges DESCRIPTION:Add FPS Deep-Dive 15🪙 and Upgrades Free badges to the bot action badge row. Update input placeholder. Add icons to quick suggestion pills.
+-[/] NAME:Fix chat feature badges not working DESCRIPTION:Smart Build, Full Review, FPS Deep-Dive, Upgrades badges in ChatScreen are not interactive (no onPress handlers). Need to make them tappable and trigger the right actions.
+-[ ] NAME:Fix parts database showing too few parts DESCRIPTION:Parts catalog/selection screen should show hundreds of parts but barely has any. Investigate data loading, API calls, and fallback catalog.
+-[ ] NAME:Fix login splash screen DESCRIPTION:Login/splash screen logic is broken. Investigate the auth flow and splash screen component.
+-[ ] NAME:Fix chat not responding DESCRIPTION:Chat messages aren't getting responses. Investigate the chat send flow, API calls, and response handling.
+-[x] NAME:Update version to v0.5.0 DESCRIPTION:Update app.json, package.json, and any version display constants to show v0.5.0
+-[/] NAME:Push and build AAB DESCRIPTION:Commit all changes and trigger EAS build for Android AAB
+-[x] NAME:Fix chat feature badges (make tappable) DESCRIPTION:Replace <View> with <TouchableOpacity> for Smart Build, Full Review, FPS Deep-Dive, Upgrades badges in ChatScreen.jsx
+-[x] NAME:Fix parts database limit DESCRIPTION:Increase partsAPI.getAll limit from 12 to 100 in api.js
+-[x] NAME:Fix budget allocation percentages DESCRIPTION:PSU at 3% and case at 2% are way too low. Fix to 6% PSU and 5% case across all templates
+-[x] NAME:Fix chat response reliability DESCRIPTION:Ensure chat always returns a response even when API fails
+-[/] NAME:Fix 'Text strings must be rendered within <Text>' error DESCRIPTION:Find and fix bare text strings outside <Text> components
+-[ ] NAME:Restart Metro with clean cache DESCRIPTION:Clear Metro cache to eliminate stale syntax errors
+-[x] NAME:Fix chat feature badges to navigate instead of sending messages DESCRIPTION:Smart Build, Full Review, FPS Deep-Dive, Upgrades badges should navigate to the relevant screen/feature, not send chat messages
+-[x] NAME:Fix compatibility detection logic DESCRIPTION:Investigate and fix incorrect compatibility detection
+-[x] NAME:Fix budget allocation generating wrong prices/parts DESCRIPTION:Budget planner picks wrong parts or assigns incorrect prices for the budget
+-[/] NAME:Fix build generation - parts not matching budget DESCRIPTION:Investigate and fix why generated builds don't match the budget correctly
+-[ ] NAME:Fix compatibility detection DESCRIPTION:Debug why compatibility checks are broken
+-[ ] NAME:Fix AI feature badges - show popup card instead of navigating DESCRIPTION:Each badge (Smart Build, Full Review, FPS Deep-Dive, Upgrades) should open a popup/modal card explaining what it does, not navigate away
+-[ ] NAME:Fix popup cards dark theme - should be dark not white DESCRIPTION:All popup/modal cards should use dark background in dark theme, not white
+-[x] NAME:Fix specs stripped in addAllParts and addPart flows DESCRIPTION:BuildContext.addAllParts and BudgetAllocationCard.handleAddSelectedSmartParts both strip the specs property when adding parts, breaking compatibility checks.
+-[x] NAME:Fix AI feature badges to show popup cards instead of navigating DESCRIPTION:ChatScreen badges (Smart Build, Full Review, FPS Deep-Dive, Upgrades) should open informational popup modals explaining each feature, not navigate away.
+-[x] NAME:Fix popup/modal dark theme colors DESCRIPTION:Several modals use hardcoded white/light backgrounds instead of theme-aware dark colors. Find and fix all instances.
+-[/] NAME:Test and verify all fixes DESCRIPTION:Run tests to verify nothing is broken.
+-[/] NAME:Audit all errors - run tests, check diagnostics DESCRIPTION:Run tests, check terminal, identify every single error
+-[ ] NAME:Fix parts loading - ensure all mock parts show up DESCRIPTION:Fix partsAPI and PartSelectionScreen so all 100s of mock parts always appear. Fix category mapping and override logic.
+-[ ] NAME:Fix compatibility engine DESCRIPTION:Ensure checkCompatibility works with all parts including AI-generated ones. Verify specs are preserved.
+-[ ] NAME:Fix popup/modal theme colors DESCRIPTION:All popup cards must use dark theme colors in dark mode. No white backgrounds anywhere.
+-[ ] NAME:Fix build generation / budget allocation DESCRIPTION:Budget planner must generate parts that match the budget correctly. Fix nexusAI knowledge base and pickBestFit logic.
+-[ ] NAME:Fix 500 error on builds API DESCRIPTION:Handle the builds API 500 error gracefully
+-[ ] NAME:Run full test suite - zero errors DESCRIPTION:Final verification that everything works with no errors
+-[ ] NAME:Fix header background in light theme DESCRIPTION:The header stays dark even when light theme is active. It should use theme-aware colors so it turns light/white in light mode.
+-[ ] NAME:Add dark/light theme toggle to header DESCRIPTION:Add a theme toggle button (sun/moon icon) to the header near the language selector and notifications bell.
+-[ ] NAME:Fix header background in light theme DESCRIPTION:Header stays dark in light mode. Must use theme-aware background colors.
+-[ ] NAME:Add dark/light theme toggle to header DESCRIPTION:Add sun/moon toggle near language and notification icons in header.

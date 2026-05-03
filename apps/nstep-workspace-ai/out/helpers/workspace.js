@@ -56,6 +56,9 @@ function inferStudioProjectIdFromPath(input) {
 }
 function inferIdFromPath(input, knownIds) {
     const normalized = (input ?? "").toLowerCase();
+    if (normalized.includes("responseos")) {
+        return "synox";
+    }
     return knownIds.find((id) => normalized.includes(id));
 }
 //# sourceMappingURL=workspace.js.map

@@ -110,7 +110,7 @@ const eventTracker_js_1 = require("./state/eventTracker.js");
 const snapshotHelper_js_1 = require("./helpers/snapshotHelper.js");
 class NssWorkspaceAiController {
     store;
-    outputChannel = vscode.window.createOutputChannel("NSS Workspace AI");
+    outputChannel = vscode.window.createOutputChannel("Matterhorn");
     sidebar;
     constructor(store) {
         this.store = store;
@@ -124,8 +124,8 @@ class NssWorkspaceAiController {
     async initialize() {
         const workspacePath = (0, workspace_js_1.getPrimaryWorkspaceFolder)()?.uri.fsPath;
         const config = (0, config_js_1.getRuntimeConfig)();
-        this.outputChannel.appendLine(`[NSS] Initializing with workspace: ${workspacePath ?? "none"}`);
-        this.outputChannel.appendLine(`[NSS] Server URL: ${config.serverUrl} (source: ${config.serverUrlSource})`);
+        this.outputChannel.appendLine(`[Matterhorn] Initializing with workspace: ${workspacePath ?? "none"}`);
+        this.outputChannel.appendLine(`[Matterhorn] Server URL: ${config.serverUrl} (source: ${config.serverUrlSource})`);
         await this.store.initialize();
         await this.store.update((draft) => {
             draft.mode = (0, modeState_js_1.resolveModeSelection)(draft.mode, config.defaultMode);
@@ -133,18 +133,18 @@ class NssWorkspaceAiController {
             draft.studioProjectId = (0, projectState_js_1.resolveStudioProjectSelection)(draft.studioProjectId, workspacePath, config.autoSuggestPresetForWorkspace);
         });
         try {
-            this.outputChannel.appendLine("[NSS] Probing backend health...");
+            this.outputChannel.appendLine("[Matterhorn] Probing backend health...");
             const serverHealth = await probeWorkspaceServerHealth();
-            this.outputChannel.appendLine(`[NSS] Backend health: ${serverHealth.status} (${serverHealth.mode} mode)`);
+            this.outputChannel.appendLine(`[Matterhorn] Backend health: ${serverHealth.status} (${serverHealth.mode} mode)`);
             await this.store.update((draft) => {
                 draft.serverHealth = serverHealth;
             });
             if (serverHealth.mode === "mock") {
-                this.outputChannel.appendLine("[NSS] WARNING: Server is in MOCK mode. Real AI features are disabled.");
+                this.outputChannel.appendLine("[Matterhorn] WARNING: Server is in MOCK mode. Real AI features are disabled.");
             }
         }
         catch (error) {
-            this.outputChannel.appendLine(`[NSS] ERROR: Health probe failed: ${error instanceof Error ? error.message : String(error)}`);
+            this.outputChannel.appendLine(`[Matterhorn] ERROR: Health probe failed: ${error instanceof Error ? error.message : String(error)}`);
         }
         // Initialize event tracking
         this.registerEventListeners();
@@ -174,7 +174,7 @@ class NssWorkspaceAiController {
         const activeDiagnostic = this.getActiveDiagnosticSession(state.diagnosticSessions, state.activeDiagnosticSessionId);
         const reviewCounts = (0, reviewState_js_1.getReviewCounts)(state.reviewItems);
         return {
-            title: "NSS Workspace AI",
+            title: "Matterhorn",
             workspaceName: (0, workspace_js_1.getWorkspaceName)(),
             serverStatus: (0, uiState_js_1.getServerStatusLabel)(state.serverHealth),
             serverMode: state.serverHealth.mode ?? "unknown",
@@ -329,8 +329,8 @@ class NssWorkspaceAiController {
     async askWorkspaceAi(promptFromSidebar, preferredAgentId) {
         const prompt = promptFromSidebar ??
             (await vscode.window.showInputBox({
-                prompt: "Ask NSS about the current workspace",
-                placeHolder: "What do you want NSS to help with?",
+                prompt: "Ask Matterhorn about the current workspace",
+                placeHolder: "What do you want Matterhorn to help with?",
             }));
         if (!prompt) {
             return;
@@ -339,7 +339,7 @@ class NssWorkspaceAiController {
             commandId: "nssWorkspaceAi.askWorkspaceAi",
             intent: "ask",
             prompt,
-            responseTitle: "NSS Response",
+            responseTitle: "Matterhorn Response",
             responseKind: "answer",
             preferredAgentId,
         });
@@ -362,7 +362,7 @@ class NssWorkspaceAiController {
             throw new Error("Select some text before running Generate From Selection.");
         }
         const prompt = await vscode.window.showInputBox({
-            prompt: "What should NSS generate from the current selection?",
+            prompt: "What should Matterhorn generate from the current selection?",
             placeHolder: "Example: rewrite this into a clearer helper function",
         });
         if (!prompt) {
@@ -380,7 +380,7 @@ class NssWorkspaceAiController {
     async askAboutCurrentFile() {
         const editor = (0, editor_js_1.requireActiveEditor)();
         const prompt = await vscode.window.showInputBox({
-            prompt: "What do you want NSS to answer about the current file?",
+            prompt: "What do you want Matterhorn to answer about the current file?",
             placeHolder: "Ask a focused question about this file",
         });
         if (!prompt) {
@@ -398,7 +398,7 @@ class NssWorkspaceAiController {
     async explainProjectStructure() {
         const workspaceFolder = (0, workspace_js_1.getPrimaryWorkspaceFolder)();
         if (!workspaceFolder) {
-            throw new Error("Open a workspace folder before asking NSS to explain the project structure.");
+            throw new Error("Open a workspace folder before asking Matterhorn to explain the project structure.");
         }
         const structureSummary = await (0, projectTreeService_js_1.buildProjectStructureSummary)(workspaceFolder);
         await this.runBackendCommand({
@@ -413,7 +413,7 @@ class NssWorkspaceAiController {
     async proposeEditForCurrentFile() {
         const editor = (0, editor_js_1.requireActiveEditor)();
         const prompt = await vscode.window.showInputBox({
-            prompt: "What edit should NSS propose for the current file?",
+            prompt: "What edit should Matterhorn propose for the current file?",
             placeHolder: "Describe the change you want reviewed before applying",
         });
         if (!prompt) {
@@ -474,10 +474,10 @@ class NssWorkspaceAiController {
     async insertLatestResponseIntoCurrentFile() {
         const latestResponse = this.store.snapshot().latestResponse;
         if (!latestResponse) {
-            throw new Error("There is no latest NSS response to insert.");
+            throw new Error("There is no latest Matterhorn response to insert.");
         }
         const editor = (0, editor_js_1.requireActiveEditor)();
-        const confirm = await vscode.window.showWarningMessage("Insert the latest NSS response into the active file or current selection?", { modal: true }, "Insert Response");
+        const confirm = await vscode.window.showWarningMessage("Insert the latest Matterhorn response into the active file or current selection?", { modal: true }, "Insert Response");
         if (confirm !== "Insert Response") {
             return;
         }
@@ -486,11 +486,11 @@ class NssWorkspaceAiController {
     async createNewFileFromLatestResponse() {
         const latestResponse = this.store.snapshot().latestResponse;
         if (!latestResponse) {
-            throw new Error("There is no latest NSS response to write into a new file.");
+            throw new Error("There is no latest Matterhorn response to write into a new file.");
         }
         const workspaceFolder = (0, workspace_js_1.getPrimaryWorkspaceFolder)();
         if (!workspaceFolder) {
-            throw new Error("Open a workspace folder before creating files from NSS responses.");
+            throw new Error("Open a workspace folder before creating files from Matterhorn responses.");
         }
         const relativePath = await vscode.window.showInputBox({
             prompt: "Enter the workspace-relative path for the new file",
@@ -502,7 +502,7 @@ class NssWorkspaceAiController {
         const segments = relativePath.split(/[\\/]+/).filter(Boolean);
         const targetUri = vscode.Uri.joinPath(workspaceFolder.uri, ...segments);
         const parentSegments = segments.slice(0, -1);
-        const confirm = await vscode.window.showWarningMessage(`Create ${relativePath} from the latest NSS response?`, { modal: true }, "Create File");
+        const confirm = await vscode.window.showWarningMessage(`Create ${relativePath} from the latest Matterhorn response?`, { modal: true }, "Create File");
         if (confirm !== "Create File") {
             return;
         }
@@ -577,7 +577,7 @@ class NssWorkspaceAiController {
         }
         const report = await vscode.window.withProgress({
             location: vscode.ProgressLocation.Notification,
-            title: "NSS Change Plan",
+            title: "Matterhorn Change Plan",
             cancellable: false,
         }, async () => (0, buildFoundationService_js_1.createBuildFoundationReport)({ goal: prompt, workspaceFolder }));
         const lines = [
@@ -656,7 +656,7 @@ class NssWorkspaceAiController {
             return;
         }
         const prompt = await vscode.window.showInputBox({
-            prompt: "What should NSS answer about this likely error file?",
+            prompt: "What should Matterhorn answer about this likely error file?",
             placeHolder: "Explain the failure source and the next safe debugging steps",
             value: "Explain the likely failure source in this file and the next safe debugging steps.",
         });
@@ -681,7 +681,7 @@ class NssWorkspaceAiController {
             return;
         }
         const prompt = await vscode.window.showInputBox({
-            prompt: "What safe fix should NSS propose for this likely error file?",
+            prompt: "What safe fix should Matterhorn propose for this likely error file?",
             placeHolder: "Keep the proposal minimal, reviewable, and targeted to the failing code path",
             value: "Propose a minimal, reviewable fix for the failure in this file.",
         });
@@ -717,7 +717,7 @@ class NssWorkspaceAiController {
     async proposeMultiFileChangeCommand() {
         const editor = (0, editor_js_1.requireActiveEditor)();
         const prompt = await vscode.window.showInputBox({
-            prompt: "Describe the coordinated multi-file change you want NSS to propose",
+            prompt: "Describe the coordinated multi-file change you want Matterhorn to propose",
             placeHolder: "Example: add a safer task-debug-review flow across the sidebar and review center",
         });
         if (!prompt) {
@@ -755,7 +755,7 @@ class NssWorkspaceAiController {
             proposedText: index === 0 ? result.response.proposedText : undefined,
             sourceResponseId: result.record.id,
         }));
-        await this.queueReviewItems(reviewItems, `Queued ${reviewItems.length} review items for the multi-file proposal.`);
+        await this.queueReviewItems(reviewItems, "Matterhorn proposed a patch");
     }
     async startDiagnosticSession() {
         const lastTask = this.getLastTask();
@@ -799,7 +799,7 @@ class NssWorkspaceAiController {
     async compareLastTwoResultsCommand() {
         const state = this.store.snapshot();
         if (state.taskHistory.length < 2) {
-            throw new Error("NSS needs at least two task runs to compare results.");
+            throw new Error("Matterhorn needs at least two task runs to compare results.");
         }
         const body = (0, compareTaskResultsService_js_1.compareTaskResults)(state.taskHistory[1], state.taskHistory[0]);
         await (0, notifications_js_1.openMarkdownPreview)("Compare Last Two Task Results", body);
@@ -854,7 +854,7 @@ class NssWorkspaceAiController {
         await (0, notifications_js_1.openMarkdownPreview)("Recall Similar Failure", lines.join("\n\n"));
     }
     async clearWorkspaceMemoryCommand() {
-        const confirm = await vscode.window.showWarningMessage("Clear project rules, repair patterns, recurring failures, and roadmap notes for NSS Workspace AI?", { modal: true }, "Clear Memory");
+        const confirm = await vscode.window.showWarningMessage("Clear project rules, repair patterns, recurring failures, and roadmap notes for Matterhorn?", { modal: true }, "Clear Memory");
         if (confirm !== "Clear Memory") {
             return;
         }
@@ -864,7 +864,7 @@ class NssWorkspaceAiController {
         await this.refreshSidebar();
     }
     async switchModeCommand() {
-        const picked = await vscode.window.showQuickPick(modes_js_1.NSS_MODES.map((mode) => ({ label: mode.title, id: mode.id })), { placeHolder: "Choose an NSS mode" });
+        const picked = await vscode.window.showQuickPick(modes_js_1.NSS_MODES.map((mode) => ({ label: mode.title, id: mode.id })), { placeHolder: "Choose a Matterhorn mode" });
         if (!picked) {
             return;
         }
@@ -882,7 +882,7 @@ class NssWorkspaceAiController {
             label: workflow.title,
             description: workflow.description,
             id: workflow.id,
-        })), { placeHolder: "Choose an NSS workflow" });
+        })), { placeHolder: "Choose a Matterhorn workflow" });
         if (!picked) {
             return;
         }
@@ -924,7 +924,7 @@ class NssWorkspaceAiController {
         await (0, notifications_js_1.openMarkdownPreview)("Available Workflows", body);
     }
     async switchPresetCommand() {
-        const picked = await vscode.window.showQuickPick(presets_js_1.NSS_PRESETS.map((preset) => ({ label: preset.title, id: preset.id })), { placeHolder: "Choose an NSS preset" });
+        const picked = await vscode.window.showQuickPick(presets_js_1.NSS_PRESETS.map((preset) => ({ label: preset.title, id: preset.id })), { placeHolder: "Choose a Matterhorn preset" });
         if (!picked) {
             return;
         }
@@ -969,7 +969,7 @@ class NssWorkspaceAiController {
     }
     async searchKnowledgeCommand() {
         const query = await vscode.window.showInputBox({
-            prompt: "Search NSS knowledge packs",
+            prompt: "Search Matterhorn knowledge packs",
         });
         if (!query) {
             return;
@@ -1135,7 +1135,7 @@ class NssWorkspaceAiController {
     }
     async showQuickStartCommand() {
         const body = [
-            "1. Ask NSS from the sidebar or command palette.",
+            "1. Ask Matterhorn from the sidebar or command palette.",
             "2. Explain the current file before editing.",
             "3. Search the codebase or find related files.",
             "4. Run a safe workspace task and inspect likely error files.",
@@ -1144,7 +1144,7 @@ class NssWorkspaceAiController {
             "7. Propose edits, approve them, and use the review center before applying.",
             "8. Use the studio dashboard and roadmap notes to manage cross-project work.",
         ].join("\n");
-        await (0, notifications_js_1.openMarkdownPreview)("NSS Quick Start", body);
+        await (0, notifications_js_1.openMarkdownPreview)("Matterhorn Quick Start", body);
     }
     async showBuildFoundationCommand() {
         const workspaceFolder = (0, workspace_js_1.getPrimaryWorkspaceFolder)();
@@ -1152,7 +1152,7 @@ class NssWorkspaceAiController {
             throw new Error("Open a workspace folder before using the build foundation report.");
         }
         const goal = await vscode.window.showInputBox({
-            prompt: "What do you want NSS to help build or plan?",
+            prompt: "What do you want Matterhorn to help build or plan?",
             placeHolder: "Example: add a reusable auth flow for the workspace",
             ignoreFocusOut: true,
         });
@@ -1161,7 +1161,7 @@ class NssWorkspaceAiController {
         }
         const report = await vscode.window.withProgress({
             location: vscode.ProgressLocation.Notification,
-            title: "NSS Build Foundation",
+            title: "Matterhorn Build Foundation",
             cancellable: false,
         }, async () => (0, buildFoundationService_js_1.createBuildFoundationReport)({ goal, workspaceFolder }));
         await this.saveLocalResponse(this.createLocalResponseRecord("Build Foundation", report.markdown, "plan", "nssWorkspaceAi.showBuildFoundation", goal));
@@ -1194,7 +1194,7 @@ class NssWorkspaceAiController {
         try {
             const { record, response } = await vscode.window.withProgress({
                 location: vscode.ProgressLocation.Notification,
-                title: "NSS Workspace AI",
+                title: "Matterhorn is analyzing your repo",
                 cancellable: false,
             }, async (progress) => {
                 progress.report({ message: "Searching codebase..." });
@@ -1278,7 +1278,7 @@ class NssWorkspaceAiController {
             });
             const proposalCount = record.proposedMemories?.length ?? 0;
             if (proposalCount > 0) {
-                void vscode.window.setStatusBarMessage(`NSS: ${proposalCount} memory proposal${proposalCount === 1 ? "" : "s"} ready to review.`, 5000);
+                void vscode.window.setStatusBarMessage(`Matterhorn: ${proposalCount} memory proposal${proposalCount === 1 ? "" : "s"} ready to review.`, 5000);
             }
             this.outputChannel.appendLine(`[${record.createdAt}] ${record.sourceCommand}`);
             this.outputChannel.appendLine(record.body);
@@ -1292,7 +1292,7 @@ class NssWorkspaceAiController {
                 draft.serverHealth = this.createServerHealth("offline", error instanceof Error ? error.message : "Backend request failed.");
             });
             await this.refreshSidebar();
-            await vscode.window.showErrorMessage(error instanceof Error ? error.message : "NSS Workspace AI could not reach the backend.");
+            await vscode.window.showErrorMessage(error instanceof Error ? error.message : "Matterhorn could not reach the backend.");
             return undefined;
         }
     }
@@ -1348,7 +1348,7 @@ class NssWorkspaceAiController {
             }
         });
         await this.refreshSidebar();
-        void vscode.window.showInformationMessage("NSS: Memory saved to project bank.");
+        void vscode.window.showInformationMessage("Matterhorn: Memory saved to project bank.");
     }
     async editProposedMemory(memory, index) {
         const updated = await this.promptForMemoryDetails("Edit suggested memory", memory);
@@ -1372,14 +1372,14 @@ class NssWorkspaceAiController {
                 : item);
         });
         await this.refreshSidebar();
-        void vscode.window.showInformationMessage("NSS: Memory updated.");
+        void vscode.window.showInformationMessage("Matterhorn: Memory updated.");
     }
     async forgetMemory(memory) {
         await this.store.update((draft) => {
             draft.persistentMemories = draft.persistentMemories.filter((m) => m.id !== memory.id && m.content !== memory.content);
         });
         await this.refreshSidebar();
-        void vscode.window.showInformationMessage("NSS: Memory removed from project bank.");
+        void vscode.window.showInformationMessage("Matterhorn: Memory removed from project bank.");
     }
     async promptForMemoryDetails(title, memory) {
         const content = await vscode.window.showInputBox({
@@ -1457,7 +1457,7 @@ class NssWorkspaceAiController {
     async runTaskKind(kind) {
         const task = await vscode.window.withProgress({
             location: vscode.ProgressLocation.Notification,
-            title: `NSS running ${kind}`,
+            title: "Matterhorn is analyzing your repo",
         }, async () => {
             return (0, taskRunnerService_js_1.runWorkspaceTask)(kind);
         });
@@ -1500,7 +1500,7 @@ class NssWorkspaceAiController {
         await this.store.update((draft) => {
             draft.reviewItems = draft.reviewItems.map((item) => item.id === reviewItem.id ? (0, reviewService_js_1.markReviewItemStale)(item, true) : item);
         });
-        const confirm = await vscode.window.showWarningMessage("The target file changed since NSS created this review item. Apply anyway?", { modal: true }, "Apply Anyway");
+        const confirm = await vscode.window.showWarningMessage("The target file changed since Matterhorn created this review item. Apply anyway?", { modal: true }, "Apply Anyway");
         if (confirm !== "Apply Anyway") {
             throw new Error("Apply cancelled because the review item is stale.");
         }
@@ -1531,7 +1531,7 @@ class NssWorkspaceAiController {
             ? [...lastTask.likelyErrorFiles]
             : await (0, errorFileService_js_1.findLikelyErrorFilesFromOutput)(`${lastTask.stderr}\n${lastTask.stdout}`);
         if (likelyFiles.length === 0) {
-            throw new Error("NSS could not identify likely error files from the last task output.");
+            throw new Error("Matterhorn could not identify likely error files from the last task output.");
         }
         return likelyFiles;
     }

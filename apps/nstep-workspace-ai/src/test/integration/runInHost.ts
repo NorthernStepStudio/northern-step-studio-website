@@ -52,7 +52,7 @@ export async function run(): Promise<void> {
   assert(extension, `Expected ${EXTENSION_ID} to be installed in the extension host.`);
 
   await extension.activate();
-  assert.equal(extension.isActive, true, "Expected NSS Workspace AI to activate.");
+  assert.equal(extension.isActive, true, "Expected Matterhorn to activate.");
 
   await vscode.commands.executeCommand("nssWorkspaceAi.explainThisFile");
   const roundtripSnapshot = await waitForSnapshot(
@@ -70,9 +70,9 @@ export async function run(): Promise<void> {
   assert(ragResults.some((result) => result.content.includes("createWorkspaceApp")));
 
   await vscode.commands.executeCommand("nssWorkspaceAi.showQuickStart");
-  const document = await waitForVisibleMarkdown("NSS Quick Start");
-  assert(document, "Expected NSS Quick Start markdown preview to open.");
-  assert(document.getText().includes("Ask NSS"), "Expected the quick start document to contain NSS guidance.");
+  const document = await waitForVisibleMarkdown("Matterhorn Quick Start");
+  assert(document, "Expected Matterhorn Quick Start markdown preview to open.");
+  assert(document.getText().includes("Ask Matterhorn"), "Expected the quick start document to contain Matterhorn guidance.");
 }
 
 async function waitForVisibleMarkdown(titleFragment: string): Promise<vscode.TextDocument | undefined> {

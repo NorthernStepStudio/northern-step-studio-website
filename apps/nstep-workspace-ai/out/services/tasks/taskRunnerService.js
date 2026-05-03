@@ -103,7 +103,7 @@ async function findNearestPackageDirectory() {
     const workspaceRoot = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
     const startPath = activeFilePath ? path.dirname(activeFilePath) : workspaceRoot;
     if (!startPath) {
-        throw new Error("Open a workspace or file before running NSS workspace tasks.");
+        throw new Error("Open a workspace or file before running Matterhorn workspace tasks.");
     }
     let currentDirectory = startPath;
     while (true) {
@@ -120,6 +120,6 @@ async function findNearestPackageDirectory() {
             currentDirectory = parent;
         }
     }
-    throw new Error("NSS could not find a package.json above the current file or workspace root.");
+    throw new Error("Matterhorn could not find a package.json above the current file or workspace root.");
 }
 //# sourceMappingURL=taskRunnerService.js.map

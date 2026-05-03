@@ -66,7 +66,7 @@ async function discoverProjectDocumentation() {
             }
         }
         catch (err) {
-            console.error(`NSS: Documentation discovery failed for ${pattern}`, err);
+            console.error(`Matterhorn: Documentation discovery failed for ${pattern}`, err);
         }
     }
     return docs;

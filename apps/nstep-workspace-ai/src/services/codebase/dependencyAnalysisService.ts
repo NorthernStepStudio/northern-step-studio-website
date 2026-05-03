@@ -31,7 +31,7 @@ export async function analyzeProjectDependencies(): Promise<{ app: string; depen
       analysis.push({ app: appName, dependencies, internalLinks });
     }
   } catch (err) {
-    console.error("NSS: Dependency analysis failed", err);
+    console.error("Matterhorn: Dependency analysis failed", err);
   }
 
   return analysis;

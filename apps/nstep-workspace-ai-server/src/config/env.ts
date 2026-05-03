@@ -1,10 +1,10 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
-import type { ResponseOsProviderMode, ResponseOsRuntimeConfig } from "../mCore.js";
+import type { SynoxProviderMode, SynoxRuntimeConfig } from "../mCore.js";
 
 export interface NssWorkspaceAiServerConfig {
   readonly port: number;
-  readonly mCore: ResponseOsRuntimeConfig;
+  readonly mCore: SynoxRuntimeConfig;
 }
 
 export function getServerConfig(env: NodeJS.ProcessEnv = process.env): NssWorkspaceAiServerConfig {
@@ -12,12 +12,14 @@ export function getServerConfig(env: NodeJS.ProcessEnv = process.env): NssWorksp
 
   const geminiApiKey = firstDefined(
     trimOptional(env.M_CORE_GEMINI_API_KEY),
+    trimOptional(env.SYNOX_GEMINI_API_KEY),
     trimOptional(env.RESPONSE_OS_GEMINI_API_KEY),
     trimOptional(env.GEMINI_API_KEY),
     trimOptional(env.NSS_WORKSPACE_AI_API_KEY),
   );
   const geminiModel = firstDefined(
     trimOptional(env.M_CORE_GEMINI_MODEL),
+    trimOptional(env.SYNOX_GEMINI_MODEL),
     trimOptional(env.RESPONSE_OS_GEMINI_MODEL),
     trimOptional(env.GEMINI_MODEL),
     trimOptional(env.NSS_WORKSPACE_AI_MODEL),
@@ -25,6 +27,7 @@ export function getServerConfig(env: NodeJS.ProcessEnv = process.env): NssWorksp
   );
   const requestedMode = firstDefined(
     trimOptional(env.M_CORE_PROVIDER_MODE),
+    trimOptional(env.SYNOX_PROVIDER_MODE),
     trimOptional(env.RESPONSE_OS_PROVIDER_MODE),
     trimOptional(env.NSS_WORKSPACE_AI_PROVIDER_MODE),
   );
@@ -37,11 +40,17 @@ export function getServerConfig(env: NodeJS.ProcessEnv = process.env): NssWorksp
       geminiModel,
       geminiBaseUrl: firstDefined(
         trimOptional(env.M_CORE_GEMINI_BASE_URL),
+        trimOptional(env.SYNOX_GEMINI_BASE_URL),
         trimOptional(env.RESPONSE_OS_GEMINI_BASE_URL),
         "https://generativelanguage.googleapis.com/v1",
       ),
       requestTimeoutMs: parseNumber(
-        firstDefined(env.M_CORE_REQUEST_TIMEOUT_MS, env.RESPONSE_OS_REQUEST_TIMEOUT_MS, env.NSS_WORKSPACE_AI_REQUEST_TIMEOUT_MS),
+        firstDefined(
+          env.M_CORE_REQUEST_TIMEOUT_MS,
+          env.SYNOX_REQUEST_TIMEOUT_MS,
+          env.RESPONSE_OS_REQUEST_TIMEOUT_MS,
+          env.NSS_WORKSPACE_AI_REQUEST_TIMEOUT_MS,
+        ),
         30_000,
       ),
     },
@@ -49,21 +58,14 @@ export function getServerConfig(env: NodeJS.ProcessEnv = process.env): NssWorksp
 }
 
 export function describeProvider(config: NssWorkspaceAiServerConfig): string {
-  switch (config.mCore.providerMode) {
-    case "gemini":
-      return `NSS Master Core (M-CORE) Gemini mode using ${config.mCore.geminiModel ?? "gemini-2.5-flash"}.`;
-    case "off":
-      return "NSS Master Core (M-CORE) provider is off.";
-    case "mock":
-    default:
-      return "NSS Master Core (M-CORE) mock mode. Deterministic local responses, no external model required.";
-  }
+  const provider = resolveProviderLabel(config.mCore.providerMode);
+  return `Synox runtime connected. Synox provider: ${provider}`;
 }
 
 function resolveProviderMode(
   requestedMode: string | undefined,
   geminiApiKey: string | undefined,
-): ResponseOsProviderMode {
+): SynoxProviderMode {
   if (requestedMode === "off") {
     return "off";
   }
@@ -77,6 +79,18 @@ function resolveProviderMode(
   }
 
   return geminiApiKey ? "gemini" : "mock";
+}
+
+function resolveProviderLabel(mode: SynoxProviderMode): string {
+  switch (mode) {
+    case "gemini":
+      return "Gemini";
+    case "off":
+      return "Off";
+    case "mock":
+    default:
+      return "Mock";
+  }
 }
 
 function trimOptional(value: string | undefined): string | undefined {

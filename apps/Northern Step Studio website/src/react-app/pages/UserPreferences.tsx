@@ -236,7 +236,7 @@ export default function UserPreferences() {
                     id="currentPassword"
                     title="Current Password"
                     type="password"
-                    autoComplete="current-password"
+                    autoComplete="off"
                     value={passwordForm.currentPassword}
                     onChange={(event) =>
                       setPasswordForm((current) => ({ ...current, currentPassword: event.target.value }))
@@ -255,7 +255,7 @@ export default function UserPreferences() {
                     id="newPassword"
                     title="New Password"
                     type="password"
-                    autoComplete="new-password"
+                    autoComplete="off"
                     value={passwordForm.newPassword}
                     onChange={(event) =>
                       setPasswordForm((current) => ({ ...current, newPassword: event.target.value }))
@@ -273,7 +273,7 @@ export default function UserPreferences() {
                     id="confirmPassword"
                     title="Confirm New Password"
                     type="password"
-                    autoComplete="new-password"
+                    autoComplete="off"
                     value={passwordForm.confirmPassword}
                     onChange={(event) =>
                       setPasswordForm((current) => ({ ...current, confirmPassword: event.target.value }))

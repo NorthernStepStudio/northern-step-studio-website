@@ -20,10 +20,10 @@ export const STUDIO_PROJECTS: ReadonlyArray<StudioProjectDefinition> = [
     linkedPreset: "neuromoves",
   },
   {
-    id: "responseos",
-    title: "ResponseOS",
+    id: "synox",
+    title: "Synox",
     description: "Automation, workflow, and local service business systems.",
-    linkedPreset: "responseos",
+    linkedPreset: "synox",
   },
   {
     id: "noobs-investing",
@@ -33,7 +33,7 @@ export const STUDIO_PROJECTS: ReadonlyArray<StudioProjectDefinition> = [
   },
   {
     id: "general-nss-studio",
-    title: "General NSS Studio",
+    title: "General NStep AI Studio",
     description: "Studio-wide planning, prioritization, and operations.",
     linkedPreset: "general-nss-studio",
   },

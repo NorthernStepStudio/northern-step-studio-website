@@ -1,0 +1,21 @@
+name: Workspace Hygiene Check
+
+on:
+  pull_request:
+  merge_group:
+
+jobs:
+  hygiene:
+    runs-on: ubuntu-latest
+    name: Enforce Workspace Hygiene
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Run hygiene check
+        run: npm run hygiene:check

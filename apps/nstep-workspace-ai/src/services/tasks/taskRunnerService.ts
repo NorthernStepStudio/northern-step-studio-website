@@ -82,7 +82,7 @@ async function findNearestPackageDirectory(): Promise<string> {
   const startPath = activeFilePath ? path.dirname(activeFilePath) : workspaceRoot;
 
   if (!startPath) {
-    throw new Error("Open a workspace or file before running NSS workspace tasks.");
+    throw new Error("Open a workspace or file before running Matterhorn workspace tasks.");
   }
 
   let currentDirectory = startPath;
@@ -100,5 +100,5 @@ async function findNearestPackageDirectory(): Promise<string> {
     }
   }
 
-  throw new Error("NSS could not find a package.json above the current file or workspace root.");
+  throw new Error("Matterhorn could not find a package.json above the current file or workspace root.");
 }

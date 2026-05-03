@@ -1,0 +1,23 @@
+name = "northern-step-studio-website"
+main = "src/worker/index.ts"
+compatibility_date = "2025-06-17"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = false
+keep_vars = true
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+not_found_handling = "none"
+run_worker_first = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "northern-step-studio-website"
+database_id = "73c9a931-0d76-4ecc-b32d-c1293ce5579c"
+
+[observability]
+enabled = true
+
+[vars]
+MGBOARD_URL = "https://nstep-mgboard.pages.dev"

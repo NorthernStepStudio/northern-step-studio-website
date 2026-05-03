@@ -7,7 +7,7 @@ export function resolvePresetSelection(
   autoSuggest: boolean,
 ): string {
   if (currentPresetId) {
-    return currentPresetId;
+    return currentPresetId === "responseos" ? "synox" : currentPresetId;
   }
 
   if (autoSuggest && workspacePath) {

@@ -43,7 +43,7 @@ function registerNssCommands(context, host) {
                 await command.run(host);
             }
             catch (error) {
-                await vscode.window.showErrorMessage(error instanceof Error ? error.message : "NSS command failed.");
+                await vscode.window.showErrorMessage(error instanceof Error ? error.message : "Matterhorn command failed.");
             }
         }));
     }

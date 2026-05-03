@@ -1,0 +1,37 @@
+1331:const VC=document.getElementById('vfxc'),VX=VC.getContext('2d');
+1332:let parts=[];
+1368:const TIER_NAMES = ['','Common','Uncommon','Rare','Epic','Legendary'];
+1369:const TIER_COLORS = ['','#aaaaaa','#44ff88','#44aaff','#aa44ff','#ffd700'];
+1371:const CLS={
+1383:const WEAPON_TIERS = [
+1426:const ARMOR_TIERS = [
+1437:const RING_TIERS = [
+1459:const CONSUMABLES = [
+1470:const MATERIALS = {
+1494:const BLUEPRINTS = [
+1547:const ALCH_RECIPES = [
+1603:const ENEMIES=[
+1616:const PERKS=[
+1629:const EPITAPHS=["Died doing what they loved: dying.","Killed by a rat. A CONFUSED RAT.","Inventory was full of trash.","Left a chest unopened. The horror.","Gone too soon. Also too slowly.","Touched grass. It was a trap."];
+1631:const MW=64,MH=40,SK='doomed_v4';
+1632:let customSprite=null,CI=null,openPanel=null,dpIv=null;
+1633:let fuseSlot=[null,null],fuseSelectTarget=0;
+1634:let zoomLevel=3; // default — 28px cells on 64×40 map gives good map coverage
+1635:let lastMoveAt=0;
+1636:const ZOOM_STEPS=[14,18,22,28,34,42,52];
+1637:let G={};
+1750:const PORTAL_ZONES = {
+2293:const HERO_SVGS = {
+2414:const MONSTER_SVGS = {
+2665:let showPortalLabels=true;
+2674:const ZONE_BODY_CLASSES=['zone-N','zone-S','zone-E','zone-W'];
+2696:const PORTAL_DEFS={
+3265:const TIER_NAMES_EXT = ['','Common','Uncommon','Rare','Epic','Legendary','Transcendent','Mythic','GODLIKE'];
+3266:const TIER_COLORS_EXT = ['','#aaaaaa','#44ff88','#44aaff','#aa44ff','#ffd700','#ff6600','#ff00cc','#ffffff'];
+3267:const TIER_FUSION_COST = [0, 50, 80, 120, 200, 350, 600, 1000, 2000]; // cost to fuse at each tier
+4335:const DOOM_THRESHOLDS = [
+4344:const ALL_MODIFIERS = [
+4551:const AFFIXES = [
+4605:const META_SK='doomed_meta_v1';
+4607:const META_UPGRADES = [
+4756:let SC=null;

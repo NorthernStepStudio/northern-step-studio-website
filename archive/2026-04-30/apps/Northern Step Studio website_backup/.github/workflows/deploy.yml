@@ -1,0 +1,52 @@
+name: Cloudflare Production Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: northern-step-studio-production
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to Cloudflare Workers
+    timeout-minutes: 20
+    environment:
+      name: production
+      url: https://northernstepstudio.com
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          VITE_BACKEND_URL: https://northernstepstudio.com
+          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+
+      - name: Deploy to Cloudflare
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --keep-vars
+
+      - name: Verify production release
+        run: npm run verify:release -- --base-url https://northernstepstudio.com --wait-ms 10000 --retries 12 --retry-delay-ms 5000

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
-  Mail,
+
   ArrowLeft,
   Shield,
   KeyRound
@@ -15,14 +15,14 @@ type LoginProps = {
   mode?: "user" | "admin";
 };
 
-export default function Login({ mode = "admin" }: LoginProps) {
+export default function Login({}: LoginProps) {
   const { t } = useTranslation();
   const { user, isPending, loginWithPassword } = useAuth();
   const navigate = useNavigate();
-  const isAdminMode = true; // Hardcoded to admin/owner mode
+
 
   const [credentials, setCredentials] = useState({
-    email: "admin@northernstepstudio.com",
+    email: "",
     password: "",
   });
   const [isPasswordLoading, setIsPasswordLoading] = useState(false);
@@ -113,35 +113,42 @@ export default function Login({ mode = "admin" }: LoginProps) {
             </div>
 
             <form onSubmit={handlePasswordAuth} autoComplete="off" className="space-y-4">
+              {/* Browser autofill trap */}
+              <input type="text" name="email" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" title="Autofill Trap" />
+              <input type="password" name="password" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" title="Autofill Trap" />
+
               <div>
-                <label htmlFor="email" className="block text-xs font-black uppercase tracking-wide mb-2 opacity-50">
+                <label htmlFor="master-identity" className="block text-xs font-black uppercase tracking-wide mb-2 opacity-50">
                   Email Address
                 </label>
                 <input
-                  id="email"
+                  id="master-identity"
+                  name="master-identity"
                   type="email"
                   autoComplete="off"
                   value={credentials.email}
-                  disabled
-                  className="w-full rounded-2xl border border-border bg-background/50 px-4 py-3 text-sm outline-none transition-colors text-muted-foreground cursor-not-allowed"
+                  onChange={(event) =>
+                    setCredentials((current) => ({ ...current, email: event.target.value }))
+                  }
+                  className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-accent"
                 />
               </div>
 
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <label htmlFor="password" className="block text-xs font-black uppercase tracking-wide">
+                  <label htmlFor="master-key" className="block text-xs font-black uppercase tracking-wide">
                     Master Password
                   </label>
                 </div>
                 <input
-                  id="password"
+                  id="master-key"
                   type="password"
-                  autoComplete="current-password"
+                  autoComplete="new-password"
                   value={credentials.password}
                   onChange={(event) =>
                     setCredentials((current) => ({ ...current, password: event.target.value }))
                   }
-                  placeholder="••••••••"
+                  name="master-key"
                   className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-accent"
                   required
                   autoFocus

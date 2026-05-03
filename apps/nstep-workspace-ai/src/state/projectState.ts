@@ -7,7 +7,7 @@ export function resolveStudioProjectSelection(
   autoSuggest: boolean,
 ): string {
   if (currentProjectId) {
-    return currentProjectId;
+    return currentProjectId === "responseos" ? "synox" : currentProjectId;
   }
 
   if (autoSuggest && workspacePath) {

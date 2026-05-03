@@ -69,7 +69,7 @@ async function discoverOperationalConfig() {
             }
         }
         catch (err) {
-            console.error(`NSS: Operational discovery failed for ${pattern}`, err);
+            console.error(`Matterhorn: Operational discovery failed for ${pattern}`, err);
         }
     }
     return configs;

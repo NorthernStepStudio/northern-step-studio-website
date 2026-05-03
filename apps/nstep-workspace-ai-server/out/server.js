@@ -154,7 +154,7 @@ async function listenOnPort(server, port, host) {
     });
     const address = server.address();
     if (!address || typeof address === "string") {
-        throw new Error("Could not determine NSS server port.");
+        throw new Error("Could not determine Matterhorn server port.");
     }
     return address.port;
 }
@@ -164,14 +164,14 @@ function isAddressInUseError(error) {
 function createListenError(port, host, error, fallbackAttempted) {
     if (isAddressInUseError(error)) {
         const detail = fallbackAttempted
-            ? `NSS Workspace AI could not start because ${host}:${port} is already in use and no free fallback port was available.`
-            : `NSS Workspace AI could not start because ${host}:${port} is already in use. Another server may already be running.`;
+            ? `Matterhorn could not start because ${host}:${port} is already in use and no free fallback port was available.`
+            : `Matterhorn could not start because ${host}:${port} is already in use. Another server may already be running.`;
         return new Error(detail, { cause: error });
     }
     const message = error instanceof Error ? error.message : "Unknown listen failure.";
     const prefix = fallbackAttempted
-        ? `NSS Workspace AI could not start after falling back from ${host}:${port}`
-        : `NSS Workspace AI could not start on ${host}:${port}`;
+        ? `Matterhorn could not start after falling back from ${host}:${port}`
+        : `Matterhorn could not start on ${host}:${port}`;
     return new Error(`${prefix}: ${message}`, { cause: error instanceof Error ? error : undefined });
 }
 //# sourceMappingURL=server.js.map

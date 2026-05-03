@@ -1,0 +1,257 @@
+﻿/* Doom meta button */
+#title-meta-btn{background:#08001a;border:2px solid #aa33ff;color:#aa33ff;font-family:'Press Start 2P',monospace;font-size:8px;padding:8px 16px;cursor:pointer;width:100%;max-width:460px;margin-bottom:-4px;border-radius:4px;}
+#title-meta-btn:hover{background:#aa33ff;color:var(--bg);}
+#title-save-btn{background:#071217;border:2px solid #2ca8c6;color:#5de7ff;}
+#title-save-btn:hover{background:#28a0bf;color:#041018;}
+
+/* ══════════════════════════════
+   FLOATING LAYOUT — all controls over the map
+   Map gets 100% of space below the HUD strip
+══════════════════════════════ */
+
+/* Game screen: HUD on top, map fills the rest */
+#game-screen{display:none;position:fixed;inset:0;flex-direction:column;background:var(--bg);overflow:hidden;}
+
+/* Map fills everything below HUD/doom/mod bars */
+#map-wrap{
+  flex:1;overflow:hidden;position:relative;
+  box-shadow:inset 0 0 60px rgba(0,0,0,.92), inset 0 -60px 120px rgba(0,0,0,.55);
+  background:
+    radial-gradient(160% 120% at 50% 45%, #101224 0%, #070913 50%, #03040b 100%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.01), rgba(255,255,255,.01) 1px, transparent 1px, transparent 3px);
+  min-height:0;
+}
+
+/* ── D-PAD ── fixed bottom-right, sized so bottom row is always on screen */
+#dpad{
+  position:fixed;
+  top:auto;
+  bottom:calc(env(safe-area-inset-bottom,0px) + 6px);
+  right:6px;
+  display:grid;
+  grid-template-columns:repeat(3,44px);
+  grid-template-rows:repeat(3,44px);
+  gap:2px;
+  z-index:40;
+  background:rgba(0,0,0,.5);
+  border-radius:10px;
+  padding:4px;
+  backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);
+}
+.dp{
+  background:rgba(22,22,50,.9);
+  border:1.5px solid rgba(70,70,140,.7);
+  font-size:17px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;user-select:none;border-radius:6px;
+  transition:all .08s;
+  touch-action:manipulation;
+}
+.dp:active{background:rgba(50,50,100,.98);border-color:var(--gold);transform:scale(.87);}
+.dp.dpc{background:rgba(10,10,22,.8);border-color:rgba(40,40,80,.5);font-size:13px;color:var(--gray);}
+.dp.dpe{background:transparent;border:none;pointer-events:none;}
+
+/* ── ACTION BAR ── bottom-left vertical stack */
+#action-bar{
+  position:fixed;
+  bottom:calc(env(safe-area-inset-bottom,0px) + 6px);
+  left:4px;
+  top:auto;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  z-index:42;
+}
+.abtn{
+  background:rgba(10,10,26,.92);
+  border:1.5px solid rgba(44,44,110,.8);
+  color:var(--white);
+  font-family:'Press Start 2P',monospace;
+  font-size:4.5px;
+  padding:5px 3px;
+  cursor:pointer;
+  width:50px;
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  border-radius:5px;
+  transition:all .1s;
+  backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);
+  letter-spacing:-.2px;
+  touch-action:manipulation;
+}
+.abtn .ai{font-size:13px;line-height:1;}
+.abtn:active{background:rgba(24,24,56,.98);border-color:var(--gold);transform:scale(.92);}
+.abtn.highlight{border-color:var(--gold);color:var(--gold);}
+
+/* ── QUICKSLOTS ── fixed top-right, just below HUD */
+#qs-float{
+  position:fixed;
+  top:42px;
+  right:4px;
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+  z-index:40;
+}
+#qs-float .qs-slot{
+  width:36px;height:36px;
+  background:rgba(8,8,24,.92);
+  border:1.5px solid rgba(60,60,120,.7);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;cursor:pointer;position:relative;border-radius:5px;
+  transition:all .1s;
+  backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+  touch-action:manipulation;
+}
+#qs-float .qs-slot:active{transform:scale(.88);}
+#qs-float .qs-slot.qs-hp{border-color:rgba(150,0,30,.9);}
+#qs-float .qs-slot.qs-mp{border-color:rgba(0,30,150,.9);}
+#qs-float .qs-slot.qs-empty{opacity:.22;cursor:default;}
+#qs-float .qs-cnt{position:absolute;bottom:1px;right:2px;font-size:5px;color:var(--gold);font-family:'Press Start 2P',monospace;line-height:1;}
+#qs-float .qs-key{position:absolute;top:1px;left:2px;font-size:4px;color:#666;}
+#qs-wpn-float{
+  display:none;
+  position:fixed;
+  top:42px;
+  left:4px;
+  z-index:40;
+  background:rgba(6,6,18,.92);
+  border:1.5px solid rgba(255,150,60,.35);
+  border-radius:4px;
+  padding:3px 7px;
+  max-width:170px;
+  backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+}
+#qs-wpn-float .qs-wpn{
+  font-family:'VT323',monospace;font-size:14px;color:#ff9944;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  max-width:160px;display:block;
+}
+#qs-wpn-float .qs-atk{font-size:5px;color:var(--cyan);}
+#zoom-float{
+  position:fixed;
+  top:calc(42px + 36px*2 + 3px*2 + 6px);
+  right:4px;
+  display:flex;flex-direction:column;gap:2px;
+  z-index:40;
+}
+.zoom-btn{
+  background:rgba(10,10,28,.88);
+  border:1.5px solid rgba(44,44,110,.6);
+  color:var(--white);font-size:14px;
+  width:36px;height:30px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;border-radius:4px;
+  backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+  font-family:monospace;font-weight:bold;
+  touch-action:manipulation;
+}
+.zoom-btn:active{border-color:var(--gold);background:rgba(28,28,60,.98);}
+#dbg-labels-btn{
+  position:fixed;
+  top:calc(42px + 36px*2 + 3px*2 + 28px*2 + 10px);
+  left:4px;
+  background:rgba(0,0,0,.6);border:1px solid #2a2a2a;color:#333;
+  font-family:'VT323',monospace;font-size:10px;
+  padding:1px 4px;cursor:pointer;z-index:40;border-radius:3px;
+}
+
+/* ── MINIMAP ── top-left below HUD; centered around hero via renderMM window */
+#mmwrap{
+  position:fixed;
+  top:calc(env(safe-area-inset-top,0px) + 78px);
+  left:4px;
+  z-index:48;
+  display:flex;flex-direction:column;
+  pointer-events:all;
+}
+#mm-toggle{
+  background:rgba(6,6,18,.92);
+  border:1px solid #1c1c38;
+  border-bottom:none;
+  border-radius:4px 4px 0 0;
+  padding:2px 7px;
+  font-size:5px;
+  color:var(--cyan);
+  cursor:pointer;
+  font-family:'Press Start 2P',monospace;
+  user-select:none;
+  width:fit-content;
+  touch-action:manipulation;
+}
+#mm-toggle:hover{color:var(--gold);}
+#minimap-inner{
+  background:rgba(4,4,12,.96);
+  border:1px solid #1c1c38;
+  border-radius:0 4px 0 0;
+  padding:3px;
+  overflow:hidden;
+  width:74px;
+  height:58px;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+  transition:max-height .2s,padding .2s,border-width .2s;
+}
+#minimap-inner::-webkit-scrollbar{width:0;height:0;display:none;}
+#minimap{overflow:hidden;}
+#minimap-inner.collapsed{max-height:0;padding:0;border-width:0;overflow:hidden;}
+
+@media (max-width: 414px){
+  #dpad{
+    grid-template-columns:repeat(3,48px);
+    grid-template-rows:repeat(3,48px);
+    gap:3px;
+    right:4px;
+  }
+  .dp{font-size:18px;}
+  #action-bar{left:2px;bottom:calc(env(safe-area-inset-bottom,0px) + 4px);}
+  .abtn{
+    width:56px;
+    min-height:36px;
+    font-size:5px;
+  }
+  .abtn .ai{font-size:14px;}
+  #qs-float .qs-slot{width:40px;height:40px;font-size:18px;}
+  #zoom-float{top:calc(42px + 40px*2 + 3px*2 + 8px);}
+  .zoom-btn{width:40px;height:34px;font-size:16px;}
+  #mmwrap{top:calc(env(safe-area-inset-top,0px) + 82px);}
+}
+
+@media (min-width: 415px) and (max-width: 768px){
+  #dpad{
+    grid-template-columns:repeat(3,52px);
+    grid-template-rows:repeat(3,52px);
+    gap:3px;
+  }
+  .dp{font-size:20px;}
+  .abtn{
+    width:62px;
+    min-height:38px;
+    font-size:5.5px;
+  }
+  .abtn .ai{font-size:15px;}
+  #qs-float .qs-slot{width:44px;height:44px;font-size:20px;}
+  #zoom-float{top:calc(42px + 44px*2 + 3px*2 + 8px);}
+  .zoom-btn{width:44px;height:36px;}
+  #minimap-inner{width:96px;height:74px;}
+}
+
+@media (orientation: landscape) and (max-height: 500px){
+  #action-bar{
+    flex-direction:row;
+    bottom:calc(env(safe-area-inset-bottom,0px) + 4px);
+    left:8px;
+    gap:4px;
+  }
+  .abtn{
+    width:56px;
+    min-height:30px;
+  }
+  #dpad{
+    bottom:calc(env(safe-area-inset-bottom,0px) + 4px);
+    right:8px;
+  }
+  #minimap-inner{width:88px;height:62px;}
+}
+

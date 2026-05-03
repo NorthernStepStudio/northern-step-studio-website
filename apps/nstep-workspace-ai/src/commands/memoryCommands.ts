@@ -10,7 +10,7 @@ export function registerMemoryCommands(context: vscode.ExtensionContext, store: 
       const editor = requireActiveEditor();
       const selection = getTrimmedSelection(editor);
       if (!selection) {
-        vscode.window.showWarningMessage("Select some text for NSS to remember.");
+        vscode.window.showWarningMessage("Select some text for Matterhorn to remember.");
         return;
       }
 
@@ -33,7 +33,7 @@ export function registerMemoryCommands(context: vscode.ExtensionContext, store: 
         });
       });
 
-      vscode.window.showInformationMessage(`NSS remembered this selection from ${toWorkspaceRelativePath(editor.document.uri)}.`);
+      vscode.window.showInformationMessage(`Matterhorn remembered this selection from ${toWorkspaceRelativePath(editor.document.uri)}.`);
     }),
 
     vscode.commands.registerCommand("nssWorkspaceAi.showMemories", async () => {
@@ -41,7 +41,7 @@ export function registerMemoryCommands(context: vscode.ExtensionContext, store: 
       const memories = state.persistentMemories.filter(m => m.projectId === state.studioProjectId);
 
       if (memories.length === 0) {
-        vscode.window.showInformationMessage("NSS hasn't remembered anything for this project yet.");
+        vscode.window.showInformationMessage("Matterhorn hasn't remembered anything for this project yet.");
         return;
       }
 
@@ -70,7 +70,7 @@ export function registerMemoryCommands(context: vscode.ExtensionContext, store: 
         await store.update((draft) => {
           draft.persistentMemories = draft.persistentMemories.filter(m => m.id !== picked.memory.id);
         });
-        vscode.window.showInformationMessage("NSS has forgotten that memory.");
+        vscode.window.showInformationMessage("Matterhorn has forgotten that memory.");
       }
     })
   );

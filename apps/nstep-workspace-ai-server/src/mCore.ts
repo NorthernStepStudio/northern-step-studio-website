@@ -1,6 +1,7 @@
 export {
   createConsoleLogger,
   createResponseOsRuntime,
+  createResponseOsRuntime as createSynoxRuntime,
   createMCoreRuntime,
   type NssAskRequestPayload,
   type NssAskResponse,
@@ -9,6 +10,8 @@ export {
   type MCoreRuntimeConfig,
   type NssModeId,
   type ResponseOsProviderMode,
+  type ResponseOsProviderMode as SynoxProviderMode,
   type ResponseOsRuntimeConfig,
+  type ResponseOsRuntimeConfig as SynoxRuntimeConfig,
   runAgent,
 } from "../../../packages/m-core/out/index.js";

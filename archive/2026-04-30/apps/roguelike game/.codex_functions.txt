@@ -1,0 +1,145 @@
+1333:function rzV(){VC.width=window.innerWidth;VC.height=window.innerHeight;}
+1335:function spPt(x,y,c,n,o={}){for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,sp=(o.speed||3)+Math.random()*(o.spread||4);parts.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-(o.up||0),life:1,decay:o.decay||(0.04+Math.random()*0.04),c,size:o.size||(2+Math.random()*4),grav:o.grav!==undefined?o.grav:.15,ch:o.ch||null});}}
+1336:function spSl(x,y,c='#fff'){parts.push({x,y,type:'slash',c,life:1,decay:.08,angle:Math.random()*Math.PI,radius:28+Math.random()*18,vx:0,vy:0,grav:0,size:3});}
+1337:function spRi(x,y,c){parts.push({x,y,type:'ring',c,life:1,decay:.05,radius:5,vx:0,vy:0,grav:0,size:3});}
+1338:function spBo(fx,fy,tx,ty,c='#44aaff'){for(let i=0;i<12;i++){const t=i/12;parts.push({x:fx+(tx-fx)*t+(Math.random()-.5)*20,y:fy+(ty-fy)*t+(Math.random()-.5)*20,type:'bolt',c,life:1,decay:.12+Math.random()*.06,vx:(Math.random()-.5)*2,vy:(Math.random()-.5)*2,grav:0,size:2+Math.random()*3});}}
+1351:function sfx(c,d=200){const f=document.getElementById('sflash');f.style.background=c;f.style.opacity='.35';setTimeout(()=>f.style.opacity='0',d*.3);}
+1352:function gctr(s){const el=document.getElementById(s==='player'?'cpwrap':'cewrap');const r=el.getBoundingClientRect();return{x:r.left+r.width/2,y:r.top+r.height/2};}
+1353:function hfl(s){const el=document.getElementById(s==='player'?'cpwrap':'cewrap');el.classList.remove('hflash');void el.offsetWidth;el.classList.add('hflash');setTimeout(()=>el.classList.remove('hflash'),200);}
+1354:function doVfx(type){
+1448:function makeItem(type, tier0, subIdx=0) {
+1578:function makeMaterial(id){
+1584:function rollMaterialDrop(floor, isBoss=false){
+1642:function adjustZoom(dir){
+1646:function getCellSize(){return ZOOM_STEPS[zoomLevel];}
+1651:function loadSprite(ev){const f=ev.target.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{customSprite=e.target.result;if(G.player){rhS();renderMap();}};r.readAsDataURL(f);}
+1652:function rhS(){
+1662:function updCS(){
+1676:function saveG(){try{localStorage.setItem(SK,JSON.stringify({G,customSprite,zoomLevel}));}catch(e){}}
+1677:function loadGame(){
+1702:function checkSave(){try{return JSON.parse(localStorage.getItem(SK))?.G?.floor||null;}catch(e){return null;}}
+1707:function scaleEnemy(tmpl, floor, playerLevel){
+1806:function zonePortalEntity(zoneId){return 'portal_'+zoneId;}
+1808:function generateMap(){
+1919:function generateZoneMap(zoneId){
+2013:function freeTileZ(zcells,zw,zh,rooms,excluded){
+2026:function freeTile(rm,excluded){
+2041:function placeEntities(){
+2148:function placeZoneEntities(zoneId){
+2267:function getCells(){return G.inZone?G.map.zones[G.inZone].cells:G.map.cells;}
+2268:function getMapW(){return G.inZone?G.map.zones[G.inZone].w:MW;}
+2269:function getMapH(){return G.inZone?G.map.zones[G.inZone].h:MH;}
+2271:function updateVision(px,py){
+2400:function getHeroSVG(classKey){
+2406:function heroImgTag(classKey, sz=40){
+2452:function getMonsterSprite(en){
+2490:function enemyGlowColor(en, zoneId){
+2501:function buildMonsterHTML(en, cs, zoneId){
+2523:function cellSeed(x,y){return((x*73856093)^(y*19349663))>>>0;}
+2526:function getCellDeco(x,y,zoneId,cellType){
+2589:function isCellAlt(x,y){return((x+y)%2===0)&&((cellSeed(x,y)%5)<2);}
+2591:function isFloorCell(cells,x,y,cw,ch){
+2595:function buildRoomGrid(rooms,w,h){
+2606:function getRoomStyleIndex(roomIdx,zoneId){
+2611:function floorTopology(cells,x,y,cw,ch){
+2629:function wallTopology(cells,x,y,cw,ch){
+2643:function pickEnvProp(x,y,zoneId,roomIdx,roomStyle,shape,room){
+2666:function togglePortalLabels(){
+2675:function applyZoneTheme(zoneId){
+2703:function buildPortalHTML(entity,cs,px,py,playerX,playerY){
+2721:function renderMap(){
+2866:function renderMM(){
+2899:function cntPot(t){return G.inventory.filter(i=>t==='hp'?i.isHp:i.isMp).length;}
+2901:function updateHUD(){
+2955:function tierLabel(t){return`<span class="${'tier-'+t}">[${TIER_NAMES[t]||'T'+t}]</span>`;}
+2957:function rInv(){
+2995:function showMatInfo(id){
+3001:function rStats(){
+3024:function generateShopStock(){
+3054:function openShop(){
+3136:function buyItemByRef(it, cost){
+3155:function buyItem(idx,overrideCost){
+3161:function buyInventoryExpand(){
+3170:function sellItem(it){
+3185:function openFuseSelect(slotNum){
+3201:function closeFuseSelect(){document.getElementById('fuse-select').style.display='none';}
+3203:function setFuseSlot(n,it){
+3212:function checkFusionResult(){
+3269:function getFusionResult(a,b){
+3351:function doFusion(){
+3421:function openFusePanel(){
+3425:function togglePanel(n){
+3438:function closeAllPanels(){
+3447:function quickUse(t){
+3460:function enterPortal(zoneId){
+3506:function exitPortal(){
+3526:function showZoneFlash(zdef){
+3540:function handleMove(dx,dy){
+3594:function doWait(){
+3603:function tryPickup(){
+3622:function toggleMinimap(){
+3628:function dpPress(dx,dy){
+3633:function dpRelease(){
+3640:function doETs(){
+3679:function startCombat(en){
+3711:function updCUI(){
+3723:function clog(tx,col='#e8e8f0'){const lg=document.getElementById('clog'),d=document.createElement('div');d.style.color=col;d.textContent=tx;lg.appendChild(d);lg.scrollTop=lg.scrollHeight;}
+3725:function ca(action){
+3774:function useSkill(fn){
+3793:function eAtk(){
+3806:function defeatEnemy(en,fc){
+3881:function endCombat(){G.inCombat=false;G.currentEnemy=null;document.getElementById('combatov').classList.remove('active');updateHUD();renderMap();}
+3886:function pickupItem(it){
+3922:function fmtSt(it){
+3940:function showIP(it){
+3965:function closeIP(){document.getElementById('itempop').classList.remove('active');CI=null;}
+3966:function sellItemFromPopup(it){if(!it)return;if(it===G.equippedWeapon||it===G.equippedArmor||it===G.equippedRing){addLog('Unequip before selling!','info');return;}const p=Math.floor((it.value||20)*.5);G.player.gold+=p;G.inventory.splice(G.inventory.indexOf(it),1);addLog(`💸 Sold ${it.emoji} ${it.name} for ${p}g`,'shop');spPt(window.innerWidth*.5,window.innerHeight*.6,'#ffd700',8,{speed:3,spread:4,grav:.1,decay:.05,ch:'💰'});closeIP();updateHUD();saveG();}
+3967:function sendToFuse(it){if(!it)return;closeIP();setFuseSlot(1,it);togglePanel('fuse');}
+3969:function useItem(it){
+3984:function applyEffect(it){
+4009:function dropItem(it){
+4027:function showLU(){
+4062:function applyPerk(pk){
+4078:function descend(){
+4126:function addLog(tx,type='info'){const l=document.getElementById('log-list'),d=document.createElement('div');d.className=`le ${type}`;d.textContent=tx;l.appendChild(d);while(l.children.length>100)l.removeChild(l.firstChild);if(openPanel==='log')l.scrollTop=l.scrollHeight;}
+4131:function spawnDmg(v,col='#ff4444',isH=false){
+4141:function gameOver(killer){
+4152:function showWin(){showRunSummary(true);}
+4157:function openBlacksmith(){
+4197:function getCatEmoji(cat){
+4201:function countMat(id){
+4205:function getMissingMats(bp){
+4214:function canCraftBP(bp){
+4218:function craftItem(bpId){
+4249:function openAlchemist(){
+4276:function renderRecipe(r,p){
+4298:function brewRecipe(recipeId){
+4362:function getModEffects(){
+4372:function getDoomLevel(){
+4381:function addCorruption(amount){
+4396:function triggerDoomLevel(idx){
+4424:function showModifierBanner(mod){
+4434:function updateDoomBar(){
+4446:function updateModBar(){
+4460:function openDoomPanel(){
+4515:function applyStatus(target, status, stacks=1){
+4520:function tickStatusEnemy(en){
+4529:function tickStatusPlayer(){
+4536:function getStatusBadges(entity){
+4563:function rollAffix(it){
+4576:function getAffixBadge(it){
+4582:function applyAffixOnHit(attacker, target, dmg){
+4595:function applyAffixOnEquip(it, equip=true){
+4618:function loadMeta(){
+4621:function saveMeta(meta){
+4624:function getMetaBonus(){
+4633:function getUpgradeCost(u, currentLevel){
+4637:function openMetaScreen(){
+4641:function closeMetaScreen(){
+4644:function renderMetaScreen(){
+4687:function calcRunShards(){
+4712:function showRunSummary(won){
+4757:function selectClass(el){document.querySelectorAll('.class-card').forEach(c=>c.classList.remove('selected'));el.classList.add('selected');SC=el.dataset.class;document.getElementById('start-btn').disabled=false;}
+4759:function equipDirect(it){
+4764:function startNewGame(){
+4805:function showGS(){

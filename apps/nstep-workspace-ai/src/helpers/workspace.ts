@@ -24,5 +24,9 @@ export function inferStudioProjectIdFromPath(input: string | undefined): string 
 
 function inferIdFromPath(input: string | undefined, knownIds: readonly string[]): string | undefined {
   const normalized = (input ?? "").toLowerCase();
+  if (normalized.includes("responseos")) {
+    return "synox";
+  }
+
   return knownIds.find((id) => normalized.includes(id));
 }

@@ -7,7 +7,7 @@ async function main(): Promise<void> {
   const portMessage =
     config.port !== 0 && started.port !== config.port ? ` (requested ${config.port} was busy)` : "";
   console.log(
-    `NSS Workspace AI server listening on http://127.0.0.1:${started.port}${portMessage} (${describeProvider(config)})`,
+    `Matterhorn server listening on http://127.0.0.1:${started.port}${portMessage} (${describeProvider(config)})`,
   );
 }
 

@@ -2,9 +2,9 @@ import { Context } from "hono";
 import { type ChatMessage } from "./studio-supervisor.ts";
 import { getDb, type Env } from "./db.ts";
 import { type AppUser } from "./auth.ts";
-import { routeMessage } from "../../packages/response-os/router.ts";
-import { runStudioGraph } from "../../packages/response-os/graph/index.ts";
-import type { AgentInput, AgentOutput } from "../../packages/response-os/agents/types.ts";
+import { routeMessage } from "../../packages/synox/router.ts";
+import { runStudioGraph } from "../../packages/synox/graph/index.ts";
+import type { AgentInput, AgentOutput } from "../../packages/synox/agents/types.ts";
 
 export interface ChatResponse {
   answer: string;

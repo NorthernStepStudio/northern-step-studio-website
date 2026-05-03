@@ -5,8 +5,8 @@ exports.NSS_PRESETS = [
     { id: "nexusbuild", title: "NexusBuild" },
     { id: "provly", title: "ProvLy" },
     { id: "neuromoves", title: "Workspace Ops" },
-    { id: "responseos", title: "ResponseOS" },
+    { id: "synox", title: "Synox" },
     { id: "noobs-investing", title: "NooBS Investing" },
-    { id: "general-nss-studio", title: "General NSS Studio" },
+    { id: "general-nss-studio", title: "General NStep AI Studio" },
 ];
 //# sourceMappingURL=presets.js.map

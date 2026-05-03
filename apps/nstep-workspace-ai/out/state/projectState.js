@@ -5,7 +5,7 @@ const defaults_js_1 = require("../config/defaults.js");
 const workspace_js_1 = require("../helpers/workspace.js");
 function resolveStudioProjectSelection(currentProjectId, workspacePath, autoSuggest) {
     if (currentProjectId) {
-        return currentProjectId;
+        return currentProjectId === "responseos" ? "synox" : currentProjectId;
     }
     if (autoSuggest && workspacePath) {
         return (0, workspace_js_1.inferStudioProjectIdFromPath)(workspacePath);

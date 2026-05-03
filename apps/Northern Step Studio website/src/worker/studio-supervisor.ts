@@ -915,7 +915,7 @@ function collectFallbackSources(
 
 
   for (const lane of decision?.selectedLanes ?? []) {
-    const expert = getStudioDomainByLane(lane);
+
 
 
     if (lane === "consumer_utility") {

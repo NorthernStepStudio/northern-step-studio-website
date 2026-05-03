@@ -212,8 +212,8 @@ export const CATALOG_APPS: CatalogApp[] = [
       { text: "Meta upgrades system", completed: true },
       { text: "Web deployment", completed: true }
     ],
-    logo: "/games/nexus-roguelike/smoke_title.png",
-    screenshots: ["/games/nexus-roguelike/smoke_after_start.png"],
+    logo: "/games/nexus-roguelike/assets/doomed_logo.png",
+    screenshots: ["/games/nexus-roguelike/assets/doomed_logo.png"],
     cta_url: "/games/doomed",
     video_url: null,
     features: [

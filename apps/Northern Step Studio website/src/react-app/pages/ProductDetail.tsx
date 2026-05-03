@@ -1,8 +1,8 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useLayoutEffect } from "react";
 import { useParams, Link } from "react-router";
 import { useTranslation } from "react-i18next";
-import { 
-  ArrowLeft, ExternalLink, Play, X, ChevronLeft, ChevronRight, Check, 
+import {
+  ArrowLeft, ExternalLink, Play, X, ChevronLeft, ChevronRight, Check,
   Smartphone, Monitor, Globe, Download, Zap, Star, ArrowRight,
   Calendar, Code2, Target, Clock, Hammer, Rocket, Circle
 } from "lucide-react";
@@ -23,6 +23,22 @@ export default function ProductDetail() {
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const fallbackApp = slug ? getCatalogApp(slug) : null;
   const app = remoteApp || fallbackApp;
+  const progressPercent = app?.progressPercent || 0;
+
+  const progressRef1 = useRef<HTMLDivElement>(null);
+  const progressRef2 = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    if (progressRef1.current) {
+      progressRef1.current.style.width = `${progressPercent}%`;
+      progressRef1.current.setAttribute("aria-valuenow", progressPercent.toString());
+      progressRef1.current.setAttribute("aria-valuemin", "0");
+      progressRef1.current.setAttribute("aria-valuemax", "100");
+    }
+    if (progressRef2.current) {
+      progressRef2.current.style.width = `${progressPercent}%`;
+    }
+  }, [progressPercent]);
   const appLogo = app?.logo || fallbackApp?.logo || null;
   const screenshots = useMemo(() => {
     if (!app) {
@@ -34,18 +50,35 @@ export default function ProductDetail() {
     }
     return app.screenshots || [];
   }, [app, media]);
-  const features = useMemo(
-    () => (app?.features || []),
-    [app]
-  );
-  const progress = useMemo(
-    () => (app?.progress || []),
-    [app]
-  );
+  const translatedName = useMemo(() => t(`apps_data.${slug}.name`, { defaultValue: app?.name }), [t, slug, app?.name]);
+  const translatedTagline = useMemo(() => t(`apps_data.${slug}.tagline`, { defaultValue: app?.tagline }), [t, slug, app?.tagline]);
+  const translatedDescription = useMemo(() => t(`apps_data.${slug}.description`, { defaultValue: app?.description }), [t, slug, app?.description]);
+
+  const features = useMemo(() => {
+    if (!app) return [];
+    const translatedObj = t(`apps_data.${slug}.features`, { returnObjects: true, defaultValue: null });
+    if (translatedObj && typeof translatedObj === 'object') {
+      return Object.values(translatedObj) as string[];
+    }
+    return app.features || [];
+  }, [app, slug, t]);
+
+  const progress = useMemo(() => {
+    if (!app) return [];
+    const translatedObj = t(`apps_data.${slug}.progress`, { returnObjects: true, defaultValue: null });
+    if (translatedObj && typeof translatedObj === 'object') {
+      const values = Object.values(translatedObj) as string[];
+      return values.map((text, i) => ({
+        text,
+        completed: app.progress?.[i]?.completed ?? false
+      }));
+    }
+    return app.progress || [];
+  }, [app, slug, t]);
 
   const trackDownload = async () => {
     if (!app) return;
-    
+
     try {
       await apiFetch("/api/analytics/track", {
         method: "POST",
@@ -53,7 +86,7 @@ export default function ProductDetail() {
         body: JSON.stringify({
           event: "app_download",
           app_id: app.id,
-            app_uuid: "uuid" in app ? app.uuid : null,
+          app_uuid: "uuid" in app ? app.uuid : null,
           user_id: null,
           metadata: JSON.stringify({
             app_name: app.name,
@@ -111,7 +144,6 @@ export default function ProductDetail() {
 
   const completedSteps = progress.filter(p => p.completed).length;
   const totalSteps = progress.length;
-  const progressPercent = app.progressPercent || 0;
   const completedItems = progress.filter((item) => item.completed);
   const missingItems = progress.filter((item) => !item.completed);
 
@@ -165,8 +197,8 @@ export default function ProductDetail() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": app.name,
-    "description": app.description,
+    "name": translatedName,
+    "description": translatedDescription,
     "applicationCategory": app.category,
     "operatingSystem": app.platform === "mobile" ? "iOS, Android" : "Web",
     "offers": {
@@ -198,7 +230,7 @@ export default function ProductDetail() {
         <div className="card-dark-wise mb-6 relative overflow-hidden">
           {/* Background decoration */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-          
+
           <div className="relative z-10">
             <div className="flex flex-col lg:flex-row items-start gap-6 lg:gap-8">
               {/* App Icon */}
@@ -209,13 +241,15 @@ export default function ProductDetail() {
                   <Zap className="w-12 h-12 text-accent" />
                 )}
               </div>
-              
+
               <div className="flex-1">
                 {/* Status & Category Badges */}
                 <div className="flex flex-wrap items-center gap-2 mb-4">
                   <span className={`text-label px-3 py-1.5 rounded-full text-xs inline-flex items-center gap-1.5 border font-black ${getStatusColor()}`}>
                     <StatusIcon className="w-3.5 h-3.5" />
-                    {app.statusLabel || t("common.coming_soon")}
+                    {app.status === "LIVE" ? t("apps.status_filters.live") :
+                      app.status === "COMING_SOON" ? t("apps.status_filters.coming_soon") :
+                        app.statusLabel || t("common.coming_soon")}
                   </span>
                   <span className="text-label px-3 py-1.5 rounded-full bg-secondary border border-border inline-flex items-center gap-1.5 text-xs">
                     {getPlatformIcon()}
@@ -225,19 +259,19 @@ export default function ProductDetail() {
                     {getAppCategoryLabel(app.category)}
                   </span>
                 </div>
-                
+
                 {/* Title with Glitch */}
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tighter mb-3">
-                  <GlitchedText text={app.name} duration={600} />
+                  <GlitchedText text={translatedName || ""} duration={600} />
                 </h1>
-                
+
                 {/* Tagline */}
                 <p className="text-accent font-bold text-sm sm:text-base uppercase tracking-wide mb-3">
-                  {app.tagline}
+                  {translatedTagline}
                 </p>
-                
+
                 <p className="text-sm sm:text-base text-muted-foreground font-normal leading-relaxed max-w-2xl">
-                  {app.description}
+                  {translatedDescription}
                 </p>
               </div>
             </div>
@@ -262,12 +296,14 @@ export default function ProductDetail() {
           {/* Progress Bar */}
           <div className="relative h-3 rounded-full bg-secondary/80 overflow-hidden mb-8">
             <div 
+              ref={progressRef1}
+              role="progressbar"
+              aria-label={t("building.build_progress")}
               className="absolute inset-y-0 left-0 bg-gradient-to-r from-accent to-accent/80 rounded-full transition-all duration-700"
-              style={{ width: `${progressPercent}%` }}
             />
             <div 
+              ref={progressRef2}
               className="absolute inset-y-0 left-0 bg-gradient-to-r from-accent to-transparent rounded-full animate-pulse opacity-50"
-              style={{ width: `${progressPercent}%` }}
             />
           </div>
 
@@ -319,7 +355,7 @@ export default function ProductDetail() {
             <div className="space-y-3">
               <div className="grid gap-3 sm:grid-cols-2 mb-6">
                 <div className="rounded-2xl border border-accent/20 bg-accent/5 p-4">
-                  <p className="text-[11px] font-black uppercase tracking-[0.2em] text-accent">What is done</p>
+                  <p className="text-[11px] font-black uppercase tracking-[0.2em] text-accent">{t("building.done_label", { defaultValue: "What is done" })}</p>
                   <ul className="mt-3 space-y-2 text-sm text-foreground">
                     {completedItems.map((item, index) => (
                       <li key={index} className="flex gap-2">
@@ -330,7 +366,7 @@ export default function ProductDetail() {
                   </ul>
                 </div>
                 <div className="rounded-2xl border border-border bg-secondary/30 p-4">
-                  <p className="text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground">What is missing</p>
+                  <p className="text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground">{t("building.missing_label", { defaultValue: "What is missing" })}</p>
                   {missingItems.length > 0 ? (
                     <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
                       {missingItems.map((item, index) => (
@@ -424,10 +460,10 @@ export default function ProductDetail() {
                   onClick={() => openLightbox(index)}
                   className="relative rounded-2xl overflow-hidden border border-border bg-secondary hover:border-accent transition-all group aspect-[9/16] sm:aspect-video shadow-lg hover:shadow-accent/10"
                 >
-                  <img 
-                    src={url} 
-                    alt={`${app.name} screenshot ${index + 1}`} 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                  <img
+                    src={url}
+                    alt={`${app.name} screenshot ${index + 1}`}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-4">
                     <span className="text-xs font-black uppercase bg-accent text-accent-foreground px-3 py-1.5 rounded-full">
@@ -456,10 +492,10 @@ export default function ProductDetail() {
                 const hasTitle = colonIndex > 0 && colonIndex < 80;
                 const title = hasTitle ? feature.substring(0, colonIndex).trim() : null;
                 const description = hasTitle ? feature.substring(colonIndex + 1).trim() : feature;
-                
+
                 return (
-                  <div 
-                    key={index} 
+                  <div
+                    key={index}
                     className="p-5 rounded-2xl bg-gradient-to-br from-secondary to-secondary/50 border border-border hover:border-accent/30 transition-all group"
                   >
                     <div className="flex items-start gap-4">
@@ -518,12 +554,13 @@ export default function ProductDetail() {
 
       {/* Lightbox */}
       {lightboxOpen && screenshots.length > 0 && (
-        <div 
+        <div
           className="fixed inset-0 bg-background/98 backdrop-blur-2xl z-50 flex items-center justify-center p-4"
           onClick={closeLightbox}
         >
           <button
             onClick={closeLightbox}
+            aria-label="Close Lightbox"
             className="absolute top-4 right-4 w-12 h-12 rounded-full bg-secondary border border-border hover:bg-destructive/10 hover:border-destructive hover:text-destructive transition-all flex items-center justify-center z-10"
           >
             <X className="w-6 h-6" />
@@ -533,12 +570,14 @@ export default function ProductDetail() {
             <>
               <button
                 onClick={(e) => { e.stopPropagation(); prevImage(); }}
+                aria-label="Previous Image"
                 className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-secondary border border-border hover:bg-accent/10 hover:border-accent transition-all flex items-center justify-center z-10"
               >
                 <ChevronLeft className="w-6 h-6" />
               </button>
               <button
                 onClick={(e) => { e.stopPropagation(); nextImage(); }}
+                aria-label="Next Image"
                 className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-secondary border border-border hover:bg-accent/10 hover:border-accent transition-all flex items-center justify-center z-10"
               >
                 <ChevronRight className="w-6 h-6" />
@@ -546,7 +585,7 @@ export default function ProductDetail() {
             </>
           )}
 
-          <div 
+          <div
             className="max-w-5xl max-h-[85vh]"
             onClick={(e) => e.stopPropagation()}
           >
@@ -560,9 +599,9 @@ export default function ProductDetail() {
                 <button
                   key={i}
                   onClick={(e) => { e.stopPropagation(); setLightboxIndex(i); }}
-                  className={`w-2.5 h-2.5 rounded-full transition-all ${
-                    i === lightboxIndex ? "bg-accent w-8" : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
-                  }`}
+                  aria-label={`Go to image ${i + 1}`}
+                  className={`w-2.5 h-2.5 rounded-full transition-all ${i === lightboxIndex ? "bg-accent w-8" : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                    }`}
                 />
               ))}
             </div>

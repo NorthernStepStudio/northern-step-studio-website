@@ -43,7 +43,7 @@ function registerMemoryCommands(context, store) {
         const editor = (0, editor_js_1.requireActiveEditor)();
         const selection = (0, editor_js_1.getTrimmedSelection)(editor);
         if (!selection) {
-            vscode.window.showWarningMessage("Select some text for NSS to remember.");
+            vscode.window.showWarningMessage("Select some text for Matterhorn to remember.");
             return;
         }
         const tagsInput = await vscode.window.showInputBox({
@@ -62,12 +62,12 @@ function registerMemoryCommands(context, store) {
                 createdAt: new Date().toISOString(),
             });
         });
-        vscode.window.showInformationMessage(`NSS remembered this selection from ${(0, paths_js_1.toWorkspaceRelativePath)(editor.document.uri)}.`);
+        vscode.window.showInformationMessage(`Matterhorn remembered this selection from ${(0, paths_js_1.toWorkspaceRelativePath)(editor.document.uri)}.`);
     }), vscode.commands.registerCommand("nssWorkspaceAi.showMemories", async () => {
         const state = store.snapshot();
         const memories = state.persistentMemories.filter(m => m.projectId === state.studioProjectId);
         if (memories.length === 0) {
-            vscode.window.showInformationMessage("NSS hasn't remembered anything for this project yet.");
+            vscode.window.showInformationMessage("Matterhorn hasn't remembered anything for this project yet.");
             return;
         }
         const picked = await vscode.window.showQuickPick(memories.map(m => ({
@@ -91,7 +91,7 @@ function registerMemoryCommands(context, store) {
             await store.update((draft) => {
                 draft.persistentMemories = draft.persistentMemories.filter(m => m.id !== picked.memory.id);
             });
-            vscode.window.showInformationMessage("NSS has forgotten that memory.");
+            vscode.window.showInformationMessage("Matterhorn has forgotten that memory.");
         }
     }));
 }

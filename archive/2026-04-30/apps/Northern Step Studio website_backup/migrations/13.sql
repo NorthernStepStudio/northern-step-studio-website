@@ -1,0 +1,3 @@
+
+ALTER TABLE apps ADD COLUMN monetization TEXT DEFAULT 'Free';
+ALTER TABLE apps ADD COLUMN progress_percent INTEGER DEFAULT 0;

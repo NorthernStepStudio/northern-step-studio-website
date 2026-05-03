@@ -151,7 +151,7 @@ function createPayload() {
         prompt: "Smoke test prompt",
         intent: "ask",
         workspace: {
-            name: "NSS Workspace AI",
+            name: "Matterhorn",
             rootPath: "D:\\dev\\Northern Step Studio\\apps\\nstep-workspace-ai",
         },
     };

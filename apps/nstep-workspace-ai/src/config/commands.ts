@@ -35,13 +35,13 @@ const MODE_ACTIONS: Record<NssModeId, readonly NssSidebarQuickAction[]> = {
     { command: "nss.runWorkflow", label: "Run Workflow" },
     { command: "nss.showBriefing", label: "Workspace Briefing" },
     { command: "nssWorkspaceAi.showCrossProjectSummary", label: "Cross-Project Summary" },
-    { command: "nssWorkspaceAi.askWorkspaceAi", label: "Ask NSS" },
+    { command: "nssWorkspaceAi.askWorkspaceAi", label: "Ask Matterhorn" },
   ],
   research: [
     { command: "nss.searchKnowledge", label: "Search Knowledge" },
     { command: "nss.showBriefing", label: "Workspace Briefing" },
     { command: "nssWorkspaceAi.explainProjectStructure", label: "Explain Project" },
-    { command: "nssWorkspaceAi.askWorkspaceAi", label: "Ask NSS" },
+    { command: "nssWorkspaceAi.askWorkspaceAi", label: "Ask Matterhorn" },
   ],
   architect: [
     { command: "nssWorkspaceAi.explainProjectStructure", label: "Explain Structure" },

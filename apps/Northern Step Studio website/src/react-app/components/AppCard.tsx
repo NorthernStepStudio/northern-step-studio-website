@@ -31,10 +31,10 @@ const categoryIcons = {
   THERAPY: HeartPulse,
 };
 
-function getStatusLabel(status: string) {
+function getStatusLabel(status: string, t: any) {
   const normalized = status.trim().toUpperCase();
-  if (normalized === "LIVE") return "Live";
-  if (normalized === "COMING_SOON") return "Coming soon";
+  if (normalized === "LIVE") return t("apps.status_filters.live", { defaultValue: "Live" });
+  if (normalized === "COMING_SOON") return t("apps.status_filters.coming_soon", { defaultValue: "Coming Soon" });
   return status;
 }
 
@@ -75,7 +75,7 @@ export default function AppCard({
           </span>
         </div>
         <div className="px-2 py-0.5 rounded-full bg-secondary border border-border text-[10px] font-black uppercase tracking-wider text-muted-foreground">
-          {getStatusLabel(status)}
+          {getStatusLabel(status, t)}
         </div>
       </div>
 
@@ -88,11 +88,11 @@ export default function AppCard({
       </div>
 
       <h3 className="text-lg font-black mb-2 flex items-center gap-2 group-hover:text-accent transition-colors">
-        {name}
+        {t(`apps_data.${slug}.name`, { defaultValue: name })}
       </h3>
 
       <p className="text-sm text-muted-foreground font-normal mb-6 line-clamp-2">
-        {description || t("apps.no_description", { defaultValue: "No description available" })}
+        {t(`apps_data.${slug}.description`, { defaultValue: description || t("apps.no_description", { defaultValue: "No description available" }) })}
       </p>
 
       {typeof progressPercent === "number" && (

@@ -60,7 +60,7 @@ async function analyzeProjectDependencies() {
         }
     }
     catch (err) {
-        console.error("NSS: Dependency analysis failed", err);
+        console.error("Matterhorn: Dependency analysis failed", err);
     }
     return analysis;
 }

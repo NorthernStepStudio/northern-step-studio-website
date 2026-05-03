@@ -65,7 +65,7 @@ async function run() {
     const extension = vscode.extensions.getExtension(EXTENSION_ID);
     (0, node_assert_1.strict)(extension, `Expected ${EXTENSION_ID} to be installed in the extension host.`);
     await extension.activate();
-    node_assert_1.strict.equal(extension.isActive, true, "Expected NSS Workspace AI to activate.");
+    node_assert_1.strict.equal(extension.isActive, true, "Expected Matterhorn to activate.");
     await vscode.commands.executeCommand("nssWorkspaceAi.explainThisFile");
     const roundtripSnapshot = await waitForSnapshot((snapshot) => snapshot.latestResponse?.sourceCommand === "nssWorkspaceAi.explainThisFile");
     node_assert_1.strict.equal(roundtripSnapshot.serverHealth.status, "online");
@@ -78,9 +78,9 @@ async function run() {
     (0, node_assert_1.strict)(ragResults.some((result) => result.path.includes("src/integration.ts")));
     (0, node_assert_1.strict)(ragResults.some((result) => result.content.includes("createWorkspaceApp")));
     await vscode.commands.executeCommand("nssWorkspaceAi.showQuickStart");
-    const document = await waitForVisibleMarkdown("NSS Quick Start");
-    (0, node_assert_1.strict)(document, "Expected NSS Quick Start markdown preview to open.");
-    (0, node_assert_1.strict)(document.getText().includes("Ask NSS"), "Expected the quick start document to contain NSS guidance.");
+    const document = await waitForVisibleMarkdown("Matterhorn Quick Start");
+    (0, node_assert_1.strict)(document, "Expected Matterhorn Quick Start markdown preview to open.");
+    (0, node_assert_1.strict)(document.getText().includes("Ask Matterhorn"), "Expected the quick start document to contain Matterhorn guidance.");
 }
 async function waitForVisibleMarkdown(titleFragment) {
     const deadline = Date.now() + 5_000;

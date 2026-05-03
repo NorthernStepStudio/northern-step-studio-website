@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 import { useMemo } from "react";
 import type { Components } from "react-markdown";
-import { Mountain, Target, Rocket, Heart, Code, Gamepad2, Cpu, Sparkles, ArrowRight } from "lucide-react";
+import { Rocket, Code, Gamepad2, Cpu, Sparkles, ArrowRight, Smartphone, Zap } from "lucide-react";
 import GlitchedText from "@/react-app/components/GlitchedText";
 import SEO from "@/react-app/components/SEO";
 import { BRAND_ASSETS } from "@/react-app/lib/site";
@@ -18,83 +18,90 @@ export default function About() {
   const { t } = useTranslation();
   const { apps } = useApps();
   const { content: dynamicContent } = useSiteContent("about_content");
-  const pageLabel = t("about_page.label", { defaultValue: "Who We Are" });
-  const pageTitle = t("about_page.title", { defaultValue: "Northern Step Studio" });
-  const pageSubtitle = t("about_page.subtitle", {
+
+  // Translation keys from JSON locales (about.*)
+  const pageLabel = t("about.label", { defaultValue: "Who We Are" });
+  const pageTitle = t("about.title", { defaultValue: "Northern Step Studio" });
+  const pageSubtitle = t("about.subtitle", {
     defaultValue:
       "Northern Step Studio is a hands-on product studio building practical software across home readiness, learning, hardware planning, and focused consumer utility.",
   });
-  const storyTitle = t("about_page.story.title", { defaultValue: "What This Studio Actually Is" });
+
+  const storyTitle = t("about.story.title", { defaultValue: "What This Studio Actually Is" });
   const storyParagraphs = [
-    t("about_page.story.p1", {
+    t("about.story.p1", {
       defaultValue:
         "Northern Step Studio is a hands-on product studio, not a generic agency. We build software around specific real-world jobs: protecting a home inventory, planning a PC build, making investing easier to learn, supporting guided routines for children, and helping people improve credit with clearer next steps.",
     }),
-    t("about_page.story.p2", {
+    t("about.story.p2", {
       defaultValue:
         "That range is intentional. We like products with a practical edge, where UX clarity, trust, and structured workflows matter more than hype. Even when the categories look different, the design goal stays the same: reduce friction, raise confidence, and help users make better decisions.",
     }),
-    t("about_page.story.p3", {
+    t("about.story.p3", {
       defaultValue:
         "The studio is shaped by small-team discipline, real product iteration, and a bias toward building things people can keep using with clarity and confidence.",
     }),
   ];
+
   const mission = {
-    label: t("about_page.mission.label", { defaultValue: "How We Work" }),
-    title: t("about_page.mission.title", {
+    label: t("about.mission.label", { defaultValue: "How We Work" }),
+    title: t("about.mission.title", {
       defaultValue: "Small Team. Real Products. Long-Term Thinking.",
     }),
-    description: t("about_page.mission.desc", {
+    description: t("about.mission.desc", {
       defaultValue:
         "We build deliberately, keep scope tied to the problem, and prefer clarity, privacy, and reliability over bloated feature lists. Northern Step Studio is meant to become a durable portfolio of focused products, not a pile of disconnected experiments.",
     }),
   };
+
   const portfolio = {
-    label: t("about_page.portfolio.label", { defaultValue: "Current Portfolio" }),
-    title: t("about_page.portfolio.title", { defaultValue: "Products Shaping the Studio" }),
-    description: t("about_page.portfolio.desc", {
+    label: t("apps.label", { defaultValue: "Current Portfolio" }),
+    title: t("apps.title", { defaultValue: "Products Shaping the Studio" }),
+    description: t("apps.subtitle", {
       defaultValue: "These are the products that best show what Northern Step Studio is building right now.",
     }),
-    view: t("about_page.portfolio.view", { defaultValue: "View Product" }),
+    view: t("product.browse", { defaultValue: "View Product" }),
   };
-  const valuesTitle = t("about_page.values.title", { defaultValue: "What Matters Here" });
-  const focusTitle = t("about_page.focus.title", { defaultValue: "Where We're Focused" });
+
+  const valuesTitle = t("about.values.title", { defaultValue: "What Matters Here" });
+  const focusTitle = t("about.focus.title", { defaultValue: "Where We're Focused" });
+
   const cta = {
-    title: t("about_page.cta.title", { defaultValue: "Explore the Work" }),
-    description: t("about_page.cta.desc", {
+    title: t("about.cta.title", { defaultValue: "Explore the Work" }),
+    description: t("about.cta.desc", {
       defaultValue: "Browse the portfolio or reach out if you want to follow what the studio is building next.",
     }),
-    explore: t("about_page.cta.explore", { defaultValue: "Explore Products" }),
-    contact: t("about_page.cta.contact", { defaultValue: "Contact the Studio" }),
+    explore: t("about.cta.explore", { defaultValue: "Explore Products" }),
+    contact: t("about.cta.contact", { defaultValue: "Contact the Studio" }),
   };
 
   const values = [
     {
-      icon: Heart,
-      title: t("about_page.values.utility.title", { defaultValue: "Useful Over Hype" }),
-      description: t("about_page.values.utility.desc", {
-        defaultValue: "We judge work by whether it solves the job well, not by whether it sounds impressive.",
+      icon: Sparkles,
+      title: t("about.values.quality.title", { defaultValue: "Quality First" }),
+      description: t("about.values.quality.desc", {
+        defaultValue: "We never ship something we wouldn't use ourselves. Every detail matters.",
       }),
     },
     {
-      icon: Target,
-      title: t("about_page.values.clarity.title", { defaultValue: "Clear Beats Clever" }),
-      description: t("about_page.values.clarity.desc", {
-        defaultValue: "If an experience is confusing, we keep refining until it feels direct and obvious.",
+      icon: Zap,
+      title: t("about.values.simplicity.title", { defaultValue: "Simplicity" }),
+      description: t("about.values.simplicity.desc", {
+        defaultValue: "Complex problems deserve elegant solutions. We make powerful tools feel effortless.",
       }),
     },
     {
       icon: Rocket,
-      title: t("about_page.values.systems.title", { defaultValue: "Systems Thinking" }),
-      description: t("about_page.values.systems.desc", {
-        defaultValue: "We design products, data, and automation as parts of a larger ecosystem that can grow with the studio.",
+      title: t("about.values.innovation.title", { defaultValue: "Innovation" }),
+      description: t("about.values.innovation.desc", {
+        defaultValue: "We embrace new technologies and approaches to stay ahead of the curve.",
       }),
     },
     {
       icon: Code,
-      title: t("about_page.values.trust.title", { defaultValue: "Earned Trust" }),
-      description: t("about_page.values.trust.desc", {
-        defaultValue: "Better details, stronger execution, and consistent quality are how we earn trust over time.",
+      title: t("about.values.craft.title", { defaultValue: "Craftsmanship" }),
+      description: t("about.values.craft.desc", {
+        defaultValue: "We take pride in our work. Every line of code, every pixel, every interaction.",
       }),
     },
   ];
@@ -102,21 +109,25 @@ export default function About() {
   const focus = [
     {
       icon: Gamepad2,
-      title: t("about_page.focus.consumer.title", { defaultValue: "Home, Finance, and Planning Tools" }),
-      description: t("about_page.focus.consumer.desc", {
-        defaultValue:
-          "Products like ProvLy, NooBS Investing, PasoScore, and NexusBuild help people stay organized and make clearer decisions.",
+      title: t("about.focus.games.title", { defaultValue: "Mobile Games" }),
+      description: t("about.focus.games.desc", {
+        defaultValue: "Casual games that are fun, engaging, and perfect for quick play sessions.",
+      }),
+    },
+    {
+      icon: Smartphone,
+      title: t("about.focus.apps.title", { defaultValue: "Productivity Apps" }),
+      description: t("about.focus.apps.desc", {
+        defaultValue: "Smart tools that help people learn, organize, and make better decisions.",
       }),
     },
     {
       icon: Cpu,
-      title: t("about_page.focus.guided.title", { defaultValue: "Guided Learning and Support" }),
-      description: t("about_page.focus.guided.desc", {
-        defaultValue:
-          "Products like Neuromove turn structured routines, progress tracking, and support workflows into approachable experiences.",
+      title: t("about.focus.ai.title", { defaultValue: "AI-Powered Tools" }),
+      description: t("about.focus.ai.desc", {
+        defaultValue: "Intelligent assistants and product guidance that amplify human capabilities.",
       }),
     },
-
   ];
 
   const studioProducts = useMemo(() => {
@@ -142,23 +153,25 @@ export default function About() {
       <div className="container mx-auto max-w-5xl">
         {/* Hero */}
         <div className="text-center mb-10 sm:mb-14">
-          <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-accent/10 border border-accent/30 mb-5">
-            <img src={BRAND_ASSETS.studioMark} alt="Northern Step Studio" className="w-12 h-12 sm:w-16 sm:h-16" />
+          <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-black border border-white/5 mb-5 overflow-hidden">
+            <img src={BRAND_ASSETS.studioMark} alt="Northern Step Studio" className="w-full h-full object-contain p-0.5" />
           </div>
           <span className="text-label text-accent mb-2 block text-xs sm:text-sm">{pageLabel}</span>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-normal mb-4 leading-tight">
             <GlitchedText text={pageTitle} duration={600} className="text-accent" />
           </h1>
-          <p className="text-muted-foreground font-normal max-w-2xl mx-auto text-sm sm:text-base">
-            {brandifyText(pageSubtitle)}
-          </p>
+          <div className="max-w-2xl mx-auto">
+             <p className="text-muted-foreground font-normal text-sm sm:text-base leading-relaxed">
+              {brandifyText(pageSubtitle)}
+            </p>
+          </div>
         </div>
 
         {/* Story */}
         <div className="card-dark-wise mb-8">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center">
-              <Mountain className="w-5 h-5 text-accent" />
+            <div className="w-10 h-10 rounded-xl bg-black border border-white/5 flex items-center justify-center overflow-hidden">
+              <img src={BRAND_ASSETS.studioMark} alt="" className="w-full h-full object-contain p-1" />
             </div>
             <h2 className="text-xl sm:text-2xl font-black uppercase">{storyTitle}</h2>
           </div>
@@ -170,8 +183,8 @@ export default function About() {
                 </ReactMarkdown>
               </div>
             ) : (
-              storyParagraphs.map((paragraph) => (
-                <p key={paragraph}>{brandifyText(paragraph)}</p>
+              storyParagraphs.map((paragraph, idx) => (
+                <p key={idx}>{brandifyText(paragraph)}</p>
               ))
             )}
           </div>
@@ -190,6 +203,7 @@ export default function About() {
           </div>
         </div>
 
+        {/* Portfolio */}
         <div className="mb-8">
           <div className="text-center mb-6">
             <span className="text-label text-accent mb-2 block text-xs sm:text-sm">{portfolio.label}</span>
@@ -224,7 +238,7 @@ export default function About() {
                     </div>
                     <h3 className="font-black uppercase text-base sm:text-lg mb-1">{app.name}</h3>
                     <p className="text-sm font-bold text-foreground/80 mb-2">{app.tagline}</p>
-                    <p className="text-sm text-muted-foreground font-normal">{app.description}</p>
+                    <p className="text-sm text-muted-foreground font-normal line-clamp-2">{app.description}</p>
                     <span className="inline-flex items-center gap-2 mt-3 text-sm font-black uppercase text-accent">
                       {portfolio.view}
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -248,7 +262,7 @@ export default function About() {
                   </div>
                   <div>
                     <h3 className="font-black uppercase text-base sm:text-lg mb-2">{value.title}</h3>
-                    <p className="text-sm text-muted-foreground font-normal">{value.description}</p>
+                    <p className="text-sm text-muted-foreground font-normal leading-relaxed">{value.description}</p>
                   </div>
                 </div>
               </div>
@@ -266,7 +280,7 @@ export default function About() {
                   <item.icon className="w-7 h-7 text-accent" />
                 </div>
                 <h3 className="font-black uppercase text-base sm:text-lg mb-2">{item.title}</h3>
-                <p className="text-sm text-muted-foreground font-normal">{item.description}</p>
+                <p className="text-sm text-muted-foreground font-normal leading-relaxed">{item.description}</p>
               </div>
             ))}
           </div>

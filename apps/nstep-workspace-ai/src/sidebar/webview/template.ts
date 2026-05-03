@@ -18,7 +18,7 @@ export function renderSidebarTemplate(webview: vscode.Webview, extensionUri: vsc
       http-equiv="Content-Security-Policy"
       content="default-src 'none'; style-src ${webview.cspSource}; script-src ${webview.cspSource} 'nonce-${nonce}';"
     />
-    <title>NSS Workspace AI</title>
+    <title>Matterhorn</title>
     <link rel="stylesheet" href="${styleUri}" />
   </head>
   <body>
@@ -27,16 +27,16 @@ export function renderSidebarTemplate(webview: vscode.Webview, extensionUri: vsc
         <div class="compact-title-row">
           <div class="compact-title-copy">
             <p class="eyebrow">Northern Step Studio</p>
-            <h1 id="workspace-name">NSS Workspace AI</h1>
+            <h1 id="workspace-name">Matterhorn</h1>
           </div>
           <span class="status-chip">
-            <span>Backend</span><strong id="server-pill">Unknown</strong>
+            <span>Powered by Synox</span><strong id="server-pill">Synox runtime connected</strong>
             <span class="meta-tag" id="server-mode-badge" style="margin-left: 4px;" hidden></span>
           </span>
         </div>
         <p class="compact-meta compact-meta--faint">
           <span id="current-file">None</span>
-          <span class="compact-dot">•</span>
+          <span class="compact-dot">&middot;</span>
           <span id="selection-preview">No current selection.</span>
         </p>
       </section>
@@ -60,7 +60,7 @@ export function renderSidebarTemplate(webview: vscode.Webview, extensionUri: vsc
             </div>
             <p class="response-title" id="response-title">No response yet.</p>
             <p class="response-meta" id="response-timestamp">Ready for your first prompt.</p>
-            <pre class="response-body" id="response-preview">Use the prompt box or a command to talk to NSS.</pre>
+            <pre class="response-body" id="response-preview">Matterhorn ready</pre>
           </div>
         </div>
 
@@ -140,7 +140,7 @@ export function renderSidebarTemplate(webview: vscode.Webview, extensionUri: vsc
             id="prompt-input"
             rows="3"
             aria-label="Prompt"
-            placeholder="Ask NSS about this workspace, file, or change..."
+            placeholder="Ask Matterhorn about this workspace, file, or change..."
           </textarea>
 
           </div>

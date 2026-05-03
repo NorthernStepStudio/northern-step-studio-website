@@ -5,7 +5,7 @@ const defaults_js_1 = require("../config/defaults.js");
 const workspace_js_1 = require("../helpers/workspace.js");
 function resolvePresetSelection(currentPresetId, workspacePath, autoSuggest) {
     if (currentPresetId) {
-        return currentPresetId;
+        return currentPresetId === "responseos" ? "synox" : currentPresetId;
     }
     if (autoSuggest && workspacePath) {
         return (0, workspace_js_1.inferPresetIdFromPath)(workspacePath);

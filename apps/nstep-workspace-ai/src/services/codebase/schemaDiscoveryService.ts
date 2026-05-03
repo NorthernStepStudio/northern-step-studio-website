@@ -41,7 +41,7 @@ export async function discoverProjectSchemas(): Promise<{ path: string; summary:
         });
       }
     } catch (err) {
-      console.error(`NSS: Schema discovery failed for ${pattern}`, err);
+      console.error(`Matterhorn: Schema discovery failed for ${pattern}`, err);
     }
   }
 

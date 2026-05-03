@@ -153,7 +153,7 @@
   persistState();
   closeAllPopovers();
   setupEventListeners();
-  console.log("[NSS] Workspace AI Webview Initialized");
+  console.log("[Matterhorn] Webview initialized");
 
   window.addEventListener("message", (event) => {
     const message = event.data;
@@ -175,12 +175,18 @@
     serverPill.textContent = payload.serverStatus;
     
     if (serverModeBadge) {
-      serverModeBadge.textContent = payload.serverMode === "mock" ? "Mock" : "AI";
+      const modeLabelMap = {
+        gemini: "Synox provider: Gemini",
+        ollama: "Synox provider: Ollama",
+        mock: "Synox provider: Mock",
+        off: "Synox provider: Off",
+      };
+      serverModeBadge.textContent = modeLabelMap[payload.serverMode] ?? "";
       serverModeBadge.hidden = payload.serverMode === "unknown" || !payload.serverMode;
       serverModeBadge.classList.toggle("meta-tag--warning", payload.serverMode === "mock");
     }
 
-    workspaceName.textContent = payload.workspaceName;
+    workspaceName.textContent = payload.title ?? payload.workspaceName;
     currentFile.textContent = payload.currentFilePath ?? "None";
     selectionPreview.textContent = payload.currentSelectionPreview ?? "No current selection.";
     renderLatestResponse(payload.latestResponse);
@@ -288,7 +294,7 @@
 
     responseKind.textContent = "None";
     responseTitle.textContent = "No response yet.";
-    responsePreview.textContent = "Use the prompt box or a command to talk to NSS.";
+    responsePreview.textContent = "Matterhorn ready";
   }
 
   function updateSubmitButtonState() {

@@ -1,0 +1,25 @@
+{
+  "name": "Nexus Roguelike",
+  "short_name": "NexusRL",
+  "description": "DOOMED: A Very Silly Dungeon",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#06060e",
+  "theme_color": "#06060e",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "assets/icons/hero_mage.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/hero_paladin.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
