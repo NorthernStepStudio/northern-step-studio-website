@@ -4,9 +4,9 @@ export const SITE_ORIGIN =
 
 export const BRAND_ASSETS = {
   studioLogo: "/brand/NStep-Logo.jpeg",
-  studioLogoHorizontal: "/brand/logo-northern-step-horizontal.jpg",
+  studioLogoHorizontal: "/brand/logo-northern-step-horizontal.jpeg",
   studioMark: "/brand/NStep-Logo.jpeg",
-  studioPreview: "/brand/NStep-Logo.jpeg",
+  studioPreview: "/brand/logo-northern-step.jpg",
   provly: "/brand/provly-logo.png",
   nexusbuild: "/brand/nexusbuild-logo.png",
   noobsInvesting: "/brand/noobs-investing-logo.png",
