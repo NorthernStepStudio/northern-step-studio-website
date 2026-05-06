@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NStep Android Build Center</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="progress-bar" id="buildProgress"></div>
+
+    <div class="layout">
+        <header>
+            <div class="logo-section">
+                <h1>NStep Android Build Center</h1>
+            </div>
+            <div class="header-actions">
+                <div class="status-indicator-top">
+                    <span class="dot connected" id="connectionStatus"></span>
+                    <span>System Connected</span>
+                </div>
+            </div>
+        </header>
+
+        <aside>
+            <div class="card">
+                <h3>Build Configuration</h3>
+                <div class="form-group">
+                    <label for="appSelector">Select App</label>
+                    <select id="appSelector">
+                        <option value="">-- Select App --</option>
+                    </select>
+                </div>
+                    <div class="input-with-button">
+                        <input type="password" id="keystorePassword" placeholder="Auto-filled or manual">
+                        <button class="btn-save-sm" id="savePasswordBtn">SAVE</button>
+                    </div>
+                <div class="form-group checkbox-group">
+                    <label class="toggle-container">
+                        <input type="checkbox" id="rememberPass" checked>
+                        <span class="toggle-label">Remember on this machine</span>
+                    </label>
+                </div>
+
+                <!-- Version Management Section -->
+                <div id="versionManagement" class="version-section hidden">
+                    <div class="version-grid">
+                        <div class="version-field">
+                    <span class="version-label">V.Name</span>
+                    <span id="vNameLabel" class="version-value">--</span>
+                </div>
+                <div class="version-field">
+                    <span class="version-label">V.Code</span>
+                    <span id="vCodeLabel" class="version-value">--</span>
+                </div>
+                <div class="version-field">
+                    <span class="version-label">Play Code</span>
+                    <input type="text" id="playCodeInput" class="play-code-input" placeholder="0">
+                </div>
+                <button id="bumpVersionBtn" class="btn-bump">BUMP VERSION</button>
+                </div>
+                <div class="build-actions">
+                    <button class="btn-primary hidden mb-3" id="saveExistingPasswordBtn">Save Password for Existing Keystore</button>
+                    <button class="btn-primary hidden btn-warning mb-3" id="generateKeystoreBtn">Generate Keystore</button>
+                    <button class="btn-primary hidden btn-warning mb-3" id="generateUploadKeyBtn">Generate Google Play Upload Key</button>
+                    <button class="btn-primary hidden btn-success mb-3" id="confirmUploadApprovalBtn">Confirm Google Approved Upload Key</button>
+                    <button class="btn-secondary hidden mb-3" id="verifyCredentialsBtn">Verify Credentials</button>
+                    <button class="btn-primary" id="buildApkBtn">BUILD APK</button>
+                    <button class="btn-primary mt-3" id="buildAabBtn">BUILD AAB</button>
+                    <button class="btn-primary hidden btn-danger mt-3" id="cancelBuildBtn">CANCEL BUILD</button>
+                </div>
+            </div>
+
+            <div class="card" id="buildStatusCard">
+                <h3>Build Status</h3>
+                <div class="status-summary">
+                    <div class="status-main" id="buildStatusText">IDLE</div>
+                    <div class="status-detail">App: <span id="buildAppLabel">None</span></div>
+                    <div class="status-detail">Type: <span id="buildTypeLabel">-</span></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Build Center Settings</h3>
+                <div class="form-group checkbox-group">
+                    <label class="toggle-container">
+                        <input type="checkbox" id="autoGenToggleMain" checked>
+                        <span class="toggle-label">Auto-generate private keys</span>
+                    </label>
+                </div>
+                <div class="form-group checkbox-group">
+                    <label class="toggle-container">
+                        <input type="checkbox" id="wcmToggleMain">
+                        <span class="toggle-label">Remember in Windows CredMgr</span>
+                    </label>
+                </div>
+                <div class="form-group checkbox-group">
+                    <label class="toggle-container">
+                        <input type="checkbox" id="prodGuardToggle" checked disabled>
+                        <span class="toggle-label">Protect Production Apps</span>
+                    </label>
+                </div>
+            </div>
+        </aside>
+
+        <main>
+            <section id="discoverySection">
+                <div class="section-header">
+                    <h2>App Discovery</h2>
+                    <div class="header-tools">
+                        <button class="btn-primary w-auto py-2 px-4" id="scanBtn">Scan Workspace</button>
+                    </div>
+                </div>
+                <div id="appList" class="discovery-list">
+                    <!-- Apps injected here -->
+                </div>
+            </section>
+
+            <section id="logSection">
+                <div class="section-header">
+                    <h2>Build Execution Logs</h2>
+                    <div class="log-controls">
+                        <button class="btn-icon" id="expandAllLogsBtn">Expand All</button>
+                        <button class="btn-icon" id="collapseAllLogsBtn">Collapse All</button>
+                        <button class="btn-icon" id="saveLogsBtn">Save Logs</button>
+                        <button class="btn-icon" id="clearLogBtn">Clear</button>
+                    </div>
+                </div>
+                <div class="card log-card">
+                    <div id="logContainer" class="log-container">
+                        <div class="log-line info">Ready to build...</div>
+                    </div>
+                </div>
+                <div class="log-footer">
+                    <label class="toggle-container">
+                        <input type="checkbox" id="autoScrollToggle" checked>
+                        <span class="toggle-label text-xs">Auto-scroll</span>
+                    </label>
+                    <label class="toggle-container">
+                        <input type="checkbox" id="showRawLogToggle">
+                        <span class="toggle-label text-xs">Show Raw Log</span>
+                    </label>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script type="module" src="src/main.js?v=1.0.2"></script>
+    <script>
+        // Password toggle utility
+        function togglePassword(id) {
+            const input = document.getElementById(id);
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+    </script>
+</body>
+</html>

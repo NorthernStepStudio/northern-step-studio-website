@@ -1,0 +1,15 @@
+{
+  "name": "nstep-android-build-center-ui",
+  "version": "1.0.0",
+  "description": "Local UI for NStep Android Build Center",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "verify": "node scripts/verify-build-center.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  }
+}
