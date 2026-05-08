@@ -25,7 +25,8 @@ function startCombat(en){
   document.getElementById('cewpn').textContent=en.wpn||'Claws';
   document.getElementById('celvl').textContent=`LV.${en.level}`;
   document.getElementById('clog').innerHTML='';
-  const sk=document.getElementById('cskill');sk.innerHTML=`<span class="ci">✨</span>${p.classData.skill.name}`;
+  const sk=document.getElementById('cskill');
+  if(sk) sk.innerHTML=`<span class="ci">✨</span>${p.classData.skill.name}`;
   clog(`⚔ Fighting ${en.name} LV${en.level}!`,'#ff8888');
   if(en.boss)clog('BOSS BATTLE!','#ffdd00');
   if(en.isElite||en.elite)clog('★ ELITE ENEMY — stronger and drops better loot!','#ffaa00');
@@ -42,7 +43,8 @@ function updCUI(){
   document.getElementById('cphpv').textContent=`${p.hp}/${p.maxHp}`;
   document.getElementById('cehp').style.width=`${Math.max(0,(en.hp/en.maxHp)*100)}%`;
   document.getElementById('cehpv').textContent=`${Math.max(0,en.hp)}/${en.maxHp}`;
-  document.getElementById('cskill').disabled=p.mp<p.classData.skill.cost;
+  const sk=document.getElementById('cskill');
+  if(sk) sk.disabled=p.mp<p.classData.skill.cost;
   // Show status badges on enemy name
   const enName=document.getElementById('cename');
   const badges=getStatusBadges(en);
