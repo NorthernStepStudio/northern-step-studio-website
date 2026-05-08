@@ -541,7 +541,7 @@
     }
     const mode=manual?"manual backup":"autosave";
     if(!localOk&&idbOk)setStatus(`Saved to IndexedDB ${mode}.`,"warn");
-    else setStatus(`Saved just now (${mode}).`,"ok");
+    else if(manual) setStatus(`Saved just now (${mode}).`,"ok");
     refreshSaveSummary();
     return localOk||idbOk;
   }
@@ -564,7 +564,7 @@
     if(!isObj(G)||!isObj(G.player))return false;
     S.pendingReason=reason||"autosave";
     clearTimeout(S.saveTimer);
-    setStatus("Autosaving…","info");
+    // setStatus("Autosaving…","info");
     S.saveTimer=setTimeout(()=>{
       saveEnvelope(S.pendingReason||"autosave",false).catch(()=>{
         setStatus("Save failed — export backup now.","error");

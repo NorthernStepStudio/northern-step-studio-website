@@ -1,4 +1,4 @@
-﻿// SHOP
+// SHOP
 // ═══════════════════════════════
 function generateShopStock(){
   const p=G.player,fl=G.floor;
@@ -538,6 +538,18 @@ function closeAllPanels(){
   });
   document.getElementById('bkdrop').classList.remove('on');
   openPanel=null;
+
+  // Thorough cleanup: close secondary overlays as well
+  if(typeof closeIP==='function')closeIP();
+  if(typeof closeFuseSelect==='function')closeFuseSelect();
+  const luov=document.getElementById('luov');
+  if(luov)luov.classList.remove('active');
+
+  // Safety: If combat overlay is hidden but G.inCombat is true, clear it.
+  if(G && G.inCombat && !document.getElementById('combatov').classList.contains('active')){
+    G.inCombat = false;
+    G.currentEnemy = null;
+  }
 }
 
 // ═══════════════════════════════

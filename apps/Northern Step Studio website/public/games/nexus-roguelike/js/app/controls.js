@@ -1,4 +1,4 @@
-﻿// ═══════════════════════════════
+// ═══════════════════════════════
 // MOVEMENT
 // ═══════════════════════════════
 function handleMove(dx,dy){
@@ -8,6 +8,7 @@ function handleMove(dx,dy){
   if(now-lastMoveAt<90)return;
   lastMoveAt=now;
   const p=G.player;
+  if(!p) return;
   const cw=getMapW(),ch=getMapH();
   const cells=getCells();
   const nx=p.x+dx,ny=p.y+dy;
@@ -142,12 +143,7 @@ function doETs(){
 }
 
 // ═══════════════════════════════
-
-// ═══════════════════════════════
 // KEYBOARD
-// ═══════════════════════════════
-// ═══════════════════════════════
-// KEYBOARD — single handler, e.repeat guard stops ghost walk
 // ═══════════════════════════════
 document.addEventListener('keydown',e=>{
   // Ignore key-repeat events for movement — only fire on fresh keydown
@@ -155,6 +151,21 @@ document.addEventListener('keydown',e=>{
 
   // Prevent scroll
   if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();
+
+  // DEBUG: helpful logs for finding why input might be blocked
+  if (['w','a','s','d','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)) {
+    if (!G || !G.player) console.log('Movement blocked: G or G.player not initialized');
+    else if (G.inCombat) console.log('Movement blocked: G.inCombat is true');
+    else if (openPanel) console.log('Movement blocked: openPanel is', openPanel);
+    else if (document.getElementById('luov').classList.contains('active')) console.log('Movement blocked: Level Up (luov) is active');
+    else if (document.getElementById('itempop').classList.contains('active')) console.log('Movement blocked: Item Popup (itempop) is active');
+  }
+
+  // Handle panel toggles FIRST so they can be closed with the same key
+  if(e.key==='i'||e.key==='I'){togglePanel('inv');return;}
+  if(e.key==='m'||e.key==='M'){togglePanel('menu');return;}
+  if(e.key==='c'||e.key==='C'){togglePanel('stats');return;}
+  if(e.key==='l'||e.key==='L'){togglePanel('log');return;}
 
   // Ignore if level-up screen open
   if(document.getElementById('luov').classList.contains('active'))return;
@@ -180,7 +191,7 @@ document.addEventListener('keydown',e=>{
     return;
   }
 
-  // Panel open — only allow close
+  // Panel open — only allow close via Escape (others handled by toggles above)
   if(openPanel){
     if(e.key==='Escape')closeAllPanels();
     return;
@@ -193,10 +204,6 @@ document.addEventListener('keydown',e=>{
   // Actions
   if(e.key===' '){doWait();return;}
   if(e.key==='.'||e.key==='g'||e.key==='G')tryPickup();
-  if(e.key==='i'||e.key==='I')togglePanel('inv');
-  if(e.key==='m'||e.key==='M')togglePanel('menu');
-  if(e.key==='c'||e.key==='C')togglePanel('stats');
-  if(e.key==='l'||e.key==='L')togglePanel('log');
   if(e.key==='q'||e.key==='Q')quickUse('hp');
   if(e.key==='e'||e.key==='E')quickUse('mp');
   if(e.key==='='||e.key==='+')adjustZoom(1);
@@ -208,10 +215,11 @@ document.addEventListener('keydown',e=>{
     else tryPickup();
   }
 });
+
 // Safety: release dpad on window blur so key-held state can't get stuck
 window.addEventListener('blur',()=>dpRelease());
 window.addEventListener('mouseup',()=>dpRelease());
-window.addEventListener('resize',()=>{rzV();if(G&&G.map)renderMap();});
+window.addEventListener('resize',()=>{if(typeof rzV==='function')rzV();if(G&&G.map)renderMap();});
 window.addEventListener('load',()=>{
   const sf=checkSave();
   if(sf){
@@ -225,12 +233,9 @@ window.addEventListener('load',()=>{
     const el=document.getElementById('ci-'+cls);
     if(el&&HERO_SVGS[cls])el.innerHTML=heroImgTag(cls,44);
   });
-  // Do not auto-resume on load; show Continue button for user choice.
 });
 
 function flushSave(){
   if(!G||!G.player||!G.map)return;
   saveG();
 }
-// lifecycle autosave listeners and timed autosave are managed by js/app/save.js
-

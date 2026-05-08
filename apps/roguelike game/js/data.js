@@ -4,19 +4,52 @@ const SK = 'doomed_v3';
 const SMK = 'doomed_meta_v2';
 
 const CLS = {
-  warrior:{hp:120,atk:15,def:8,mp:30,spd:5,crit:5,sw:'sword_0',emoji:'🗡️'},
-  mage:{hp:70,atk:8,def:3,mp:100,spd:4,crit:2,sw:'wand_0',emoji:'🔮'},
-  rogue:{hp:85,atk:12,def:5,mp:50,spd:8,crit:15,sw:'dagger_0',emoji:'🗡️'},
-  paladin:{hp:100,atk:10,def:12,mp:70,spd:3,crit:4,sw:'mace_0',emoji:'🛡️'}
+  warrior:{hp:125,atk:12,def:8,mp:25,spd:5,crit:5,sw:'sword_0',emoji:'🗡️'},
+  mage:{hp:75,atk:6,def:3,mp:110,spd:4,crit:3,sw:'wand_0',emoji:'🔮'},
+  rogue:{hp:90,atk:10,def:5,mp:45,spd:9,crit:18,sw:'dagger_0',emoji:'🗡️'},
+  paladin:{hp:115,atk:8,def:11,mp:65,spd:3,crit:4,sw:'mace_0',emoji:'🛡️'}
+};
+
+const HERO_SKILLS = {
+  warrior: [
+    { id: 'heavy_slash', name: 'Heavy Slash', description: 'Deal 160% normal attack damage.', mpCost: 8, cooldown: 2, type: 'damage', target: 'enemy', mult: 1.6 },
+    { id: 'battle_guard', name: 'Battle Guard', description: 'Gain +4 DEF for 2 enemy turns.', mpCost: 10, cooldown: 4, type: 'buff', target: 'self', effect: { id: 'battle_guard', type: 'def_up', value: 4, duration: 2, name: 'Battle Guard' } },
+    { id: 'blood_oath', name: 'Blood Oath', description: 'Deal 130% damage and heal for 25% of damage dealt.', mpCost: 14, cooldown: 5, type: 'hybrid', target: 'enemy', mult: 1.3, healDealt: 0.25 }
+  ],
+  mage: [
+    { id: 'arcane_bolt', name: 'Arcane Bolt', description: 'Deal 170% damage and ignore 30% of enemy DEF.', mpCost: 10, cooldown: 1, type: 'damage', target: 'enemy', mult: 1.7, ignoreDef: 0.30 },
+    { id: 'mana_ward', name: 'Mana Ward', description: 'Reduce incoming damage by 35% for 2 enemy turns.', mpCost: 14, cooldown: 4, type: 'buff', target: 'self', effect: { id: 'mana_ward', type: 'dmg_resist', value: 0.35, duration: 2, name: 'Mana Ward' } },
+    { id: 'soul_burn', name: 'Soul Burn', description: 'Deal 120% damage immediately, then apply Burn for 3 turns.', mpCost: 22, cooldown: 5, type: 'hybrid', target: 'enemy', mult: 1.2, applyStatus: { id: 'burn', name: 'Burn', type: 'burn', duration: 3, mult: 0.25 } }
+  ],
+  rogue: [
+    { id: 'backstab', name: 'Backstab', description: 'Deal 135% damage with +25% temporary crit chance.', mpCost: 8, cooldown: 2, type: 'damage', target: 'enemy', mult: 1.35, critBonus: 25 },
+    { id: 'smoke_step', name: 'Smoke Step', description: 'Gain 35% dodge chance for the next enemy attack only.', mpCost: 12, cooldown: 4, type: 'buff', target: 'self', effect: { id: 'smoke_step', type: 'dodge', value: 0.35, duration: 1, name: 'Smoke Step' } },
+    { id: 'hemorrhage', name: 'Hemorrhage', description: 'Deal 110% damage and apply Bleed for 3 turns.', mpCost: 16, cooldown: 5, type: 'hybrid', target: 'enemy', mult: 1.1, applyStatus: { id: 'bleed', name: 'Bleed', type: 'bleed', duration: 3, mult: 0.20 } }
+  ],
+  paladin: [
+    { id: 'smite', name: 'Smite', description: 'Deal 135% damage and heal for 15% of damage dealt.', mpCost: 10, cooldown: 2, type: 'hybrid', target: 'enemy', mult: 1.35, healDealt: 0.15 },
+    { id: 'holy_bulwark', name: 'Holy Bulwark', description: 'Gain +3 DEF and 20% dmg resist for 2 enemy turns.', mpCost: 14, cooldown: 4, type: 'buff', target: 'self', effect: { id: 'holy_bulwark', type: 'bulwark', defValue: 3, resistValue: 0.20, duration: 2, name: 'Holy Bulwark' } },
+    { id: 'judgment', name: 'Judgment', description: 'Deal 150% damage. If enemy < 35% HP after, hit again for 50%.', mpCost: 24, cooldown: 6, type: 'hybrid', target: 'enemy', mult: 1.5, execute: { threshold: 0.35, mult: 0.50 } }
+  ]
+};
+
+const enemyArchetypes = {
+  weak: { hpMultiplier: 0.75, atkMultiplier: 0.85, defMultiplier: 0.75, xpMultiplier: 0.75, goldMultiplier: 0.75 },
+  normal: { hpMultiplier: 1.0, atkMultiplier: 1.0, defMultiplier: 1.0, xpMultiplier: 1.0, goldMultiplier: 1.0 },
+  brute: { hpMultiplier: 1.45, atkMultiplier: 1.1, defMultiplier: 1.05, xpMultiplier: 1.25, goldMultiplier: 1.1 },
+  tank: { hpMultiplier: 1.25, atkMultiplier: 0.85, defMultiplier: 1.35, xpMultiplier: 1.2, goldMultiplier: 1.05 },
+  assassin: { hpMultiplier: 0.8, atkMultiplier: 1.25, defMultiplier: 0.75, xpMultiplier: 1.15, goldMultiplier: 1.1 },
+  elite: { hpMultiplier: 2.2, atkMultiplier: 1.35, defMultiplier: 1.2, xpMultiplier: 2.5, goldMultiplier: 2.2 },
+  boss: { hpMultiplier: 5.5, atkMultiplier: 1.45, defMultiplier: 1.3, xpMultiplier: 8.0, goldMultiplier: 6.0 }
 };
 
 const ENEMIES = [
-  {name:'RAT',emoji:'🐀',baseHp:12,baseAtk:5,def:0,xp:10,gold:4,floor:1,wpn:'🦷 Tiny Teeth'},
-  {name:'SLIME',emoji:'🟢',baseHp:18,baseAtk:7,def:1,xp:15,gold:6,floor:1,wpn:'💦 Acid Goo'},
-  {name:'SKELETON',emoji:'💀',baseHp:25,baseAtk:10,def:3,xp:25,gold:10,floor:1,wpn:'🦴 Bone Club'},
-  {name:'GOBLIN',emoji:'👺',baseHp:22,baseAtk:12,def:2,xp:30,gold:12,floor:1,wpn:'🔪 Rusty Shiv'},
-  {name:'BAT',emoji:'🦇',baseHp:15,baseAtk:11,def:0,xp:20,gold:8,floor:1,wpn:'🦷 Fangs'},
-  // ... (Full list extracted from prototype)
+  {name:'Rot Rat',emoji:'🐀',archetype:'weak',baseHp:38,baseAtk:7,def:2,spd:5,xp:8,gold:4,floor:1,wpn:'🦷 Tiny Teeth'},
+  {name:'Bone Walker',emoji:'💀',archetype:'normal',baseHp:52,baseAtk:8,def:3,spd:4,xp:12,gold:6,floor:1,wpn:'🦴 Bone Club'},
+  {name:'Ash Cultist',emoji:'👺',archetype:'normal',baseHp:48,baseAtk:9,def:2,spd:5,xp:13,gold:7,floor:1,wpn:'🔪 Rusty Shiv'},
+  {name:'Grave Ghoul',emoji:'🧟',archetype:'brute',baseHp:68,baseAtk:10,def:3,spd:3,xp:17,gold:8,floor:1,wpn:'🦷 Fangs'},
+  {name:'Shield Husk',emoji:'🛡️',archetype:'tank',baseHp:60,baseAtk:7,def:6,spd:2,xp:18,gold:9,floor:1,wpn:'🛡️ Rusted Shield'},
+  {name:'Blade Imp',emoji:'🦇',archetype:'assassin',baseHp:42,baseAtk:12,def:2,spd:8,xp:16,gold:8,floor:1,wpn:'🗡️ Quick Blade'}
 ];
 
 // PORTAL ZONES (The exact data from your file)
@@ -82,11 +115,11 @@ const CONSUMABLES = [
 ];
 
 const META_UPGRADES = [
-  {id:'hp',name:'VITALITY',emoji:'❤️',desc:'+10 Max HP per level.',baseCost:50,costPerLevel:50,maxLevel:10,apply:(lvl)=>({hp:lvl*10})},
-  {id:'atk',name:'STRENGTH',emoji:'⚔️',desc:'+2 Attack per level.',baseCost:50,costPerLevel:75,maxLevel:10,apply:(lvl)=>({atk:lvl*2})},
-  {id:'def',name:'IRON SKIN',emoji:'🛡️',desc:'+1 Defense per level.',baseCost:60,costPerLevel:100,maxLevel:10,apply:(lvl)=>({def:lvl*1})},
-  {id:'luck',name:'LUCKY CHARM',emoji:'🍀',desc:'+2% Crit per level.',baseCost:100,costPerLevel:150,maxLevel:5,apply:(lvl)=>({crit:lvl*2})},
-  {id:'slots',name:'DEEP POCKETS',emoji:'🎒',desc:'+1 Inventory Slot per level.',baseCost:200,costPerLevel:300,maxLevel:4,apply:(lvl)=>({invBonus:lvl})}
+  {id:'hp',name:'VITALITY',emoji:'❤️',desc:'+8 Max HP per level.',baseCost:50,costPerLevel:50,maxLevel:10,apply:(lvl)=>({hp:lvl*8})},
+  {id:'atk',name:'STRENGTH',emoji:'⚔️',desc:'+1 Attack per level.',baseCost:50,costPerLevel:75,maxLevel:10,apply:(lvl)=>({atk:lvl*1})},
+  {id:'def',name:'IRON SKIN',emoji:'🛡️',desc:'+1 Defense every 2 levels.',baseCost:60,costPerLevel:100,maxLevel:10,apply:(lvl)=>({def:Math.floor(lvl/2)})},
+  {id:'luck',name:'LUCKY CHARM',emoji:'🍀',desc:'+1.5% Crit per level.',baseCost:100,costPerLevel:150,maxLevel:5,apply:(lvl)=>({crit:lvl*1.5})},
+  {id:'endurance',name:'DOOM ENDURANCE',emoji:'🩸',desc:'+2% healing received per level.',baseCost:150,costPerLevel:200,maxLevel:5,apply:(lvl)=>({healBonus:lvl*0.02})}
 ];
 
 const WEAPON_TIERS = [
