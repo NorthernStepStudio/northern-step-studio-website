@@ -1,6 +1,6 @@
-// -------------------------------
+// ═══════════════════════════════
 // ITEMS
-// -------------------------------
+// ═══════════════════════════════
 function pickupItem(it){
   const isMat=it.type==='material';
   const isGold=it.type==='gold';
@@ -15,18 +15,18 @@ function pickupItem(it){
       addLog('Material bag full! (max 20 types)','info');return;
     }
     if(!isMat&&gearCount>=G.maxInvSlots){
-      addLog(`Gear bag full! (${gearCount}/${G.maxInvSlots} slots) � sell or drop something.`,'damage');return;
+      addLog(`Gear bag full! (${gearCount}/${G.maxInvSlots} slots) — sell or drop something.`,'damage');return;
     }
   }
 
   if(isGold){
     const g=it.effect.gold,fg=G.player.perks?.goldBoost?Math.floor(g*(1+G.player.perks.goldBoost)):g;
-    G.player.gold+=fg;addLog(`?? Got ${fg} gold!`,'loot');
+    G.player.gold+=fg;addLog(`💰 Got ${fg} gold!`,'loot');
   }else{
     G.inventory.push(it);
     const affixNote=it.affixName?` [${it.affixEmoji}${it.affixName}]`:'';
     addLog(`Picked up ${it.emoji} ${it.name}${it.tier?' [T'+it.tier+']':''}${affixNote}!`,'loot');
-    if(it.isHp||it.isMp)addLog(`?? Q=HP pot, E=MP pot`,'info');
+    if(it.isHp||it.isMp)addLog(`🧪 Q=HP pot, E=MP pot`,'info');
   }
   // Zone-aware item removal
   if(G.inZone&&G.zoneItems?.[G.inZone]){
@@ -39,19 +39,19 @@ function pickupItem(it){
 
 function fmtSt(it){
   if(!it)return'';
-  if(it.type==='material')return`?? Crafting material � Rarity: ${'?'.repeat(it.rarity||1)}`;
+  if(it.type==='material')return`🧰 Crafting material • Rarity: ${'★'.repeat(it.rarity||1)}`;
   if(!it.effect)return'';
   const e=it.effect,ps=[];
-  if(e.hp)ps.push(`?+${e.hp}`);if(e.mp)ps.push(`?+${e.mp}`);
-  if(e.hpFull)ps.push('? FULL');if(e.mpFull)ps.push('? FULL');
-  if(e.atk)ps.push(`??+${e.atk}`);if(e.def)ps.push(`???+${e.def}`);
-  if(e.spd)ps.push(`?+${e.spd}`);if(e.crit)ps.push(`??+${e.crit}%`);
-  if(e.gold)ps.push(`??+${e.gold}`);if(e.bomb)ps.push(`??${e.bomb}dmg`);
-  if(e.elixirAtk)ps.push(`??+${e.elixirAtk} (floor)`);
-  if(e.elixirDef)ps.push(`???+${e.elixirDef} (floor)`);
-  if(e.elixirSpd)ps.push(`?+${e.elixirSpd} (floor)`);
-  if(e.elixirCrit)ps.push(`??+${e.elixirCrit}% (floor)`);
-  if(e.chaos)ps.push('?? CHAOS effect');
+  if(e.hp)ps.push(`❤+${e.hp}`);if(e.mp)ps.push(`✨+${e.mp}`);
+  if(e.hpFull)ps.push('❤ FULL');if(e.mpFull)ps.push('✨ FULL');
+  if(e.atk)ps.push(`⚔️+${e.atk}`);if(e.def)ps.push(`🛡️+${e.def}`);
+  if(e.spd)ps.push(`⚡+${e.spd}`);if(e.crit)ps.push(`🎯+${e.crit}%`);
+  if(e.gold)ps.push(`💰+${e.gold}`);if(e.bomb)ps.push(`💣${e.bomb}dmg`);
+  if(e.elixirAtk)ps.push(`⚔️+${e.elixirAtk} (floor)`);
+  if(e.elixirDef)ps.push(`🛡️+${e.elixirDef} (floor)`);
+  if(e.elixirSpd)ps.push(`⚡+${e.elixirSpd} (floor)`);
+  if(e.elixirCrit)ps.push(`🎯+${e.elixirCrit}% (floor)`);
+  if(e.chaos)ps.push('🌀 CHAOS effect');
   return ps.join(' ')||'Mysterious';
 }
 
@@ -63,25 +63,25 @@ function showIP(it){
   document.getElementById('ipnm').textContent=it.name;
   const tierEl=document.getElementById('ipti');
   const affixBadge=it.affix?`<br>${getAffixBadge(it)}`:'';
-  tierEl.innerHTML=it.tier?`<span class="tier-${it.tier}">[T${it.tier} � ${TIER_NAMES[it.tier]||''}]</span>${affixBadge}`:affixBadge;
+  tierEl.innerHTML=it.tier?`<span class="tier-${it.tier}">[T${it.tier} — ${TIER_NAMES[it.tier]||''}]</span>${affixBadge}`:affixBadge;
   document.getElementById('ipds').textContent=it.desc||'';
-  const statsText=fmtSt(it)+(it.affixDesc?`\n� ${it.affixDesc}`:'');
+  const statsText=fmtSt(it)+(it.affixDesc?`\n• ${it.affixDesc}`:'');
   document.getElementById('ipst').textContent=statsText;
   const btns=document.getElementById('ipbtns');btns.innerHTML='';
   const isMat=it.type==='material';
   const isElixir=it.type==='elixir';
-  const useLabel=it.isHp||it.isMp||it.type==='consumable'||isElixir?'?? USE':(isMat?null:'?? EQUIP');
+  const useLabel=it.isHp||it.isMp||it.type==='consumable'||isElixir?'🧪 USE':(isMat?null:'⚔️ EQUIP');
   const useBtn=useLabel?`<button class="icbtn g" onclick="useItem(CI)">${useLabel}</button>`:'';
   const sellPrice=Math.floor((it.value||20)*.5);
-  const sellBtn=`<button class="icbtn y" onclick="sellItemFromPopup(CI)">?? SELL (${sellPrice}g)</button>`;
-  const fuseBtn=`<button class="icbtn" style="border-color:var(--purple);color:var(--purple)" onclick="sendToFuse(CI)">?? FUSE</button>`;
-  const closeBtn=`<button class="icbtn" onclick="closeIP()">?</button>`;
-  const dropBtn=`<button class="icbtn r" onclick="dropItem(CI)">???</button>`;
+  const sellBtn=`<button class="icbtn y" onclick="sellItemFromPopup(CI)">💸 SELL (${sellPrice}g)</button>`;
+  const fuseBtn=`<button class="icbtn" style="border-color:var(--purple);color:var(--purple)" onclick="sendToFuse(CI)">⚗️ FUSE</button>`;
+  const closeBtn=`<button class="icbtn" onclick="closeIP()">❌</button>`;
+  const dropBtn=`<button class="icbtn r" onclick="dropItem(CI)">🗑️</button>`;
   btns.innerHTML=useBtn+sellBtn+fuseBtn+getDismantleBtn(it)+closeBtn+dropBtn;
   document.getElementById('itempop').classList.add('active');
 }
 function closeIP(){document.getElementById('itempop').classList.remove('active');CI=null;}
-function sellItemFromPopup(it){if(!it)return;if(it===G.equippedWeapon||it===G.equippedArmor||it===G.equippedRing){addLog('Unequip before selling!','info');return;}const p=Math.floor((it.value||20)*.5);G.player.gold+=p;G.inventory.splice(G.inventory.indexOf(it),1);addLog(`?? Sold ${it.emoji} ${it.name} for ${p}g`,'shop');spPt(window.innerWidth*.5,window.innerHeight*.6,'#ffd700',8,{speed:3,spread:4,grav:.1,decay:.05,ch:'??'});closeIP();updateHUD();saveG();}
+function sellItemFromPopup(it){if(!it)return;if(it===G.equippedWeapon||it===G.equippedArmor||it===G.equippedRing){addLog('Unequip before selling!','info');return;}const p=Math.floor((it.value||20)*.5);G.player.gold+=p;G.inventory.splice(G.inventory.indexOf(it),1);addLog(`💸 Sold ${it.emoji} ${it.name} for ${p}g`,'shop');spPt(window.innerWidth*.5,window.innerHeight*.6,'#ffd700',8,{speed:3,spread:4,grav:.1,decay:.05,ch:'💰'});closeIP();updateHUD();saveG();}
 function sendToFuse(it){if(!it)return;closeIP();setFuseSlot(1,it);togglePanel('fuse');}
 
 function useItem(it){
@@ -106,19 +106,19 @@ function applyEffect(it){
   if(e.hp)p.hp=Math.min(p.maxHp,p.hp+Math.floor(e.hp*(1+b)*healMult));
   if(e.hpFull)p.hp=p.maxHp;if(e.mp)p.mp=Math.min(p.maxMp,p.mp+e.mp);if(e.mpFull)p.mp=p.maxMp;
   if(e.gold)p.gold+=p.perks.goldBoost?Math.floor(e.gold*(1+p.perks.goldBoost)):e.gold;
-  if(e.bomb&&G.currentEnemy){const bd=Math.floor(e.bomb*(1+(p.perks.bombBoost||0)));G.currentEnemy.hp-=bd;clog(`?? BOMB! ${bd}!`,'#ff8800');doVfx('bomb');hfl('enemy');}
-  if(e.elixirAtk){p.atk+=e.elixirAtk;G.elixirBuffs=G.elixirBuffs||[];G.elixirBuffs.push({stat:'atk',val:e.elixirAtk});addLog(`?? +${e.elixirAtk} ATK (elixir)!`,'heal');}
-  if(e.elixirDef){p.def+=e.elixirDef;G.elixirBuffs=G.elixirBuffs||[];G.elixirBuffs.push({stat:'def',val:e.elixirDef});addLog(`??? +${e.elixirDef} DEF (elixir)!`,'heal');}
-  if(e.elixirSpd){p.spd+=e.elixirSpd;G.elixirBuffs=G.elixirBuffs||[];G.elixirBuffs.push({stat:'spd',val:e.elixirSpd});addLog(`? +${e.elixirSpd} SPD (elixir)!`,'heal');}
-  if(e.elixirCrit){p.crit+=e.elixirCrit;G.elixirBuffs=G.elixirBuffs||[];G.elixirBuffs.push({stat:'crit',val:e.elixirCrit});addLog(`? +${e.elixirCrit} CRIT (elixir)!`,'heal');}
+  if(e.bomb&&G.currentEnemy){const bd=Math.floor(e.bomb*(1+(p.perks.bombBoost||0)));G.currentEnemy.hp-=bd;clog(`💣 BOMB! ${bd}!`,'#ff8800');doVfx('bomb');hfl('enemy');}
+  if(e.elixirAtk){p.atk+=e.elixirAtk;G.elixirBuffs=G.elixirBuffs||[];G.elixirBuffs.push({stat:'atk',val:e.elixirAtk});addLog(`💥 +${e.elixirAtk} ATK (elixir)!`,'heal');}
+  if(e.elixirDef){p.def+=e.elixirDef;G.elixirBuffs=G.elixirBuffs||[];G.elixirBuffs.push({stat:'def',val:e.elixirDef});addLog(`🛡️ +${e.elixirDef} DEF (elixir)!`,'heal');}
+  if(e.elixirSpd){p.spd+=e.elixirSpd;G.elixirBuffs=G.elixirBuffs||[];G.elixirBuffs.push({stat:'spd',val:e.elixirSpd});addLog(`⚡ +${e.elixirSpd} SPD (elixir)!`,'heal');}
+  if(e.elixirCrit){p.crit+=e.elixirCrit;G.elixirBuffs=G.elixirBuffs||[];G.elixirBuffs.push({stat:'crit',val:e.elixirCrit});addLog(`⚡ +${e.elixirCrit} CRIT (elixir)!`,'heal');}
   if(e.chaos){
     const outcomes=[
-      ()=>{p.hp=p.maxHp;addLog('?? Chaos: Full heal!','heal');},
-      ()=>{p.mp=p.maxMp;addLog('?? Chaos: Full MP!','heal');},
-      ()=>{p.atk+=15;addLog('?? Chaos: +15 ATK!','heal');},
-      ()=>{p.hp=Math.max(1,p.hp-30);addLog('?? Chaos: Ouch. -30 HP.','damage');},
-      ()=>{p.gold+=100;addLog('?? Chaos: +100 gold!','loot');},
-      ()=>{p.crit+=25;addLog('?? Chaos: +25 CRIT!','heal');},
+      ()=>{p.hp=p.maxHp;addLog('🌀 Chaos: Full heal!','heal');},
+      ()=>{p.mp=p.maxMp;addLog('🌀 Chaos: Full MP!','heal');},
+      ()=>{p.atk+=15;addLog('🌀 Chaos: +15 ATK!','heal');},
+      ()=>{p.hp=Math.max(1,p.hp-30);addLog('🌀 Chaos: Ouch. -30 HP.','damage');},
+      ()=>{p.gold+=100;addLog('🌀 Chaos: +100 gold!','loot');},
+      ()=>{p.crit+=25;addLog('🌀 Chaos: +25 CRIT!','heal');},
     ];
     outcomes[Math.floor(Math.random()*outcomes.length)]();
   }
@@ -139,12 +139,12 @@ function dropItem(it){
   addLog(`Dropped ${it.emoji}.`,'info');updateHUD();renderMap();closeIP();saveG();
 }
 
-// -------------------------------
+// ═══════════════════════════════
 // LEVEL UP
-// -------------------------------
+// ═══════════════════════════════
 function showLU(){
   const p=G.player;
-  // -- AUTOMATIC STAT GAINS on every level-up --
+  // ── AUTOMATIC STAT GAINS on every level-up ──
   const cls=p.classType||'warrior';
   const gains={
     warrior:{atk:4,def:2,maxHp:12},
@@ -159,10 +159,10 @@ function showLU(){
     else p[stat]+=val;
   });
   const gainStr=Object.entries(gains).map(([k,v])=>`+${v} ${k}`).join(', ');
-  addLog(`?? LVL ${p.level}! Auto: ${gainStr}`,'loot');
+  addLog(`🎉 LVL ${p.level}! Auto: ${gainStr}`,'loot');
 
   // Show 3 random perk choices for bonus selection
-  document.getElementById('ludesc').textContent=`Level ${p.level} � Pick a bonus!`;
+  document.getElementById('ludesc').textContent=`Level ${p.level} — Pick a bonus!`;
   const perks=[...PERKS].sort(()=>Math.random()-.5).slice(0,3);
   const el=document.getElementById('luperks');el.innerHTML='';
   perks.forEach(pk=>{
@@ -186,37 +186,37 @@ function applyPerk(pk){
   if(e.goldBoost)p.perks.goldBoost=(p.perks.goldBoost||0)+e.goldBoost;
   if(e.bombBoost)p.perks.bombBoost=(p.perks.bombBoost||0)+e.bombBoost;
   if(e.cannibal)p.perks.cannibal=e.cannibal;
-  G.perkList.push(pk.name);addLog(`? Perk: ${pk.name}!`,'loot');
+  G.perkList.push(pk.name);addLog(`✨ Perk: ${pk.name}!`,'loot');
   document.getElementById('luov').classList.remove('active');updateHUD();saveG();
 }
 
-// -------------------------------
+// ═══════════════════════════════
 // FLOOR
-// -------------------------------
+// ═══════════════════════════════
 function descend(){
   const p=G.player;
   const cells=getCells();
   if(cells[p.y]?.[p.x]?.entity!=='stairs'){addLog('Step onto the stairs first!','info');return;}
   // Stairs are now optional shortcut anchors into deeper portal floors.
   if(G.inZone){
-    addLog('?? Hidden stairs detected � diving into a risky subfloor.','funny');
+    addLog('🜃 Hidden stairs detected — diving into a risky subfloor.','funny');
     enterRandomSubfloor();
     return;
   }
   const dirs=['N','S','E','W'];
   const dir=dirs[Math.floor(Math.random()*dirs.length)];
-  addLog(`?? Nexus descent anchor activated � routing to ${PORTAL_ZONES[dir].name}.`,'info');
+  addLog(`⬇️ Nexus descent anchor activated — routing to ${PORTAL_ZONES[dir].name}.`,'info');
   enterPortal(dir);
 }
 
-// -------------------------------
+// ═══════════════════════════════
 // LOG
-// -------------------------------
+// ═══════════════════════════════
 function addLog(tx,type='info'){const l=document.getElementById('log-list'),d=document.createElement('div');d.className=`le ${type}`;d.textContent=tx;l.appendChild(d);while(l.children.length>100)l.removeChild(l.firstChild);if(openPanel==='log')l.scrollTop=l.scrollHeight;}
 
-// -------------------------------
+// ═══════════════════════════════
 // FLOATERS
-// -------------------------------
+// ═══════════════════════════════
 function spawnDmg(v,col='#ff4444',isH=false){
   const el=document.createElement('div');el.className='dmgf';el.style.color=col;el.textContent=isH?`+${v}`:`-${v}`;
   const cin=document.getElementById('combatov').classList.contains('active')?(isH?gctr('player'):gctr('enemy')):{x:window.innerWidth/2+(Math.random()-.5)*60,y:window.innerHeight*.4};
@@ -224,15 +224,15 @@ function spawnDmg(v,col='#ff4444',isH=false){
   document.body.appendChild(el);setTimeout(()=>el.remove(),1000);
 }
 
-// -------------------------------
+// ═══════════════════════════════
 // GAME OVER
-// -------------------------------
+// ═══════════════════════════════
 function gameOver(killer){
   const p=G.player;const ep=EPITAPHS[Math.floor(Math.random()*EPITAPHS.length)];
-  document.getElementById('gotitle').textContent='?? YOU DIED ??';
+  document.getElementById('gotitle').textContent='💀 YOU DIED 💀';
   document.getElementById('gotitle').style.color='var(--red)';
   document.getElementById('goep').textContent=`Killed by ${killer}. ${ep}`;
-  document.getElementById('gost').innerHTML=`Floor: ${G.floor} � Kills: ${G.kills} � Gold: ${G.goldTotal}g � Level: ${p.level}`;
+  document.getElementById('gost').innerHTML=`Floor: ${G.floor} • Kills: ${G.kills} • Gold: ${G.goldTotal}g • Level: ${p.level}`;
   if(typeof saveNow==='function')saveNow(false);
   if(typeof clearSaves==='function')clearSaves(true,true);
   else localStorage.removeItem(SK);
@@ -243,14 +243,14 @@ function gameOver(killer){
 }
 function showWin(){showRunSummary(true);}
 
-// -------------------------------
+// ═══════════════════════════════
 // BLACKSMITH
-// -------------------------------
+// ═══════════════════════════════
 function openBlacksmith(){
   const p=G.player;
   const el=document.getElementById('bs-content');
   if(!el)return;
-  document.getElementById('bs-gold').textContent=`?? ${p.gold}g`;
+  document.getElementById('bs-gold').textContent=`💰 ${p.gold}g`;
   // Group blueprints by category
   const cats={};
   BLUEPRINTS.forEach(bp=>{
@@ -279,7 +279,7 @@ function openBlacksmith(){
           const ok=have>=m.qty;
           return`<span class="mat-tag ${ok?'mat-ok':'mat-missing'}">${buildItemSpriteHTML(mat,12,'item-inline item-mat')} ${mat?.name||m.id} ${have}/${m.qty}</span>`;
         }).join('')}</div>
-        ${!ready?`<div class="bp-hint">${!afford?'Not enough gold. ':''}${missing.length?'Missing: '+missing.join(', '):''}</div>`:'<div class="bp-hint" style="color:var(--green)">? Ready to craft!</div>'}
+        ${!ready?`<div class="bp-hint">${!afford?'Not enough gold. ':''}${missing.length?'Missing: '+missing.join(', '):''}</div>`:'<div class="bp-hint" style="color:var(--green)">✓ Ready to craft!</div>'}
       </div>`;
     });
   }
@@ -287,7 +287,7 @@ function openBlacksmith(){
 }
 
 function getCatEmoji(cat){
-  return{Sword:'??',Mace:'??',Spear:'???',Staff:'??',Armor:'???',Boots:'??',Helmet:'??',Ring:'??'}[cat]||'?';
+  return{Sword:'⚔️',Mace:'🔨',Spear:'🗡️',Staff:'🪄',Armor:'🛡️',Boots:'🥾',Helmet:'⛑️',Ring:'💍'}[cat]||'✨';
 }
 
 function countMat(id){
@@ -328,38 +328,38 @@ function craftItem(bpId){
   delete crafted.mats;delete crafted.goldCost;delete crafted.cat;delete crafted.desc;
   crafted.desc=`Crafted at the Blacksmith. ${bp.desc}`;
   G.inventory.push(crafted);
-  addLog(`?? Crafted ${bp.emoji} ${bp.name} [T${bp.tier}]!`,'loot');
+  addLog(`🔨 Crafted ${bp.emoji} ${bp.name} [T${bp.tier}]!`,'loot');
   sfx('rgba(255,140,0,.3)',400);
   spPt(window.innerWidth*.5,window.innerHeight*.5,'#ff8800',18,{speed:4,spread:5,grav:-.02,decay:.04});
   spRi(window.innerWidth*.5,window.innerHeight*.5,'#ffaa00');
   updateHUD();openBlacksmith();saveG();
 }
 
-// -------------------------------
+// ═══════════════════════════════
 // ALCHEMIST
-// -------------------------------
+// ═══════════════════════════════
 function openAlchemist(){
   const p=G.player;
   const el=document.getElementById('alch-content');
   if(!el)return;
-  document.getElementById('alch-gold').textContent=`?? ${p.gold}g`;
+  document.getElementById('alch-gold').textContent=`💰 ${p.gold}g`;
   const isMage=p.classType==='mage';
   const recipes=ALCH_RECIPES.filter(r=>!r.mageOnly||isMage);
   let html='';
   if(!isMage){
     html+=`<div style="background:#0a0a1a;border:2px solid #2a1a3a;border-radius:4px;padding:8px;margin-bottom:10px;font-family:'VT323',monospace;font-size:13px;color:#aa88cc">
-      ?? Chaos Wizards get exclusive mage-only recipes! Some things are available to all heroes.
+      🔮 Chaos Wizards get exclusive mage-only recipes! Some things are available to all heroes.
     </div>`;
   }
   // Group by type
   const potions=recipes.filter(r=>!r.mageOnly);
   const mageRecipes=recipes.filter(r=>r.mageOnly);
   if(potions.length){
-    html+=`<div class="shop-section-title">?? BREWS (All Classes)</div>`;
+    html+=`<div class="shop-section-title">🧪 BREWS (All Classes)</div>`;
     potions.forEach(r=>html+=renderRecipe(r,p));
   }
   if(mageRecipes.length){
-    html+=`<div class="shop-section-title" style="margin-top:10px">?? MAGE RECIPES (Chaos Wizard Only)</div>`;
+    html+=`<div class="shop-section-title" style="margin-top:10px">🔮 MAGE RECIPES (Chaos Wizard Only)</div>`;
     mageRecipes.forEach(r=>html+=renderRecipe(r,p));
   }
   el.innerHTML=html;
@@ -383,7 +383,7 @@ function renderRecipe(r,p){
       const ok=have>=m.qty;
       return`<span class="mat-tag ${ok?'mat-ok':'mat-missing'}">${buildItemSpriteHTML(mat,12,'item-inline item-mat')} ${mat?.name||m.id} ${have}/${m.qty}</span>`;
     }).join('')}</div>
-    ${ready?'<div class="bp-hint" style="color:var(--green)">? Ready to brew!</div>':''}
+    ${ready?'<div class="bp-hint" style="color:var(--green)">✓ Ready to brew!</div>':''}
   </div>`;
 }
 
@@ -412,42 +412,42 @@ function brewRecipe(recipeId){
     result={...r.result,uid:Math.random().toString(36).slice(2)};
   }
   G.inventory.push(result);
-  addLog(`?? Brewed: ${r.emoji} ${r.name}!`,'loot');
+  addLog(`⚗️ Brewed: ${r.emoji} ${r.name}!`,'loot');
   sfx('rgba(170,68,255,.35)',400);
   spPt(window.innerWidth*.5,window.innerHeight*.5,'#aa44ff',16,{speed:4,spread:5,grav:-.05,decay:.04});
   spRi(window.innerWidth*.5,window.innerHeight*.5,'#7722ff');
   updateHUD();openAlchemist();saveG();
 }
 
-// -------------------------------
-// ----- DOOM CORRUPTION SYSTEM -----
-// -------------------------------
+// ═══════════════════════════════
+// ───── DOOM CORRUPTION SYSTEM ─────
+// ═══════════════════════════════
 
-// Corruption thresholds � each triggers a new modifier stack
+// Corruption thresholds — each triggers a new modifier stack
 const DOOM_THRESHOLDS = [
-  {pct:20, name:'DOOM LV.1', emoji:'??', color:'#ff8844'},
-  {pct:40, name:'DOOM LV.2', emoji:'??', color:'#ff4422'},
-  {pct:60, name:'DOOM LV.3', emoji:'?',  color:'#ff2266'},
-  {pct:80, name:'DOOM LV.4', emoji:'??',  color:'#ff00ff'},
-  {pct:100,name:'DOOM LV.5 � TOTAL DOOM', emoji:'??', color:'#ff0044'},
+  {pct:20, name:'DOOM LV.1', emoji:'🟠', color:'#ff8844'},
+  {pct:40, name:'DOOM LV.2', emoji:'🔴', color:'#ff4422'},
+  {pct:60, name:'DOOM LV.3', emoji:'⭐',  color:'#ff2266'},
+  {pct:80, name:'DOOM LV.4', emoji:'💥',  color:'#ff00ff'},
+  {pct:100,name:'DOOM LV.5 — TOTAL DOOM', emoji:'🌑', color:'#ff0044'},
 ];
 
-// All possible dungeon modifiers � data-driven
+// All possible dungeon modifiers — data-driven
 const ALL_MODIFIERS = [
-  {id:'greedy_shops',   name:'GREEDY SHOPS',    emoji:'??', desc:'Shop prices +25%.',    effect:{shopMult:1.25}, positive:false},
-  {id:'heal_curse',     name:'HEAL CURSE',       emoji:'??', desc:'All healing -35%.',   effect:{healMult:0.65}, positive:false},
-  {id:'enemies_explode',name:'VOLATILE FOES',    emoji:'??', desc:'Enemies explode on death, dealing 15% max HP to you.', effect:{enemyExplode:true}, positive:false},
-  {id:'slippery',       name:'SLIPPERY FLOORS',  emoji:'??', desc:'10% chance per move to slip an extra tile.', effect:{slippery:true}, positive:false},
-  {id:'fusion_tax',     name:'FUSION TAX',       emoji:'??', desc:'Fusion costs 2� gold but 20% chance to jump +1 extra tier.', effect:{fusionTax:true}, positive:false},
-  {id:'enemy_regen',    name:'ENEMY REGEN',      emoji:'??', desc:'Enemies regain 3% max HP each turn.', effect:{enemyRegen:true}, positive:false},
-  {id:'cursed_loot',    name:'CURSED LOOT',      emoji:'??', desc:'All dropped items are 1 tier lower.',  effect:{lootCurse:true}, positive:false},
-  {id:'no_flee',        name:'INESCAPABLE',      emoji:'??', desc:'Cannot flee from combat.',            effect:{noFlee:true}, positive:false},
-  {id:'mp_drain',       name:'MANA DRAIN',       emoji:'??', desc:'Lose 5 MP per combat action.',        effect:{mpDrain:5}, positive:false},
-  {id:'elite_surge',    name:'ELITE SURGE',      emoji:'??', desc:'All enemies become Elite (+50% HP, +25% ATK, better loot).', effect:{eliteSurge:true}, positive:false},
-  // Positive (silver lining) modifiers � appear at high corruption
-  {id:'doom_loot',      name:'DOOM REWARD',      emoji:'??', desc:'Kill rewards +50% gold and XP.', effect:{killBoost:1.5}, positive:true},
-  {id:'power_surge',    name:'POWER SURGE',      emoji:'?', desc:'You deal +20% damage.', effect:{dmgBoost:1.2}, positive:true},
-  {id:'blood_pact',     name:'BLOOD PACT',       emoji:'??', desc:'Gain 15% lifesteal.', effect:{lifeStealBoost:.15}, positive:true},
+  {id:'greedy_shops',   name:'GREEDY SHOPS',    emoji:'💸', desc:'Shop prices +25%.',    effect:{shopMult:1.25}, positive:false},
+  {id:'heal_curse',     name:'HEAL CURSE',       emoji:'🩸', desc:'All healing -35%.',   effect:{healMult:0.65}, positive:false},
+  {id:'enemies_explode',name:'VOLATILE FOES',    emoji:'💥', desc:'Enemies explode on death, dealing 15% max HP to you.', effect:{enemyExplode:true}, positive:false},
+  {id:'slippery',       name:'SLIPPERY FLOORS',  emoji:'🧊', desc:'10% chance per move to slip an extra tile.', effect:{slippery:true}, positive:false},
+  {id:'fusion_tax',     name:'FUSION TAX',       emoji:'✖️', desc:'Fusion costs 2× gold but 20% chance to jump +1 extra tier.', effect:{fusionTax:true}, positive:false},
+  {id:'enemy_regen',    name:'ENEMY REGEN',      emoji:'🔄', desc:'Enemies regain 3% max HP each turn.', effect:{enemyRegen:true}, positive:false},
+  {id:'cursed_loot',    name:'CURSED LOOT',      emoji:'🔻', desc:'All dropped items are 1 tier lower.',  effect:{lootCurse:true}, positive:false},
+  {id:'no_flee',        name:'INESCAPABLE',      emoji:'🚫', desc:'Cannot flee from combat.',            effect:{noFlee:true}, positive:false},
+  {id:'mp_drain',       name:'MANA DRAIN',       emoji:'🔵', desc:'Lose 5 MP per combat action.',        effect:{mpDrain:5}, positive:false},
+  {id:'elite_surge',    name:'ELITE SURGE',      emoji:'⚔️', desc:'All enemies become Elite (+50% HP, +25% ATK, better loot).', effect:{eliteSurge:true}, positive:false},
+  // Positive (silver lining) modifiers — appear at high corruption
+  {id:'doom_loot',      name:'DOOM REWARD',      emoji:'🏆', desc:'Kill rewards +50% gold and XP.', effect:{killBoost:1.5}, positive:true},
+  {id:'power_surge',    name:'POWER SURGE',      emoji:'⚡', desc:'You deal +20% damage.', effect:{dmgBoost:1.2}, positive:true},
+  {id:'blood_pact',     name:'BLOOD PACT',       emoji:'🩸', desc:'Gain 15% lifesteal.', effect:{lifeStealBoost:.15}, positive:true},
 ];
 
 // Get active modifier effects as a merged object
@@ -506,7 +506,7 @@ function triggerDoomLevel(idx){
     const pick=pool[Math.floor(Math.random()*pool.length)];
     if(G.activeModifiers.length>=3){G.activeModifiers.shift();} // max 3 active
     G.activeModifiers.push(pick.id);
-    addLog(`?? NEW MODIFIER: ${pick.emoji} ${pick.name} � ${pick.desc}`,'damage');
+    addLog(`💥 NEW MODIFIER: ${pick.emoji} ${pick.name} — ${pick.desc}`,'damage');
     showModifierBanner(pick);
   }
   updateDoomBar();
@@ -532,7 +532,7 @@ function updateDoomBar(){
   const fill=document.getElementById('doom-fill');
   const lbl=document.getElementById('doom-label');
   if(fill){fill.style.width=pct+'%';fill.style.background=`linear-gradient(90deg,${fills[Math.min(lvl,4)]})`;fill.style.boxShadow=`0 0 ${6+lvl*3}px ${colors[Math.min(lvl,4)]}`;}
-  if(lbl){const lvlNames=['','LV1','LV2','LV3','LV4','MAX'];lbl.textContent=`? ${pct}%${lvl>0?' '+lvlNames[lvl]:''}`;lbl.style.color=lvl>0?colors[lvl-1]:'#ff2266';}
+  if(lbl){const lvlNames=['','LV1','LV2','LV3','LV4','MAX'];lbl.textContent=`☠ ${pct}%${lvl>0?' '+lvlNames[lvl]:''}`;lbl.style.color=lvl>0?colors[lvl-1]:'#ff2266';}
 }
 
 function updateModBar(){
@@ -557,7 +557,7 @@ function openDoomPanel(){
   const mods=G.activeModifiers||[];
   let html=`<div class="doom-card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-      <div style="font-size:8px;color:#ff2266">? CORRUPTION: ${pct}%</div>
+      <div style="font-size:8px;color:#ff2266">☠ CORRUPTION: ${pct}%</div>
       <div style="font-size:7px;color:#ff6688">Doom Level: ${lvl}/5</div>
     </div>
     <div style="background:#1a0010;border-radius:4px;height:10px;overflow:hidden;margin-bottom:8px;">
@@ -567,7 +567,7 @@ function openDoomPanel(){
   </div>`;
 
   if(mods.length){
-    html+=`<div style="font-size:7px;color:#ff2266;margin-bottom:6px">?? ACTIVE MODIFIERS (${mods.length}/3)</div>`;
+    html+=`<div style="font-size:7px;color:#ff2266;margin-bottom:6px">💥 ACTIVE MODIFIERS (${mods.length}/3)</div>`;
     mods.forEach(id=>{
       const m=ALL_MODIFIERS.find(x=>x.id===id);
       if(!m)return;
@@ -580,29 +580,29 @@ function openDoomPanel(){
     html+=`<div style="font-family:'VT323',monospace;font-size:15px;color:var(--gray);padding:8px;text-align:center">No active modifiers yet. Gain corruption to unlock doom!</div>`;
   }
 
-  html+=`<div style="font-size:7px;color:#ff2266;margin-bottom:6px;margin-top:10px">?? UPCOMING THRESHOLDS</div>`;
+  html+=`<div style="font-size:7px;color:#ff2266;margin-bottom:6px;margin-top:10px">📍 UPCOMING THRESHOLDS</div>`;
   DOOM_THRESHOLDS.forEach(t=>{
     const reached=pct>=t.pct;
     html+=`<div class="doom-threshold ${reached?'reached':'upcoming'}">
-      <span>${reached?'?':t.emoji}</span>
+      <span>${reached?'✓':t.emoji}</span>
       <span style="flex:1">${t.name} @ ${t.pct}%</span>
       ${reached?`<span style="color:#ff2266">ACTIVE</span>`:`<span>${t.pct-pct}% away</span>`}
     </div>`;
   });
 
   html+=`<div style="font-family:'VT323',monospace;font-size:13px;color:var(--gray);margin-top:12px;padding:8px;background:#080808;border-radius:4px;line-height:1.8">
-    <div style="color:#ff2266;font-size:12px;margin-bottom:4px">?? CORRUPTION SOURCES</div>
-    Each floor: +15% � Each enemy killed: +1% � Boss kill: +8%<br>
-    Floor milestone: +5% � Using chaos spells: +2%
+    <div style="color:#ff2266;font-size:12px;margin-bottom:4px">📈 CORRUPTION SOURCES</div>
+    Each floor: +15% • Each enemy killed: +1% • Boss kill: +8%<br>
+    Floor milestone: +5% • Using chaos spells: +2%
   </div>`;
 
   el.innerHTML=html;
 }
 
-// -------------------------------
-// ----- STATUS EFFECTS -----
-// -------------------------------
-// status: {poison, burn, stun, frozen, holy} � counts of remaining turns
+// ═══════════════════════════════
+// ───── STATUS EFFECTS ─────
+// ═══════════════════════════════
+// status: {poison, burn, stun, frozen, holy} — counts of remaining turns
 
 function applyStatus(target, status, stacks=1){
   if(!target.status)target.status={};
@@ -612,43 +612,43 @@ function applyStatus(target, status, stacks=1){
 function tickStatusEnemy(en){
   if(!en.status)return;
   const logs=[];
-  if(en.status.poison>0){const d=Math.max(1,Math.floor(en.maxHp*.06));en.hp-=d;en.status.poison--;logs.push(`?? ${en.name} poison ${d}!`);}
-  if(en.status.burn>0){const d=Math.max(1,Math.floor(en.maxHp*.05)+5);en.hp-=d;en.status.burn--;logs.push(`?? ${en.name} burn ${d}!`);}
-  if(en.status.frozen>0){en.status.frozen--;logs.push(`?? ${en.name} frozen!`);}
+  if(en.status.poison>0){const d=Math.max(1,Math.floor(en.maxHp*.06));en.hp-=d;en.status.poison--;logs.push(`☠️ ${en.name} poison ${d}!`);}
+  if(en.status.burn>0){const d=Math.max(1,Math.floor(en.maxHp*.05)+5);en.hp-=d;en.status.burn--;logs.push(`🔥 ${en.name} burn ${d}!`);}
+  if(en.status.frozen>0){en.status.frozen--;logs.push(`🧊 ${en.name} frozen!`);}
   logs.forEach(l=>clog(l,'#88ff44'));
 }
 
 function tickStatusPlayer(){
   const p=G.player;
   if(!p.status)return;
-  if(p.status.poison>0){const d=Math.max(1,Math.floor(p.maxHp*.04));p.hp=Math.max(1,p.hp-d);p.status.poison--;clog(`?? You're poisoned! ${d} dmg`,'#88ff44');if(p.hp<=1&&p.status.poison>0){gameOver('Poison');return;}}
-  if(p.status.burn>0){const d=4+Math.floor(Math.random()*4);p.hp=Math.max(1,p.hp-d);p.status.burn--;clog(`?? Burning! ${d} dmg`,'#ff8844');}
+  if(p.status.poison>0){const d=Math.max(1,Math.floor(p.maxHp*.04));p.hp=Math.max(1,p.hp-d);p.status.poison--;clog(`☠️ You're poisoned! ${d} dmg`,'#88ff44');if(p.hp<=1&&p.status.poison>0){gameOver('Poison');return;}}
+  if(p.status.burn>0){const d=4+Math.floor(Math.random()*4);p.hp=Math.max(1,p.hp-d);p.status.burn--;clog(`🔥 Burning! ${d} dmg`,'#ff8844');}
 }
 
 function getStatusBadges(entity){
   if(!entity.status)return'';
   const s=entity.status;
   const parts=[];
-  if(s.poison>0)parts.push(`<span class="status-tag status-poison">?${s.poison}</span>`);
-  if(s.burn>0)parts.push(`<span class="status-tag status-burn">??${s.burn}</span>`);
-  if(s.stun>0)parts.push(`<span class="status-tag status-stun">??${s.stun}</span>`);
-  if(s.frozen>0)parts.push(`<span class="status-tag status-frozen">??${s.frozen}</span>`);
-  if(s.holy>0)parts.push(`<span class="status-tag status-holy">?${s.holy}</span>`);
+  if(s.poison>0)parts.push(`<span class="status-tag status-poison">☠${s.poison}</span>`);
+  if(s.burn>0)parts.push(`<span class="status-tag status-burn">🔥${s.burn}</span>`);
+  if(s.stun>0)parts.push(`<span class="status-tag status-stun">💫${s.stun}</span>`);
+  if(s.frozen>0)parts.push(`<span class="status-tag status-frozen">🧊${s.frozen}</span>`);
+  if(s.holy>0)parts.push(`<span class="status-tag status-holy">✨${s.holy}</span>`);
   return parts.join('');
 }
 
-// -------------------------------
-// ----- AFFIXES SYSTEM -----
-// -------------------------------
+// ═══════════════════════════════
+// ───── AFFIXES SYSTEM ─────
+// ═══════════════════════════════
 const AFFIXES = [
-  {id:'vampiric', name:'Vampiric', emoji:'??', desc:'Lifesteal 12% on hit.', cls:'affix-vampiric', apply:(it)=>{it.affix_effect={lifesteal:.12};}},
-  {id:'thorns',   name:'Thorns',   emoji:'??', desc:'Reflect 15% dmg taken.', cls:'affix-thorns',   apply:(it)=>{it.affix_effect={thorns:.15};}},
-  {id:'chaotic',  name:'Chaotic',  emoji:'??', desc:'Attacks have wild crits (double range).', cls:'affix-chaotic',apply:(it)=>{it.affix_effect={chaotic:true};}},
-  {id:'holy',     name:'Holy',     emoji:'?', desc:'Attacks may heal 8 HP.', cls:'affix-holy',    apply:(it)=>{it.affix_effect={holyStrike:.25};}},
-  {id:'poison',   name:'Venomous', emoji:'??', desc:'Attacks apply 2 turns poison.', cls:'affix-poison',apply:(it)=>{it.affix_effect={poisonStrike:2};}},
-  {id:'swift',    name:'Swift',    emoji:'?', desc:'+5 SPD while equipped.', cls:'affix-swift',  apply:(it)=>{it.affix_effect={spdBonus:5};}},
-  {id:'runic',    name:'Runic',    emoji:'??', desc:'+20 Max MP while equipped.', cls:'affix-runic', apply:(it)=>{it.affix_effect={mpBonus:20};}},
-  {id:'burning',  name:'Burning',  emoji:'??', desc:'Attacks apply 2 turns burn.', cls:'affix-chaotic', apply:(it)=>{it.affix_effect={burnStrike:2};}},
+  {id:'vampiric', name:'Vampiric', emoji:'🩸', desc:'Lifesteal 12% on hit.', cls:'affix-vampiric', apply:(it)=>{it.affix_effect={lifesteal:.12};}},
+  {id:'thorns',   name:'Thorns',   emoji:'🌵', desc:'Reflect 15% dmg taken.', cls:'affix-thorns',   apply:(it)=>{it.affix_effect={thorns:.15};}},
+  {id:'chaotic',  name:'Chaotic',  emoji:'🌀', desc:'Attacks have wild crits (double range).', cls:'affix-chaotic',apply:(it)=>{it.affix_effect={chaotic:true};}},
+  {id:'holy',     name:'Holy',     emoji:'✨', desc:'Attacks may heal 8 HP.', cls:'affix-holy',    apply:(it)=>{it.affix_effect={holyStrike:.25};}},
+  {id:'poison',   name:'Venomous', emoji:'☠️', desc:'Attacks apply 2 turns poison.', cls:'affix-poison',apply:(it)=>{it.affix_effect={poisonStrike:2};}},
+  {id:'swift',    name:'Swift',    emoji:'⚡', desc:'+5 SPD while equipped.', cls:'affix-swift',  apply:(it)=>{it.affix_effect={spdBonus:5};}},
+  {id:'runic',    name:'Runic',    emoji:'🔮', desc:'+20 Max MP while equipped.', cls:'affix-runic', apply:(it)=>{it.affix_effect={mpBonus:20};}},
+  {id:'burning',  name:'Burning',  emoji:'🔥', desc:'Attacks apply 2 turns burn.', cls:'affix-chaotic', apply:(it)=>{it.affix_effect={burnStrike:2};}},
 ];
 
 // Roll a random affix onto an item (only gear, not consumables)
@@ -667,7 +667,7 @@ function rollAffix(it){
 
 function getAffixBadge(it){
   if(!it.affix)return'';
-  return`<span class="affix-tag ${it.affixClass||''}">${it.affixEmoji||'?'} ${it.affixName}</span>`;
+  return`<span class="affix-tag ${it.affixClass||''}">${it.affixEmoji||'✦'} ${it.affixName}</span>`;
 }
 
 // Apply affix effects during combat
@@ -676,11 +676,11 @@ function applyAffixOnHit(attacker, target, dmg){
   const eff=(attacker===G.player?G.equippedWeapon?.affix_effect:null)||attacker.affix_effect||{};
   const p=G.player;
 
-  if(eff.lifesteal){const ls=Math.floor(dmg*eff.lifesteal);p.hp=Math.min(p.maxHp,p.hp+ls);if(ls>0)clog(`?? Vampiric +${ls}HP`,'#ff4488');}
-  if(eff.holyStrike&&Math.random()<eff.holyStrike){const h=8;p.hp=Math.min(p.maxHp,p.hp+h);clog(`? Holy Strike +${h}HP`,'#ffff44');}
+  if(eff.lifesteal){const ls=Math.floor(dmg*eff.lifesteal);p.hp=Math.min(p.maxHp,p.hp+ls);if(ls>0)clog(`🩸 Vampiric +${ls}HP`,'#ff4488');}
+  if(eff.holyStrike&&Math.random()<eff.holyStrike){const h=8;p.hp=Math.min(p.maxHp,p.hp+h);clog(`✨ Holy Strike +${h}HP`,'#ffff44');}
   if(eff.poisonStrike&&target.status)applyStatus(target,'poison',eff.poisonStrike);
   if(eff.burnStrike&&target.status)applyStatus(target,'burn',eff.burnStrike);
-  if(eff.chaotic&&Math.random()<.3){dmg=Math.floor(dmg*(1.5+Math.random()*2.5));clog(`?? Chaotic crit! ${dmg}!`,'#ffaa44');}
+  if(eff.chaotic&&Math.random()<.3){dmg=Math.floor(dmg*(1.5+Math.random()*2.5));clog(`🌀 Chaotic crit! ${dmg}!`,'#ffaa44');}
   return dmg;
 }
 
@@ -691,20 +691,20 @@ function applyAffixOnEquip(it, equip=true){
   if(eff.mpBonus){p.maxMp+=eff.mpBonus*m;if(equip)p.mp=Math.min(p.maxMp,p.mp+eff.mpBonus);}
 }
 
-// -------------------------------
-// ----- META PROGRESSION -----
-// -------------------------------
+// ═══════════════════════════════
+// ───── META PROGRESSION ─────
+// ═══════════════════════════════
 const META_SK='doomed_meta_v1';
 
 const META_UPGRADES = [
-  {id:'inv_slots',   name:'BOTTOMLESS POCKETS', emoji:'??', desc:'+2 inventory slots per level. (Max +8)', maxLevel:4, baseCost:3, costPerLevel:3, apply:(lvl)=>({invBonus:lvl*2})},
-  {id:'gold_gain',   name:'GOLD MAGNET',         emoji:'??', desc:'+15% gold gain per level.', maxLevel:4, baseCost:4, costPerLevel:4, apply:(lvl)=>({goldBonus:lvl*.15})},
-  {id:'drop_rate',   name:'LUCKY DROPS',          emoji:'??', desc:'+10% item drop rate per level.', maxLevel:3, baseCost:3, costPerLevel:5, apply:(lvl)=>({dropBonus:lvl*.10})},
-  {id:'start_mat',   name:'STARTER KIT',          emoji:'??', desc:'Start each run with 2 crafting materials.', maxLevel:1, baseCost:5, costPerLevel:0, apply:(lvl)=>({startMat:lvl>0})},
-  {id:'vendor_reroll',name:'MERCHANT BUDDY',      emoji:'??', desc:'Get 1 free shop reroll per run.', maxLevel:1, baseCost:6, costPerLevel:0, apply:(lvl)=>({vendorReroll:lvl>0})},
-  {id:'start_potion', name:'MEDIC PACK',          emoji:'??', desc:'Start each run with 1 extra HP potion.', maxLevel:1, baseCost:4, costPerLevel:0, apply:(lvl)=>({startPotion:lvl>0})},
-  {id:'corruption_slow',name:'DOOM RESISTANCE',  emoji:'??', desc:'-20% corruption gain per level.', maxLevel:3, baseCost:5, costPerLevel:6, apply:(lvl)=>({corruptionSlow:lvl*.2})},
-  {id:'xp_boost',    name:'QUICK LEARNER',        emoji:'?', desc:'+15% XP gain per level.', maxLevel:3, baseCost:3, costPerLevel:4, apply:(lvl)=>({xpBonus:lvl*.15})},
+  {id:'inv_slots',   name:'BOTTOMLESS POCKETS', emoji:'🎒', desc:'+2 inventory slots per level. (Max +8)', maxLevel:4, baseCost:3, costPerLevel:3, apply:(lvl)=>({invBonus:lvl*2})},
+  {id:'gold_gain',   name:'GOLD MAGNET',         emoji:'💰', desc:'+15% gold gain per level.', maxLevel:4, baseCost:4, costPerLevel:4, apply:(lvl)=>({goldBonus:lvl*.15})},
+  {id:'drop_rate',   name:'LUCKY DROPS',          emoji:'🎁', desc:'+10% item drop rate per level.', maxLevel:3, baseCost:3, costPerLevel:5, apply:(lvl)=>({dropBonus:lvl*.10})},
+  {id:'start_mat',   name:'STARTER KIT',          emoji:'🪨', desc:'Start each run with 2 crafting materials.', maxLevel:1, baseCost:5, costPerLevel:0, apply:(lvl)=>({startMat:lvl>0})},
+  {id:'vendor_reroll',name:'MERCHANT BUDDY',      emoji:'🔁', desc:'Get 1 free shop reroll per run.', maxLevel:1, baseCost:6, costPerLevel:0, apply:(lvl)=>({vendorReroll:lvl>0})},
+  {id:'start_potion', name:'MEDIC PACK',          emoji:'🧪', desc:'Start each run with 1 extra HP potion.', maxLevel:1, baseCost:4, costPerLevel:0, apply:(lvl)=>({startPotion:lvl>0})},
+  {id:'corruption_slow',name:'DOOM RESISTANCE',  emoji:'☠️', desc:'-20% corruption gain per level.', maxLevel:3, baseCost:5, costPerLevel:6, apply:(lvl)=>({corruptionSlow:lvl*.2})},
+  {id:'xp_boost',    name:'QUICK LEARNER',        emoji:'⭐', desc:'+15% XP gain per level.', maxLevel:3, baseCost:3, costPerLevel:4, apply:(lvl)=>({xpBonus:lvl*.15})},
 ];
 
 function loadMeta(){
@@ -735,7 +735,7 @@ function closeMetaScreen(){
 }
 function renderMetaScreen(){
   const meta=loadMeta();
-  document.getElementById('meta-shards-display').textContent=`?? ${meta.shards} Doom Shards available`;
+  document.getElementById('meta-shards-display').textContent=`💠 ${meta.shards} Doom Shards available`;
   const el=document.getElementById('meta-upgrades-list');
   el.innerHTML='';
   META_UPGRADES.forEach(u=>{
@@ -750,10 +750,10 @@ function renderMetaScreen(){
       <div class="meta-upgrade-info">
         <div class="meta-upgrade-name">${u.name}</div>
         <div class="meta-upgrade-desc">${u.desc}</div>
-        <div class="meta-upgrade-level">${maxed?'? MAX':'Lv '+lvl+'/'+u.maxLevel}</div>
+        <div class="meta-upgrade-level">${maxed?'✓ MAX':'Lv '+lvl+'/'+u.maxLevel}</div>
       </div>
       <div class="meta-upgrade-cost ${!canAfford&&!maxed?'cant-afford':''}">
-        ${maxed?'MAXED':cost+'??'}
+        ${maxed?'MAXED':cost+'💠'}
       </div>`;
     if(!maxed){
       div.onclick=()=>{
@@ -773,31 +773,31 @@ function renderMetaScreen(){
   });
 }
 
-// -------------------------------
-// ----- RUN SUMMARY -----
-// -------------------------------
+// ═══════════════════════════════
+// ───── RUN SUMMARY ─────
+// ═══════════════════════════════
 function calcRunShards(){
   const p=G.player;
   let shards=0;
   const breakdown=[];
   // Floor milestones
   const floorBonus=G.floor*2;
-  shards+=floorBonus;breakdown.push(`Floor ${G.floor}: +${floorBonus}??`);
+  shards+=floorBonus;breakdown.push(`Floor ${G.floor}: +${floorBonus}💠`);
   // Kill bonus
   const killBonus=Math.floor(G.kills/5);
-  if(killBonus>0){shards+=killBonus;breakdown.push(`${G.kills} kills: +${killBonus}??`);}
+  if(killBonus>0){shards+=killBonus;breakdown.push(`${G.kills} kills: +${killBonus}💠`);}
   // Corruption bonus
   const corrBonus=Math.floor((G.corruption||0)/20)*2;
-  if(corrBonus>0){shards+=corrBonus;breakdown.push(`Corruption ${G.corruption}%: +${corrBonus}??`);}
+  if(corrBonus>0){shards+=corrBonus;breakdown.push(`Corruption ${G.corruption}%: +${corrBonus}💠`);}
   // Win bonus
-  if(G.didWin){shards+=10;breakdown.push('RUN COMPLETE: +10??');}
+  if(G.didWin){shards+=10;breakdown.push('RUN COMPLETE: +10💠');}
   // Boss kills
   const bossBonus=(G.bossKills||0)*5;
-  if(bossBonus>0){shards+=bossBonus;breakdown.push(`${G.bossKills} boss(es): +${bossBonus}??`);}
+  if(bossBonus>0){shards+=bossBonus;breakdown.push(`${G.bossKills} boss(es): +${bossBonus}💠`);}
   // High doom
   const doomLvl=getDoomLevel();
   const doomBonus=doomLvl*2;
-  if(doomBonus>0){shards+=doomBonus;breakdown.push(`Doom Lv${doomLvl}: +${doomBonus}??`);}
+  if(doomBonus>0){shards+=doomBonus;breakdown.push(`Doom Lv${doomLvl}: +${doomBonus}💠`);}
   return{shards,breakdown};
 }
 
@@ -818,29 +818,29 @@ function showRunSummary(won){
   if(document.getElementById('title-shard-count'))
     document.getElementById('title-shard-count').textContent=meta.shards;
 
-  document.getElementById('rs-title').textContent=won?'?? VICTORY ROYALE':'?? YOU PERISHED';
+  document.getElementById('rs-title').textContent=won?'🏆 VICTORY ROYALE':'💀 YOU PERISHED';
   document.getElementById('rs-title').style.color=won?'var(--gold)':'var(--red)';
   document.getElementById('rs-sub').textContent=won
     ?'Against all odds, you cleared the dungeon. The dungeon is disappointed.'
     :`Floor ${G.floor} was your undoing. The rats mourn. Briefly.`;
 
   const stats=[
-    ['??? Floor Reached',G.floor],
-    ['?? Enemies Killed',G.kills],
-    ['?? Gold Earned',G.goldTotal+'g'],
-    ['? Level Reached',p.level],
-    ['?? Corruption',`${G.corruption||0}%`],
-    ['?? Doom Level',getDoomLevel()],
-    ['?? Modifiers Active',(G.activeModifiers||[]).length],
-    ['?? Items Fused',G.fusionCount||0],
+    ['🏚️ Floor Reached',G.floor],
+    ['💀 Enemies Killed',G.kills],
+    ['💰 Gold Earned',G.goldTotal+'g'],
+    ['⭐ Level Reached',p.level],
+    ['☠️ Corruption',`${G.corruption||0}%`],
+    ['👑 Doom Level',getDoomLevel()],
+    ['🔴 Modifiers Active',(G.activeModifiers||[]).length],
+    ['⚗️ Items Fused',G.fusionCount||0],
   ];
   document.getElementById('rs-stats').innerHTML=stats.map(([k,v])=>`<div class="rs-stat"><span class="rs-stat-k">${k}</span><span class="rs-stat-v">${v}</span></div>`).join('');
   document.getElementById('rs-shard-breakdown').innerHTML=breakdown.map(s=>`<div>${s}</div>`).join('');
-  document.getElementById('rs-shard-total').textContent=`Total earned: ${shards}?? (Bank: ${meta.shards}??)`;
+  document.getElementById('rs-shard-total').textContent=`Total earned: ${shards}💠 (Bank: ${meta.shards}💠)`;
 
   document.getElementById('gov').style.display='none';
   document.getElementById('run-summary').style.display='flex';
 }
 
-// -------------------------------
+// ═══════════════════════════════
 
