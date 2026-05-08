@@ -1,4 +1,4 @@
-﻿// COMBAT
+// COMBAT
 // ═══════════════════════════════
 function startCombat(en){
   G.inCombat=true;G.currentEnemy=en;
@@ -37,6 +37,7 @@ function startCombat(en){
 }
 function updCUI(){
   const p=G.player,en=G.currentEnemy;
+  if(!en) return;
   document.getElementById('cphp').style.width=`${(p.hp/p.maxHp)*100}%`;
   document.getElementById('cphpv').textContent=`${p.hp}/${p.maxHp}`;
   document.getElementById('cehp').style.width=`${Math.max(0,(en.hp/en.maxHp)*100)}%`;
@@ -49,8 +50,12 @@ function updCUI(){
 }
 function clog(tx,col='#e8e8f0'){const lg=document.getElementById('clog'),d=document.createElement('div');d.style.color=col;d.textContent=tx;lg.appendChild(d);lg.scrollTop=lg.scrollHeight;}
 
+let combatBusy=false;
 function ca(action){
-  const p=G.player,en=G.currentEnemy;if(!en)return;let pd=0;
+  const p=G.player,en=G.currentEnemy;
+  if(!en||combatBusy||en.hp<=0)return;
+  combatBusy=true;
+  let pd=0;
   const mods=getModEffects();
 
   if(action==='attack'){
@@ -63,39 +68,35 @@ function ca(action){
     clog(`You hit for ${pd}${crit?' 💥 CRIT!':''}`,'#88ff88');
     doVfx(crit?'crit':'slash');hfl('enemy');spawnDmg(pd,crit?'#ffdd00':'#ff8888');
     if(p.perks.lifesteal||mods.lifeStealBoost){const lsR=(p.perks.lifesteal||0)+(mods.lifeStealBoost||0);const ls=Math.floor(pd*lsR);if(ls>0){p.hp=Math.min(p.maxHp,p.hp+ls);clog(`❤ +${ls}HP`,'#44ff88');spawnDmg(ls,'#44ff88',true);}}
-    // Affix: thorns refund
     if(p.affix_effect?.thorns){const tr=Math.floor(pd*p.affix_effect.thorns);en.hp-=tr;clog(`Thorns ${tr}!`,'#88ff44');}
   }else if(action==='skill'){
-    if(p.mp<p.classData.skill.cost){clog('Not enough MP!','#ff4444');return;}
+    if(p.mp<p.classData.skill.cost){clog('Not enough MP!','#ff4444');combatBusy=false;return;}
     p.mp-=p.classData.skill.cost;
-    if(p.classType==='mage')addCorruption(1); // stronger mind: less self-corruption per cast
+    if(p.classType==='mage')addCorruption(1);
     pd=useSkill(p.classData.skill.fn);
   }else if(action==='item'){
     const pot=G.inventory.find(i=>i.isHp||i.isMp)||G.inventory.find(i=>i.type==='consumable');
-    if(!pot){clog('No usable items!','#ff4444');return;}
+    if(!pot){clog('No usable items!','#ff4444');combatBusy=false;return;}
     applyEffect(pot);G.inventory.splice(G.inventory.indexOf(pot),1);clog(`Used ${pot.emoji} ${pot.name}`,'#ffd700');
     if(pot.isHp){spawnDmg(pot.effect.hp||G.player.maxHp,'#44ff88',true);sfx('rgba(68,255,136,.2)',200);}
-    updCUI();updateHUD();eAtk();return;
+    updCUI();updateHUD();
+    setTimeout(()=>eAtk(),400);
+    return;
   }else if(action==='flee'){
-    if(mods.noFlee){clog('🚫 Inescapable! Cannot flee!','#ff4444');eAtk();return;}
+    if(mods.noFlee){clog('🚫 Inescapable! Cannot flee!','#ff4444');setTimeout(()=>eAtk(),400);return;}
     if(Math.random()<.5){clog('Fled! Dignity gone.','#88aaff');addLog(`Fled from ${en.name}. Coward.`,'funny');endCombat();return;}
-    else{clog("Failed! Cape grabbed!",'#ff4444');eAtk();return;}
+    else{clog("Failed! Cape grabbed!",'#ff4444');setTimeout(()=>eAtk(),400);return;}
   }
 
-  // MP drain modifier
   if(mods.mpDrain&&action!=='flee'){p.mp=Math.max(0,p.mp-mods.mpDrain);}
-
-  // Tick status effects
   tickStatusEnemy(en);
   tickStatusPlayer();
-
   en.hp-=pd;
+  updCUI();
   if(en.hp<=0){defeatEnemy(en,true);return;}
 
-  // Enemy regen modifier
   if(mods.enemyRegen){const regen=Math.floor(en.maxHp*.03);en.hp=Math.min(en.maxHp,en.hp+regen);if(regen)clog(`${en.name} regens ${regen}HP!`,'#ff6644');}
-
-  eAtk();
+  setTimeout(()=>eAtk(),600);
 }
 
 function getMageMindPower(p){
@@ -162,8 +163,9 @@ function useSkill(fn){
 
 function eAtk(){
   const p=G.player,en=G.currentEnemy;
-  if(en.status?.frozen>0){en.status.frozen--;clog(`❄️ ${en.name} is frozen! Skips attack.`,'#44ccff');updCUI();updateHUD();return;}
-  if(en.status?.stun>0){en.status.stun--;clog(`${en.name} is stunned! Skips attack.`,'#8888ff');updCUI();updateHUD();return;}
+  if(!en||en.hp<=0){combatBusy=false;return;}
+  if(en.status?.frozen>0){en.status.frozen--;clog(`❄️ ${en.name} is frozen! Skips attack.`,'#44ccff');updCUI();updateHUD();combatBusy=false;return;}
+  if(en.status?.stun>0){en.status.stun--;clog(`${en.name} is stunned! Skips attack.`,'#8888ff');updCUI();updateHUD();combatBusy=false;return;}
   let dmg=Math.max(2, en.atk - Math.floor(p.def*0.45) + Math.floor(Math.random()*5));
   if(G.equippedArmor?.affix_effect?.thorns){const tr=Math.floor(dmg*G.equippedArmor.affix_effect.thorns);en.hp-=tr;clog(`Thorns! ${tr} reflected!`,'#88ff44');if(en.hp<=0){defeatEnemy(en,true);return;}}
   p.hp=Math.max(0,p.hp-dmg);
@@ -171,6 +173,7 @@ function eAtk(){
   doVfx('enemy');hfl('player');spawnDmg(dmg,'#ff4444');updCUI();updateHUD();
   if(p.hp<=0){gameOver(en.name);return;}
   if(en.poisoned>0){const pd=Math.floor(en.maxHp*.05);en.hp-=pd;en.poisoned--;clog(`☠️ Poison ${pd}!`,'#88ff44');if(en.hp<=0){defeatEnemy(en,true);return;}updCUI();}
+  combatBusy=false;
 }
 
 function defeatEnemy(en,fc){
@@ -255,6 +258,4 @@ function defeatEnemy(en,fc){
   }
   renderMap();updateHUD();saveG();
 }
-function endCombat(){G.inCombat=false;G.currentEnemy=null;document.getElementById('combatov').classList.remove('active');updateHUD();renderMap();}
-
-
+function endCombat(){G.inCombat=false;G.currentEnemy=null;combatBusy=false;document.getElementById('combatov').classList.remove('active');updateHUD();renderMap();}
