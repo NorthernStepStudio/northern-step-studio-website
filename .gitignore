@@ -57,3 +57,9 @@ private-keys/
 **/signing.temp.properties
 **/credentials.json
 **/secrets.json
+
+# Local Android artifacts (keep out of git history)
+b/intermediates/intermediary_bundle/
+b/intermediates/module_bundle/
+build-artifacts/neuromoves-mobile-v1.0.0.apk
+build-artifacts/noobs-investing-v1.0.0.apk
