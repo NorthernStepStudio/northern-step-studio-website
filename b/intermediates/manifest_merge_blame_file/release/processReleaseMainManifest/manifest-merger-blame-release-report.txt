@@ -1,0 +1,846 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="app.nexusbuild.mobile"
+4    android:versionCode="511"
+5    android:versionName="0.5.11" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="24"
+9        android:targetSdkVersion="36" />
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:2:3-64
+11-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:2:20-62
+12    <uses-permission
+12-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:3:3-77
+13        android:name="android.permission.READ_EXTERNAL_STORAGE"
+13-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:3:20-75
+14        android:maxSdkVersion="32" />
+14-->[BareExpo:expo.modules.image:3.0.11] C:\Users\winst\.gradle\caches\8.14.3\transforms\de0809e75086d8077c61804c8973b8c2\transformed\expo.modules.image-3.0.11\AndroidManifest.xml:17:9-35
+15    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+15-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:4:3-68
+15-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:4:20-66
+16    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+16-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:5:3-75
+16-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:5:20-73
+17    <uses-permission android:name="android.permission.VIBRATE" />
+17-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:6:3-63
+17-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:6:20-61
+18    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+18-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:7:3-78
+18-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:7:20-76
+19
+20    <queries>
+20-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:8:3-14:13
+21        <intent>
+21-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:9:5-13:14
+22            <action android:name="android.intent.action.VIEW" />
+22-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:10:7-58
+22-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:10:15-56
+23
+24            <category android:name="android.intent.category.BROWSABLE" />
+24-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:11:7-67
+24-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:11:17-65
+25
+26            <data android:scheme="https" />
+26-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:12:7-37
+26-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:12:13-35
+27        </intent>
+28        <!-- Query open documents -->
+29        <intent>
+29-->[host.exp.exponent:expo.modules.filesystem:19.0.21] C:\Users\winst\.gradle\caches\8.14.3\transforms\f76e3f808b97467c15b2dcf307bf14be\transformed\expo.modules.filesystem-19.0.21\AndroidManifest.xml:15:9-17:18
+30            <action android:name="android.intent.action.OPEN_DOCUMENT_TREE" />
+30-->[host.exp.exponent:expo.modules.filesystem:19.0.21] C:\Users\winst\.gradle\caches\8.14.3\transforms\f76e3f808b97467c15b2dcf307bf14be\transformed\expo.modules.filesystem-19.0.21\AndroidManifest.xml:16:13-79
+30-->[host.exp.exponent:expo.modules.filesystem:19.0.21] C:\Users\winst\.gradle\caches\8.14.3\transforms\f76e3f808b97467c15b2dcf307bf14be\transformed\expo.modules.filesystem-19.0.21\AndroidManifest.xml:16:21-76
+31        </intent>
+32        <intent>
+32-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:15:9-19:18
+33
+34            <!-- Required for picking images from the camera roll if targeting API 30 -->
+35            <action android:name="android.media.action.IMAGE_CAPTURE" />
+35-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:18:13-73
+35-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:18:21-70
+36        </intent>
+37        <intent>
+37-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:20:9-24:18
+38
+39            <!-- Required for picking images from the camera if targeting API 30 -->
+40            <action android:name="android.media.action.ACTION_VIDEO_CAPTURE" />
+40-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:23:13-80
+40-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:23:21-77
+41        </intent>
+42        <intent>
+42-->[host.exp.exponent:expo.modules.sharing:14.0.8] C:\Users\winst\.gradle\caches\8.14.3\transforms\c53c7c081e1ec7a97434f11018ea7294\transformed\expo.modules.sharing-14.0.8\AndroidManifest.xml:8:9-14:18
+43
+44            <!-- Required for file sharing if targeting API 30 -->
+45            <action android:name="android.intent.action.SEND" />
+45-->[host.exp.exponent:expo.modules.sharing:14.0.8] C:\Users\winst\.gradle\caches\8.14.3\transforms\c53c7c081e1ec7a97434f11018ea7294\transformed\expo.modules.sharing-14.0.8\AndroidManifest.xml:11:13-65
+45-->[host.exp.exponent:expo.modules.sharing:14.0.8] C:\Users\winst\.gradle\caches\8.14.3\transforms\c53c7c081e1ec7a97434f11018ea7294\transformed\expo.modules.sharing-14.0.8\AndroidManifest.xml:11:21-62
+46
+47            <data android:mimeType="*/*" />
+47-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:12:7-37
+48        </intent>
+49        <intent>
+49-->[com.vanniktech:android-image-cropper:4.6.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\e245f66f51ab273207d0058b58031100\transformed\android-image-cropper-4.6.0\AndroidManifest.xml:8:9-14:18
+50            <action android:name="android.intent.action.GET_CONTENT" />
+50-->[com.vanniktech:android-image-cropper:4.6.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\e245f66f51ab273207d0058b58031100\transformed\android-image-cropper-4.6.0\AndroidManifest.xml:9:13-72
+50-->[com.vanniktech:android-image-cropper:4.6.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\e245f66f51ab273207d0058b58031100\transformed\android-image-cropper-4.6.0\AndroidManifest.xml:9:21-69
+51
+52            <category android:name="android.intent.category.OPENABLE" />
+52-->[com.vanniktech:android-image-cropper:4.6.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\e245f66f51ab273207d0058b58031100\transformed\android-image-cropper-4.6.0\AndroidManifest.xml:11:13-73
+52-->[com.vanniktech:android-image-cropper:4.6.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\e245f66f51ab273207d0058b58031100\transformed\android-image-cropper-4.6.0\AndroidManifest.xml:11:23-70
+53
+54            <data android:mimeType="*/*" />
+54-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:12:7-37
+55        </intent>
+56        <intent>
+56-->[com.android.billingclient:billing:7.1.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\b7acf759df8eefbbcde01c6f19417e5e\transformed\billing-7.1.1\AndroidManifest.xml:13:9-15:18
+57            <action android:name="com.android.vending.billing.InAppBillingService.BIND" />
+57-->[com.android.billingclient:billing:7.1.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\b7acf759df8eefbbcde01c6f19417e5e\transformed\billing-7.1.1\AndroidManifest.xml:14:13-91
+57-->[com.android.billingclient:billing:7.1.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\b7acf759df8eefbbcde01c6f19417e5e\transformed\billing-7.1.1\AndroidManifest.xml:14:21-88
+58        </intent>
+59        <intent>
+59-->[com.android.billingclient:billing:7.1.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\b7acf759df8eefbbcde01c6f19417e5e\transformed\billing-7.1.1\AndroidManifest.xml:16:9-18:18
+60            <action android:name="com.google.android.apps.play.billingtestcompanion.BillingOverrideService.BIND" />
+60-->[com.android.billingclient:billing:7.1.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\b7acf759df8eefbbcde01c6f19417e5e\transformed\billing-7.1.1\AndroidManifest.xml:17:13-116
+60-->[com.android.billingclient:billing:7.1.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\b7acf759df8eefbbcde01c6f19417e5e\transformed\billing-7.1.1\AndroidManifest.xml:17:21-113
+61        </intent>
+62    </queries>
+63
+64    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+64-->[:react-native-community_netinfo] D:\dev\Northern Step Studio\apps\nexusbuild\node_modules\@react-native-community\netinfo\android\build\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:7:5-79
+64-->[:react-native-community_netinfo] D:\dev\Northern Step Studio\apps\nexusbuild\node_modules\@react-native-community\netinfo\android\build\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:7:22-76
+65    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- Required for picking images from camera directly -->
+65-->[:react-native-community_netinfo] D:\dev\Northern Step Studio\apps\nexusbuild\node_modules\@react-native-community\netinfo\android\build\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:8:5-76
+65-->[:react-native-community_netinfo] D:\dev\Northern Step Studio\apps\nexusbuild\node_modules\@react-native-community\netinfo\android\build\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:8:22-73
+66    <uses-permission android:name="android.permission.CAMERA" />
+66-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:8:5-65
+66-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:8:22-62
+67    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+67-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:7:5-81
+67-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:7:22-78
+68    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+68-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:8:5-77
+68-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:8:22-74
+69    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- Required by older versions of Google Play services to create IID tokens -->
+69-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:24:5-68
+69-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:24:22-65
+70    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+70-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:26:5-82
+70-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:26:22-79
+71    <uses-permission android:name="com.android.vending.BILLING" />
+71-->[com.android.billingclient:billing:7.1.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\b7acf759df8eefbbcde01c6f19417e5e\transformed\billing-7.1.1\AndroidManifest.xml:10:5-67
+71-->[com.android.billingclient:billing:7.1.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\b7acf759df8eefbbcde01c6f19417e5e\transformed\billing-7.1.1\AndroidManifest.xml:10:22-64
+72
+73    <permission
+73-->[androidx.core:core:1.16.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\528614f9b23ccc21b6ed2f57c97ceb4e\transformed\core-1.16.0\AndroidManifest.xml:22:5-24:47
+74        android:name="app.nexusbuild.mobile.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+74-->[androidx.core:core:1.16.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\528614f9b23ccc21b6ed2f57c97ceb4e\transformed\core-1.16.0\AndroidManifest.xml:23:9-81
+75        android:protectionLevel="signature" />
+75-->[androidx.core:core:1.16.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\528614f9b23ccc21b6ed2f57c97ceb4e\transformed\core-1.16.0\AndroidManifest.xml:24:9-44
+76
+77    <uses-permission android:name="app.nexusbuild.mobile.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+77-->[androidx.core:core:1.16.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\528614f9b23ccc21b6ed2f57c97ceb4e\transformed\core-1.16.0\AndroidManifest.xml:26:5-97
+77-->[androidx.core:core:1.16.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\528614f9b23ccc21b6ed2f57c97ceb4e\transformed\core-1.16.0\AndroidManifest.xml:26:22-94
+78    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" /> <!-- for android -->
+78-->[com.android.installreferrer:installreferrer:2.2] C:\Users\winst\.gradle\caches\8.14.3\transforms\a156c561f695dcfeea26ae234c8cce5e\transformed\installreferrer-2.2\AndroidManifest.xml:9:5-110
+78-->[com.android.installreferrer:installreferrer:2.2] C:\Users\winst\.gradle\caches\8.14.3\transforms\a156c561f695dcfeea26ae234c8cce5e\transformed\installreferrer-2.2\AndroidManifest.xml:9:22-107
+79    <!-- <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/> -->
+80    <!-- <uses-permission android:name="com.android.launcher.permission.WRITE_SETTINGS"/> -->
+81    <!-- <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" /> -->
+82    <!-- <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT" /> -->
+83    <!-- for Samsung -->
+84    <uses-permission android:name="com.sec.android.provider.badge.permission.READ" />
+84-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:19:5-86
+84-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:19:22-83
+85    <uses-permission android:name="com.sec.android.provider.badge.permission.WRITE" /> <!-- for htc -->
+85-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:20:5-87
+85-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:20:22-84
+86    <uses-permission android:name="com.htc.launcher.permission.READ_SETTINGS" />
+86-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:23:5-81
+86-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:23:22-78
+87    <uses-permission android:name="com.htc.launcher.permission.UPDATE_SHORTCUT" /> <!-- for sony -->
+87-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:24:5-83
+87-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:24:22-80
+88    <uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE" />
+88-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:27:5-88
+88-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:27:22-85
+89    <uses-permission android:name="com.sonymobile.home.permission.PROVIDER_INSERT_BADGE" /> <!-- for apex -->
+89-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:28:5-92
+89-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:28:22-89
+90    <uses-permission android:name="com.anddoes.launcher.permission.UPDATE_COUNT" /> <!-- for solid -->
+90-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:31:5-84
+90-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:31:22-81
+91    <uses-permission android:name="com.majeur.launcher.permission.UPDATE_BADGE" /> <!-- for huawei -->
+91-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:34:5-83
+91-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:34:22-80
+92    <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE" />
+92-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:37:5-91
+92-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:37:22-88
+93    <uses-permission android:name="com.huawei.android.launcher.permission.READ_SETTINGS" />
+93-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:38:5-92
+93-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:38:22-89
+94    <uses-permission android:name="com.huawei.android.launcher.permission.WRITE_SETTINGS" /> <!-- for ZUK -->
+94-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:39:5-93
+94-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:39:22-90
+95    <uses-permission android:name="android.permission.READ_APP_BADGE" /> <!-- for OPPO -->
+95-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:42:5-73
+95-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:42:22-70
+96    <uses-permission android:name="com.oppo.launcher.permission.READ_SETTINGS" />
+96-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:45:5-82
+96-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:45:22-79
+97    <uses-permission android:name="com.oppo.launcher.permission.WRITE_SETTINGS" /> <!-- for EvMe -->
+97-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:46:5-83
+97-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:46:22-80
+98    <uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_READ" />
+98-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:49:5-88
+98-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:49:22-85
+99    <uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_WRITE" />
+99-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:50:5-89
+99-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\winst\.gradle\caches\8.14.3\transforms\30c64b5a953c211546cde845db3d506a\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:50:22-86
+100
+101    <application
+101-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:15:3-44:17
+102        android:name="app.nexusbuild.mobile.MainApplication"
+102-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:15:16-47
+103        android:allowBackup="true"
+103-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:15:162-188
+104        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+104-->[androidx.core:core:1.16.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\528614f9b23ccc21b6ed2f57c97ceb4e\transformed\core-1.16.0\AndroidManifest.xml:28:18-86
+105        android:enableOnBackInvokedCallback="false"
+105-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:15:248-291
+106        android:extractNativeLibs="false"
+107        android:icon="@mipmap/ic_launcher"
+107-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:15:81-115
+108        android:label="@string/app_name"
+108-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:15:48-80
+109        android:roundIcon="@mipmap/ic_launcher_round"
+109-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:15:116-161
+110        android:supportsRtl="true"
+110-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:15:221-247
+111        android:theme="@style/AppTheme" >
+111-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:15:189-220
+112        <meta-data
+112-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:16:5-139
+113            android:name="com.google.firebase.messaging.default_notification_color"
+113-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:16:16-87
+114            android:resource="@color/notification_icon_color" />
+114-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:16:88-137
+115        <meta-data
+115-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:17:5-135
+116            android:name="com.google.firebase.messaging.default_notification_icon"
+116-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:17:16-86
+117            android:resource="@drawable/notification_icon" />
+117-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:17:87-133
+118        <meta-data
+118-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:18:5-136
+119            android:name="expo.modules.notifications.default_notification_color"
+119-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:18:16-84
+120            android:resource="@color/notification_icon_color" />
+120-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:18:85-134
+121        <meta-data
+121-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:19:5-132
+122            android:name="expo.modules.notifications.default_notification_icon"
+122-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:19:16-83
+123            android:resource="@drawable/notification_icon" />
+123-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:19:84-130
+124        <meta-data
+124-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:20:5-82
+125            android:name="expo.modules.updates.ENABLED"
+125-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:20:16-59
+126            android:value="true" />
+126-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:20:60-80
+127        <meta-data
+127-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:21:5-119
+128            android:name="expo.modules.updates.EXPO_RUNTIME_VERSION"
+128-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:21:16-72
+129            android:value="@string/expo_runtime_version" />
+129-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:21:73-117
+130        <meta-data
+130-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:22:5-105
+131            android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH"
+131-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:22:16-80
+132            android:value="ALWAYS" />
+132-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:22:81-103
+133        <meta-data
+133-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:23:5-99
+134            android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS"
+134-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:23:16-79
+135            android:value="0" />
+135-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:23:80-97
+136        <meta-data
+136-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:24:5-141
+137            android:name="expo.modules.updates.EXPO_UPDATE_URL"
+137-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:24:16-67
+138            android:value="https://u.expo.dev/4442b336-9701-4066-a405-0a58210ef142" />
+138-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:24:68-139
+139
+140        <activity
+140-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:25:5-43:16
+141            android:name="app.nexusbuild.mobile.MainActivity"
+141-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:25:15-43
+142            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|uiMode"
+142-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:25:44-134
+143            android:exported="true"
+143-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:25:256-279
+144            android:launchMode="singleTask"
+144-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:25:135-166
+145            android:screenOrientation="unspecified"
+145-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:25:280-319
+146            android:theme="@style/Theme.App.SplashScreen"
+146-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:25:210-255
+147            android:windowSoftInputMode="adjustResize" >
+147-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:25:167-209
+148            <intent-filter>
+148-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:26:7-29:23
+149                <action android:name="android.intent.action.MAIN" />
+149-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:27:9-60
+149-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:27:17-58
+150
+151                <category android:name="android.intent.category.LAUNCHER" />
+151-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:28:9-68
+151-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:28:19-66
+152            </intent-filter>
+153            <intent-filter>
+153-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:30:7-35:23
+154                <action android:name="android.intent.action.VIEW" />
+154-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:10:7-58
+154-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:10:15-56
+155
+156                <category android:name="android.intent.category.DEFAULT" />
+156-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:32:9-67
+156-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:32:19-65
+157                <category android:name="android.intent.category.BROWSABLE" />
+157-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:11:7-67
+157-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:11:17-65
+158
+159                <data android:scheme="nexusbuild" />
+159-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:12:7-37
+159-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:12:13-35
+160            </intent-filter>
+161            <intent-filter
+161-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:36:7-42:23
+162                data-generated="true"
+162-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:36:48-69
+163                android:autoVerify="true" >
+163-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:36:22-47
+164                <action android:name="android.intent.action.VIEW" />
+164-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:10:7-58
+164-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:10:15-56
+165
+166                <data
+166-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:12:7-37
+167                    android:host="northernstepstudio.com"
+167-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:38:38-75
+168                    android:pathPrefix="/apps/nexusbuild"
+168-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:38:76-113
+169                    android:scheme="https" />
+169-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:12:13-35
+170                <data
+170-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:12:7-37
+171                    android:host="auth"
+171-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:38:38-75
+172                    android:pathPrefix="/callback"
+172-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:38:76-113
+173                    android:scheme="nexusbuild" />
+173-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:12:13-35
+174
+175                <category android:name="android.intent.category.DEFAULT" />
+175-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:32:9-67
+175-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:32:19-65
+176                <category android:name="android.intent.category.BROWSABLE" />
+176-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:11:7-67
+176-->D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app\src\main\AndroidManifest.xml:11:17-65
+177            </intent-filter>
+178        </activity>
+179
+180        <meta-data
+180-->[:expo-modules-core] D:\dev\Northern Step Studio\apps\nexusbuild\node_modules\expo-modules-core\android\build\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:9:9-11:89
+181            android:name="org.unimodules.core.AppLoader#react-native-headless"
+181-->[:expo-modules-core] D:\dev\Northern Step Studio\apps\nexusbuild\node_modules\expo-modules-core\android\build\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:10:13-79
+182            android:value="expo.modules.adapters.react.apploader.RNHeadlessAppLoader" />
+182-->[:expo-modules-core] D:\dev\Northern Step Studio\apps\nexusbuild\node_modules\expo-modules-core\android\build\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:11:13-86
+183        <meta-data
+183-->[:expo-modules-core] D:\dev\Northern Step Studio\apps\nexusbuild\node_modules\expo-modules-core\android\build\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:12:9-15:45
+184            android:name="com.facebook.soloader.enabled"
+184-->[:expo-modules-core] D:\dev\Northern Step Studio\apps\nexusbuild\node_modules\expo-modules-core\android\build\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:13:13-57
+185            android:value="true" />
+185-->[:expo-modules-core] D:\dev\Northern Step Studio\apps\nexusbuild\node_modules\expo-modules-core\android\build\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:14:13-33
+186
+187        <provider
+187-->[host.exp.exponent:expo.modules.clipboard:8.0.8] C:\Users\winst\.gradle\caches\8.14.3\transforms\696f29feda8301351d306f936e7b7adc\transformed\expo.modules.clipboard-8.0.8\AndroidManifest.xml:8:9-15:20
+188            android:name="expo.modules.clipboard.ClipboardFileProvider"
+188-->[host.exp.exponent:expo.modules.clipboard:8.0.8] C:\Users\winst\.gradle\caches\8.14.3\transforms\696f29feda8301351d306f936e7b7adc\transformed\expo.modules.clipboard-8.0.8\AndroidManifest.xml:9:13-72
+189            android:authorities="app.nexusbuild.mobile.ClipboardFileProvider"
+189-->[host.exp.exponent:expo.modules.clipboard:8.0.8] C:\Users\winst\.gradle\caches\8.14.3\transforms\696f29feda8301351d306f936e7b7adc\transformed\expo.modules.clipboard-8.0.8\AndroidManifest.xml:10:13-73
+190            android:exported="true" >
+190-->[host.exp.exponent:expo.modules.clipboard:8.0.8] C:\Users\winst\.gradle\caches\8.14.3\transforms\696f29feda8301351d306f936e7b7adc\transformed\expo.modules.clipboard-8.0.8\AndroidManifest.xml:11:13-36
+191            <meta-data
+191-->[host.exp.exponent:expo.modules.clipboard:8.0.8] C:\Users\winst\.gradle\caches\8.14.3\transforms\696f29feda8301351d306f936e7b7adc\transformed\expo.modules.clipboard-8.0.8\AndroidManifest.xml:12:13-14:68
+192                android:name="expo.modules.clipboard.CLIPBOARD_FILE_PROVIDER_PATHS"
+192-->[host.exp.exponent:expo.modules.clipboard:8.0.8] C:\Users\winst\.gradle\caches\8.14.3\transforms\696f29feda8301351d306f936e7b7adc\transformed\expo.modules.clipboard-8.0.8\AndroidManifest.xml:13:17-84
+193                android:resource="@xml/clipboard_provider_paths" />
+193-->[host.exp.exponent:expo.modules.clipboard:8.0.8] C:\Users\winst\.gradle\caches\8.14.3\transforms\696f29feda8301351d306f936e7b7adc\transformed\expo.modules.clipboard-8.0.8\AndroidManifest.xml:14:17-65
+194        </provider>
+195        <provider
+195-->[host.exp.exponent:expo.modules.filesystem:19.0.21] C:\Users\winst\.gradle\caches\8.14.3\transforms\f76e3f808b97467c15b2dcf307bf14be\transformed\expo.modules.filesystem-19.0.21\AndroidManifest.xml:21:9-30:20
+196            android:name="expo.modules.filesystem.FileSystemFileProvider"
+196-->[host.exp.exponent:expo.modules.filesystem:19.0.21] C:\Users\winst\.gradle\caches\8.14.3\transforms\f76e3f808b97467c15b2dcf307bf14be\transformed\expo.modules.filesystem-19.0.21\AndroidManifest.xml:22:13-74
+197            android:authorities="app.nexusbuild.mobile.FileSystemFileProvider"
+197-->[host.exp.exponent:expo.modules.filesystem:19.0.21] C:\Users\winst\.gradle\caches\8.14.3\transforms\f76e3f808b97467c15b2dcf307bf14be\transformed\expo.modules.filesystem-19.0.21\AndroidManifest.xml:23:13-74
+198            android:exported="false"
+198-->[host.exp.exponent:expo.modules.filesystem:19.0.21] C:\Users\winst\.gradle\caches\8.14.3\transforms\f76e3f808b97467c15b2dcf307bf14be\transformed\expo.modules.filesystem-19.0.21\AndroidManifest.xml:24:13-37
+199            android:grantUriPermissions="true" >
+199-->[host.exp.exponent:expo.modules.filesystem:19.0.21] C:\Users\winst\.gradle\caches\8.14.3\transforms\f76e3f808b97467c15b2dcf307bf14be\transformed\expo.modules.filesystem-19.0.21\AndroidManifest.xml:25:13-47
+200            <meta-data
+200-->[host.exp.exponent:expo.modules.filesystem:19.0.21] C:\Users\winst\.gradle\caches\8.14.3\transforms\f76e3f808b97467c15b2dcf307bf14be\transformed\expo.modules.filesystem-19.0.21\AndroidManifest.xml:27:13-29:70
+201                android:name="android.support.FILE_PROVIDER_PATHS"
+201-->[host.exp.exponent:expo.modules.filesystem:19.0.21] C:\Users\winst\.gradle\caches\8.14.3\transforms\f76e3f808b97467c15b2dcf307bf14be\transformed\expo.modules.filesystem-19.0.21\AndroidManifest.xml:28:17-67
+202                android:resource="@xml/file_system_provider_paths" />
+202-->[host.exp.exponent:expo.modules.filesystem:19.0.21] C:\Users\winst\.gradle\caches\8.14.3\transforms\f76e3f808b97467c15b2dcf307bf14be\transformed\expo.modules.filesystem-19.0.21\AndroidManifest.xml:29:17-67
+203        </provider>
+204
+205        <service
+205-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:28:9-40:19
+206            android:name="com.google.android.gms.metadata.ModuleDependencies"
+206-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:29:13-78
+207            android:enabled="false"
+207-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:30:13-36
+208            android:exported="false" >
+208-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:31:13-37
+209            <intent-filter>
+209-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:33:13-35:29
+210                <action android:name="com.google.android.gms.metadata.MODULE_DEPENDENCIES" />
+210-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:34:17-94
+210-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:34:25-91
+211            </intent-filter>
+212
+213            <meta-data
+213-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:37:13-39:36
+214                android:name="photopicker_activity:0:required"
+214-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:38:17-63
+215                android:value="" />
+215-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:39:17-33
+216        </service>
+217
+218        <activity
+218-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:42:9-46:48
+219            android:name="expo.modules.imagepicker.ExpoCropImageActivity"
+219-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:43:13-74
+220            android:exported="false"
+220-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:44:13-37
+221            android:theme="@style/Base.Theme.AppCompat" /> <!-- https://developer.android.com/guide/topics/manifest/provider-element.html -->
+221-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:45:13-56
+222        <provider
+222-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:48:9-56:20
+223            android:name="expo.modules.imagepicker.fileprovider.ImagePickerFileProvider"
+223-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:49:13-89
+224            android:authorities="app.nexusbuild.mobile.ImagePickerFileProvider"
+224-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:50:13-75
+225            android:exported="false"
+225-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:51:13-37
+226            android:grantUriPermissions="true" >
+226-->[host.exp.exponent:expo.modules.imagepicker:17.0.10] C:\Users\winst\.gradle\caches\8.14.3\transforms\5d7d2593408eee606df968b23470c63d\transformed\expo.modules.imagepicker-17.0.10\AndroidManifest.xml:52:13-47
+227            <meta-data
+227-->[host.exp.exponent:expo.modules.filesystem:19.0.21] C:\Users\winst\.gradle\caches\8.14.3\transforms\f76e3f808b97467c15b2dcf307bf14be\transformed\expo.modules.filesystem-19.0.21\AndroidManifest.xml:27:13-29:70
+228                android:name="android.support.FILE_PROVIDER_PATHS"
+228-->[host.exp.exponent:expo.modules.filesystem:19.0.21] C:\Users\winst\.gradle\caches\8.14.3\transforms\f76e3f808b97467c15b2dcf307bf14be\transformed\expo.modules.filesystem-19.0.21\AndroidManifest.xml:28:17-67
+229                android:resource="@xml/image_picker_provider_paths" />
+229-->[host.exp.exponent:expo.modules.filesystem:19.0.21] C:\Users\winst\.gradle\caches\8.14.3\transforms\f76e3f808b97467c15b2dcf307bf14be\transformed\expo.modules.filesystem-19.0.21\AndroidManifest.xml:29:17-67
+230        </provider>
+231
+232        <service
+232-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:11:9-17:19
+233            android:name="expo.modules.notifications.service.ExpoFirebaseMessagingService"
+233-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:12:13-91
+234            android:exported="false" >
+234-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:13:13-37
+235            <intent-filter android:priority="-1" >
+235-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:14:13-16:29
+235-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:14:28-49
+236                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+236-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:15:17-78
+236-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:15:25-75
+237            </intent-filter>
+238        </service>
+239
+240        <receiver
+240-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:19:9-31:20
+241            android:name="expo.modules.notifications.service.NotificationsService"
+241-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:20:13-83
+242            android:enabled="true"
+242-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:21:13-35
+243            android:exported="false" >
+243-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:22:13-37
+244            <intent-filter android:priority="-1" >
+244-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:23:13-30:29
+244-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:23:28-49
+245                <action android:name="expo.modules.notifications.NOTIFICATION_EVENT" />
+245-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:24:17-88
+245-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:24:25-85
+246                <action android:name="android.intent.action.BOOT_COMPLETED" />
+246-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:25:17-79
+246-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:25:25-76
+247                <action android:name="android.intent.action.REBOOT" />
+247-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:26:17-71
+247-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:26:25-68
+248                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+248-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:27:17-82
+248-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:27:25-79
+249                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+249-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:28:17-82
+249-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:28:25-79
+250                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+250-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:29:17-84
+250-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:29:25-81
+251            </intent-filter>
+252        </receiver>
+253
+254        <activity
+254-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:33:9-40:75
+255            android:name="expo.modules.notifications.service.NotificationForwarderActivity"
+255-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:34:13-92
+256            android:excludeFromRecents="true"
+256-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:35:13-46
+257            android:exported="false"
+257-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:36:13-37
+258            android:launchMode="standard"
+258-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:37:13-42
+259            android:noHistory="true"
+259-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:38:13-37
+260            android:taskAffinity=""
+260-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:39:13-36
+261            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+261-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:40:13-72
+262
+263        <provider
+263-->[host.exp.exponent:expo.modules.sharing:14.0.8] C:\Users\winst\.gradle\caches\8.14.3\transforms\c53c7c081e1ec7a97434f11018ea7294\transformed\expo.modules.sharing-14.0.8\AndroidManifest.xml:18:9-26:20
+264            android:name="expo.modules.sharing.SharingFileProvider"
+264-->[host.exp.exponent:expo.modules.sharing:14.0.8] C:\Users\winst\.gradle\caches\8.14.3\transforms\c53c7c081e1ec7a97434f11018ea7294\transformed\expo.modules.sharing-14.0.8\AndroidManifest.xml:19:13-68
+265            android:authorities="app.nexusbuild.mobile.SharingFileProvider"
+265-->[host.exp.exponent:expo.modules.sharing:14.0.8] C:\Users\winst\.gradle\caches\8.14.3\transforms\c53c7c081e1ec7a97434f11018ea7294\transformed\expo.modules.sharing-14.0.8\AndroidManifest.xml:20:13-71
+266            android:exported="false"
+266-->[host.exp.exponent:expo.modules.sharing:14.0.8] C:\Users\winst\.gradle\caches\8.14.3\transforms\c53c7c081e1ec7a97434f11018ea7294\transformed\expo.modules.sharing-14.0.8\AndroidManifest.xml:21:13-37
+267            android:grantUriPermissions="true" >
+267-->[host.exp.exponent:expo.modules.sharing:14.0.8] C:\Users\winst\.gradle\caches\8.14.3\transforms\c53c7c081e1ec7a97434f11018ea7294\transformed\expo.modules.sharing-14.0.8\AndroidManifest.xml:22:13-47
+268            <meta-data
+268-->[host.exp.exponent:expo.modules.filesystem:19.0.21] C:\Users\winst\.gradle\caches\8.14.3\transforms\f76e3f808b97467c15b2dcf307bf14be\transformed\expo.modules.filesystem-19.0.21\AndroidManifest.xml:27:13-29:70
+269                android:name="android.support.FILE_PROVIDER_PATHS"
+269-->[host.exp.exponent:expo.modules.filesystem:19.0.21] C:\Users\winst\.gradle\caches\8.14.3\transforms\f76e3f808b97467c15b2dcf307bf14be\transformed\expo.modules.filesystem-19.0.21\AndroidManifest.xml:28:17-67
+270                android:resource="@xml/sharing_provider_paths" />
+270-->[host.exp.exponent:expo.modules.filesystem:19.0.21] C:\Users\winst\.gradle\caches\8.14.3\transforms\f76e3f808b97467c15b2dcf307bf14be\transformed\expo.modules.filesystem-19.0.21\AndroidManifest.xml:29:17-67
+271        </provider>
+272
+273        <receiver
+273-->[com.revenuecat.purchases:purchases-store-amazon:8.24.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\37208ca040aa50f146354e0924ba47d9\transformed\purchases-store-amazon-8.24.0\AndroidManifest.xml:8:9-15:20
+274            android:name="com.amazon.device.iap.ResponseReceiver"
+274-->[com.revenuecat.purchases:purchases-store-amazon:8.24.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\37208ca040aa50f146354e0924ba47d9\transformed\purchases-store-amazon-8.24.0\AndroidManifest.xml:9:13-66
+275            android:exported="true"
+275-->[com.revenuecat.purchases:purchases-store-amazon:8.24.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\37208ca040aa50f146354e0924ba47d9\transformed\purchases-store-amazon-8.24.0\AndroidManifest.xml:10:13-36
+276            android:permission="com.amazon.inapp.purchasing.Permission.NOTIFY" >
+276-->[com.revenuecat.purchases:purchases-store-amazon:8.24.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\37208ca040aa50f146354e0924ba47d9\transformed\purchases-store-amazon-8.24.0\AndroidManifest.xml:11:13-79
+277            <intent-filter>
+277-->[com.revenuecat.purchases:purchases-store-amazon:8.24.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\37208ca040aa50f146354e0924ba47d9\transformed\purchases-store-amazon-8.24.0\AndroidManifest.xml:12:13-14:29
+278                <action android:name="com.amazon.inapp.purchasing.NOTIFY" />
+278-->[com.revenuecat.purchases:purchases-store-amazon:8.24.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\37208ca040aa50f146354e0924ba47d9\transformed\purchases-store-amazon-8.24.0\AndroidManifest.xml:13:17-77
+278-->[com.revenuecat.purchases:purchases-store-amazon:8.24.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\37208ca040aa50f146354e0924ba47d9\transformed\purchases-store-amazon-8.24.0\AndroidManifest.xml:13:25-74
+279            </intent-filter>
+280        </receiver>
+281
+282        <activity
+282-->[com.revenuecat.purchases:purchases:8.24.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\f4f7d7e7a3a94dfea45cbe0048371db9\transformed\purchases-8.24.0\AndroidManifest.xml:10:9-13:75
+283            android:name="com.revenuecat.purchases.amazon.purchasing.ProxyAmazonBillingActivity"
+283-->[com.revenuecat.purchases:purchases:8.24.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\f4f7d7e7a3a94dfea45cbe0048371db9\transformed\purchases-8.24.0\AndroidManifest.xml:11:13-97
+284            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+284-->[com.revenuecat.purchases:purchases:8.24.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\f4f7d7e7a3a94dfea45cbe0048371db9\transformed\purchases-8.24.0\AndroidManifest.xml:12:13-96
+285            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+285-->[com.revenuecat.purchases:purchases:8.24.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\f4f7d7e7a3a94dfea45cbe0048371db9\transformed\purchases-8.24.0\AndroidManifest.xml:13:13-72
+286
+287        <service
+287-->[androidx.room:room-runtime:2.6.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6e0fe8496d321cfad09aff151a274d54\transformed\room-runtime-2.6.1\AndroidManifest.xml:24:9-28:63
+288            android:name="androidx.room.MultiInstanceInvalidationService"
+288-->[androidx.room:room-runtime:2.6.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6e0fe8496d321cfad09aff151a274d54\transformed\room-runtime-2.6.1\AndroidManifest.xml:25:13-74
+289            android:directBootAware="true"
+289-->[androidx.room:room-runtime:2.6.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6e0fe8496d321cfad09aff151a274d54\transformed\room-runtime-2.6.1\AndroidManifest.xml:26:13-43
+290            android:exported="false" />
+290-->[androidx.room:room-runtime:2.6.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6e0fe8496d321cfad09aff151a274d54\transformed\room-runtime-2.6.1\AndroidManifest.xml:27:13-37
+291
+292        <receiver
+292-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:29:9-40:20
+293            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+293-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:30:13-78
+294            android:exported="true"
+294-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:31:13-36
+295            android:permission="com.google.android.c2dm.permission.SEND" >
+295-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:32:13-73
+296            <intent-filter>
+296-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:33:13-35:29
+297                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+297-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:34:17-81
+297-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:34:25-78
+298            </intent-filter>
+299
+300            <meta-data
+300-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:37:13-39:40
+301                android:name="com.google.android.gms.cloudmessaging.FINISHED_AFTER_HANDLED"
+301-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:38:17-92
+302                android:value="true" />
+302-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:39:17-37
+303        </receiver>
+304        <!--
+305             FirebaseMessagingService performs security checks at runtime,
+306             but set to not exported to explicitly avoid allowing another app to call it.
+307        -->
+308        <service
+308-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:46:9-53:19
+309            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+309-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:47:13-82
+310            android:directBootAware="true"
+310-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:48:13-43
+311            android:exported="false" >
+311-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:49:13-37
+312            <intent-filter android:priority="-500" >
+312-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:14:13-16:29
+312-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:14:28-49
+313                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+313-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:15:17-78
+313-->[host.exp.exponent:expo.modules.notifications:0.32.16] C:\Users\winst\.gradle\caches\8.14.3\transforms\c04c10fd794f464ae747b2cc795b632b\transformed\expo.modules.notifications-0.32.16\AndroidManifest.xml:15:25-75
+314            </intent-filter>
+315        </service>
+316        <service
+316-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:54:9-63:19
+317            android:name="com.google.firebase.components.ComponentDiscoveryService"
+317-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:55:13-84
+318            android:directBootAware="true"
+318-->[com.google.firebase:firebase-common:21.0.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\afb4d1eb0827a014b4ef0badcaa7c3df\transformed\firebase-common-21.0.0\AndroidManifest.xml:32:13-43
+319            android:exported="false" >
+319-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:56:13-37
+320            <meta-data
+320-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:57:13-59:85
+321                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingKtxRegistrar"
+321-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:58:17-122
+322                android:value="com.google.firebase.components.ComponentRegistrar" />
+322-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:59:17-82
+323            <meta-data
+323-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:60:13-62:85
+324                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingRegistrar"
+324-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:61:17-119
+325                android:value="com.google.firebase.components.ComponentRegistrar" />
+325-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6dc97715f8f3830f77b4038e322a7d45\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:62:17-82
+326            <meta-data
+326-->[com.google.firebase:firebase-installations:17.2.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\255bbe620062d15114d4183c318397f0\transformed\firebase-installations-17.2.0\AndroidManifest.xml:15:13-17:85
+327                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsKtxRegistrar"
+327-->[com.google.firebase:firebase-installations:17.2.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\255bbe620062d15114d4183c318397f0\transformed\firebase-installations-17.2.0\AndroidManifest.xml:16:17-130
+328                android:value="com.google.firebase.components.ComponentRegistrar" />
+328-->[com.google.firebase:firebase-installations:17.2.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\255bbe620062d15114d4183c318397f0\transformed\firebase-installations-17.2.0\AndroidManifest.xml:17:17-82
+329            <meta-data
+329-->[com.google.firebase:firebase-installations:17.2.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\255bbe620062d15114d4183c318397f0\transformed\firebase-installations-17.2.0\AndroidManifest.xml:18:13-20:85
+330                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
+330-->[com.google.firebase:firebase-installations:17.2.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\255bbe620062d15114d4183c318397f0\transformed\firebase-installations-17.2.0\AndroidManifest.xml:19:17-127
+331                android:value="com.google.firebase.components.ComponentRegistrar" />
+331-->[com.google.firebase:firebase-installations:17.2.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\255bbe620062d15114d4183c318397f0\transformed\firebase-installations-17.2.0\AndroidManifest.xml:20:17-82
+332            <meta-data
+332-->[com.google.firebase:firebase-common-ktx:21.0.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\c02e577f1fa80776612760851e644ed4\transformed\firebase-common-ktx-21.0.0\AndroidManifest.xml:12:13-14:85
+333                android:name="com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonLegacyRegistrar"
+333-->[com.google.firebase:firebase-common-ktx:21.0.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\c02e577f1fa80776612760851e644ed4\transformed\firebase-common-ktx-21.0.0\AndroidManifest.xml:13:17-116
+334                android:value="com.google.firebase.components.ComponentRegistrar" />
+334-->[com.google.firebase:firebase-common-ktx:21.0.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\c02e577f1fa80776612760851e644ed4\transformed\firebase-common-ktx-21.0.0\AndroidManifest.xml:14:17-82
+335            <meta-data
+335-->[com.google.firebase:firebase-common:21.0.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\afb4d1eb0827a014b4ef0badcaa7c3df\transformed\firebase-common-21.0.0\AndroidManifest.xml:35:13-37:85
+336                android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar"
+336-->[com.google.firebase:firebase-common:21.0.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\afb4d1eb0827a014b4ef0badcaa7c3df\transformed\firebase-common-21.0.0\AndroidManifest.xml:36:17-109
+337                android:value="com.google.firebase.components.ComponentRegistrar" />
+337-->[com.google.firebase:firebase-common:21.0.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\afb4d1eb0827a014b4ef0badcaa7c3df\transformed\firebase-common-21.0.0\AndroidManifest.xml:37:17-82
+338            <meta-data
+338-->[com.google.firebase:firebase-datatransport:18.2.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\2d36d5977bc5ca2cb19157422b4429a1\transformed\firebase-datatransport-18.2.0\AndroidManifest.xml:25:13-27:85
+339                android:name="com.google.firebase.components:com.google.firebase.datatransport.TransportRegistrar"
+339-->[com.google.firebase:firebase-datatransport:18.2.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\2d36d5977bc5ca2cb19157422b4429a1\transformed\firebase-datatransport-18.2.0\AndroidManifest.xml:26:17-115
+340                android:value="com.google.firebase.components.ComponentRegistrar" />
+340-->[com.google.firebase:firebase-datatransport:18.2.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\2d36d5977bc5ca2cb19157422b4429a1\transformed\firebase-datatransport-18.2.0\AndroidManifest.xml:27:17-82
+341        </service>
+342
+343        <meta-data
+343-->[com.github.bumptech.glide:okhttp3-integration:4.11.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\9907f16c17c80e8cb1ab95916e264f78\transformed\okhttp3-integration-4.11.0\AndroidManifest.xml:11:9-13:43
+344            android:name="com.bumptech.glide.integration.okhttp3.OkHttpGlideModule"
+344-->[com.github.bumptech.glide:okhttp3-integration:4.11.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\9907f16c17c80e8cb1ab95916e264f78\transformed\okhttp3-integration-4.11.0\AndroidManifest.xml:12:13-84
+345            android:value="GlideModule" />
+345-->[com.github.bumptech.glide:okhttp3-integration:4.11.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\9907f16c17c80e8cb1ab95916e264f78\transformed\okhttp3-integration-4.11.0\AndroidManifest.xml:13:13-40
+346
+347        <provider
+347-->[com.vanniktech:android-image-cropper:4.6.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\e245f66f51ab273207d0058b58031100\transformed\android-image-cropper-4.6.0\AndroidManifest.xml:21:9-29:20
+348            android:name="com.canhub.cropper.CropFileProvider"
+348-->[com.vanniktech:android-image-cropper:4.6.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\e245f66f51ab273207d0058b58031100\transformed\android-image-cropper-4.6.0\AndroidManifest.xml:22:13-63
+349            android:authorities="app.nexusbuild.mobile.cropper.fileprovider"
+349-->[com.vanniktech:android-image-cropper:4.6.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\e245f66f51ab273207d0058b58031100\transformed\android-image-cropper-4.6.0\AndroidManifest.xml:23:13-72
+350            android:exported="false"
+350-->[com.vanniktech:android-image-cropper:4.6.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\e245f66f51ab273207d0058b58031100\transformed\android-image-cropper-4.6.0\AndroidManifest.xml:24:13-37
+351            android:grantUriPermissions="true" >
+351-->[com.vanniktech:android-image-cropper:4.6.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\e245f66f51ab273207d0058b58031100\transformed\android-image-cropper-4.6.0\AndroidManifest.xml:25:13-47
+352            <meta-data
+352-->[host.exp.exponent:expo.modules.filesystem:19.0.21] C:\Users\winst\.gradle\caches\8.14.3\transforms\f76e3f808b97467c15b2dcf307bf14be\transformed\expo.modules.filesystem-19.0.21\AndroidManifest.xml:27:13-29:70
+353                android:name="android.support.FILE_PROVIDER_PATHS"
+353-->[host.exp.exponent:expo.modules.filesystem:19.0.21] C:\Users\winst\.gradle\caches\8.14.3\transforms\f76e3f808b97467c15b2dcf307bf14be\transformed\expo.modules.filesystem-19.0.21\AndroidManifest.xml:28:17-67
+354                android:resource="@xml/library_file_paths" />
+354-->[host.exp.exponent:expo.modules.filesystem:19.0.21] C:\Users\winst\.gradle\caches\8.14.3\transforms\f76e3f808b97467c15b2dcf307bf14be\transformed\expo.modules.filesystem-19.0.21\AndroidManifest.xml:29:17-67
+355        </provider>
+356
+357        <activity
+357-->[com.vanniktech:android-image-cropper:4.6.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\e245f66f51ab273207d0058b58031100\transformed\android-image-cropper-4.6.0\AndroidManifest.xml:31:9-33:39
+358            android:name="com.canhub.cropper.CropImageActivity"
+358-->[com.vanniktech:android-image-cropper:4.6.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\e245f66f51ab273207d0058b58031100\transformed\android-image-cropper-4.6.0\AndroidManifest.xml:32:13-64
+359            android:exported="true" />
+359-->[com.vanniktech:android-image-cropper:4.6.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\e245f66f51ab273207d0058b58031100\transformed\android-image-cropper-4.6.0\AndroidManifest.xml:33:13-36
+360
+361        <meta-data
+361-->[com.android.billingclient:billing:7.1.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\b7acf759df8eefbbcde01c6f19417e5e\transformed\billing-7.1.1\AndroidManifest.xml:22:9-24:37
+362            android:name="com.google.android.play.billingclient.version"
+362-->[com.android.billingclient:billing:7.1.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\b7acf759df8eefbbcde01c6f19417e5e\transformed\billing-7.1.1\AndroidManifest.xml:23:13-73
+363            android:value="7.1.1" />
+363-->[com.android.billingclient:billing:7.1.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\b7acf759df8eefbbcde01c6f19417e5e\transformed\billing-7.1.1\AndroidManifest.xml:24:13-34
+364
+365        <activity
+365-->[com.android.billingclient:billing:7.1.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\b7acf759df8eefbbcde01c6f19417e5e\transformed\billing-7.1.1\AndroidManifest.xml:26:9-30:75
+366            android:name="com.android.billingclient.api.ProxyBillingActivity"
+366-->[com.android.billingclient:billing:7.1.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\b7acf759df8eefbbcde01c6f19417e5e\transformed\billing-7.1.1\AndroidManifest.xml:27:13-78
+367            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+367-->[com.android.billingclient:billing:7.1.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\b7acf759df8eefbbcde01c6f19417e5e\transformed\billing-7.1.1\AndroidManifest.xml:28:13-96
+368            android:exported="false"
+368-->[com.android.billingclient:billing:7.1.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\b7acf759df8eefbbcde01c6f19417e5e\transformed\billing-7.1.1\AndroidManifest.xml:29:13-37
+369            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+369-->[com.android.billingclient:billing:7.1.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\b7acf759df8eefbbcde01c6f19417e5e\transformed\billing-7.1.1\AndroidManifest.xml:30:13-72
+370        <activity
+370-->[com.android.billingclient:billing:7.1.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\b7acf759df8eefbbcde01c6f19417e5e\transformed\billing-7.1.1\AndroidManifest.xml:31:9-35:75
+371            android:name="com.android.billingclient.api.ProxyBillingActivityV2"
+371-->[com.android.billingclient:billing:7.1.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\b7acf759df8eefbbcde01c6f19417e5e\transformed\billing-7.1.1\AndroidManifest.xml:32:13-80
+372            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+372-->[com.android.billingclient:billing:7.1.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\b7acf759df8eefbbcde01c6f19417e5e\transformed\billing-7.1.1\AndroidManifest.xml:33:13-96
+373            android:exported="false"
+373-->[com.android.billingclient:billing:7.1.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\b7acf759df8eefbbcde01c6f19417e5e\transformed\billing-7.1.1\AndroidManifest.xml:34:13-37
+374            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+374-->[com.android.billingclient:billing:7.1.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\b7acf759df8eefbbcde01c6f19417e5e\transformed\billing-7.1.1\AndroidManifest.xml:35:13-72
+375        <activity
+375-->[com.google.android.gms:play-services-base:18.5.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\63728240ee36118ef8b325017d4e9f97\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:9-173
+376            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+376-->[com.google.android.gms:play-services-base:18.5.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\63728240ee36118ef8b325017d4e9f97\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:19-85
+377            android:exported="false"
+377-->[com.google.android.gms:play-services-base:18.5.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\63728240ee36118ef8b325017d4e9f97\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:146-170
+378            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+378-->[com.google.android.gms:play-services-base:18.5.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\63728240ee36118ef8b325017d4e9f97\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:86-145
+379
+380        <provider
+380-->[com.google.firebase:firebase-common:21.0.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\afb4d1eb0827a014b4ef0badcaa7c3df\transformed\firebase-common-21.0.0\AndroidManifest.xml:23:9-28:39
+381            android:name="com.google.firebase.provider.FirebaseInitProvider"
+381-->[com.google.firebase:firebase-common:21.0.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\afb4d1eb0827a014b4ef0badcaa7c3df\transformed\firebase-common-21.0.0\AndroidManifest.xml:24:13-77
+382            android:authorities="app.nexusbuild.mobile.firebaseinitprovider"
+382-->[com.google.firebase:firebase-common:21.0.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\afb4d1eb0827a014b4ef0badcaa7c3df\transformed\firebase-common-21.0.0\AndroidManifest.xml:25:13-72
+383            android:directBootAware="true"
+383-->[com.google.firebase:firebase-common:21.0.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\afb4d1eb0827a014b4ef0badcaa7c3df\transformed\firebase-common-21.0.0\AndroidManifest.xml:26:13-43
+384            android:exported="false"
+384-->[com.google.firebase:firebase-common:21.0.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\afb4d1eb0827a014b4ef0badcaa7c3df\transformed\firebase-common-21.0.0\AndroidManifest.xml:27:13-37
+385            android:initOrder="100" />
+385-->[com.google.firebase:firebase-common:21.0.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\afb4d1eb0827a014b4ef0badcaa7c3df\transformed\firebase-common-21.0.0\AndroidManifest.xml:28:13-36
+386        <provider
+386-->[androidx.emoji2:emoji2:1.3.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\c4300a8b50c0cf4c929781b977e89718\transformed\emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+387            android:name="androidx.startup.InitializationProvider"
+387-->[androidx.emoji2:emoji2:1.3.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\c4300a8b50c0cf4c929781b977e89718\transformed\emoji2-1.3.0\AndroidManifest.xml:25:13-67
+388            android:authorities="app.nexusbuild.mobile.androidx-startup"
+388-->[androidx.emoji2:emoji2:1.3.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\c4300a8b50c0cf4c929781b977e89718\transformed\emoji2-1.3.0\AndroidManifest.xml:26:13-68
+389            android:exported="false" >
+389-->[androidx.emoji2:emoji2:1.3.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\c4300a8b50c0cf4c929781b977e89718\transformed\emoji2-1.3.0\AndroidManifest.xml:27:13-37
+390            <meta-data
+390-->[androidx.emoji2:emoji2:1.3.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\c4300a8b50c0cf4c929781b977e89718\transformed\emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+391                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+391-->[androidx.emoji2:emoji2:1.3.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\c4300a8b50c0cf4c929781b977e89718\transformed\emoji2-1.3.0\AndroidManifest.xml:30:17-75
+392                android:value="androidx.startup" />
+392-->[androidx.emoji2:emoji2:1.3.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\c4300a8b50c0cf4c929781b977e89718\transformed\emoji2-1.3.0\AndroidManifest.xml:31:17-49
+393            <meta-data
+393-->[androidx.lifecycle:lifecycle-process:2.8.7] C:\Users\winst\.gradle\caches\8.14.3\transforms\4263868bc25464350b02d76ff3a49db0\transformed\lifecycle-process-2.8.7\AndroidManifest.xml:29:13-31:52
+394                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+394-->[androidx.lifecycle:lifecycle-process:2.8.7] C:\Users\winst\.gradle\caches\8.14.3\transforms\4263868bc25464350b02d76ff3a49db0\transformed\lifecycle-process-2.8.7\AndroidManifest.xml:30:17-78
+395                android:value="androidx.startup" />
+395-->[androidx.lifecycle:lifecycle-process:2.8.7] C:\Users\winst\.gradle\caches\8.14.3\transforms\4263868bc25464350b02d76ff3a49db0\transformed\lifecycle-process-2.8.7\AndroidManifest.xml:31:17-49
+396            <meta-data
+396-->[androidx.profileinstaller:profileinstaller:1.4.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6b6bc62f530599875146cabd966f25d5\transformed\profileinstaller-1.4.1\AndroidManifest.xml:29:13-31:52
+397                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+397-->[androidx.profileinstaller:profileinstaller:1.4.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6b6bc62f530599875146cabd966f25d5\transformed\profileinstaller-1.4.1\AndroidManifest.xml:30:17-85
+398                android:value="androidx.startup" />
+398-->[androidx.profileinstaller:profileinstaller:1.4.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6b6bc62f530599875146cabd966f25d5\transformed\profileinstaller-1.4.1\AndroidManifest.xml:31:17-49
+399        </provider>
+400
+401        <meta-data
+401-->[com.google.android.gms:play-services-basement:18.4.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\6fa07c2e81958939bebc6db1d85f0fc7\transformed\play-services-basement-18.4.0\AndroidManifest.xml:6:9-122
+402            android:name="com.google.android.gms.version"
+402-->[com.google.android.gms:play-services-basement:18.4.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\6fa07c2e81958939bebc6db1d85f0fc7\transformed\play-services-basement-18.4.0\AndroidManifest.xml:6:20-65
+403            android:value="@integer/google_play_services_version" />
+403-->[com.google.android.gms:play-services-basement:18.4.0] C:\Users\winst\.gradle\caches\8.14.3\transforms\6fa07c2e81958939bebc6db1d85f0fc7\transformed\play-services-basement-18.4.0\AndroidManifest.xml:6:66-119
+404
+405        <receiver
+405-->[androidx.profileinstaller:profileinstaller:1.4.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6b6bc62f530599875146cabd966f25d5\transformed\profileinstaller-1.4.1\AndroidManifest.xml:34:9-52:20
+406            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+406-->[androidx.profileinstaller:profileinstaller:1.4.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6b6bc62f530599875146cabd966f25d5\transformed\profileinstaller-1.4.1\AndroidManifest.xml:35:13-76
+407            android:directBootAware="false"
+407-->[androidx.profileinstaller:profileinstaller:1.4.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6b6bc62f530599875146cabd966f25d5\transformed\profileinstaller-1.4.1\AndroidManifest.xml:36:13-44
+408            android:enabled="true"
+408-->[androidx.profileinstaller:profileinstaller:1.4.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6b6bc62f530599875146cabd966f25d5\transformed\profileinstaller-1.4.1\AndroidManifest.xml:37:13-35
+409            android:exported="true"
+409-->[androidx.profileinstaller:profileinstaller:1.4.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6b6bc62f530599875146cabd966f25d5\transformed\profileinstaller-1.4.1\AndroidManifest.xml:38:13-36
+410            android:permission="android.permission.DUMP" >
+410-->[androidx.profileinstaller:profileinstaller:1.4.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6b6bc62f530599875146cabd966f25d5\transformed\profileinstaller-1.4.1\AndroidManifest.xml:39:13-57
+411            <intent-filter>
+411-->[androidx.profileinstaller:profileinstaller:1.4.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6b6bc62f530599875146cabd966f25d5\transformed\profileinstaller-1.4.1\AndroidManifest.xml:40:13-42:29
+412                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+412-->[androidx.profileinstaller:profileinstaller:1.4.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6b6bc62f530599875146cabd966f25d5\transformed\profileinstaller-1.4.1\AndroidManifest.xml:41:17-91
+412-->[androidx.profileinstaller:profileinstaller:1.4.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6b6bc62f530599875146cabd966f25d5\transformed\profileinstaller-1.4.1\AndroidManifest.xml:41:25-88
+413            </intent-filter>
+414            <intent-filter>
+414-->[androidx.profileinstaller:profileinstaller:1.4.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6b6bc62f530599875146cabd966f25d5\transformed\profileinstaller-1.4.1\AndroidManifest.xml:43:13-45:29
+415                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+415-->[androidx.profileinstaller:profileinstaller:1.4.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6b6bc62f530599875146cabd966f25d5\transformed\profileinstaller-1.4.1\AndroidManifest.xml:44:17-85
+415-->[androidx.profileinstaller:profileinstaller:1.4.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6b6bc62f530599875146cabd966f25d5\transformed\profileinstaller-1.4.1\AndroidManifest.xml:44:25-82
+416            </intent-filter>
+417            <intent-filter>
+417-->[androidx.profileinstaller:profileinstaller:1.4.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6b6bc62f530599875146cabd966f25d5\transformed\profileinstaller-1.4.1\AndroidManifest.xml:46:13-48:29
+418                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+418-->[androidx.profileinstaller:profileinstaller:1.4.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6b6bc62f530599875146cabd966f25d5\transformed\profileinstaller-1.4.1\AndroidManifest.xml:47:17-88
+418-->[androidx.profileinstaller:profileinstaller:1.4.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6b6bc62f530599875146cabd966f25d5\transformed\profileinstaller-1.4.1\AndroidManifest.xml:47:25-85
+419            </intent-filter>
+420            <intent-filter>
+420-->[androidx.profileinstaller:profileinstaller:1.4.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6b6bc62f530599875146cabd966f25d5\transformed\profileinstaller-1.4.1\AndroidManifest.xml:49:13-51:29
+421                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+421-->[androidx.profileinstaller:profileinstaller:1.4.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6b6bc62f530599875146cabd966f25d5\transformed\profileinstaller-1.4.1\AndroidManifest.xml:50:17-95
+421-->[androidx.profileinstaller:profileinstaller:1.4.1] C:\Users\winst\.gradle\caches\8.14.3\transforms\6b6bc62f530599875146cabd966f25d5\transformed\profileinstaller-1.4.1\AndroidManifest.xml:50:25-92
+422            </intent-filter>
+423        </receiver>
+424
+425        <service
+425-->[com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\winst\.gradle\caches\8.14.3\transforms\b56add486ca9f6126f91765cd9f27ff1\transformed\transport-backend-cct-3.1.9\AndroidManifest.xml:28:9-34:19
+426            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+426-->[com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\winst\.gradle\caches\8.14.3\transforms\b56add486ca9f6126f91765cd9f27ff1\transformed\transport-backend-cct-3.1.9\AndroidManifest.xml:29:13-103
+427            android:exported="false" >
+427-->[com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\winst\.gradle\caches\8.14.3\transforms\b56add486ca9f6126f91765cd9f27ff1\transformed\transport-backend-cct-3.1.9\AndroidManifest.xml:30:13-37
+428            <meta-data
+428-->[com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\winst\.gradle\caches\8.14.3\transforms\b56add486ca9f6126f91765cd9f27ff1\transformed\transport-backend-cct-3.1.9\AndroidManifest.xml:31:13-33:39
+429                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
+429-->[com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\winst\.gradle\caches\8.14.3\transforms\b56add486ca9f6126f91765cd9f27ff1\transformed\transport-backend-cct-3.1.9\AndroidManifest.xml:32:17-94
+430                android:value="cct" />
+430-->[com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\winst\.gradle\caches\8.14.3\transforms\b56add486ca9f6126f91765cd9f27ff1\transformed\transport-backend-cct-3.1.9\AndroidManifest.xml:33:17-36
+431        </service>
+432        <service
+432-->[com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\winst\.gradle\caches\8.14.3\transforms\88ff0c0ad756e2f8ef6f3c107af072bb\transformed\transport-runtime-3.1.9\AndroidManifest.xml:26:9-30:19
+433            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
+433-->[com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\winst\.gradle\caches\8.14.3\transforms\88ff0c0ad756e2f8ef6f3c107af072bb\transformed\transport-runtime-3.1.9\AndroidManifest.xml:27:13-117
+434            android:exported="false"
+434-->[com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\winst\.gradle\caches\8.14.3\transforms\88ff0c0ad756e2f8ef6f3c107af072bb\transformed\transport-runtime-3.1.9\AndroidManifest.xml:28:13-37
+435            android:permission="android.permission.BIND_JOB_SERVICE" >
+435-->[com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\winst\.gradle\caches\8.14.3\transforms\88ff0c0ad756e2f8ef6f3c107af072bb\transformed\transport-runtime-3.1.9\AndroidManifest.xml:29:13-69
+436        </service>
+437
+438        <receiver
+438-->[com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\winst\.gradle\caches\8.14.3\transforms\88ff0c0ad756e2f8ef6f3c107af072bb\transformed\transport-runtime-3.1.9\AndroidManifest.xml:32:9-34:40
+439            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
+439-->[com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\winst\.gradle\caches\8.14.3\transforms\88ff0c0ad756e2f8ef6f3c107af072bb\transformed\transport-runtime-3.1.9\AndroidManifest.xml:33:13-132
+440            android:exported="false" />
+440-->[com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\winst\.gradle\caches\8.14.3\transforms\88ff0c0ad756e2f8ef6f3c107af072bb\transformed\transport-runtime-3.1.9\AndroidManifest.xml:34:13-37
+441    </application>
+442
+443</manifest>

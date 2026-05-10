@@ -1,0 +1,19 @@
+<lint-module
+    format="1"
+    dir="D:\dev\Northern Step Studio\apps\nexusbuild\apps\mobile\android\app"
+    name=":app"
+    type="APP"
+    maven="NexusBuild:app:unspecified"
+    agpVersion="8.11.0"
+    buildFolder="D:\dev\Northern Step Studio\b"
+    bootClassPath="C:\Users\winst\AppData\Local\Android\Sdk\platforms\android-36\android.jar;C:\Users\winst\AppData\Local\Android\Sdk\build-tools\36.0.0\core-lambda-stubs.jar"
+    javaSourceLevel="17"
+    compileTarget="android-36"
+    neverShrinking="true">
+  <lintOptions
+      abortOnError="true"
+      absolutePaths="true"
+      checkReleaseBuilds="true"
+      explainIssues="true"/>
+  <variant name="release"/>
+</lint-module>

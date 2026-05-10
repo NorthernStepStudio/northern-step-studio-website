@@ -1,0 +1,46 @@
+<variant
+    name="release"
+    package="app.nexusbuild.mobile"
+    minSdkVersion="24"
+    targetSdkVersion="36.0"
+    mergedManifest="D:\dev\Northern Step Studio\b\intermediates\merged_manifest\release\processReleaseMainManifest\AndroidManifest.xml"
+    manifestMergeReport="D:\dev\Northern Step Studio\b\outputs\logs\manifest-merger-release-report.txt"
+    proguardFiles="D:\dev\Northern Step Studio\b\intermediates\default_proguard_files\global\proguard-android.txt-8.11.0;proguard-rules.pro"
+    partialResultsDir="D:\dev\Northern Step Studio\b\intermediates\lint_vital_partial_results\release\lintVitalAnalyzeRelease\out">
+  <buildFeatures
+      namespacing="REQUIRED"/>
+  <sourceProviders>
+    <sourceProvider
+        manifests="src\main\AndroidManifest.xml"
+        javaDirectories="src\main\java;D:\dev\Northern Step Studio\b\generated\source\codegen\java;src\release\java;D:\dev\Northern Step Studio\b\generated\autolinking\src\main\java;src\main\kotlin;src\release\kotlin"
+        resDirectories="src\main\res;src\release\res"
+        assetsDirectories="src\main\assets;src\release\assets"/>
+  </sourceProviders>
+  <testSourceProviders>
+  </testSourceProviders>
+  <testFixturesSourceProviders>
+  </testFixturesSourceProviders>
+  <resValues>
+    <resValue
+        type="string"
+        name="react_native_dev_server_ip"
+        value="192.168.1.152" />
+    <resValue
+        type="integer"
+        name="react_native_dev_server_port"
+        value="8081" />
+  </resValues>
+  <manifestPlaceholders>
+    <placeholder
+        name="usesCleartextTraffic"
+        value="false" />
+  </manifestPlaceholders>
+  <artifact
+      classOutputs="D:\dev\Northern Step Studio\b\intermediates\javac\release\compileReleaseJavaWithJavac\classes;D:\dev\Northern Step Studio\b\tmp\kotlin-classes\release;D:\dev\Northern Step Studio\b\kotlinToolingMetadata;D:\dev\Northern Step Studio\b\intermediates\compile_and_runtime_not_namespaced_r_class_jar\release\processReleaseResources\R.jar"
+      type="MAIN"
+      applicationId="app.nexusbuild.mobile"
+      generatedSourceFolders="D:\dev\Northern Step Studio\b\generated\ap_generated_sources\release\out;D:\dev\Northern Step Studio\b\generated\source\buildConfig\release"
+      generatedResourceFolders="D:\dev\Northern Step Studio\b\generated\res\createBundleReleaseJsAndAssets;D:\dev\Northern Step Studio\b\generated\res\processReleaseGoogleServices;D:\dev\Northern Step Studio\b\generated\res\injectCrashlyticsVersionControlInfoRelease;D:\dev\Northern Step Studio\b\generated\res\injectCrashlyticsMappingFileIdRelease;D:\dev\Northern Step Studio\b\generated\res\resValues\release"
+      desugaredMethodsFiles="C:\Users\winst\.gradle\caches\8.14.3\transforms\b7312a3a2560eeeb0cdeec8f5c0ae5c8\transformed\D8BackportedDesugaredMethods.txt">
+  </artifact>
+</variant>
