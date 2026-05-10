@@ -8,6 +8,7 @@ NStep Android Build Center is a private local developer tool used on the owner's
 Required Features (high level)
 -------------------------------
 - App Discovery: configured apps from `apps.json` must render immediately; a subsequent Scan Workspace enriches or replaces configured apps with discovered metadata. Discovery detects nested app roots and Android projects.
+- App Discovery may omit entries marked `hidden` or `excludeFromBuildCenter` in `apps.json`; these are intentionally excluded duplicate or legacy roots.
 - Credential Engine: must detect keystore files and credential sources, support a session vault and Windows Credential Manager (WCM) without exposing secrets.
 - Scan / Get / Fill / Generate workflow: Scan finds apps and credentials; Get/Use accesses approved sources; Fill uses session-only secrets; Generate creates keys only for private apps and is disabled for protected production apps.
 - Production Guard: apps with `alreadyOnGooglePlay: true` or explicit `isProduction` must be protected and never auto-generated or overwritten.
@@ -73,6 +74,7 @@ This document defines the mandatory features and behaviors of the NStep Android 
 - **Path Support:** Must support nested app paths (e.g., `apps/nexusbuild/apps/mobile`).
 - **Metadata Detection:** Must extract `packageName` from `build.gradle` and `version` from `package.json`.
 - **Config Sync:** Discovered apps must be matched against `apps.json` using their relative path as the unique key.
+- **Hidden Roots:** Apps marked `hidden` or `excludeFromBuildCenter` in `apps.json` must not render from `/api/apps` or reappear during Scan Workspace.
 
 ## 2. Credential Engine
 - **Hierarchical Detection:** Must check for credentials in this order:

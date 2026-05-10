@@ -1,0 +1,62 @@
+{
+  "defaultRisk": "low",
+  "approvalRequiredAtOrAbove": "high",
+  "deploymentChecklistRequiredAtOrAbove": "high",
+  "rules": [
+    {
+      "pattern": ".github/workflows/**",
+      "risk": "critical",
+      "reason": "CI/CD or governance execution surface"
+    },
+    {
+      "pattern": "scripts/auto-deploy.*",
+      "risk": "critical",
+      "reason": "automated deployment behavior"
+    },
+    {
+      "pattern": "wrangler.toml",
+      "risk": "critical",
+      "reason": "production runtime/deploy routing"
+    },
+    {
+      "pattern": "migrations/**",
+      "risk": "critical",
+      "reason": "schema and data mutation surface"
+    },
+    {
+      "pattern": "src/worker/**",
+      "risk": "high",
+      "reason": "backend runtime behavior"
+    },
+    {
+      "pattern": "packages/nstep-os/**",
+      "risk": "high",
+      "reason": "orchestration and control plane logic"
+    },
+    {
+      "pattern": "src/react-app/**",
+      "risk": "medium",
+      "reason": "frontend behavior and user-visible changes"
+    },
+    {
+      "pattern": "apps/**",
+      "risk": "medium",
+      "reason": "product app behavior changes"
+    },
+    {
+      "pattern": "package.json",
+      "risk": "high",
+      "reason": "dependency/runtime script control"
+    },
+    {
+      "pattern": "package-lock.json",
+      "risk": "medium",
+      "reason": "dependency graph updates"
+    },
+    {
+      "pattern": "docs/**",
+      "risk": "low",
+      "reason": "documentation-only changes"
+    }
+  ]
+}

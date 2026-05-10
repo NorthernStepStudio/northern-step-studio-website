@@ -1,0 +1,36 @@
+{
+  "repoName": "Northern Step Studio",
+  "scannedAt": "2026-05-08T19:00:00.000Z",
+  "rootPathLabel": "Northern Step Studio",
+  "apps": [
+    { "name": "nstep-dashboard", "path": "apps/nstep-dashboard" },
+    { "name": "neurormoves", "path": "apps/neurormoves" }
+  ],
+  "packages": [
+    { "name": "nstep-os", "path": "packages/nstep-os" }
+  ],
+  "packageJsonSummaries": [
+    {
+      "path": "package.json",
+      "name": "nstep-workspace",
+      "version": "1.0.0",
+      "depCount": 5,
+      "devDepCount": 10
+    }
+  ],
+  "migrationSummary": {
+    "files": ["migrations/0001_initial.sql", "migrations/0027_assistant_memory.sql"]
+  },
+  "cloudflareSummary": {
+    "workers": ["wrangler.toml"]
+  },
+  "androidBuildSummary": {
+    "files": ["apps/neurormoves/android/build.gradle"]
+  },
+  "todos": [
+    { "file": "src/worker/index.ts", "line": 42, "text": "TODO: Implement proper rate limiting" }
+  ],
+  "risks": [],
+  "ignoredSecrets": [".env", "private.key"],
+  "scannerVersion": "0.1.0"
+}

@@ -22,6 +22,7 @@ const TesterSignup = lazy(() => import('./pages/TesterSignup'));
 const TesterManager = lazy(() => import('./pages/TesterManager'));
 const DemoPage = lazy(() => import('./pages/DemoPage'));
 const ProductDetail = lazy(() => import('./pages/ProductDetail'));
+const Doomed = lazy(() => import('./pages/Doomed'));
 const ChatBot = lazy(() => import('./components/ChatBot'));
 const BugReportBtn = lazy(() => import('./components/BugReportBtn'));
 
@@ -57,6 +58,7 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/testers" element={<TesterSignup />} />
             <Route path="/demo/:slug" element={<DemoPage />} />
+            <Route path="/apps/doomed" element={<Doomed />} />
             <Route path="/apps/:slug" element={<ProductDetail />} />
 
             {/* Admin redirects to the NSS website */}

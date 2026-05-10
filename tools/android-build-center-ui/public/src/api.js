@@ -20,6 +20,13 @@ export const api = {
     async getLogs() {
         return fetch('/api/build/logs').then(r => r.json());
     },
+    async getBuildHistory(appId) {
+        const query = appId ? `?appId=${encodeURIComponent(appId)}` : '';
+        return fetch(`/api/build/history${query}`).then(r => r.json());
+    },
+    async getBuildLogsById(buildId) {
+        return fetch(`/api/build/history/${encodeURIComponent(buildId)}/logs`).then(r => r.json());
+    },
     async clearLogs() {
         return fetch('/api/build/clear', { method: 'POST' }).then(r => r.json());
     },

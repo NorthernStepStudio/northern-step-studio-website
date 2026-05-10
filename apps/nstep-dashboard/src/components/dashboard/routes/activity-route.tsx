@@ -19,6 +19,7 @@ import {
   DASHBOARD_STATUS_OPTIONS,
   type DashboardFilterQuery,
 } from "@/lib/dashboard/query";
+import { buildDashboardActivityMetrics } from "@/lib/dashboard/view-models/activity-view-model";
 
 export function DashboardActivityRoute({
   activity,
@@ -59,13 +60,7 @@ export function DashboardActivityRoute({
       />
 
       <DashboardMetricStrip
-        metrics={[
-          { label: "Active jobs", value: activity.summary.totalActiveJobs, detail: "Currently in flight.", tone: "accent" },
-          { label: "Waiting approval", value: activity.summary.waitingApproval, detail: "Paused for review.", tone: "warning" },
-          { label: "Failed", value: activity.summary.failed, detail: "Needs operator attention.", tone: "danger" },
-          { label: "Completed 24h", value: activity.summary.completed24h, detail: "Successful runs in the last day.", tone: "success" },
-          { label: "Failed 24h", value: activity.summary.failed24h, detail: "Failures in the last day.", tone: "danger" },
-        ]}
+        metrics={buildDashboardActivityMetrics(activity)}
       />
 
       <DashboardSection title="Filters" subtitle="Search and narrow activity by product, lane, and state">

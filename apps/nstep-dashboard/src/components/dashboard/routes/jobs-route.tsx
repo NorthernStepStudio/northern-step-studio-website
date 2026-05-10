@@ -14,6 +14,7 @@ import {
   type DashboardFilterQuery,
 } from "@/lib/dashboard/query";
 import type { ProductKey } from "@/lib/dashboard/contracts";
+import { buildDashboardJobsMetrics } from "@/lib/dashboard/view-models/jobs-view-model";
 import { DashboardJobTable } from "../job-table";
 import { DashboardMetricStrip } from "../metric-strip";
 import { DashboardPageHeader } from "../page-header";
@@ -49,15 +50,7 @@ export function DashboardJobsRoute({
         }
       />
 
-      <DashboardMetricStrip
-        metrics={[
-          { label: "Total", value: jobs.summary.total, detail: "All visible job runs.", tone: "accent" },
-          { label: "Running", value: jobs.summary.running, detail: "Jobs currently in progress.", tone: "warning" },
-          { label: "Waiting approval", value: jobs.summary.waitingApproval, detail: "Jobs paused for review.", tone: "warning" },
-          { label: "Completed", value: jobs.summary.completed, detail: "Finished successfully.", tone: "success" },
-          { label: "Failed", value: jobs.summary.failed, detail: "Jobs needing attention.", tone: "danger" },
-        ]}
-      />
+      <DashboardMetricStrip metrics={buildDashboardJobsMetrics(jobs)} />
 
       <DashboardSection title="Filters" subtitle="Search the run history by product, status, lane, and approval state">
         <DashboardQueryToolbar

@@ -11,6 +11,7 @@ import {
   Megaphone,
   MessageSquare,
   Settings,
+  Sparkles,
   Users,
   Wrench,
 } from "lucide-react";
@@ -116,6 +117,22 @@ export const ADMIN_NAV_ITEMS: AdminNavItem[] = [
     icon: Settings,
     page: "permissions",
     section: "core",
+  },
+  {
+    path: "/admin/assistant",
+    label: "Matterhorn AI",
+    description: "The primary NStep AI operator and command center.",
+    icon: MessageSquare,
+    page: "assistant",
+    section: "internal",
+  },
+  {
+    path: "/admin/studio-intelligence",
+    label: "Studio Intelligence",
+    description: "AI-native operational command center and project memory.",
+    icon: Sparkles,
+    page: "studio",
+    section: "internal",
   },
   {
     path: "/admin/studio",

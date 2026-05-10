@@ -1,4 +1,4 @@
-export type ProductKey = "lead-recovery" | "nexusbuild" | "provly" | "neurormoves";
+export type ProductKey = "lead-recovery" | "nexusbuild" | "provly" | "neurormoves" | "synox" | "matterhorn" | "website" | "buildcenter" | "roguelike";
 export type DashboardMemoryTier = "episodic" | "semantic" | "procedural";
 export type DashboardOrchestrationPhase =
   | "supervision"

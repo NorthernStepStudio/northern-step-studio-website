@@ -339,7 +339,7 @@ export default function Settings() {
             </View>
             <View style={{ marginTop: 40, alignItems: 'center', opacity: 0.6 }}>
                 <Image
-                    source={require('../assets/branding/logo_horizontal.png')}
+                    source={require('../assets/branding/NooBS logo.png')}
                     style={{ width: 140, height: 40, resizeMode: 'contain', marginBottom: 8 }}
                 />
                 <Text style={{ color: theme.colors.faint, fontSize: 10, fontWeight: '700' }}>{t("settings.versionLabel")}</Text>

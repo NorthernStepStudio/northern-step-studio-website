@@ -27,7 +27,7 @@ type ParsedChatRequest =
     }
   | {
       error: string;
-      status: number;
+      status: 400;
     };
 
 type RateLimitBucket = {
@@ -49,7 +49,7 @@ export async function handleAIRequest(input: AgentInput): Promise<AgentOutput> {
 export const handleAiChat = async (c: Context<{ Bindings: Env; Variables: { user: AppUser } }>) => {
   const parsed = await parseChatRequest(c);
   if ("error" in parsed) {
-    return c.json({ error: (parsed as any).error }, (parsed as any).status);
+    return c.json({ error: parsed.error }, parsed.status);
   }
 
   const rateLimit = enforceAiChatRateLimit(c);

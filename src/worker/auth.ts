@@ -1,4 +1,4 @@
-import type { MiddlewareHandler } from "hono";
+import type { MiddlewareHandler, Context } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { getCookie, setCookie } from "hono/cookie";
 import { OWNER_EMAIL } from "../shared/auth";
@@ -409,6 +409,22 @@ export function requireRole(roles: string[] | string): MiddlewareHandler<{ Bindi
   };
 }
 
+export async function isUserAdmin(c: Context<{ Bindings: Env; Variables: { user: AppUser } }>): Promise<boolean> {
+  const authUser = c.get("user");
+  if (!authUser) return false;
+
+  // Check if it's the owner email
+  if (authUser.email === OWNER_EMAIL) return true;
+
+  const sql = getDb(c.env);
+  // Check role in database
+  const [dbUser] = await sql<{ role: string }[]>`
+    SELECT role FROM users WHERE email = ${authUser.email}
+  `;
+
+  return dbUser?.role === "admin" || dbUser?.role === "owner";
+}
+
 export async function getGoogleOAuthRedirectUrl(c: { env: Env; req: { url: string } }, redirectUri?: string | null) {
   if (!c.env.GOOGLE_CLIENT_ID) {
     throw new Error("GOOGLE_CLIENT_ID is not configured");
@@ -456,5 +472,5 @@ export async function exchangeGoogleCodeForUser(c: { env: Env; req: { url: strin
   });
 
   if (!userRes.ok) throw new Error("Failed to fetch Google user info");
-  return (await userRes.json()) as any;
+  return (await userRes.json()) as unknown;
 }

@@ -49,3 +49,11 @@ apps/**/scratch/
 apps/**/.expo-export-smoke/
 apps/**/.gradle/
 apps/**/tmp_*.json
+
+# Android Build Center Keys
+private-keys/
+**/*.keystore
+**/*.jks
+**/signing.temp.properties
+**/credentials.json
+**/secrets.json

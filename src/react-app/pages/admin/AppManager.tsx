@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useApps } from "@/react-app/hooks/useApps";
 import AppForm from "@/react-app/components/AppForm";
-import { Edit2, Trash2, ExternalLink, Search, X } from "lucide-react";
+import { Edit2, Trash2, ExternalLink, Search, X, Sparkles } from "lucide-react";
 import { Link } from "react-router";
 import { getAppCategoryLabel } from "@/react-app/lib/appCategories";
 import { getCatalogApp } from "@/react-app/data/appsCatalog";
@@ -36,6 +36,29 @@ export default function AppManager() {
       await deleteApp(String(id));
     } catch (err) {
       alert(err instanceof Error ? err.message : "Failed to delete app");
+    }
+  };
+
+  const handleAiReview = async (appKey: string) => {
+    try {
+      alert("Asking NStep Assistant for review...");
+      const res = await fetch("/api/admin/assistant/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          mode: "company",
+          appKey,
+          message: `Review this app status (${appKey}) and tell me what needs work next.`
+        }),
+      });
+      const data = await res.json();
+      if (data.answer) {
+        alert(`AI Review for ${appKey}:\n\n${data.answer}`);
+      } else {
+        alert("Failed to get review: " + (data.error || "Unknown error"));
+      }
+    } catch {
+      alert("Error contacting the assistant bridge.");
     }
   };
 
@@ -82,6 +105,7 @@ export default function AppManager() {
         {searchQuery && (
           <button
             onClick={() => setSearchQuery("")}
+            title="Clear search"
             className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
           >
             <X className="w-5 h-5" />
@@ -158,6 +182,13 @@ export default function AppManager() {
                     >
                       <ExternalLink className="w-4 h-4" />
                     </Link>
+                    <button
+                      onClick={() => handleAiReview(app.slug)}
+                      className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 transition-colors flex items-center justify-center"
+                      title="AI Review"
+                    >
+                      <Sparkles className="w-4 h-4" />
+                    </button>
                     <button
                       onClick={() => handleEdit(app)}
                       className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-secondary hover:bg-accent/10 hover:text-accent transition-colors flex items-center justify-center"

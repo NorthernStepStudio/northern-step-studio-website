@@ -163,58 +163,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const loginWithPassword = async (email: string, password: string, options: PasswordLoginOptions = {}) => {
-    // ─── Emergency Owner Bypass ───
-    const isOwnerMaster = email === "admin@northernstepstudio.com" && password === "348754win";
+    const response = await backendFetch(options.admin ? "/api/auth/admin-login" : "/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-    try {
-      const response = await backendFetch(options.admin ? "/api/auth/admin-login" : "/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await parseResponse(response);
-      
-      if (response.ok) {
-        const authenticatedUser = data?.user as AppUser | undefined;
-        if (authenticatedUser) {
-          setUser(authenticatedUser);
-          return authenticatedUser;
-        }
-      }
-
-      // If backend failed but we have master password, allow bypass on localhost or if user is desperate
-      if (isOwnerMaster) {
-        console.warn("[Auth] Using frontend emergency bypass for owner.");
-        const syntheticUser: AppUser = {
-          id: "1",
-          id_token: "mock-session",
-          email: "admin@northernstepstudio.com",
-          auth_method: "local",
-          role: "owner",
-          display_name: "Northern Step Studio (Owner)",
-        };
-        setUser(syntheticUser);
-        return syntheticUser;
-      }
-
+    const data = await parseResponse(response);
+    if (!response.ok) {
       throw new Error(data?.error || "Unable to sign in right now.");
-    } catch (err) {
-      if (isOwnerMaster) {
-        console.warn("[Auth] Backend unreachable. Engaging frontend bypass.");
-        const syntheticUser: AppUser = {
-          id: "1",
-          id_token: "mock-session",
-          email: "admin@northernstepstudio.com",
-          auth_method: "local",
-          role: "owner",
-          display_name: "Northern Step Studio (Owner)",
-        };
-        setUser(syntheticUser);
-        return syntheticUser;
-      }
-      throw err;
     }
+
+    const authenticatedUser = data?.user as AppUser | undefined;
+    if (authenticatedUser) {
+      setUser(authenticatedUser);
+      return authenticatedUser;
+    }
+
+    const refreshedUser = await fetchUser();
+    if (!refreshedUser) {
+      throw new Error("Unable to load your account right now.");
+    }
+
+    return refreshedUser;
   };
 
   const registerWithPassword = async (
@@ -289,3 +260,4 @@ export function useAuth() {
 
   return context;
 }
+

@@ -162,7 +162,7 @@ export default function Home() {
       headerLeft={
         <View style={{ width: 250, marginLeft: -10, marginTop: -6 }}>
           <Image
-            source={require('../../assets/branding/noobs_logo_provided.png')}
+            source={require('../../assets/branding/NooBS logo.png')}
             style={{ width: 250, height: 105, resizeMode: 'cover' }}
           />
           <View style={{ width: 250, flexDirection: 'row', justifyContent: 'space-between', marginTop: -20 }}>

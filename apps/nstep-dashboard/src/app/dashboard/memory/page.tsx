@@ -1,18 +1,16 @@
 import { assertDashboardAccess, readDashboardSessionFromCookies } from "@/lib/auth";
-import { getDashboardMemory } from "@/lib/dashboard/api";
-import { DashboardMemoryRoute } from "@/components/dashboard/routes/memory-route";
-import { parseDashboardQuery, type DashboardSearchParamsInput } from "@/lib/dashboard/query";
+import { DashboardBackendUnavailable } from "@/components/dashboard/backend-unavailable";
+import { MemoryRoute } from "@/components/dashboard/routes/memory-route";
+import { loadMemoryViewModel } from "@/lib/dashboard/view-models/memory-view-model";
 
 export const dynamic = "force-dynamic";
 
-export default async function MemoryPage({
-  searchParams,
-}: {
-  readonly searchParams?: DashboardSearchParamsInput;
-}) {
+export default async function MemoryPage() {
   assertDashboardAccess(await readDashboardSessionFromCookies(), "/dashboard/memory");
-  const query = await parseDashboardQuery(searchParams);
-  const memory = await getDashboardMemory(query);
-
-  return <DashboardMemoryRoute memory={memory} query={query} />;
+  try {
+    const view = await loadMemoryViewModel();
+    return <MemoryRoute memories={view.entries} />;
+  } catch (error) {
+    return <DashboardBackendUnavailable area="Memory" error={error} />;
+  }
 }

@@ -208,6 +208,42 @@ export default function ProductDetail() {
     }
   };
 
+  if (app.slug === "doomed") {
+    return (
+      <div className="min-h-screen pt-20 sm:pt-24 px-4 sm:px-6 pb-16 flex flex-col items-center justify-center text-center">
+        <SEO
+          title="DOOMED"
+          description="A silly dungeon roguelike where you pick a doomed hero, enter the dungeon, fight enemies, collect loot, and try to survive."
+          canonicalUrl={`/apps/${app.slug}`}
+          ogImage={appLogo || undefined}
+        />
+        <div className="container mx-auto max-w-2xl mt-12 sm:mt-24">
+          <div className="w-32 h-32 sm:w-48 sm:h-48 rounded-3xl mx-auto mb-8 bg-gradient-to-br from-background to-secondary/80 flex items-center justify-center overflow-hidden border-2 border-accent/20 shadow-xl shadow-accent/10">
+            {appLogo ? (
+              <img src={appLogo} alt="DOOMED" className="w-full h-full object-contain p-2" />
+            ) : (
+              <Rocket className="w-16 h-16 text-accent" />
+            )}
+          </div>
+          <h1 className="text-4xl sm:text-6xl font-black uppercase tracking-tighter mb-6">
+            <GlitchedText text="DOOMED" duration={600} />
+          </h1>
+          <p className="text-lg sm:text-xl text-muted-foreground font-normal leading-relaxed mb-10 max-w-xl mx-auto">
+            A silly dungeon roguelike where you pick a doomed hero, enter the dungeon, fight enemies, collect loot, and try to survive.
+          </p>
+          <a
+            href="/games/nexus-roguelike/"
+            className="btn-pill-primary inline-flex items-center justify-center gap-3 text-lg py-4 px-10 animate-neon-pulse font-black uppercase"
+          >
+            <Play className="w-6 h-6" />
+            Play Now
+            <ArrowRight className="w-6 h-6" />
+          </a>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen pt-20 sm:pt-24 px-4 sm:px-6 pb-16">
       <SEO

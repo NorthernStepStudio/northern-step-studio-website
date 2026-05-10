@@ -19,6 +19,12 @@ import {
   DASHBOARD_SORT_OPTIONS,
   type DashboardFilterQuery,
 } from "@/lib/dashboard/query";
+import {
+  buildDashboardApprovalsMetrics,
+  DASHBOARD_APPROVAL_PAGE_SIZE_OPTIONS,
+  DASHBOARD_APPROVAL_STATUS_FILTER_OPTIONS,
+  DASHBOARD_APPROVAL_WORKFLOW_OPTIONS,
+} from "@/lib/dashboard/view-models/approvals-view-model";
 
 export function DashboardApprovalsRoute({
   approvals,
@@ -53,14 +59,7 @@ export function DashboardApprovalsRoute({
         }
       />
 
-      <DashboardMetricStrip
-        metrics={[
-          { label: "Total", value: approvals.summary.total, detail: "Items waiting on review.", tone: "accent" },
-          { label: "High risk", value: approvals.summary.highRisk, detail: "Requires operator judgment.", tone: "danger" },
-          { label: "Medium risk", value: approvals.summary.mediumRisk, detail: "Needs a quick review.", tone: "warning" },
-          { label: "Low risk", value: approvals.summary.lowRisk, detail: "Safe but visible.", tone: "success" },
-        ]}
-      />
+      <DashboardMetricStrip metrics={buildDashboardApprovalsMetrics(approvals)} />
 
       <DashboardSection title="Filters" subtitle="Search, narrow, and sort approval items">
         <DashboardQueryToolbar
@@ -84,30 +83,13 @@ export function DashboardApprovalsRoute({
               name: "workflow",
               label: "Workflow",
               value: query.workflow,
-              options: [
-                { value: "", label: "All workflows" },
-                { value: "lead-recovery", label: "Lead recovery" },
-                { value: "nexusbuild", label: "NexusBuild" },
-                { value: "provly", label: "ProvLy" },
-                { value: "neurormoves", label: "NeuroMoves" },
-              ],
+              options: DASHBOARD_APPROVAL_WORKFLOW_OPTIONS,
             },
             {
               name: "status",
               label: "Status",
               value: query.status,
-              options: [
-                { value: "", label: "All statuses" },
-                { value: "pending", label: "Pending" },
-                { value: "queued", label: "Queued" },
-                { value: "routing", label: "Routing" },
-                { value: "planning", label: "Planning" },
-                { value: "waiting_approval", label: "Waiting approval" },
-                { value: "running", label: "Running" },
-                { value: "verifying", label: "Verifying" },
-                { value: "failed", label: "Failed" },
-                { value: "completed", label: "Completed" },
-              ],
+              options: DASHBOARD_APPROVAL_STATUS_FILTER_OPTIONS,
             },
             {
               name: "approvalStatus",
@@ -137,12 +119,7 @@ export function DashboardApprovalsRoute({
               name: "pageSize",
               label: "Page size",
               value: query.pageSize ? String(query.pageSize) : undefined,
-              options: [
-                { value: "10", label: "10" },
-                { value: "20", label: "20" },
-                { value: "50", label: "50" },
-                { value: "100", label: "100" },
-              ],
+              options: DASHBOARD_APPROVAL_PAGE_SIZE_OPTIONS,
             },
           ]}
         />

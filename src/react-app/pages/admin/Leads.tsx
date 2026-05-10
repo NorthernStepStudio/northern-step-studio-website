@@ -9,12 +9,10 @@ import {
   Filter,
   Inbox,
   Mail,
-  MessageSquareText,
   Phone,
   RefreshCw,
   Search,
   ShieldAlert,
-  Sparkles,
   UserCheck,
   XCircle,
 } from "lucide-react";

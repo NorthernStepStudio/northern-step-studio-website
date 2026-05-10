@@ -6,7 +6,6 @@ import {
   TrendingUp,
   HeartPulse,
   CreditCard,
-  PhoneOff,
   Wrench,
   Sparkles,
 } from "lucide-react";

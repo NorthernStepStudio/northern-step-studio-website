@@ -1,196 +1,72 @@
-import Link from "next/link";
+import { formatDateTime } from "@/lib/dashboard/format";
+import type { MemoryViewModel } from "@/lib/dashboard/view-models/memory-view-model";
 
-import type { DashboardMemoryTier, DashboardMemoryViewResponse } from "@/lib/dashboard/contracts";
-import { DashboardEmptyState } from "../empty-state";
-import { DashboardMemoryGrid } from "../memory-grid";
-import { DashboardMetricStrip } from "../metric-strip";
-import { DashboardPageHeader } from "../page-header";
-import { DashboardPagination } from "../pagination";
-import { DashboardQueryToolbar } from "../query-toolbar";
-import { DashboardSection } from "../section";
-import { DashboardStatusPill } from "../status-pill";
-import { formatDateTime, formatStatusLabel } from "@/lib/dashboard/format";
-import {
-  countAppliedFilters,
-  DASHBOARD_PRODUCT_OPTIONS,
-  DASHBOARD_SORT_DIRECTION_OPTIONS,
-  DASHBOARD_SORT_OPTIONS,
-  pageSizeOptions,
-  type DashboardFilterQuery,
-} from "@/lib/dashboard/query";
-
-const MEMORY_TIER_ORDER: readonly DashboardMemoryTier[] = ["semantic", "procedural", "episodic"];
-const MEMORY_TIER_DESCRIPTIONS: Record<DashboardMemoryTier, string> = {
-  semantic: "Stable facts, user preferences, and tenant-level context that should carry across sessions.",
-  procedural: "Reusable workflows, business rules, and playbooks that guide how the system should act.",
-  episodic: "Run-specific lessons, outcomes, and fixes captured from individual jobs and conversations.",
-};
-
-export function DashboardMemoryRoute({
-  memory,
-  query,
+export function MemoryRoute({
+  memories
 }: {
-  readonly memory: DashboardMemoryViewResponse;
-  readonly query: DashboardFilterQuery;
+  readonly memories: MemoryViewModel["entries"];
 }) {
   return (
-    <>
-      <DashboardPageHeader
-        eyebrow="NStepOS memory"
-        title="Memory and patterns"
-        subtitle="Review reusable workflow patterns, editable preferences, and the audit trail behind memory updates."
-        actions={
-          <div className="form-actions">
-            <Link className="button button-secondary" href="/dashboard">
-              Back to overview
-            </Link>
-            <Link className="button button-secondary" href="/dashboard/settings">
-              Open settings
-            </Link>
-          </div>
-        }
-        meta={
-          <>
-            <DashboardStatusPill value="filters" label={`${countAppliedFilters(query)} filters`} />
-            <DashboardStatusPill value="memory" label={`${memory.summary.total} total`} />
-            <DashboardStatusPill value="editable" label={`${memory.summary.editable} editable`} />
-            <DashboardStatusPill value="patterns" label={`${memory.summary.patternCount} patterns`} />
-          </>
-        }
-      />
-
-      <DashboardMetricStrip
-        metrics={[
-          { label: "Total entries", value: memory.summary.total, detail: "All stored memory rows.", tone: "accent" },
-          { label: "Editable", value: memory.summary.editable, detail: "Entries operators can change.", tone: "warning" },
-          { label: "Patterns", value: memory.summary.patternCount, detail: "Known-good workflow templates.", tone: "success" },
-          { label: "Recent updates", value: memory.summary.recentUpdates, detail: "Writes in the current window.", tone: "accent" },
-        ]}
-      />
-
-      <DashboardSection title="Filters" subtitle="Search and sort memory entries, patterns, and audit updates">
-        <DashboardQueryToolbar
-          action="/dashboard/memory"
-          clearHref="/dashboard/memory"
-          note="Memory filters update the visible entry slice and the audit trail below."
-          search={{
-            name: "search",
-            label: "Search",
-            placeholder: "Key, summary, source label, or product",
-            value: query.search,
-          }}
-          selects={[
-            {
-              name: "product",
-              label: "Product",
-              value: query.product,
-              options: DASHBOARD_PRODUCT_OPTIONS,
-            },
-            {
-              name: "sortBy",
-              label: "Sort by",
-              value: query.sortBy,
-              options: DASHBOARD_SORT_OPTIONS,
-            },
-            {
-              name: "sortDirection",
-              label: "Sort direction",
-              value: query.sortDirection,
-              options: DASHBOARD_SORT_DIRECTION_OPTIONS,
-            },
-            {
-              name: "pageSize",
-              label: "Page size",
-              value: query.pageSize ? String(query.pageSize) : undefined,
-              options: pageSizeOptions(),
-            },
-          ]}
-        />
-      </DashboardSection>
-
-      <DashboardSection title="Memory view" subtitle="Entries, patterns, and audit trail">
-        <DashboardMemoryGrid auditTrail={memory.auditTrail} items={memory.items} patterns={memory.patterns} />
-        <DashboardPagination pageInfo={memory.pageInfo} pathname="/dashboard/memory" query={query} />
-      </DashboardSection>
-
-      <DashboardSection title="By tier" subtitle="How memory is split between facts, playbooks, and episode notes">
-        {Object.values(memory.summary.byTier).some((count) => count > 0) ? (
-          <div className="summary-list">
-            {MEMORY_TIER_ORDER.filter((tier) => (memory.summary.byTier[tier] || 0) > 0).map((tier) => {
-              const count = memory.summary.byTier[tier] || 0;
-              return (
-                <article className="summary-item" key={tier}>
-                  <div className="summary-head">
-                    <p className="summary-name">{formatStatusLabel(tier)}</p>
-                    <DashboardStatusPill value={tier} />
-                  </div>
-                  <p className="summary-detail">
-                    {count} item{count === 1 ? "" : "s"} - {MEMORY_TIER_DESCRIPTIONS[tier]}
-                  </p>
-                </article>
-              );
-            })}
-          </div>
-        ) : (
-          <DashboardEmptyState title="No memory tiers" message="Tiered memory will appear after workflows capture reusable context." />
-        )}
-      </DashboardSection>
-
-      <div className="grid-two">
-        <DashboardSection title="By category" subtitle="Category distribution across memory">
-          {Object.entries(memory.summary.byCategory).length > 0 ? (
-            <div className="summary-list">
-              {Object.entries(memory.summary.byCategory).map(([category, count]) => (
-                <div className="summary-item" key={category}>
-                  <div className="summary-head">
-                    <p className="summary-name">{category}</p>
-                    <span className="pill status-info">{count}</span>
+    <div className="nsos-stack">
+      <div className="nsos-layout-grid">
+        <div className="nsos-stack nsos-grid-span-2">
+          <section className="panel panel-pad">
+            <div className="section-title">
+              <h3>Operational Memory</h3>
+              <span className="label-tiny">Persistent Context</span>
+            </div>
+            
+            <div className="log-list mt-20">
+              {memories.map((mem) => (
+                <div key={mem.id} className="log-item job-row-hoverable nsos-p-16 nsos-br-16">
+                  <div className="log-head nsos-items-start">
+                    <div className="nsos-stack-small">
+                      <div className="flex items-center gap-2">
+                        <span className={`pill label-tiny status-${mem.category === 'decision' ? 'accent' : 'info'}`}>
+                          {mem.category.toUpperCase()}
+                        </span>
+                        <span className="label-tiny">{formatDateTime(mem.timestamp)}</span>
+                      </div>
+                      <p className="text-sm font-bold">{mem.title}</p>
+                      <p className="label-tiny opacity-80">{mem.summary}</p>
+                      <div className="template-strip mt-8">
+                        {mem.tags.map((tag: string) => (
+                          <span key={tag} className="pill label-tiny bg-white/5">#{tag}</span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
-          ) : (
-            <DashboardEmptyState title="No categories" message="Memory categories will appear after workflow runs complete." />
-          )}
-        </DashboardSection>
+          </section>
+        </div>
 
-        <DashboardSection title="By product" subtitle="Memory coverage by product">
-          {Object.entries(memory.summary.byProduct).length > 0 ? (
-            <div className="summary-list">
-              {Object.entries(memory.summary.byProduct).map(([product, count]) => (
-                <div className="summary-item" key={product}>
-                  <div className="summary-head">
-                    <p className="summary-name">{product}</p>
-                    <span className="pill status-info">{count}</span>
-                  </div>
-                </div>
-              ))}
+        <div className="nsos-stack">
+          <section className="panel panel-pad">
+            <div className="section-title">
+              <h3>Memory Statistics</h3>
             </div>
-          ) : (
-            <DashboardEmptyState title="No product memory" message="Product-scoped memory will appear once workflows learn patterns." />
-          )}
-        </DashboardSection>
+            <div className="nsos-shell-stat-grid">
+              <div className="nsos-shell-stat">
+                <span className="nsos-shell-stat-label">Total Entries</span>
+                <span className="nsos-shell-stat-value">{memories.length}</span>
+              </div>
+              <div className="nsos-shell-stat">
+                <span className="nsos-shell-stat-label">Decisions</span>
+                <span className="nsos-shell-stat-value">{memories.filter((memory) => memory.category === "decision").length}</span>
+              </div>
+            </div>
+          </section>
+          
+          <section className="panel panel-pad">
+            <div className="section-title">
+              <h3>Continuity Context</h3>
+            </div>
+            <p className="label-tiny opacity-60">StudioOS maintains long-term persistence of operational findings to prevent recurring risks and assist Matterhorn in multi-step reasoning.</p>
+          </section>
+        </div>
       </div>
-
-      <DashboardSection title="Recent audit events" subtitle="Last memory updates and writes">
-        {memory.auditTrail.length > 0 ? (
-          <div className="summary-list">
-            {memory.auditTrail.slice(0, 8).map((entry) => (
-              <article className="summary-item" key={entry.id}>
-                <div className="summary-head">
-                  <p className="summary-name">{entry.key}</p>
-                  <DashboardStatusPill value={entry.category} />
-                </div>
-                <p className="summary-detail">
-                  {entry.product} - {formatDateTime(entry.at)} - {entry.summary}
-                </p>
-              </article>
-            ))}
-          </div>
-        ) : (
-          <DashboardEmptyState title="No audit events" message="Memory writes will be recorded here once workflows update patterns." />
-        )}
-      </DashboardSection>
-    </>
+    </div>
   );
 }

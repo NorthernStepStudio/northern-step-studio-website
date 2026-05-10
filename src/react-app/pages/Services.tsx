@@ -8,15 +8,11 @@ import {
   Smartphone, 
   CheckCircle2, 
   ArrowRight, 
-  LayoutDashboard, 
   Calendar,
   Layers,
-  Sparkles,
-  Search,
-  MessageSquareText
+  Sparkles
 } from "lucide-react";
 import { Link } from "react-router";
-import { Button } from "@/react-app/components/ui/button";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },

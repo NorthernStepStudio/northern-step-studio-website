@@ -58,6 +58,11 @@ export const DASHBOARD_PRODUCT_OPTIONS: readonly DashboardSelectOption[] = [
   { value: "nexusbuild", label: "NexusBuild" },
   { value: "provly", label: "ProvLy" },
   { value: "neurormoves", label: "NeuroMoves" },
+  { value: "synox", label: "Synox Engine" },
+  { value: "matterhorn", label: "Matterhorn Assistant" },
+  { value: "website", label: "Studio Website" },
+  { value: "buildcenter", label: "Build Center" },
+  { value: "roguelike", label: "Roguelike / Doomed" },
 ];
 
 export const DASHBOARD_STATUS_OPTIONS: readonly DashboardSelectOption[] = [
@@ -248,7 +253,19 @@ function readProductKey(value: string | string[] | undefined): ProductKey | unde
   if (!product) {
     return undefined;
   }
-  return (["lead-recovery", "nexusbuild", "provly", "neurormoves"] as const).includes(product as ProductKey) ? (product as ProductKey) : undefined;
+  return ([
+    "lead-recovery",
+    "nexusbuild",
+    "provly",
+    "neurormoves",
+    "synox",
+    "matterhorn",
+    "website",
+    "buildcenter",
+    "roguelike",
+  ] as const).includes(product as ProductKey)
+    ? (product as ProductKey)
+    : undefined;
 }
 
 function readOption<T extends string>(value: string | string[] | undefined, options: readonly DashboardSelectOption[]): T | undefined {

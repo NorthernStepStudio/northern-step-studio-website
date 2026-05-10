@@ -47,6 +47,12 @@ import NStepWorkspaceAI from "@/react-app/pages/NStepWorkspaceAI";
 import TesterSignup from "@/react-app/pages/TesterSignup";
 import TesterManager from "@/react-app/pages/admin/TesterManager";
 import AdminProposals from "@/react-app/pages/admin/Proposals";
+import StudioIntelligence from "@/react-app/pages/admin/StudioIntelligence";
+import AssistantLayout from "@/react-app/pages/admin/Assistant";
+import CompanyAssistant from "@/react-app/pages/admin/assistant/Company";
+import RepoAssistant from "@/react-app/pages/admin/assistant/Repo";
+import LogsAssistant from "@/react-app/pages/admin/assistant/Logs";
+import AssistantSettings from "@/react-app/pages/admin/assistant/Settings";
 import NotFound from "@/react-app/pages/NotFound";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/react-app/lib/auth";
@@ -166,9 +172,17 @@ export default function App() {
               <Route path="proposals" element={<AdminProposals />} />
               <Route path="testers" element={<TesterManager />} />
               <Route path="studio" element={<StudioDashboard />} />
+              <Route path="studio-intelligence" element={<StudioIntelligence />} />
               <Route path="community" element={<CommunityManager />} />
               <Route path="settings" element={<FeatureToggles />} />
               <Route path="maintenance" element={<MaintenanceSettings />} />
+              <Route path="assistant" element={<AssistantLayout />}>
+                <Route index element={<Navigate to="company" replace />} />
+                <Route path="company" element={<CompanyAssistant />} />
+                <Route path="repo" element={<RepoAssistant />} />
+                <Route path="logs" element={<LogsAssistant />} />
+                <Route path="settings" element={<AssistantSettings />} />
+              </Route>
             </Route>
           </Routes>
         </Router>

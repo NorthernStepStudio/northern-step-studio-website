@@ -18,15 +18,34 @@ async function proxy(request: Request, context: RouteContext): Promise<Response>
     });
   }
 
-  const { path = [] } = await context.params;
-  const target = new URL(path.join("/"), getBackendUrl("/"));
-  target.search = new URL(request.url).search;
-  const session = getDashboardSessionFromRequest(request);
+  const session = await getDashboardSessionFromRequest(request);
   if (!session) {
     return Response.json(
       { error: { message: "Dashboard session is required." } },
       {
         status: 401,
+        headers: commonHeaders(),
+      },
+    );
+  }
+
+  const { path = [] } = await context.params;
+  let target: URL;
+  try {
+    target = new URL(path.join("/"), getBackendUrl("/"));
+    target.search = new URL(request.url).search;
+  } catch (error) {
+    return Response.json(
+      {
+        error: {
+          message:
+            error instanceof Error
+              ? error.message
+              : "NStepOS backend is not configured.",
+        },
+      },
+      {
+        status: 503,
         headers: commonHeaders(),
       },
     );

@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { IBM_Plex_Mono, Space_Grotesk } from "next/font/google";
 
 import "./globals.css";
+import "./utilities.css";
 
 const display = Space_Grotesk({
   variable: "--font-display",

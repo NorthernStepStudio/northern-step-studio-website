@@ -9,6 +9,7 @@ import { DashboardApiError, getDashboardProductPanel } from "@/lib/dashboard/api
 import { formatDateTime, productTitle } from "@/lib/dashboard/format";
 import { getProductMeta, isProductKey } from "@/lib/dashboard/nav";
 import { parseDashboardQuery, type DashboardSearchParamsInput } from "@/lib/dashboard/query";
+import { DashboardBackendUnavailable } from "@/components/dashboard/backend-unavailable";
 
 export const dynamic = "force-dynamic";
 
@@ -16,10 +17,10 @@ export default async function ProductPanelPage({
   params,
   searchParams,
 }: {
-  readonly params: { readonly product: string };
+  readonly params: Promise<{ readonly product: string }> | { readonly product: string };
   readonly searchParams?: DashboardSearchParamsInput;
 }) {
-  const { product } = params;
+  const { product } = await Promise.resolve(params);
   assertDashboardAccess(await readDashboardSessionFromCookies(), `/dashboard/panels/${product}`);
   const query = await parseDashboardQuery(searchParams);
 
@@ -34,7 +35,7 @@ export default async function ProductPanelPage({
     if (error instanceof DashboardApiError && error.status === 404) {
       notFound();
     }
-    throw error;
+    return <DashboardBackendUnavailable area={`${productTitle(product)} panel`} error={error} />;
   }
 
   return (

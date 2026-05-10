@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
-  Mail,
   ArrowLeft,
   Shield,
   KeyRound
@@ -11,15 +10,12 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/react-app/lib/auth";
 import NStepBrand from "@/react-app/components/NStepBrand";
 
-type LoginProps = {
-  mode?: "user" | "admin";
-};
 
-export default function Login({ mode = "admin" }: LoginProps) {
+
+export default function Login() {
   const { t } = useTranslation();
   const { user, isPending, loginWithPassword } = useAuth();
   const navigate = useNavigate();
-  const isAdminMode = true; // Hardcoded to admin/owner mode
 
   const [credentials, setCredentials] = useState({
     email: "admin@northernstepstudio.com",

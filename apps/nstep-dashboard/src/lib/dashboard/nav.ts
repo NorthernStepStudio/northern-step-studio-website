@@ -24,90 +24,190 @@ export const productMeta = {
     product: "lead-recovery",
     title: "Lead Recovery",
     description: "Missed-call follow-up, suppression rules, and SMS delivery.",
-    href: "/dashboard/panels/lead-recovery",
+    href: "/dashboard/apps/lead-recovery",
     navLabel: "Lead Recovery",
   },
   nexusbuild: {
     product: "nexusbuild",
     title: "NexusBuild",
     description: "PC build analysis, pricing, compatibility, and recommendations.",
-    href: "/dashboard/panels/nexusbuild",
+    href: "/dashboard/apps/nexusbuild",
     navLabel: "NexusBuild",
   },
   provly: {
     product: "provly",
     title: "ProvLy",
     description: "Inventory organization, claim readiness, and documentation tracking.",
-    href: "/dashboard/panels/provly",
+    href: "/dashboard/apps/provly",
     navLabel: "ProvLy",
   },
   neurormoves: {
     product: "neurormoves",
     title: "NeuroMoves",
     description: "Routine support, progress summaries, and recurring check-ins.",
-    href: "/dashboard/panels/neurormoves",
+    href: "/dashboard/apps/neurormoves",
     navLabel: "NeuroMoves",
+  },
+  synox: {
+    product: "synox",
+    title: "Synox Engine",
+    description: "AI reasoning engine, bridge management, and local model orchestration.",
+    href: "/dashboard/apps/synox",
+    navLabel: "Synox",
+  },
+  matterhorn: {
+    product: "matterhorn",
+    title: "Matterhorn",
+    description: "Executive advisory intelligence and guided manual interventions.",
+    href: "/dashboard/apps/matterhorn",
+    navLabel: "Matterhorn",
+  },
+  website: {
+    product: "website",
+    title: "Studio Website",
+    description: "Public presence, marketing automation, and lead intake.",
+    href: "/dashboard/apps/website",
+    navLabel: "Website",
+  },
+  buildcenter: {
+    product: "buildcenter",
+    title: "Build Center",
+    description: "Mobile build orchestration, credential management, and release logs.",
+    href: "/dashboard/apps/buildcenter",
+    navLabel: "Build Center",
+  },
+  roguelike: {
+    product: "roguelike",
+    title: "Roguelike / Doomed",
+    description: "Game engine status, player telemetry, and experimental features.",
+    href: "/dashboard/apps/roguelike",
+    navLabel: "Games",
   },
 } satisfies Record<ProductKey, ProductMeta>;
 
 export const dashboardNavGroups: readonly DashboardNavGroup[] = [
   {
-    label: "Workspace",
+    label: "Operations",
     items: [
       {
         href: "/dashboard",
-        label: "Home",
-        detail: "Live queue, approvals, alerts, and product coverage.",
+        label: "Executive center",
+        detail: "Top-level operational health, priorities, and command actions.",
       },
       {
         href: "/dashboard/jobs",
-        label: "Jobs",
-        detail: "Search and filter the full workflow run history.",
-      },
-      {
-        href: "/dashboard/approvals",
-        label: "Approval queue",
-        detail: "Risky or uncertain actions waiting on review.",
+        label: "Projects",
+        detail: "Active and historical workstreams with execution context.",
       },
       {
         href: "/dashboard/activity",
-        label: "Workflow activity",
-        detail: "Active jobs, recurring jobs, lane type, and failures.",
+        label: "Operational pipeline",
+        detail: "Merged execution flow across build, verification, and release.",
       },
       {
-        href: "/dashboard/memory",
-        label: "Memory",
-        detail: "Saved patterns, preferences, and audit trace.",
+        href: productMeta.nexusbuild.href,
+        label: "Build center",
+        detail: "NexusBuild operational lane and release throughput.",
+      },
+      {
+        href: productMeta.provly.href,
+        label: "Deployments",
+        detail: "ProvLy delivery and rollout visibility.",
       },
       {
         href: "/dashboard/settings",
-        label: "Settings",
-        detail: "Tenant rules, approvals, templates, and safety boundaries.",
+        label: "Release readiness",
+        detail: "Readiness gates and final operational controls.",
+      },
+      {
+        href: "/dashboard/incidents",
+        label: "Incidents",
+        detail: "Operational incident management, coordination, and mitigation.",
+      },
+      {
+        href: "/dashboard/timeline",
+        label: "Timeline",
+        detail: "Chronological studio history across all operational lanes.",
       },
     ],
   },
   {
-    label: "Product panels",
+    label: "Intelligence",
     items: [
       {
-        href: productMeta["lead-recovery"].href,
-        label: productMeta["lead-recovery"].title,
-        detail: productMeta["lead-recovery"].description,
+        href: "/dashboard/activity",
+        label: "Matterhorn",
+        detail: "Executive advisory intelligence and recommended actions.",
       },
       {
-        href: productMeta.nexusbuild.href,
-        label: productMeta.nexusbuild.title,
-        detail: productMeta.nexusbuild.description,
+        href: "/dashboard/memory",
+        label: "Operational memory",
+        detail: "Persistent context, signals, and workflow memory.",
       },
       {
-        href: productMeta.provly.href,
-        label: productMeta.provly.title,
-        detail: productMeta.provly.description,
+        href: "/dashboard/intelligence",
+        label: "Operational intelligence",
+        detail: "Architecture mapping, relationship graph, and pattern analysis.",
       },
       {
         href: productMeta.neurormoves.href,
-        label: productMeta.neurormoves.title,
-        detail: productMeta.neurormoves.description,
+        label: "Analytics",
+        detail: "Performance trends and telemetry across active lanes.",
+      },
+      {
+        href: productMeta["lead-recovery"].href,
+        label: "Business intelligence",
+        detail: "Product-side outcome signals and intervention patterns.",
+      },
+      {
+        href: "/dashboard/execution",
+        label: "Execution console",
+        detail: "Controlled operational procedures, workflows, and safe execution.",
+      },
+      {
+        href: "/dashboard/recovery",
+        label: "Recovery workspace",
+        detail: "Snapshot-backed recovery coordination and rollback readiness.",
+      },
+    ],
+  },
+  {
+    label: "Governance",
+    items: [
+      {
+        href: "/dashboard/approvals",
+        label: "Action queue",
+        detail: "Governance-first review queue for high-impact operations.",
+      },
+      {
+        href: "/dashboard/verification",
+        label: "Verification",
+        detail: "Operational audit signals and automated integrity checks.",
+      },
+      {
+        href: "/dashboard/snapshots",
+        label: "Snapshots",
+        detail: "Memory-backed operational snapshots and recoverability context.",
+      },
+      {
+        href: "/dashboard/risk-register",
+        label: "Risk register",
+        detail: "Live risks, blockers, and architecture drift alerts.",
+      },
+      {
+        href: "/dashboard/governance",
+        label: "Governance center",
+        detail: "Centralized policy, integrity, and compliance dashboard.",
+      },
+    ],
+  },
+  {
+    label: "System",
+    items: [
+      {
+        href: "/dashboard/settings",
+        label: "Settings",
+        detail: "Policy, tenant controls, templates, and runtime safety boundaries.",
       },
     ],
   },
@@ -124,36 +224,36 @@ export function getProductMeta(product: ProductKey): ProductMeta {
 export function getDashboardRouteMeta(pathname: string): { readonly title: string; readonly detail: string } {
   if (pathname === "/dashboard") {
     return {
-      title: "Home",
-      detail: "Live overview of jobs, approvals, logs, memory, and product activity.",
+      title: "Executive center",
+      detail: "Governance-first command view for operations, risk, approvals, and system health.",
     };
   }
 
   if (pathname === "/dashboard/approvals") {
     return {
-      title: "Approval queue",
-      detail: "Review steps and actions that require operator approval.",
+      title: "Action queue",
+      detail: "Manual review lane for high-impact actions, blockers, and governance control points.",
     };
   }
 
   if (pathname === "/dashboard/jobs") {
     return {
-      title: "Jobs",
-      detail: "Browse, search, and filter workflow runs across the system.",
+      title: "Projects",
+      detail: "Operational project stream with execution history, ownership, and traceability.",
     };
   }
 
   if (pathname === "/dashboard/activity") {
     return {
-      title: "Workflow activity",
-      detail: "Track active lanes, recurring jobs, and execution health by product.",
+      title: "Operational pipeline",
+      detail: "Merged execution pipeline across lanes with verification signals and advisory context.",
     };
   }
 
   if (pathname === "/dashboard/memory") {
     return {
-      title: "Memory",
-      detail: "Inspect saved workflow patterns, user preferences, and audit history.",
+      title: "Operational memory",
+      detail: "Persistent memory, snapshots, and trace context for governance-aware execution.",
     };
   }
 
@@ -164,9 +264,72 @@ export function getDashboardRouteMeta(pathname: string): { readonly title: strin
     };
   }
 
-  const panelMatch = pathname.match(/^\/dashboard\/panels\/([^/]+)$/);
-  if (panelMatch) {
-    const product = panelMatch[1];
+  if (pathname === "/dashboard/governance") {
+    return {
+      title: "Governance center",
+      detail: "Operational integrity, policy compliance, and architecture drift monitoring.",
+    };
+  }
+
+  if (pathname === "/dashboard/verification") {
+    return {
+      title: "Verification center",
+      detail: "Automated operational audits, build verification, and runtime safety checks.",
+    };
+  }
+
+  if (pathname === "/dashboard/risk-register") {
+    return {
+      title: "Risk register",
+      detail: "Operational risk tracking, mitigation status, and high-impact blockers.",
+    };
+  }
+
+  if (pathname === "/dashboard/snapshots") {
+    return {
+      title: "Snapshots",
+      detail: "Operational memory snapshots, recovery readiness, and state integrity.",
+    };
+  }
+
+  if (pathname === "/dashboard/incidents") {
+    return {
+      title: "Incidents",
+      detail: "Coordinate operational responses to build failures, drift, and system instability.",
+    };
+  }
+
+  if (pathname === "/dashboard/timeline") {
+    return {
+      title: "Operational timeline",
+      detail: "Merged chronological history of studio events, deployments, and verification passes.",
+    };
+  }
+
+  if (pathname === "/dashboard/execution") {
+    return {
+      title: "Execution console",
+      detail: "Coordinate and track approved operational procedures, bridge restarts, and diagnostics.",
+    };
+  }
+
+  if (pathname === "/dashboard/recovery") {
+    return {
+      title: "Recovery workspace",
+      detail: "Analyze snapshots, estimate rollback impact, and coordinate studio-wide restoration.",
+    };
+  }
+
+  if (pathname === "/dashboard/intelligence") {
+    return {
+      title: "Operational intelligence",
+      detail: "Studio-wide knowledge graph, dependency maps, and operational pattern detection.",
+    };
+  }
+
+  const appMatch = pathname.match(/^\/dashboard\/apps\/([^/]+)$/);
+  if (appMatch) {
+    const product = appMatch[1];
     if (isProductKey(product)) {
       return {
         title: getProductMeta(product).title,

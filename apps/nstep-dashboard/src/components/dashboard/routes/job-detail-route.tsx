@@ -15,19 +15,14 @@ import { DashboardProductPanel } from "../product-panel";
 import { DashboardSection } from "../section";
 import { DashboardStatusPill } from "../status-pill";
 import { formatDateTimeLong, formatPercent, productTitle } from "@/lib/dashboard/format";
+import { buildDashboardJobDetailTimelineMetrics } from "@/lib/dashboard/view-models/job-detail-view-model";
 
 export function DashboardJobDetailRoute({
   job,
 }: {
   readonly job: DashboardJobDetailResponse;
 }) {
-  const timelineMetrics = [
-    { label: "Steps", value: job.job.stepCount, detail: "Total plan steps.", tone: "accent" as const },
-    { label: "Completed", value: job.job.completedStepCount, detail: "Steps already finished.", tone: "success" as const },
-    { label: "Waiting", value: job.job.waitingApprovalStepCount, detail: "Steps paused for review.", tone: "warning" as const },
-    { label: "Failed", value: job.job.failedStepCount, detail: "Steps that failed.", tone: "danger" as const },
-    { label: "Retries", value: job.job.retryableStepCount, detail: "Retryable steps.", tone: "accent" as const },
-  ];
+  const timelineMetrics = buildDashboardJobDetailTimelineMetrics(job);
 
   return (
     <>

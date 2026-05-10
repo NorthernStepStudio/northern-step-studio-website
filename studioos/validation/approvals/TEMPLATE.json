@@ -1,0 +1,15 @@
+{
+  "changeId": "CHG-0001",
+  "decision": "approved",
+  "riskClass": "high",
+  "approvedBy": "owner-name",
+  "approverRole": "admin",
+  "approvedAt": "2026-01-01T00:00:00.000Z",
+  "scope": [
+    "path/or/system/in-scope"
+  ],
+  "conditions": [
+    "verification and rollback plan must pass before deployment"
+  ],
+  "notes": "Optional context"
+}

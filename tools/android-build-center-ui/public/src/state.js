@@ -6,7 +6,9 @@ export const state = {
     apps: [],
     buildStatus: { running: false, status: 'idle' },
     logs: [],
+    buildHistory: [],
     selectedAppId: null,
+    selectedBuildId: null,
     settings: { autoGenerateForPrivateApps: true },
     
     // Callbacks for when state changes
@@ -37,6 +39,16 @@ export const state = {
     
     setLogs(logs) {
         this.logs = logs;
+        this.notify();
+    },
+
+    setBuildHistory(history) {
+        this.buildHistory = history || [];
+        this.notify();
+    },
+
+    setSelectedBuild(buildId) {
+        this.selectedBuildId = buildId || null;
         this.notify();
     },
     

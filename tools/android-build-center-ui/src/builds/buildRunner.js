@@ -78,6 +78,58 @@ function updatePhase(newPhase, broadcast) {
     broadcast({ type: 'status', data: getBuildStatus() });
 }
 
+function saveLogSnapshot() {
+    try {
+        const ts = new Date().toISOString().replace(/[:.]/g, '-').split('T').join('-').slice(0, 19);
+        const filename = `${buildStatus.currentApp}-${buildStatus.buildType}-${ts}-${buildStatus.status}.log`;
+        const header = [
+            `App: ${buildStatus.currentApp}`,
+            `Type: ${buildStatus.buildType}`,
+            `Status: ${buildStatus.status}`,
+            `Exit Code: ${buildStatus.exitCode}`,
+            `Started: ${buildStatus.startedAt}`,
+            `Ended: ${buildStatus.endedAt}`,
+            `Elapsed: ${Math.round((buildStatus.elapsedMs || 0) / 1000)}s`,
+            buildStatus.outputPath ? `Artifact: ${buildStatus.outputPath}` : '',
+            buildStatus.errorSummary ? `Error: ${buildStatus.errorSummary}` : '',
+            '---'
+        ].filter(Boolean).join('\n');
+
+        const content = header + '\n' + logBuffer.map(l => `[${l.timestamp}] [${String(l.source || 'system').toUpperCase()}] ${l.message}`).join('\n');
+        const logPath = path.join(LOGS_DIR, filename);
+        fs.writeFileSync(logPath, content);
+        buildStatus.savedLogPath = logPath;
+        return { filename, logPath };
+    } catch (e) {
+        return null;
+    }
+}
+
+function addHistoryEntry() {
+    try {
+        const appRoot = buildStatus.currentAppRoot ? path.join(WORKSPACE_ROOT, buildStatus.currentAppRoot) : null;
+        const versions = (appRoot && fs.existsSync(appRoot))
+            ? resolveAppVersion(appRoot)
+            : { versionName: null, versionCode: null };
+
+        addBuildToHistory({
+            appId: buildStatus.currentApp,
+            versionName: versions.versionName || null,
+            versionCode: versions.versionCode || null,
+            buildType: buildStatus.buildType,
+            artifactPath: buildStatus.outputPath || null,
+            status: buildStatus.status,
+            errorSummary: buildStatus.errorSummary || null,
+            startedAt: buildStatus.startedAt || null,
+            endedAt: buildStatus.endedAt || null,
+            elapsedMs: buildStatus.elapsedMs || null,
+            logPath: buildStatus.savedLogPath || null
+        });
+    } catch (e) {
+        // non-fatal
+    }
+}
+
 function failBuild(phase, errorMsg, broadcast, step) {
     const current = buildStatus.phaseSummary[buildStatus.phaseSummary.length - 1];
     if (!current || current.name !== phase) {
@@ -98,6 +150,11 @@ function failBuild(phase, errorMsg, broadcast, step) {
     buildStatus.endedAt = new Date().toISOString();
     buildStatus.elapsedMs = Date.now() - new Date(buildStatus.startedAt).getTime();
     addLogLine(`FAILED: ${errorMsg}`, 'stderr', broadcast);
+    const saved = saveLogSnapshot();
+    addHistoryEntry();
+    if (saved) {
+        addLogLine(`Log saved to logs/${saved.filename}`, 'system', broadcast);
+    }
     broadcast({ type: 'status', data: getBuildStatus() });
     return { error: errorMsg, step };
 }
@@ -236,7 +293,7 @@ function startBuild(appName, buildType, scriptPath, env, broadcast) {
     });
 
     buildProcess.on('close', (code) => {
-        if (!buildStatus.running && buildStatus.status === 'failed') return;
+        if (!buildStatus.running) return;
         finalizeBuild(code, broadcast);
     });
 
@@ -293,42 +350,11 @@ function finalizeBuild(code, broadcast) {
         if (!buildStatus.errorSummary) buildStatus.errorSummary = `Process exited with code ${code}`;
     }
 
-    // Record Build History
-    if (code === 0 && fileExists) {
-        const versions = resolveAppVersion(path.join(WORKSPACE_ROOT, buildStatus.currentAppRoot || ""));
-        addBuildToHistory({
-            appId: buildStatus.currentApp,
-            versionName: versions.versionName,
-            versionCode: versions.versionCode,
-            buildType: buildStatus.buildType,
-            artifactPath: buildStatus.outputPath,
-            status: 'success'
-        });
+    const saved = saveLogSnapshot();
+    addHistoryEntry();
+    if (saved) {
+        addLogLine(`Log saved to logs/${saved.filename}`, 'system', broadcast);
     }
-
-    // Save log file
-    try {
-        const ts = new Date().toISOString().replace(/[:.]/g, '-').split('T').join('-').slice(0, 19);
-        const filename = `${buildStatus.currentApp}-${buildStatus.buildType}-${ts}-${buildStatus.status}.log`;
-        const header = [
-            `App: ${buildStatus.currentApp}`,
-            `Type: ${buildStatus.buildType}`,
-            `Status: ${buildStatus.status}`,
-            `Exit Code: ${buildStatus.exitCode}`,
-            `Started: ${buildStatus.startedAt}`,
-            `Ended: ${buildStatus.endedAt}`,
-            `Elapsed: ${Math.round(buildStatus.elapsedMs / 1000)}s`,
-            buildStatus.outputPath ? `Artifact: ${buildStatus.outputPath}` : '',
-            buildStatus.errorSummary ? `Error: ${buildStatus.errorSummary}` : '',
-            '---'
-        ].filter(Boolean).join('\n');
-        const content = header + '\n' + logBuffer.map(l => `[${l.timestamp}] [${l.source.toUpperCase()}] ${l.message}`).join('\n');
-        const logPath = path.join(LOGS_DIR, filename);
-        fs.writeFileSync(logPath, content);
-        buildStatus.savedLogPath = logPath;
-
-        addLogLine(`Log saved to logs/${filename}`, 'system', broadcast);
-    } catch (e) { /* non-fatal */ }
 
     broadcast({ type: 'status', data: getBuildStatus() });
     buildProcess = null;
@@ -350,14 +376,12 @@ function cancelBuild(broadcast) {
             }
 
             // Save log on cancel too
-            try {
-                const ts = new Date().toISOString().replace(/[:.]/g, '-').split('T').join('-').slice(0, 19);
-                const filename = `${buildStatus.currentApp}-${buildStatus.buildType}-${ts}-cancelled.log`;
-                const content = logBuffer.map(l => `[${l.timestamp}] ${l.message}`).join('\n');
-                const logPath = path.join(LOGS_DIR, filename);
-                fs.writeFileSync(logPath, content);
-                buildStatus.savedLogPath = logPath;
-            } catch (e) { /* non-fatal */ }
+            buildStatus.exitCode = null;
+            const saved = saveLogSnapshot();
+            addHistoryEntry();
+            if (saved) {
+                addLogLine(`Log saved to logs/${saved.filename}`, 'system', broadcast);
+            }
 
             broadcast({ type: 'status', data: getBuildStatus() });
             buildProcess = null;

@@ -149,13 +149,25 @@ async function fetchDashboard<T>(pathname: string, query?: DashboardQueryInput):
     tenantId: session.tenantId,
   });
   const endpoint = `${pathname}${buildQueryString(effectiveQuery)}`;
-  const response = await fetch(getBackendUrl(endpoint), {
-    cache: "no-store",
-    headers: {
-      accept: "application/json",
-      ...Object.fromEntries(getDashboardAuthHeaders(session).entries()),
-    },
-  });
+  let response: Response;
+  try {
+    response = await fetch(getBackendUrl(endpoint), {
+      cache: "no-store",
+      headers: {
+        accept: "application/json",
+        ...Object.fromEntries(getDashboardAuthHeaders(session).entries()),
+      },
+    });
+  } catch (error) {
+    throw new DashboardApiError(
+      503,
+      endpoint,
+      `Unable to reach the NStepOS backend for ${endpoint}.`,
+      {
+        cause: error instanceof Error ? error.message : String(error),
+      },
+    );
+  }
 
   const text = await response.text();
   let body: unknown = null;

@@ -1,40 +1,45 @@
 # NStep Dashboard
 
-Production admin console for NStepOS.
+Internal StudioOS dashboard for NStepOS operations.
 
-## Staging Environment
+## Authentication Model
 
-Set these variables in staging and production:
+This dashboard does not maintain a separate username/password login.
 
-- `NSTEP_OS_API_URL` - public backend URL for the NStepOS API deployment.
-- `NSTEP_OS_INTERNAL_TOKEN` - shared bearer token used between the dashboard and backend.
-- `NSTEP_DASHBOARD_AUTH_SECRET` - secret used to sign dashboard sessions.
-- `NSTEP_DASHBOARD_AUTH_USERS` - JSON array of dashboard users with `username`, `password`, `role`, and `tenantId`.
+- It validates the existing website admin session from `/api/users/me`.
+- Unauthenticated access is redirected to the existing website admin login flow.
+- Role checks fail closed and only allow configured admin roles.
 
-The dashboard gates `/dashboard/*` routes and injects trusted role headers into `/api/nstep/*` requests after login.
+## Required Environment
 
-## What it does
+- `NSTEP_OS_API_URL` - NStepOS API base URL used for dashboard data.
+- `NSTEP_OS_INTERNAL_TOKEN` - shared internal token forwarded to NStepOS API.
+- `NSTEP_DASHBOARD_AUTH_BASE_URL` - base URL for the existing website/admin auth API (must expose `/api/users/me`).
 
-- Displays live job, workflow, approval, and memory state from NStepOS.
-- Lets operators submit structured goals and approve waiting steps.
-- Proxies API traffic through the local Next app so the browser stays on one origin.
+## Optional Environment
 
-## Setup
+- `NSTEP_DASHBOARD_ADMIN_LOGIN_URL` - override admin login URL (default: `<auth base>/admin/login`).
+- `NSTEP_DASHBOARD_ADMIN_LOGOUT_URL` - override logout URL (default: `<auth base>/api/logout`).
+- `NSTEP_DASHBOARD_ALLOWED_ADMIN_ROLES` - comma-separated roles allowed to access dashboard (default: `owner,admin`).
+- `NSTEP_DASHBOARD_AUTH_COOKIE_NAMES` - comma-separated auth cookie names forwarded to auth API (default: `studio_session_token`).
+- `NSTEP_DASHBOARD_TENANT_ID` - tenant id forwarded to NStepOS API (default: `default`).
+- `NSTEP_DASHBOARD_AFTER_LOGIN_URL` - optional explicit URL sent to login as `next`.
 
-1. Install dependencies in this app folder.
-2. Set `NSTEP_OS_API_URL` to the NStepOS backend base URL.
-3. Run the dashboard and backend at the same time.
+## Local Development
 
-## Development
+Default local behavior still reuses existing website admin auth:
+
+1. Start the website/admin app so `/api/users/me` can validate the existing session.
+2. Sign in through the website admin login.
+3. Start the dashboard app.
+
+Optional local-only dev auth mode (no separate sign-in page) can be enabled with:
+
+- `NSTEP_DASHBOARD_LOCAL_DEV_AUTH=1`
+- `NSTEP_DASHBOARD_LOCAL_DEV_USER=<local-admin-identity>`
+- Optional: `NSTEP_DASHBOARD_LOCAL_DEV_DISPLAY_NAME`, `NSTEP_DASHBOARD_LOCAL_DEV_EMAIL`, `NSTEP_DASHBOARD_LOCAL_DEV_TENANT_ID`
 
 ```bash
 npm install
 npm run dev
 ```
-
-## Environment
-
-- `NSTEP_OS_API_URL` - required in production
-- `NSTEP_OS_INTERNAL_TOKEN` - shared service token for backend requests
-- `NSTEP_DASHBOARD_AUTH_SECRET` - session signing secret
-- `NSTEP_DASHBOARD_AUTH_USERS` - dashboard credential JSON

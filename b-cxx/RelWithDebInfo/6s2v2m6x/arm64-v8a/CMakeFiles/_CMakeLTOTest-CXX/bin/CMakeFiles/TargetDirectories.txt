@@ -1,0 +1,4 @@
+D:/dev/Northern Step Studio/b-cxx/RelWithDebInfo/6s2v2m6x/arm64-v8a/CMakeFiles/_CMakeLTOTest-CXX/bin/CMakeFiles/foo.dir
+D:/dev/Northern Step Studio/b-cxx/RelWithDebInfo/6s2v2m6x/arm64-v8a/CMakeFiles/_CMakeLTOTest-CXX/bin/CMakeFiles/boo.dir
+D:/dev/Northern Step Studio/b-cxx/RelWithDebInfo/6s2v2m6x/arm64-v8a/CMakeFiles/_CMakeLTOTest-CXX/bin/CMakeFiles/edit_cache.dir
+D:/dev/Northern Step Studio/b-cxx/RelWithDebInfo/6s2v2m6x/arm64-v8a/CMakeFiles/_CMakeLTOTest-CXX/bin/CMakeFiles/rebuild_cache.dir

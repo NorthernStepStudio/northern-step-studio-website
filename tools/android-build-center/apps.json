@@ -1,0 +1,72 @@
+{
+  "nexusbuild": {
+    "displayName": "NexusBuild",
+    "path": "apps/nexusbuild/apps/mobile",
+    "keystorePath": "apps/nexusbuild/apps/mobile/credentials/android/keystore.jks",
+    "keystoreFileName": "keystore.jks",
+    "keyAlias": "54e5fa7f37c2e786bde3ba019f1a42d9",
+    "isProduction": true,
+    "alreadyOnGooglePlay": true,
+    "warning": "NexusBuild is already on Google Play. Do not replace this upload key unless you are resetting the upload key in Play Console."
+  },
+  "provly": {
+    "displayName": "ProvLy",
+    "path": "apps/ProvLy Home Inventory",
+    "keystorePath": "private-keys/android/provly/nstep-upload-key.keystore",
+    "keystoreFileName": "nstep-upload-key.keystore",
+    "keyAlias": "",
+    "packageName": ""
+  },
+  "nexusbuild-app": {
+    "path": "apps/nexusbuild",
+    "keystorePath": "private-keys/android/nexusbuild-app/nstep-upload-key.keystore",
+    "keystoreFileName": "nstep-upload-key.keystore",
+    "keyAlias": "nstep-upload",
+    "packageName": "com.nexusbuild.app",
+    "hidden": true
+  },
+  "noobs-investing": {
+    "displayName": "NooBS Investing",
+    "path": "apps/NooBS Investing app/apps/noobs-investing",
+    "keystorePath": "apps/NooBS Investing app/apps/noobs-investing/credentials/android-keystore.jks",
+    "keystoreFileName": "android-keystore.jks",
+    "keyAlias": "noobsupload",
+    "packageName": "com.noobs.investing",
+    "useBuildCopy": true
+  },
+  "pasoscore": {
+    "displayName": "PasoScore",
+    "path": "apps/PasoScore",
+    "keystorePath": "private-keys/android/PasoScore/nstep-upload-key.keystore",
+    "keystoreFileName": "nstep-upload-key.keystore",
+    "keyAlias": "",
+    "packageName": ""
+  },
+  "neuromoves-mobile": {
+    "displayName": "NeuroMoves",
+    "path": "apps/neurormoves",
+    "keystorePath": "C:\\Users\\winst\\NStep\\private-keys\\neuromoves-mobile\\upload-keystore.jks",
+    "keystoreFileName": "upload-keystore.jks",
+    "keyAlias": "upload",
+    "packageName": "",
+    "credentialState": "Pending Google Play Upload Key Reset",
+    "uploadCertificatePath": "C:\\Users\\winst\\NStep\\private-keys\\neuromoves-mobile\\upload_certificate.pem"
+  },
+  "mobile": {
+    "path": "apps/ProvLy Home Inventory/apps/mobile",
+    "keystorePath": "C:/Users/winst/NStep/private-keys/mobile/upload-keystore.jks",
+    "keystoreFileName": "upload-keystore.jks",
+    "keyAlias": "nstep-upload",
+    "classification": "private",
+    "hidden": true
+  },
+  "noobs-investing-NooBS game": {
+    "path": "apps/NooBS game",
+    "credentialState": "Pending Google Play Upload Key Reset",
+    "keystorePath": "C:\\Users\\winst\\NStep\\private-keys\\noobs-investing-noobs-game\\upload-keystore.jks",
+    "keystoreFileName": "upload-keystore.jks",
+    "uploadCertificatePath": "C:\\Users\\winst\\NStep\\private-keys\\noobs-investing-noobs-game\\upload_certificate.pem",
+    "keyAlias": "upload",
+    "hidden": true
+  }
+}

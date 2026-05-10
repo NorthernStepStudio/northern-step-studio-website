@@ -16,6 +16,7 @@ router.get('/apps', (req, res) => {
 
         Object.keys(raw).forEach(key => {
             const item = Object.assign({}, raw[key]);
+            if (item.hidden || item.excludeFromBuildCenter) return;
 
             // detect reset key presence
             const resetDir = path.join(WORKSPACE_ROOT, 'private-keys', 'android', `${key}-reset`);

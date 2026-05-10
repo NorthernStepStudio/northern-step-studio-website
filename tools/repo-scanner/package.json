@@ -1,0 +1,15 @@
+{
+  "name": "@nstep/repo-scanner",
+  "version": "0.1.0",
+  "description": "Local repo scanner for NStep StudioOS",
+  "type": "module",
+  "bin": {
+    "scan-repo": "./scan-repo.mjs"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "commander": "^12.0.0"
+  }
+}

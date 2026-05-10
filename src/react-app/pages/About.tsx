@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 import { useMemo } from "react";
 import type { Components } from "react-markdown";
-import { Mountain, Target, Rocket, Heart, Code, Gamepad2, Cpu, Sparkles, ArrowRight } from "lucide-react";
+import { Mountain, Target, Rocket, Heart, Code, Gamepad2, Cpu, ArrowRight } from "lucide-react";
 import GlitchedText from "@/react-app/components/GlitchedText";
 import SEO from "@/react-app/components/SEO";
 import { BRAND_ASSETS } from "@/react-app/lib/site";

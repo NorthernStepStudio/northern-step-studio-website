@@ -10,6 +10,38 @@ import communityUploads from "./community-uploads";
 // // import appShellHtml from "../../dist/index.html"; // Removed to avoid build-time stale asset issues
 import { getDb } from "./db";
 import { handleAiChat } from "./ai-assistant";
+import {
+  handleAdminAssistantChat,
+  getAssistantSessions,
+  getAssistantContext,
+  getAssistantMemory,
+  getAssistantTasks,
+  handleRepoSummary,
+  handleLogReview,
+  handleSynoxAssistantChat,
+  handleGetGroundingSummary,
+  handleGetMemory,
+  handleCreateMemory,
+  handlePatchMemory,
+  handleGetContextDocs,
+  handleCreateContextDoc,
+  handleGetBuilds,
+  handleCreateBuild,
+  handleCreateBuildLog,
+  handleGetDeployments,
+  handleCreateDeployment,
+  handleGetReadiness,
+  handleUpdateReadiness,
+  handleGetAnalyticsOverview,
+  handleGetBusinessSummary,
+  handleGetAdminActivity,
+  handleLogAdminActivity,
+  handleGetCommandCenter,
+  handleGetActionQueue,
+  handleCreateAction,
+  handlePatchAction,
+  handleGetBridgeStatus
+} from "./admin-assistant";
 import { searchKnowledgeChunks, getKnowledgeLaneHealth } from "./knowledge";
 import { sendEmail } from "./email";
 import {
@@ -21,6 +53,14 @@ import {
   testerApprovalEmail,
 } from "./email-templates";
 import { getRoleDisplayLabel, isElevatedRole, OWNER_EMAIL } from "../shared/auth";
+import { type RepoSnapshotMetadata } from "../shared/synox/repoSnapshot";
+import { 
+  type StudioProject, 
+  type ProjectNote, 
+  type ProjectGoal, 
+  type ProjectRisk, 
+  type ProjectDecision 
+} from "../shared/synox/projectIntelligence";
 import {
   authMiddleware,
   clearAuthSessions,
@@ -34,6 +74,7 @@ import {
   getGoogleOAuthRedirectUrl,
   findDatabaseUserByEmail,
   validatePassword,
+  isUserAdmin,
   type AppUser,
 } from "./auth";
 
@@ -1084,6 +1125,14 @@ app.post("/api/contact/early-access", async (c) => {
     return c.json({ error: "Failed to join the early access list right now." }, 500);
   }
 });
+
+app.post("/api/admin/assistant/chat", authMiddleware, handleAdminAssistantChat);
+app.get("/api/admin/assistant/sessions", authMiddleware, getAssistantSessions);
+app.get("/api/admin/assistant/context", authMiddleware, getAssistantContext);
+app.get("/api/admin/assistant/memory", authMiddleware, getAssistantMemory);
+app.get("/api/admin/assistant/tasks", authMiddleware, getAssistantTasks);
+app.get("/api/admin/assistant/repo-summary", authMiddleware, handleRepoSummary);
+app.post("/api/admin/assistant/log-review", authMiddleware, handleLogReview);
 
 app.get("/api/admin/contact-messages", authMiddleware, async (c) => {
   const role = await requireRole(c, ["owner", "admin", "moderator"]);
@@ -3002,22 +3051,6 @@ app.put("/api/notifications/read-all", authMiddleware, async (c) => {
   return c.json({ success: true });
 });
 
-// Helper to check if user is admin
-async function isUserAdmin(c: Context<{ Bindings: Env; Variables: { user: AppUser } }>): Promise<boolean> {
-  const authUser = c.get("user");
-  if (!authUser) return false;
-
-  // Check if it's the owner email
-  if (authUser.email === OWNER_EMAIL) return true;
-
-  const sql = getDb(c.env);
-  // Check role in database
-  const [dbUser] = await sql<{ role: string }[]>`
-    SELECT role FROM users WHERE email = ${authUser.email}
-  `;
-
-  return dbUser?.role === "admin" || dbUser?.role === "owner";
-}
 
 // Role Permissions Management (Admin Only)
 app.get("/api/permissions", authMiddleware, async (c) => {
@@ -3342,6 +3375,280 @@ app.route("/api/community-files", communityUploads);
 
 // NStep AI Chat
 app.post("/api/nstep-ai/chat", handleAiChat);
+
+// ─── StudioOS API ─────────────────────────────────────────────────────────────
+
+app.get("/api/admin/studio/overview", authMiddleware, async (c) => {
+  if (!(await isUserAdmin(c))) return c.json({ error: "Forbidden" }, 403);
+  return c.json({
+    status: "ok",
+    system: "NStep Studio Intelligence",
+    version: "0.1.0",
+    last_sync: new Date().toISOString(),
+    metrics: {
+      active_projects: 0,
+      open_risks: 0,
+      pending_tasks: 0,
+      last_snapshot: null
+    }
+  });
+});
+
+app.get("/api/admin/studio/projects", authMiddleware, async (c) => {
+  if (!(await isUserAdmin(c))) return c.json({ error: "Forbidden" }, 403);
+  const sql = getDb(c.env);
+  const projects = await sql<StudioProject[]>`SELECT * FROM projects ORDER BY priority DESC, updated_at DESC`;
+  return c.json(projects || []);
+});
+
+app.post("/api/admin/studio/projects", authMiddleware, async (c) => {
+  if (!(await isUserAdmin(c))) return c.json({ error: "Forbidden" }, 403);
+  const body = await c.req.json().catch(() => null);
+  if (!body?.name) return c.json({ error: "Name is required" }, 400);
+
+  const sql = getDb(c.env);
+  const uuid = crypto.randomUUID();
+  try {
+    await sql`
+      INSERT INTO projects (uuid, name, status, priority, description)
+      VALUES (${uuid}, ${body.name}, ${body.status || 'planning'}, ${body.priority || 'medium'}, ${body.description || null})
+    `;
+    return c.json({ success: true, uuid });
+  } catch (err) {
+    return c.json({ error: "Failed to create project" }, 500);
+  }
+});
+
+app.get("/api/admin/studio/projects/:id", authMiddleware, async (c) => {
+  if (!(await isUserAdmin(c))) return c.json({ error: "Forbidden" }, 403);
+  const id = c.req.param("id");
+  const sql = getDb(c.env);
+  const [project] = await sql<StudioProject[]>`SELECT * FROM projects WHERE id = ${id}`;
+  if (!project) return c.json({ error: "Project not found" }, 404);
+  return c.json(project);
+});
+
+app.patch("/api/admin/studio/projects/:id", authMiddleware, async (c) => {
+  if (!(await isUserAdmin(c))) return c.json({ error: "Forbidden" }, 403);
+  const id = c.req.param("id");
+  const body = await c.req.json().catch(() => ({}));
+  const sql = getDb(c.env);
+
+  try {
+    await sql`
+      UPDATE projects SET 
+        status = COALESCE(${body.status}, status),
+        priority = COALESCE(${body.priority}, priority),
+        description = COALESCE(${body.description}, description),
+        updated_at = CURRENT_TIMESTAMP
+      WHERE id = ${id}
+    `;
+    return c.json({ success: true });
+  } catch (err) {
+    return c.json({ error: "Update failed" }, 500);
+  }
+});
+
+app.get("/api/admin/studio/projects/:id/notes", authMiddleware, async (c) => {
+  if (!(await isUserAdmin(c))) return c.json({ error: "Forbidden" }, 403);
+  const id = c.req.param("id");
+  const sql = getDb(c.env);
+  const notes = await sql<ProjectNote[]>`SELECT * FROM project_notes WHERE project_id = ${id} ORDER BY created_at DESC`;
+  return c.json(notes || []);
+});
+
+app.post("/api/admin/studio/projects/:id/notes", authMiddleware, async (c) => {
+  if (!(await isUserAdmin(c))) return c.json({ error: "Forbidden" }, 403);
+  const id = c.req.param("id");
+  const body = await c.req.json().catch(() => null);
+  if (!body?.title) return c.json({ error: "Title is required" }, 400);
+
+  const sql = getDb(c.env);
+  await sql`INSERT INTO project_notes (project_id, title, content) VALUES (${id}, ${body.title}, ${body.content || null})`;
+  return c.json({ success: true });
+});
+
+app.get("/api/admin/studio/projects/:id/goals", authMiddleware, async (c) => {
+  if (!(await isUserAdmin(c))) return c.json({ error: "Forbidden" }, 403);
+  const id = c.req.param("id");
+  const sql = getDb(c.env);
+  const goals = await sql<ProjectGoal[]>`SELECT * FROM project_goals WHERE project_id = ${id} ORDER BY created_at DESC`;
+  return c.json(goals || []);
+});
+
+app.post("/api/admin/studio/projects/:id/goals", authMiddleware, async (c) => {
+  if (!(await isUserAdmin(c))) return c.json({ error: "Forbidden" }, 403);
+  const id = c.req.param("id");
+  const body = await c.req.json().catch(() => null);
+  if (!body?.goal) return c.json({ error: "Goal text is required" }, 400);
+
+  const sql = getDb(c.env);
+  await sql`INSERT INTO project_goals (project_id, goal) VALUES (${id}, ${body.goal})`;
+  return c.json({ success: true });
+});
+
+app.patch("/api/admin/studio/projects/:id/goals/:goalId", authMiddleware, async (c) => {
+  if (!(await isUserAdmin(c))) return c.json({ error: "Forbidden" }, 403);
+  const goalId = c.req.param("goalId");
+  const body = await c.req.json().catch(() => ({}));
+  const sql = getDb(c.env);
+  await sql`UPDATE project_goals SET is_completed = ${body.is_completed ? 1 : 0} WHERE id = ${goalId}`;
+  return c.json({ success: true });
+});
+
+app.get("/api/admin/studio/projects/:id/risks", authMiddleware, async (c) => {
+  if (!(await isUserAdmin(c))) return c.json({ error: "Forbidden" }, 403);
+  const id = c.req.param("id");
+  const sql = getDb(c.env);
+  const risks = await sql<ProjectRisk[]>`SELECT * FROM project_risks WHERE project_id = ${id} ORDER BY impact DESC, created_at DESC`;
+  return c.json(risks || []);
+});
+
+app.post("/api/admin/studio/projects/:id/risks", authMiddleware, async (c) => {
+  if (!(await isUserAdmin(c))) return c.json({ error: "Forbidden" }, 403);
+  const id = c.req.param("id");
+  const body = await c.req.json().catch(() => null);
+  if (!body?.risk) return c.json({ error: "Risk description is required" }, 400);
+
+  const sql = getDb(c.env);
+  await sql`INSERT INTO project_risks (project_id, risk, impact, mitigation) VALUES (${id}, ${body.risk}, ${body.impact || 'medium'}, ${body.mitigation || null})`;
+  return c.json({ success: true });
+});
+
+app.get("/api/admin/studio/projects/:id/decisions", authMiddleware, async (c) => {
+  if (!(await isUserAdmin(c))) return c.json({ error: "Forbidden" }, 403);
+  const id = c.req.param("id");
+  const sql = getDb(c.env);
+  const decisions = await sql<ProjectDecision[]>`SELECT * FROM project_decisions WHERE project_id = ${id} ORDER BY created_at DESC`;
+  return c.json(decisions || []);
+});
+
+app.post("/api/admin/studio/projects/:id/decisions", authMiddleware, async (c) => {
+  if (!(await isUserAdmin(c))) return c.json({ error: "Forbidden" }, 403);
+  const id = c.req.param("id");
+  const body = await c.req.json().catch(() => null);
+  if (!body?.decision) return c.json({ error: "Decision text is required" }, 400);
+
+  const sql = getDb(c.env);
+  await sql`INSERT INTO project_decisions (project_id, decision, rationale) VALUES (${id}, ${body.decision}, ${body.rationale || null})`;
+  return c.json({ success: true });
+});
+
+app.get("/api/admin/studio/notes", authMiddleware, async (c) => {
+  if (!(await isUserAdmin(c))) return c.json({ error: "Forbidden" }, 403);
+  const sql = getDb(c.env);
+  const notes = await sql`SELECT * FROM project_notes ORDER BY created_at DESC LIMIT 50`;
+  return c.json(notes || []);
+});
+
+app.get("/api/admin/studio/risks", authMiddleware, async (c) => {
+  if (!(await isUserAdmin(c))) return c.json({ error: "Forbidden" }, 403);
+  const sql = getDb(c.env);
+  const risks = await sql`SELECT * FROM project_risks ORDER BY impact DESC, created_at DESC LIMIT 50`;
+  return c.json(risks || []);
+});
+
+app.post("/api/admin/studio/assistant/chat", authMiddleware, handleSynoxAssistantChat);
+app.get("/api/admin/studio/assistant/bridge-status", authMiddleware, handleGetBridgeStatus);
+
+// ─── Synox / NStep AI ─────────────────────────────────────────────────────────
+
+app.get("/api/admin/intelligence/grounding-summary", authMiddleware, handleGetGroundingSummary);
+app.get("/api/admin/intelligence/memory", authMiddleware, handleGetMemory);
+app.post("/api/admin/intelligence/memory", authMiddleware, handleCreateMemory);
+app.patch("/api/admin/intelligence/memory/:id", authMiddleware, handlePatchMemory);
+app.get("/api/admin/intelligence/context-docs", authMiddleware, handleGetContextDocs);
+app.post("/api/admin/intelligence/context-docs", authMiddleware, handleCreateContextDoc);
+
+// Build Intelligence
+app.get("/api/admin/intelligence/builds", authMiddleware, handleGetBuilds);
+app.post("/api/admin/intelligence/builds", authMiddleware, handleCreateBuild);
+app.post("/api/admin/intelligence/builds/:id/logs", authMiddleware, handleCreateBuildLog);
+
+// Deployment Intelligence
+app.get("/api/admin/intelligence/deployments", authMiddleware, handleGetDeployments);
+app.post("/api/admin/intelligence/deployments", authMiddleware, handleCreateDeployment);
+
+// Release Readiness
+app.get("/api/admin/intelligence/release-readiness", authMiddleware, handleGetReadiness);
+app.post("/api/admin/intelligence/release-readiness", authMiddleware, handleUpdateReadiness);
+
+// Analytics & Business Intelligence
+app.get("/api/admin/intelligence/analytics/overview", authMiddleware, handleGetAnalyticsOverview);
+app.get("/api/admin/intelligence/business/summary", authMiddleware, handleGetBusinessSummary);
+app.get("/api/admin/intelligence/admin-activity", authMiddleware, handleGetAdminActivity);
+app.post("/api/admin/intelligence/admin-activity", authMiddleware, handleLogAdminActivity);
+
+// Command Center & Action Queue
+app.get("/api/admin/intelligence/command-center", authMiddleware, handleGetCommandCenter);
+app.get("/api/admin/intelligence/actions", authMiddleware, handleGetActionQueue);
+app.post("/api/admin/intelligence/actions", authMiddleware, handleCreateAction);
+app.patch("/api/admin/intelligence/actions/:id", authMiddleware, handlePatchAction);
+
+app.get("/api/admin/studio/repo-snapshots", authMiddleware, async (c) => {
+  if (!(await isUserAdmin(c))) return c.json({ error: "Forbidden" }, 403);
+  const sql = getDb(c.env);
+  const snapshots = await sql<RepoSnapshotMetadata[]>`
+    SELECT id, repo_name, branch, commit_hash, created_at 
+    FROM repo_snapshots 
+    ORDER BY created_at DESC 
+    LIMIT 50
+  `;
+  return c.json(snapshots || []);
+});
+
+app.get("/api/admin/studio/repo-snapshots/latest", authMiddleware, async (c) => {
+  if (!(await isUserAdmin(c))) return c.json({ error: "Forbidden" }, 403);
+  const sql = getDb(c.env);
+  const [latest] = await sql`
+    SELECT * FROM repo_snapshots 
+    ORDER BY created_at DESC 
+    LIMIT 1
+  `;
+  if (!latest) return c.json({ error: "No snapshots found" }, 404);
+  
+  // Return parsed JSON
+  try {
+    return c.json({
+      ...latest,
+      snapshot_data: JSON.parse(latest.snapshot_data as string)
+    });
+  } catch {
+    return c.json(latest);
+  }
+});
+
+app.post("/api/admin/studio/repo-snapshots", authMiddleware, async (c) => {
+  if (!(await isUserAdmin(c))) return c.json({ error: "Forbidden" }, 403);
+  
+  const body = await c.req.json().catch(() => null);
+  if (!body || !body.repoName || !body.scannedAt) {
+    return c.json({ error: "Invalid snapshot data" }, 400);
+  }
+
+  // Size check (approx 2MB)
+  const jsonStr = JSON.stringify(body);
+  if (jsonStr.length > 2 * 1024 * 1024) {
+    return c.json({ error: "Snapshot too large (max 2MB)" }, 413);
+  }
+
+  const sql = getDb(c.env);
+  try {
+    await sql`
+      INSERT INTO repo_snapshots (repo_name, branch, commit_hash, snapshot_data)
+      VALUES (
+        ${body.repoName}, 
+        ${body.branch || 'main'}, 
+        ${body.commitHash || null}, 
+        ${jsonStr}
+      )
+    `;
+    return c.json({ success: true });
+  } catch (err) {
+    console.error("Failed to save snapshot:", err);
+    return c.json({ error: "Database error" }, 500);
+  }
+});
 
 // ─── Knowledge API ────────────────────────────────────────────────────────────
 

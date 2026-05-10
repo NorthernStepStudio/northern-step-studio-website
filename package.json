@@ -1,6 +1,7 @@
 {
   "name": "nstep-workspace",
   "private": true,
+  "type": "module",
   "workspaces": [
     "apps/nstep-dashboard",
     "apps/nstep-fix",
@@ -18,14 +19,23 @@
     "dev:worker": "npm run worker --workspace packages/nstep-os",
     "worker": "npm run worker --workspace packages/nstep-os",
     "hygiene:check": "node scripts/repo-hygiene-check.mjs",
-    "hygiene:clean": "node scripts/repo-hygiene-clean.mjs --apply"
+    "hygiene:clean": "node scripts/repo-hygiene-clean.mjs --apply",
+    "governance:gate": "node scripts/studioos-governance-gate.mjs",
+    "governance:gate:enforce": "node scripts/studioos-governance-gate.mjs --enforce",
+    "governance:approve": "node scripts/studioos-approve-change.mjs",
+    "governance:readiness": "node scripts/studioos-create-readiness.mjs"
   },
   "overrides": {
     "react": "19.1.0",
     "react-dom": "19.1.0"
   },
   "dependencies": {
+    "@langchain/langgraph": "^1.3.0",
+    "@langchain/langgraph-checkpoint-postgres": "^1.0.1",
     "react": "19.1.0",
     "react-dom": "19.1.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260509.1"
   }
 }

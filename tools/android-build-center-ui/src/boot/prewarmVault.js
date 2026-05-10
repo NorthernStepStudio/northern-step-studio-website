@@ -15,6 +15,7 @@ function prewarmVault() {
         const configuredApps = JSON.parse(fs.readFileSync(APPS_JSON_PATH, 'utf8'));
         Object.keys(configuredApps).forEach(id => {
             const app = configuredApps[id];
+            if (app.hidden || app.excludeFromBuildCenter) return;
             if (!app.path) return;
 
             const appRoot = path.join(WORKSPACE_ROOT, app.path);

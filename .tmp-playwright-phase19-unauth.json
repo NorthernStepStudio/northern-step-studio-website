@@ -1,0 +1,117 @@
+{
+  "baseUrl": "http://localhost:4113",
+  "routeResults": [
+    {
+      "url": "http://localhost:4113/dashboard",
+      "status": 307,
+      "location": "http://localhost:4173/admin/login?dashboard=%2Fdashboard"
+    },
+    {
+      "url": "http://localhost:4113/dashboard/apps",
+      "status": 307,
+      "location": "http://localhost:4173/admin/login?dashboard=%2Fdashboard"
+    },
+    {
+      "url": "http://localhost:4113/dashboard/apps/nexusbuild",
+      "status": 307,
+      "location": "http://localhost:4173/admin/login?dashboard=%2Fdashboard"
+    },
+    {
+      "url": "http://localhost:4113/dashboard/governance",
+      "status": 307,
+      "location": "http://localhost:4173/admin/login?dashboard=%2Fdashboard"
+    },
+    {
+      "url": "http://localhost:4113/dashboard/verification",
+      "status": 307,
+      "location": "http://localhost:4173/admin/login?dashboard=%2Fdashboard"
+    },
+    {
+      "url": "http://localhost:4113/dashboard/risk-register",
+      "status": 307,
+      "location": "http://localhost:4173/admin/login?dashboard=%2Fdashboard"
+    },
+    {
+      "url": "http://localhost:4113/dashboard/snapshots",
+      "status": 307,
+      "location": "http://localhost:4173/admin/login?dashboard=%2Fdashboard"
+    },
+    {
+      "url": "http://localhost:4113/dashboard/incidents",
+      "status": 307,
+      "location": "http://localhost:4173/admin/login?dashboard=%2Fdashboard"
+    },
+    {
+      "url": "http://localhost:4113/dashboard/incidents/inc-001",
+      "status": 307,
+      "location": "http://localhost:4173/admin/login?dashboard=%2Fdashboard"
+    },
+    {
+      "url": "http://localhost:4113/dashboard/timeline",
+      "status": 307,
+      "location": "http://localhost:4173/admin/login?dashboard=%2Fdashboard"
+    },
+    {
+      "url": "http://localhost:4113/dashboard/execution",
+      "status": 307,
+      "location": "http://localhost:4173/admin/login?dashboard=%2Fdashboard"
+    },
+    {
+      "url": "http://localhost:4113/dashboard/recovery",
+      "status": 307,
+      "location": "http://localhost:4173/admin/login?dashboard=%2Fdashboard"
+    },
+    {
+      "url": "http://localhost:4113/dashboard/intelligence",
+      "status": 307,
+      "location": "http://localhost:4173/admin/login?dashboard=%2Fdashboard"
+    },
+    {
+      "url": "http://localhost:4113/dashboard/activity",
+      "status": 307,
+      "location": "http://localhost:4173/admin/login?dashboard=%2Fdashboard"
+    },
+    {
+      "url": "http://localhost:4113/dashboard/approvals",
+      "status": 307,
+      "location": "http://localhost:4173/admin/login?dashboard=%2Fdashboard"
+    },
+    {
+      "url": "http://localhost:4113/dashboard/jobs",
+      "status": 307,
+      "location": "http://localhost:4173/admin/login?dashboard=%2Fdashboard"
+    },
+    {
+      "url": "http://localhost:4113/dashboard/memory",
+      "status": 307,
+      "location": "http://localhost:4173/admin/login?dashboard=%2Fdashboard"
+    },
+    {
+      "url": "http://localhost:4113/dashboard/settings",
+      "status": 307,
+      "location": "http://localhost:4173/admin/login?dashboard=%2Fdashboard"
+    },
+    {
+      "url": "http://localhost:4113/dashboard/panels/nexusbuild",
+      "status": 307,
+      "location": "http://localhost:4173/admin/login?dashboard=%2Fdashboard"
+    }
+  ],
+  "apiResults": [
+    {
+      "url": "http://localhost:4113/api/nstep/health",
+      "status": 401,
+      "location": null
+    },
+    {
+      "url": "http://localhost:4113/api/internal/verification",
+      "status": 404,
+      "location": null
+    },
+    {
+      "url": "http://localhost:4113/api/users/me",
+      "status": 404,
+      "location": null
+    }
+  ]
+}

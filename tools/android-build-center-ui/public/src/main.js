@@ -14,6 +14,7 @@ window.state = state;
 const elements = {
     appList: document.getElementById('appList'),
     logContainer: document.getElementById('logContainer'),
+    buildHistoryList: document.getElementById('buildHistoryList'),
     scanBtn: document.getElementById('scanBtn'),
     buildApkBtn: document.getElementById('buildApkBtn'),
     buildAabBtn: document.getElementById('buildAabBtn'),
@@ -42,9 +43,146 @@ const elements = {
 };
 
 const PASSWORD_LABEL_PREFIX = '**********';
+const selectedBuildByApp = new Map();
+let logViewMode = 'history';
+let uploadKeyResetArmedFor = null;
 
 function isStoredPasswordLabel(value) {
     return String(value || '').startsWith(PASSWORD_LABEL_PREFIX);
+}
+
+function formatBuildTime(timestamp) {
+    if (!timestamp) return '--';
+    const date = new Date(timestamp);
+    if (Number.isNaN(date.getTime())) return '--';
+    return date.toLocaleString([], {
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
+
+function renderBuildHistoryList(currentState) {
+    const container = elements.buildHistoryList;
+    if (!container) return;
+
+    const appId = currentState.selectedAppId;
+    const history = currentState.buildHistory || [];
+    container.innerHTML = '';
+
+    if (!appId) {
+        container.innerHTML = '<div class="build-history-empty">Select an app to view its build history.</div>';
+        return;
+    }
+
+    const runningForSelected = currentState.buildStatus?.running && currentState.buildStatus?.currentApp === appId;
+    if (runningForSelected) {
+        const liveBtn = document.createElement('button');
+        liveBtn.type = 'button';
+        liveBtn.className = `build-history-item ${currentState.selectedBuildId === 'live' ? 'active' : ''}`;
+        liveBtn.innerHTML = `
+            <span class="build-history-type">LIVE</span>
+            <span class="build-history-status running">${String(currentState.buildStatus?.buildType || '').toUpperCase()}</span>
+            <span class="build-history-time">running</span>
+        `;
+        liveBtn.addEventListener('click', () => {
+            logViewMode = 'live';
+            state.setSelectedBuild('live');
+        });
+        container.appendChild(liveBtn);
+    }
+
+    if (!history.length) {
+        const msg = document.createElement('div');
+        msg.className = 'build-history-empty';
+        msg.textContent = 'No saved builds for selected app.';
+        container.appendChild(msg);
+        return;
+    }
+
+    history.forEach((build) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        const canOpen = Boolean(build.hasLog);
+        btn.disabled = !canOpen;
+        btn.className = `build-history-item ${currentState.selectedBuildId === build.id ? 'active' : ''}`;
+        btn.innerHTML = `
+            <span class="build-history-type">${String(build.buildType || '').toUpperCase()}</span>
+            <span class="build-history-status ${String(build.status || '').toLowerCase()}">${String(build.status || 'unknown').toUpperCase()}</span>
+            <span class="build-history-time">${canOpen ? formatBuildTime(build.timestamp) : 'no saved log'}</span>
+        `;
+        if (canOpen) {
+            btn.addEventListener('click', () => {
+                loadBuildLogsForSelection(build.id);
+            });
+        }
+        container.appendChild(btn);
+    });
+}
+
+async function loadBuildLogsForSelection(buildId) {
+    const appId = state.selectedAppId;
+    if (!buildId || !appId) return;
+
+    logViewMode = 'history';
+    state.setSelectedBuild(buildId);
+    selectedBuildByApp.set(appId, buildId);
+
+    let result;
+    try {
+        result = await api.getBuildLogsById(buildId);
+    } catch (err) {
+        result = { error: err.message };
+    }
+
+    if (result.error) {
+        state.setLogs([{
+            timestamp: new Date().toISOString(),
+            source: 'stderr',
+            message: `FAILED: ${result.error}`
+        }]);
+        return;
+    }
+    state.setLogs(Array.isArray(result.logs) ? result.logs : []);
+}
+
+async function refreshBuildHistoryForSelectedApp({ preserveSelection = true, autoSelectNewest = false } = {}) {
+    const appId = state.selectedAppId;
+    if (!appId) {
+        state.setBuildHistory([]);
+        state.setSelectedBuild(null);
+        return;
+    }
+
+    let result;
+    try {
+        result = await api.getBuildHistory(appId);
+    } catch (err) {
+        result = { builds: [], error: err.message };
+    }
+
+    const history = Array.isArray(result.builds) ? result.builds : [];
+    state.setBuildHistory(history);
+
+    let targetBuildId = null;
+    if (preserveSelection) targetBuildId = selectedBuildByApp.get(appId) || null;
+    if (targetBuildId && !history.some((entry) => entry.id === targetBuildId)) {
+        targetBuildId = null;
+    }
+    if (autoSelectNewest && history.length > 0) {
+        targetBuildId = (history.find((entry) => entry.hasLog) || history[0]).id;
+    }
+    if (!targetBuildId && history.length > 0) {
+        targetBuildId = (history.find((entry) => entry.hasLog) || history[0]).id;
+    }
+
+    if (targetBuildId && history.some((entry) => entry.id === targetBuildId && entry.hasLog)) {
+        await loadBuildLogsForSelection(targetBuildId);
+    } else if (logViewMode !== 'live') {
+        state.setSelectedBuild(null);
+        state.setLogs([]);
+    }
 }
 
 async function init() {
@@ -59,9 +197,9 @@ async function init() {
         state.setApps(Object.keys(apps).map(k => ({ id: k, ...apps[k] })));
         updateAppSelector(state.apps);
 
-        const [status, logs] = await Promise.all([api.getStatus(), api.getLogs()]);
+        const [status] = await Promise.all([api.getStatus()]);
         state.setBuildStatus(status);
-        state.setLogs(logs);
+        state.setLogs([]);
 
         setupSSE();
 
@@ -94,9 +232,29 @@ function setupSSE() {
     eventSource.onmessage = (event) => {
         const payload = JSON.parse(event.data);
         if (payload.type === 'log') {
-            state.addLog(payload.data);
+            const selectedApp = state.selectedAppId;
+            const currentBuildApp = state.buildStatus?.currentApp;
+            if (logViewMode === 'live' && selectedApp && currentBuildApp === selectedApp) {
+                state.addLog(payload.data);
+            }
         } else if (payload.type === 'status') {
+            const previous = state.buildStatus;
             state.setBuildStatus(payload.data);
+
+            const selectedApp = state.selectedAppId;
+            const currentApp = payload.data?.currentApp;
+            const currentlyRunning = Boolean(payload.data?.running);
+            const wasRunning = Boolean(previous?.running);
+
+            if (currentlyRunning && selectedApp && currentApp === selectedApp && logViewMode !== 'live') {
+                logViewMode = 'live';
+                state.setSelectedBuild('live');
+                state.setLogs([]);
+            }
+
+            if (wasRunning && !currentlyRunning && selectedApp && currentApp === selectedApp) {
+                refreshBuildHistoryForSelectedApp({ preserveSelection: false, autoSelectNewest: true });
+            }
         }
     };
 }
@@ -105,16 +263,37 @@ elements.scanBtn.addEventListener('click', handleScan);
 elements.buildApkBtn.addEventListener('click', () => handleBuild('apk'));
 elements.buildAabBtn.addEventListener('click', () => handleBuild('aab'));
 elements.cancelBuildBtn.addEventListener('click', () => api.cancelBuild());
+elements.appSelector.addEventListener('change', () => {
+    const appId = elements.appSelector.value;
+    if (!appId) {
+        state.selectApp(null);
+        state.setBuildHistory([]);
+        state.setSelectedBuild(null);
+        state.setLogs([]);
+        return;
+    }
+    const app = state.apps.find(a => a.id === appId);
+    if (app) {
+        handleAppAction('select', app);
+    }
+});
 elements.generateKeystoreBtn.addEventListener('click', handleGenerateKeystore);
 elements.generateUploadKeyBtn.addEventListener('click', handleGenerateUploadKey);
 elements.confirmUploadApprovalBtn.addEventListener('click', handleConfirmUploadApproval);
-elements.keystorePasswordInput.addEventListener('change', handleManualPasswordEntry);
-elements.savePasswordBtn.addEventListener('click', handleManualPasswordEntry);
-elements.saveExistingPasswordBtn.addEventListener('click', handleManualPasswordEntry);
+elements.savePasswordBtn.addEventListener('click', handleSaveExistingPassword);
+elements.saveExistingPasswordBtn.addEventListener('click', handleSaveExistingPassword);
 elements.verifyCredentialsBtn.addEventListener('click', handleVerifyCredentials);
 elements.bumpVersionBtn.addEventListener('click', handleBumpVersion);
 elements.playCodeInput.addEventListener('change', handlePlayCodeUpdate);
-elements.clearLogBtn.addEventListener('click', () => { state.setLogs([]); api.clearLogs(); });
+elements.clearLogBtn.addEventListener('click', () => {
+    if (logViewMode === 'live') {
+        state.setLogs([]);
+        api.clearLogs();
+    } else {
+        state.setSelectedBuild(null);
+        state.setLogs([]);
+    }
+});
 
 document.getElementById('expandAllLogsBtn').addEventListener('click', () => {
     document.querySelectorAll('.log-phase-group').forEach(d => d.open = true);
@@ -150,15 +329,24 @@ async function handleScan() {
         if (result.error) throw new Error(result.error);
         state.setApps(result.discovered);
         updateAppSelector(result.discovered);
-        state.addLog({ timestamp: new Date().toISOString(), message: `Scan complete: ${result.discovered.length} apps found.`, source: 'system' });
+        if (state.selectedAppId && result.discovered.some((app) => app.id === state.selectedAppId)) {
+            await refreshBuildHistoryForSelectedApp({ preserveSelection: true, autoSelectNewest: false });
+        } else if (state.selectedAppId) {
+            state.selectApp(null);
+            state.setBuildHistory([]);
+            state.setSelectedBuild(null);
+            state.setLogs([]);
+        }
     } catch (err) {
         console.error('Scan failed:', err);
         const msg = err.details ? `${err.message} (${err.details})` : err.message;
-        state.addLog({
-            timestamp: new Date().toISOString(),
-            message: `FAILED: Workspace scan failed. ${msg}`,
-            source: 'stderr'
-        });
+        if (logViewMode === 'live') {
+            state.addLog({
+                timestamp: new Date().toISOString(),
+                message: `FAILED: Workspace scan failed. ${msg}`,
+                source: 'stderr'
+            });
+        }
     } finally {
         elements.scanBtn.disabled = false;
         elements.scanBtn.textContent = 'Scan Workspace';
@@ -181,11 +369,14 @@ async function handleBuild(type) {
         state.addLog({ timestamp: new Date().toISOString(), message: val.message, source: 'system' });
     }
 
+    logViewMode = 'live';
+    state.setSelectedBuild('live');
     state.setLogs([]);
     const result = await api.startBuild(appName, type);
     if (result.error) {
         console.error('Build Error:', result.error);
         state.addLog({ timestamp: new Date().toISOString(), message: `FAILED: ${result.error}`, source: 'stderr' });
+        refreshBuildHistoryForSelectedApp({ preserveSelection: false, autoSelectNewest: true });
     }
 }
 
@@ -254,12 +445,21 @@ async function handleGenerateUploadKey() {
     const app = state.apps.find(a => a.id === appName);
     if (!appName || !app) return;
 
-    if (app.isProduction && !confirm(`Generating a NEW upload key for production app '${appName}'.\n\nThis will invalidate your current upload key. You will need to upload the generated certificate to Google Play Console to reset it.\n\nProceed?`)) {
+    if (app.isProduction && uploadKeyResetArmedFor !== appName) {
+        uploadKeyResetArmedFor = appName;
+        elements.generateUploadKeyBtn.classList.add('btn-danger');
+        elements.generateUploadKeyBtn.textContent = 'Confirm Upload Key Reset';
+        state.addLog({
+            timestamp: new Date().toISOString(),
+            message: `ACTION REQUIRED: Click Confirm Upload Key Reset to generate a new upload key for production app '${appName}'. The exported certificate must be uploaded to Google Play Console before AAB builds are allowed.`,
+            source: 'system'
+        });
         return;
     }
 
     elements.generateUploadKeyBtn.disabled = true;
     try {
+        uploadKeyResetArmedFor = null;
         const result = await api.generateUploadKey(appName, app.appRoot);
         if (result.error) throw new Error(result.error);
 
@@ -272,6 +472,7 @@ async function handleGenerateUploadKey() {
         state.addLog({ timestamp: new Date().toISOString(), message: `Generation Failed: ${err.message}`, source: 'stderr' });
     } finally {
         elements.generateUploadKeyBtn.disabled = false;
+        elements.generateUploadKeyBtn.classList.remove('btn-danger');
     }
 }
 
@@ -355,6 +556,10 @@ async function handlePlayCodeUpdate() {
 }
 
 function updateSelectedControls(app) {
+    if (uploadKeyResetArmedFor && uploadKeyResetArmedFor !== app.id) {
+        uploadKeyResetArmedFor = null;
+    }
+
     const isResolved = app.credentialsValidated || app.passwordSourceFound;
 
     if (isResolved) {
@@ -413,10 +618,12 @@ function updateSelectedControls(app) {
         } else {
             elements.generateUploadKeyBtn.classList.remove('hidden');
             elements.confirmUploadApprovalBtn.classList.add('hidden');
-            elements.generateUploadKeyBtn.textContent = isProduction ? 'Generate Play Upload Key (Reset)' : 'Generate Upload Key';
+            elements.generateUploadKeyBtn.classList.toggle('btn-danger', uploadKeyResetArmedFor === app.id);
+            elements.generateUploadKeyBtn.textContent = uploadKeyResetArmedFor === app.id ? 'Confirm Upload Key Reset' : (isProduction ? 'Generate Play Upload Key (Reset)' : 'Generate Upload Key');
         }
     } else {
         elements.generateUploadKeyBtn.classList.add('hidden');
+        elements.generateUploadKeyBtn.classList.remove('btn-danger');
         elements.confirmUploadApprovalBtn.classList.add('hidden');
     }
 
@@ -433,12 +640,16 @@ function updateSelectedControls(app) {
     elements.playCodeInput.value = app.lastPlayVersion || '';
 }
 
-function handleAppAction(action, app) {
+async function handleAppAction(action, app) {
     if (action !== 'select') return;
 
     elements.appSelector.value = app.id;
     state.selectApp(app.id);
+    logViewMode = 'history';
+    state.setSelectedBuild(null);
+    state.setLogs([]);
     updateSelectedControls(app);
+    await refreshBuildHistoryForSelectedApp({ preserveSelection: true, autoSelectNewest: false });
 
     api.resolveCredentials(app.id, app.appRoot).then(async (report) => {
         if (!report.error && !report.ready) return;
@@ -449,6 +660,7 @@ function handleAppAction(action, app) {
         if (updatedApp) {
             elements.appSelector.value = updatedApp.id;
             updateSelectedControls(updatedApp);
+            await refreshBuildHistoryForSelectedApp({ preserveSelection: true, autoSelectNewest: false });
         }
     });
 }
@@ -459,7 +671,7 @@ function updateAppSelector(apps) {
     apps.forEach(app => {
         const opt = document.createElement('option');
         opt.value = app.id;
-        opt.textContent = app.id;
+        opt.textContent = app.displayName || app.id;
         elements.appSelector.appendChild(opt);
     });
     if (current) elements.appSelector.value = current;
@@ -470,6 +682,7 @@ state.subscribe((s) => {
         renderAppList(s.apps || [], elements.appList, handleAppAction);
         renderLogs(s.logs || [], elements.logContainer, logOptions);
         renderBuildStatus(s.buildStatus, elements.buildStatusCard);
+        renderBuildHistoryList(s);
 
         const isRunning = s.buildStatus && s.buildStatus.running;
         elements.buildApkBtn.disabled = isRunning;

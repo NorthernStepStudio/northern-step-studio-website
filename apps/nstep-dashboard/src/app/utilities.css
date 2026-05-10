@@ -1,0 +1,22 @@
+.nsos-stack-small { display: grid; gap: 8px; }
+.nsos-stack-tiny { display: grid; gap: 2px; }
+.nsos-grid-span-2 { grid-column: span 2; }
+.nsos-p-20 { padding: 20px; }
+.nsos-br-16 { border-radius: 16px; }
+.nsos-items-start { align-items: flex-start; }
+.nsos-mt-20 { margin-top: 20px; }
+.nsos-mt-8 { margin-top: 8px; }
+.nsos-mt-12 { margin-top: 12px; }
+.nsos-gap-4 { gap: 16px; }
+.nsos-gap-2 { gap: 8px; }
+.nsos-timeline-border { border-left: 2px solid var(--border); }
+.nsos-pl-24 { padding-left: 24px; }
+.nsos-ml-12 { margin-left: 12px; }
+.nsos-pb-24 { padding-bottom: 24px; }
+.nsos-relative { position: relative; }
+.nsos-timeline-dot { position: absolute; left: -7px; top: 0; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--background); }
+.nsos-bg-danger { background: var(--danger); }
+.nsos-bg-accent { background: var(--accent); }
+.nsos-text-danger { color: var(--danger); }
+.nsos-opacity-80 { opacity: 0.8; }
+.nsos-w-fit { width: fit-content; }

@@ -99,7 +99,7 @@ export default function Onboarding() {
             headerLeft={
                 <View style={{ width: 250, marginLeft: -10, marginTop: -6 }}>
                     <Image
-                        source={require('../assets/branding/noobs_logo_provided.png')}
+                        source={require('../assets/branding/NooBS logo.png')}
                         style={{ width: 250, height: 105, resizeMode: 'cover' }}
                     />
                     <View style={{ width: 250, flexDirection: 'row', justifyContent: 'space-between', marginTop: -20 }}>
@@ -114,7 +114,7 @@ export default function Onboarding() {
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, opacity: 0.6 }}>
                 <Text style={{ color: theme.colors.muted, fontSize: 10, fontWeight: '900', letterSpacing: 1 }}>POWERED BY</Text>
                 <Image
-                    source={require('../assets/branding/logo_horizontal.png')}
+                    source={require('../assets/branding/NooBS logo.png')}
                     style={{ width: 80, height: 20, resizeMode: 'contain' }}
                 />
             </View>

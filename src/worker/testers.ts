@@ -89,7 +89,7 @@ export function registerTesterRoutes(app: Hono<{ Bindings: Env; Variables: { use
     }
 
     const sql = getDb(c.env);
-    const [tester] = await sql<any[]>`SELECT * FROM nstep_testers WHERE id = ${id}`;
+    const [tester] = await sql<{ email: string; name: string; app_slug: string }[]>`SELECT * FROM nstep_testers WHERE id = ${id}`;
     if (!tester) return c.json({ error: "Tester not found" }, 404);
 
     await sql`

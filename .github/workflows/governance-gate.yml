@@ -1,0 +1,51 @@
+name: StudioOS Governance Gate
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  governance:
+    runs-on: ubuntu-latest
+    name: Enforce Governance Controls
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Resolve change context
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "CHANGE_ID=PR-${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+            echo "DIFF_RANGE=origin/${{ github.base_ref }}...HEAD" >> $GITHUB_ENV
+          else
+            echo "CHANGE_ID=PUSH-${{ github.run_number }}" >> $GITHUB_ENV
+            echo "DIFF_RANGE=${{ github.event.before }}...${{ github.sha }}" >> $GITHUB_ENV
+          fi
+
+      - name: Run governance gate (enforced)
+        run: node scripts/studioos-governance-gate.mjs --change-id "$CHANGE_ID" --diff-range "$DIFF_RANGE" --enforce
+
+      - name: Upload governance artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: governance-${{ github.run_id }}
+          path: |
+            studioos/audits
+            studioos/reports
+            studioos/snapshots
+            studioos/recovery

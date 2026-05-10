@@ -25,7 +25,7 @@ export function normalizeApp(app = {}) {
         safeMessage: src.safeMessage || 'Run Scan Workspace to discover credential state.',
         
         keystoreFound: Boolean(src.keystoreFound),
-        keystoreSource: src.keystoreSource || 'missing',
+        keystoreSource: src.keystoreSource || (src.keystoreFound ? 'found' : 'missing'),
         passwordSourceFound: Boolean(src.passwordSourceFound),
         passwordSource: src.passwordSource || 'missing',
         alreadyOnGooglePlay: Boolean(src.alreadyOnGooglePlay),

@@ -1,0 +1,22 @@
+{
+  "commands": [
+    {
+      "name": "workspace hygiene",
+      "command": "npm run hygiene:check",
+      "minimumRisk": "low",
+      "timeoutMs": 120000
+    },
+    {
+      "name": "workspace checks",
+      "command": "npm run check",
+      "minimumRisk": "medium",
+      "timeoutMs": 900000
+    },
+    {
+      "name": "workspace tests",
+      "command": "npm run test",
+      "minimumRisk": "high",
+      "timeoutMs": 1200000
+    }
+  ]
+}
