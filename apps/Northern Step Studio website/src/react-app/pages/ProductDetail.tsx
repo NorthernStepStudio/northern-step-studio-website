@@ -208,41 +208,84 @@ export default function ProductDetail() {
     }
   };
 
-  if (app.slug === "doomed") {
+  if (app.status === "LIVE") {
+    const displayDescription = translatedDescription || app.fullDescription || app.description;
+    const buttonText = app.slug === "doomed" ? "Play Now" : t("apps.open", { defaultValue: "Open" });
+    const ctaUrl = app.slug === "doomed" ? "/games/nexus-roguelike/" : (app.cta_url || "#");
+
     return (
-      <div className="min-h-screen pt-20 sm:pt-24 px-4 sm:px-6 pb-16 flex flex-col items-center justify-center text-center">
+      <div className="min-h-screen pt-20 sm:pt-24 px-4 sm:px-6 pb-16">
         <SEO
-          title="DOOMED"
-          description="A silly dungeon roguelike where you pick a doomed hero, enter the dungeon, fight enemies, collect loot, and try to survive."
+          title={translatedName || app.name}
+          description={displayDescription}
           canonicalUrl={`/apps/${app.slug}`}
           ogImage={appLogo || undefined}
         />
-        <div className="container mx-auto max-w-2xl mt-12 sm:mt-24">
-          <div className="w-32 h-32 sm:w-48 sm:h-48 rounded-3xl mx-auto mb-8 bg-gradient-to-br from-background to-secondary/80 flex items-center justify-center overflow-hidden border-2 border-accent/20 shadow-xl shadow-accent/10">
-            {appLogo ? (
-              <img src={appLogo} alt="DOOMED" className="w-full h-full object-contain p-2" />
+        <div className="container mx-auto max-w-2xl mt-8 sm:mt-12">
+          {/* Back Link */}
+          <div className="text-left mb-8">
+            <Link to="/apps" className="inline-flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors font-black uppercase text-sm group">
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+              {t("product.back")}
+            </Link>
+          </div>
+
+          <div className="text-center">
+            {/* App Icon */}
+            <div className="w-32 h-32 sm:w-48 sm:h-48 rounded-3xl mx-auto mb-8 bg-gradient-to-br from-background to-secondary/80 flex items-center justify-center overflow-hidden border-2 border-accent/20 shadow-xl shadow-accent/10">
+              {appLogo ? (
+                <img src={appLogo} alt={app.name} className="w-full h-full object-contain p-4" />
+              ) : (
+                <Zap className="w-16 h-16 text-accent" />
+              )}
+            </div>
+
+            {/* Title with Glitch */}
+            <h1 className="text-4xl sm:text-6xl font-black uppercase tracking-tighter mb-4">
+              <GlitchedText text={translatedName || app.name} duration={600} />
+            </h1>
+
+            {/* Tagline */}
+            {translatedTagline && (
+              <p className="text-accent font-bold text-sm sm:text-base uppercase tracking-wide mb-6">
+                {translatedTagline}
+              </p>
+            )}
+
+            {/* Description */}
+            <p className="text-lg sm:text-xl text-muted-foreground font-normal leading-relaxed mb-10 max-w-xl mx-auto">
+              {displayDescription}
+            </p>
+
+            {/* CTA Button */}
+            {ctaUrl.startsWith("/") ? (
+              <Link
+                to={ctaUrl}
+                className="btn-pill-primary inline-flex items-center justify-center gap-3 text-lg py-4 px-10 animate-neon-pulse font-black uppercase"
+              >
+                <Play className="w-6 h-6" />
+                {buttonText}
+                <ArrowRight className="w-6 h-6" />
+              </Link>
             ) : (
-              <Rocket className="w-16 h-16 text-accent" />
+              <a
+                href={ctaUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={trackDownload}
+                className="btn-pill-primary inline-flex items-center justify-center gap-3 text-lg py-4 px-10 animate-neon-pulse font-black uppercase"
+              >
+                <Play className="w-6 h-6" />
+                {buttonText}
+                <ArrowRight className="w-6 h-6" />
+              </a>
             )}
           </div>
-          <h1 className="text-4xl sm:text-6xl font-black uppercase tracking-tighter mb-6">
-            <GlitchedText text="DOOMED" duration={600} />
-          </h1>
-          <p className="text-lg sm:text-xl text-muted-foreground font-normal leading-relaxed mb-10 max-w-xl mx-auto">
-            A silly dungeon roguelike where you pick a doomed hero, enter the dungeon, fight enemies, collect loot, and try to survive.
-          </p>
-          <a
-            href="/games/nexus-roguelike/"
-            className="btn-pill-primary inline-flex items-center justify-center gap-3 text-lg py-4 px-10 animate-neon-pulse font-black uppercase"
-          >
-            <Play className="w-6 h-6" />
-            Play Now
-            <ArrowRight className="w-6 h-6" />
-          </a>
         </div>
       </div>
     );
   }
+
 
   return (
     <div className="min-h-screen pt-20 sm:pt-24 px-4 sm:px-6 pb-16">

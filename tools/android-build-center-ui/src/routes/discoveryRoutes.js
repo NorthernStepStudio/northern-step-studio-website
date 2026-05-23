@@ -35,7 +35,13 @@ router.get('/scan', (req, res) => {
         currentScan = null;
     }
 
-    const child = spawn(process.execPath, [pathToRunner], { stdio: ['ignore', 'pipe', 'pipe'] });
+    // Allow callers to request a full scan via ?full=true
+    const spawnArgs = [pathToRunner];
+    try {
+        if (String(req.query.full || '').toLowerCase() === 'true') spawnArgs.push('--full');
+    } catch (e) {}
+
+    const child = spawn(process.execPath, spawnArgs, { stdio: ['ignore', 'pipe', 'pipe'] });
     let timedOut = false;
     currentScan = { child, startedAt: Date.now(), timedOutRef: () => timedOut };
 

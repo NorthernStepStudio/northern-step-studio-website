@@ -20,7 +20,10 @@ try {
     console.error = (...args) => { logger({ type: 'error', message: args.join(' ') }); };
 
     const start = Date.now();
-    const result = scan(logger);
+    // Accept optional --full flag to force a full workspace traversal
+    const args = process.argv.slice(2) || [];
+    const full = args.includes('--full');
+    const result = scan(logger, { full });
     const durationMs = Date.now() - start;
     process.stdout.write(JSON.stringify({ ok: true, apps: result.discovered || [], count: (result.discovered||[]).length, durationMs, errors: [] }));
     process.exit(0);

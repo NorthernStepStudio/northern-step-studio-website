@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 const { WORKSPACE_ROOT, APPS_JSON_PATH } = require('../config/paths');
 const { readJson } = require('../utils/jsonUtils');
 const findApps = require('./findApps');
@@ -21,11 +22,43 @@ function isHiddenAppConfig(config) {
 /**
  * Orchestrates the workspace scanning logic with hardened security guards and deduplication.
  */
-function scanWorkspace(logger = console.log) {
+function scanWorkspace(logger = console.log, options = {}) {
     const root = WORKSPACE_ROOT;
+    const fullScan = Boolean(options.full);
     logger({ type: 'info', message: `Scanning workspace at: ${root}` });
-    
-    const appsFound = findApps(root);
+
+    // Lightweight cache to avoid repeated full filesystem traversals. Cache stored in UI tmp folder.
+    const cachePath = path.join(__dirname, '..', '..', 'tmp', 'scan-cache.json');
+    let gitHead = null;
+    try {
+        const child = require('child_process');
+        try {
+            gitHead = child.execSync('git rev-parse --verify HEAD', { cwd: root, stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim();
+        } catch (e) {
+            gitHead = null; // not a git repo or no HEAD
+        }
+    } catch (e) {
+        gitHead = null;
+    }
+
+    if (!fullScan) {
+        try {
+            if (fs.existsSync(cachePath)) {
+                const raw = fs.readFileSync(cachePath, 'utf8');
+                const cache = JSON.parse(raw);
+                // If git head matches cached head and cache is recent, return cached result
+                const ageMs = Date.now() - (cache.timestamp || 0);
+                if (cache.result && cache.result.discovered && ((gitHead && cache.head === gitHead) || (!gitHead && ageMs < 2 * 60 * 1000))) {
+                    logger({ type: 'info', message: `Returning cached scan (age ${Math.round(ageMs/1000)}s).` });
+                    return { workspaceRoot: root, discovered: cache.result.discovered };
+                }
+            }
+        } catch (e) {
+            // ignore cache errors
+        }
+    }
+
+    const appsFound = findApps(root, [], { full: fullScan });
     logger({ type: 'info', message: `Found ${appsFound.length} potential project roots.` });
     
     const allConfiguredApps = readJson(APPS_JSON_PATH);
@@ -159,8 +192,20 @@ function scanWorkspace(logger = console.log) {
         }
     });
 
-    logger({ type: 'info', message: `Scan complete: ${discoveredMap.size} apps found.` });
-    return { workspaceRoot: root, discovered: Array.from(discoveredMap.values()) };
+    const discovered = Array.from(discoveredMap.values());
+    logger({ type: 'info', message: `Scan complete: ${discovered.length} apps found.` });
+
+    // Persist cache for quick subsequent scans
+    try {
+        const cacheObj = { head: gitHead, timestamp: Date.now(), result: { discovered } };
+        const outDir = path.join(__dirname, '..', '..', 'tmp');
+        if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
+        fs.writeFileSync(cachePath, JSON.stringify(cacheObj), 'utf8');
+    } catch (e) {
+        // non-fatal
+    }
+
+    return { workspaceRoot: root, discovered };
 }
 
 module.exports = scanWorkspace;

@@ -218,6 +218,10 @@ MYAPP_UPLOAD_KEY_PASSWORD=$KeyPassword
           $FinalPath = Join-Path $ArtifactsRoot $FinalName
           
           Write-Host "Moving artifact to: $FinalPath" -ForegroundColor Gray
+          if (Test-Path $FinalPath) {
+            Write-Host "Destination exists; removing existing artifact before move." -ForegroundColor Gray
+            Remove-Item $FinalPath -Force -ErrorAction SilentlyContinue
+          }
           Move-Item $FoundApk.FullName $FinalPath -Force
           
           Write-Host ""
@@ -255,6 +259,10 @@ MYAPP_UPLOAD_KEY_PASSWORD=$KeyPassword
             }
             $FinalName = "$AppName-v$Version.apk"
             $FinalPath = Join-Path $ArtifactsRoot $FinalName
+            if (Test-Path $FinalPath) {
+              Write-Host "Destination exists; removing existing artifact before move." -ForegroundColor Gray
+              Remove-Item $FinalPath -Force -ErrorAction SilentlyContinue
+            }
             Move-Item $DeepFound.FullName $FinalPath -Force
             Write-Host "ARTIFACT_PATH:$FinalPath"
           } else {

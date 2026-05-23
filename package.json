@@ -7,7 +7,8 @@
     "apps/nstep-fix",
     "apps/nstep-publish",
     "apps/neurormoves",
-    "packages/nstep-os"
+    "packages/nstep-os",
+    "apps/Northern Step Studio website"
   ],
   "scripts": {
     "check": "npm run check --workspace packages/nstep-os && npm run check --workspace apps/nstep-dashboard",

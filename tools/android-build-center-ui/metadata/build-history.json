@@ -313,5 +313,35 @@
     "elapsedMs": 966081,
     "logPath": "D:\\dev\\Northern Step Studio\\tools\\android-build-center-ui\\logs\\neuromoves-mobile-apk-2026-05-08-00-05-36-failed.log",
     "timestamp": "2026-05-08T00:05:36.434Z"
+  },
+  {
+    "id": "build-1778966320247-76tjes",
+    "appId": "neuromoves-mobile",
+    "versionName": "1.0.2",
+    "versionCode": 2,
+    "buildType": "apk",
+    "artifactPath": "D:\\dev\\Northern Step Studio\\build-artifacts\\neuromoves-mobile-v1.0.0.apk",
+    "status": "success",
+    "errorSummary": null,
+    "startedAt": "2026-05-16T21:05:03.383Z",
+    "endedAt": "2026-05-16T21:18:40.245Z",
+    "elapsedMs": 816862,
+    "logPath": "D:\\dev\\Northern Step Studio\\tools\\android-build-center-ui\\logs\\neuromoves-mobile-apk-2026-05-16-21-18-40-success.log",
+    "timestamp": "2026-05-16T21:18:40.247Z"
+  },
+  {
+    "id": "build-1778967599034-mv48n2",
+    "appId": "neuromoves-mobile",
+    "versionName": "0.0.0.1",
+    "versionCode": 1,
+    "buildType": "aab",
+    "artifactPath": "D:\\dev\\Northern Step Studio\\build-artifacts\\neuromoves-mobile-v0.0.0.1.aab",
+    "status": "success",
+    "errorSummary": null,
+    "startedAt": "2026-05-16T21:29:48.691Z",
+    "endedAt": "2026-05-16T21:39:58.942Z",
+    "elapsedMs": 610251,
+    "logPath": "D:\\dev\\Northern Step Studio\\tools\\android-build-center-ui\\logs\\neuromoves-mobile-aab-2026-05-16-21-39-58-success.log",
+    "timestamp": "2026-05-16T21:39:59.034Z"
   }
 ]
