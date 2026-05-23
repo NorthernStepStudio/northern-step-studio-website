@@ -315,111 +315,113 @@ export default function ProductDetail() {
         </div>
 
         {/* Build Progress Card - Main Feature */}
-        <div className="card-dark-wise mb-6 border-2 border-accent/20">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl sm:text-2xl font-black uppercase flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
-                <Hammer className="w-5 h-5 text-accent" />
+        {app.status !== "LIVE" && (
+          <div className="card-dark-wise mb-6 border-2 border-accent/20">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl sm:text-2xl font-black uppercase flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+                  <Hammer className="w-5 h-5 text-accent" />
+                </div>
+                {t("building.build_progress")}
+              </h2>
+              <div className="text-right">
+                <span className="text-3xl sm:text-4xl font-black text-accent">{progressPercent}%</span>
+                <p className="text-xs text-muted-foreground uppercase">{t("building.complete")}</p>
               </div>
-              {t("building.build_progress")}
-            </h2>
-            <div className="text-right">
-              <span className="text-3xl sm:text-4xl font-black text-accent">{progressPercent}%</span>
-              <p className="text-xs text-muted-foreground uppercase">{t("building.complete")}</p>
             </div>
-          </div>
 
-          {/* Progress Bar */}
-          <div className="relative h-3 rounded-full bg-secondary/80 overflow-hidden mb-8">
-            <div 
-              ref={progressRef1}
-              role="progressbar"
-              aria-label={t("building.build_progress")}
-              className="absolute inset-y-0 left-0 bg-gradient-to-r from-accent to-accent/80 rounded-full transition-all duration-700"
-            />
-            <div 
-              ref={progressRef2}
-              className="absolute inset-y-0 left-0 bg-gradient-to-r from-accent to-transparent rounded-full animate-pulse opacity-50"
-            />
-          </div>
+            {/* Progress Bar */}
+            <div className="relative h-3 rounded-full bg-secondary/80 overflow-hidden mb-8">
+              <div 
+                ref={progressRef1}
+                role="progressbar"
+                aria-label={t("building.build_progress")}
+                className="absolute inset-y-0 left-0 bg-gradient-to-r from-accent to-accent/80 rounded-full transition-all duration-700"
+              />
+              <div 
+                ref={progressRef2}
+                className="absolute inset-y-0 left-0 bg-gradient-to-r from-accent to-transparent rounded-full animate-pulse opacity-50"
+              />
+            </div>
 
-          {/* Meta Info Row */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            {app.targetDate && (
+            {/* Meta Info Row */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+              {app.targetDate && (
+                <div className="p-4 rounded-xl bg-secondary/50 border border-border">
+                  <div className="flex items-center gap-2 text-muted-foreground mb-1">
+                    <Calendar className="w-4 h-4" />
+                    <span className="text-xs uppercase">Target</span>
+                  </div>
+                  <p className="font-black text-lg">{app.targetDate}</p>
+                </div>
+              )}
               <div className="p-4 rounded-xl bg-secondary/50 border border-border">
                 <div className="flex items-center gap-2 text-muted-foreground mb-1">
-                  <Calendar className="w-4 h-4" />
-                  <span className="text-xs uppercase">Target</span>
+                  <Target className="w-4 h-4" />
+                  <span className="text-xs uppercase">{t("product.stage")}</span>
                 </div>
-                <p className="font-black text-lg">{app.targetDate}</p>
+                <p className="font-black text-lg">{app.statusLabel || t("product.planning")}</p>
               </div>
-            )}
-            <div className="p-4 rounded-xl bg-secondary/50 border border-border">
-              <div className="flex items-center gap-2 text-muted-foreground mb-1">
-                <Target className="w-4 h-4" />
-                <span className="text-xs uppercase">{t("product.stage")}</span>
-              </div>
-              <p className="font-black text-lg">{app.statusLabel || t("product.planning")}</p>
-            </div>
-            <div className="p-4 rounded-xl bg-secondary/50 border border-border">
-              <div className="flex items-center gap-2 text-muted-foreground mb-1">
-                <Check className="w-4 h-4" />
-                <span className="text-xs uppercase">{t("product.steps")}</span>
-              </div>
-              <p className="font-black text-lg">{completedSteps}/{totalSteps}</p>
-            </div>
-            <div className="p-4 rounded-xl bg-secondary/50 border border-border col-span-2 lg:col-span-1">
-              <div className="flex items-center gap-2 text-muted-foreground mb-1">
-                <Code2 className="w-4 h-4" />
-                <span className="text-xs uppercase">{t("product.tech_stack")}</span>
-              </div>
-              <div className="flex flex-wrap gap-1.5 mt-1">
-                {(app.techStack || []).slice(0, 2).map((tech, i) => (
-                  <span key={i} className="text-xs font-bold bg-accent/10 text-accent px-2 py-0.5 rounded">
-                    {tech}
-                  </span>
-                ))}
-                {(app.techStack || []).length > 2 && (
-                  <span className="text-xs text-muted-foreground">+{(app.techStack || []).length - 2}</span>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Progress Checklist */}
-          {progress.length > 0 && (
-            <div className="space-y-3">
-              <div className="grid gap-3 sm:grid-cols-2 mb-6">
-                <div className="rounded-2xl border border-accent/20 bg-accent/5 p-4">
-                  <p className="text-[11px] font-black uppercase tracking-[0.2em] text-accent">{t("building.done_label", { defaultValue: "What is done" })}</p>
-                  <ul className="mt-3 space-y-2 text-sm text-foreground">
-                    {completedItems.map((item, index) => (
-                      <li key={index} className="flex gap-2">
-                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-                        <span>{item.text}</span>
-                      </li>
-                    ))}
-                  </ul>
+              <div className="p-4 rounded-xl bg-secondary/50 border border-border">
+                <div className="flex items-center gap-2 text-muted-foreground mb-1">
+                  <Check className="w-4 h-4" />
+                  <span className="text-xs uppercase">{t("product.steps")}</span>
                 </div>
-                <div className="rounded-2xl border border-border bg-secondary/30 p-4">
-                  <p className="text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground">{t("building.missing_label", { defaultValue: "What is missing" })}</p>
-                  {missingItems.length > 0 ? (
-                    <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-                      {missingItems.map((item, index) => (
-                        <li key={index} className="flex gap-2">
-                          <Circle className="mt-0.5 h-4 w-4 shrink-0" />
-                          <span>{item.text}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="mt-3 text-sm text-foreground font-bold">Nothing missing. This phase is complete.</p>
+                <p className="font-black text-lg">{completedSteps}/{totalSteps}</p>
+              </div>
+              <div className="p-4 rounded-xl bg-secondary/50 border border-border col-span-2 lg:col-span-1">
+                <div className="flex items-center gap-2 text-muted-foreground mb-1">
+                  <Code2 className="w-4 h-4" />
+                  <span className="text-xs uppercase">{t("product.tech_stack")}</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5 mt-1">
+                  {(app.techStack || []).slice(0, 2).map((tech, i) => (
+                    <span key={i} className="text-xs font-bold bg-accent/10 text-accent px-2 py-0.5 rounded">
+                      {tech}
+                    </span>
+                  ))}
+                  {(app.techStack || []).length > 2 && (
+                    <span className="text-xs text-muted-foreground">+{(app.techStack || []).length - 2}</span>
                   )}
                 </div>
               </div>
             </div>
-          )}
-        </div>
+
+            {/* Progress Checklist */}
+            {progress.length > 0 && (
+              <div className="space-y-3">
+                <div className="grid gap-3 sm:grid-cols-2 mb-6">
+                  <div className="rounded-2xl border border-accent/20 bg-accent/5 p-4">
+                    <p className="text-[11px] font-black uppercase tracking-[0.2em] text-accent">{t("building.done_label", { defaultValue: "What is done" })}</p>
+                    <ul className="mt-3 space-y-2 text-sm text-foreground">
+                      {completedItems.map((item, index) => (
+                        <li key={index} className="flex gap-2">
+                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                          <span>{item.text}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="rounded-2xl border border-border bg-secondary/30 p-4">
+                    <p className="text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground">{t("building.missing_label", { defaultValue: "What is missing" })}</p>
+                    {missingItems.length > 0 ? (
+                      <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+                        {missingItems.map((item, index) => (
+                          <li key={index} className="flex gap-2">
+                            <Circle className="mt-0.5 h-4 w-4 shrink-0" />
+                            <span>{item.text}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-3 text-sm text-foreground font-bold">Nothing missing. This phase is complete.</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* CTA Section */}
         <div className="card-dark-wise mb-6">
@@ -438,8 +440,8 @@ export default function ProductDetail() {
                   to={app.cta_url}
                   className="btn-pill-primary inline-flex items-center justify-center gap-3 text-sm animate-neon-pulse min-w-[200px]"
                 >
-                  <Download className="w-5 h-5" />
-                  {app.status === "LIVE" ? t("product.download_now") : <GlitchedText text={t("apps.learn_more")} speed={150} duration={2400} />}
+                  {app.status === "LIVE" ? <Play className="w-5 h-5" /> : <Download className="w-5 h-5" />}
+                  {app.status === "LIVE" ? t("apps.open", { defaultValue: "Open" }) : <GlitchedText text={t("apps.learn_more")} speed={150} duration={2400} />}
                   <ExternalLink className="w-4 h-4" />
                 </Link>
               ) : (
@@ -450,8 +452,8 @@ export default function ProductDetail() {
                   onClick={trackDownload}
                   className="btn-pill-primary inline-flex items-center justify-center gap-3 text-sm animate-neon-pulse min-w-[200px]"
                 >
-                  <Download className="w-5 h-5" />
-                  {app.status === "LIVE" ? t("product.download_now") : <GlitchedText text={t("apps.learn_more")} speed={150} duration={2400} />}
+                  {app.status === "LIVE" ? <Play className="w-5 h-5" /> : <Download className="w-5 h-5" />}
+                  {app.status === "LIVE" ? t("apps.open", { defaultValue: "Open" }) : <GlitchedText text={t("apps.learn_more")} speed={150} duration={2400} />}
                   <ExternalLink className="w-4 h-4" />
                 </a>
               )
@@ -513,51 +515,53 @@ export default function ProductDetail() {
         )}
 
         {/* Features Grid */}
-        <div className="card-dark-wise">
-          <h2 className="text-xl sm:text-2xl font-black uppercase mb-6 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
-              <Zap className="w-5 h-5 text-accent" />
-            </div>
-            {t("product.features")}
-          </h2>
-          {features.length > 0 ? (
-            <div className="space-y-4">
-              {features.map((feature: string, index: number) => {
-                // Parse feature format "Title: Description"
-                const colonIndex = feature.indexOf(":");
-                const hasTitle = colonIndex > 0 && colonIndex < 80;
-                const title = hasTitle ? feature.substring(0, colonIndex).trim() : null;
-                const description = hasTitle ? feature.substring(colonIndex + 1).trim() : feature;
+        {app.status !== "LIVE" && (
+          <div className="card-dark-wise">
+            <h2 className="text-xl sm:text-2xl font-black uppercase mb-6 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+                <Zap className="w-5 h-5 text-accent" />
+              </div>
+              {t("product.features")}
+            </h2>
+            {features.length > 0 ? (
+              <div className="space-y-4">
+                {features.map((feature: string, index: number) => {
+                  // Parse feature format "Title: Description"
+                  const colonIndex = feature.indexOf(":");
+                  const hasTitle = colonIndex > 0 && colonIndex < 80;
+                  const title = hasTitle ? feature.substring(0, colonIndex).trim() : null;
+                  const description = hasTitle ? feature.substring(colonIndex + 1).trim() : feature;
 
-                return (
-                  <div
-                    key={index}
-                    className="p-5 rounded-2xl bg-gradient-to-br from-secondary to-secondary/50 border border-border hover:border-accent/30 transition-all group"
-                  >
-                    <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0 group-hover:bg-accent/20 transition-colors">
-                        <Check className="w-5 h-5 text-accent" />
-                      </div>
-                      <div className="flex-1">
-                        {title && (
-                          <h3 className="font-black uppercase text-sm mb-1.5 text-accent">{title}</h3>
-                        )}
-                        <p className="text-sm font-normal text-muted-foreground leading-relaxed">{description}</p>
+                  return (
+                    <div
+                      key={index}
+                      className="p-5 rounded-2xl bg-gradient-to-br from-secondary to-secondary/50 border border-border hover:border-accent/30 transition-all group"
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0 group-hover:bg-accent/20 transition-colors">
+                          <Check className="w-5 h-5 text-accent" />
+                        </div>
+                        <div className="flex-1">
+                          {title && (
+                            <h3 className="font-black uppercase text-sm mb-1.5 text-accent">{title}</h3>
+                          )}
+                          <p className="text-sm font-normal text-muted-foreground leading-relaxed">{description}</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-          ) : (
-            <div className="text-center py-12 rounded-2xl bg-secondary/50 border border-border border-dashed">
-              <Star className="w-10 h-10 text-muted-foreground/30 mx-auto mb-4" />
-              <p className="text-muted-foreground font-normal text-sm">
-                {t("product.features_soon")}
-              </p>
-            </div>
-          )}
-        </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="text-center py-12 rounded-2xl bg-secondary/50 border border-border border-dashed">
+                <Star className="w-10 h-10 text-muted-foreground/30 mx-auto mb-4" />
+                <p className="text-muted-foreground font-normal text-sm">
+                  {t("product.features_soon")}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Bottom CTA - Sticky on mobile */}
         {app.cta_url && (
@@ -567,8 +571,8 @@ export default function ProductDetail() {
                 to={app.cta_url}
                 className="btn-pill-primary w-full flex items-center justify-center gap-3 text-sm py-4"
               >
-                <Download className="w-5 h-5" />
-                {app.status === "LIVE" ? t("product.download_now") : <GlitchedText text={t("apps.learn_more")} speed={150} duration={2400} />}
+                {app.status === "LIVE" ? <Play className="w-5 h-5" /> : <Download className="w-5 h-5" />}
+                {app.status === "LIVE" ? t("apps.open", { defaultValue: "Open" }) : <GlitchedText text={t("apps.learn_more")} speed={150} duration={2400} />}
                 <ExternalLink className="w-4 h-4" />
               </Link>
             ) : (
@@ -579,8 +583,8 @@ export default function ProductDetail() {
                 onClick={trackDownload}
                 className="btn-pill-primary w-full flex items-center justify-center gap-3 text-sm py-4"
               >
-                <Download className="w-5 h-5" />
-                {app.status === "LIVE" ? t("product.download_now") : <GlitchedText text={t("apps.learn_more")} speed={150} duration={2400} />}
+                {app.status === "LIVE" ? <Play className="w-5 h-5" /> : <Download className="w-5 h-5" />}
+                {app.status === "LIVE" ? t("apps.open", { defaultValue: "Open" }) : <GlitchedText text={t("apps.learn_more")} speed={150} duration={2400} />}
                 <ExternalLink className="w-4 h-4" />
               </a>
             )}

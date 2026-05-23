@@ -95,7 +95,7 @@ export default function AppCard({
         {t(`apps_data.${slug}.description`, { defaultValue: description || t("apps.no_description", { defaultValue: "No description available" }) })}
       </p>
 
-      {typeof progressPercent === "number" && (
+      {typeof progressPercent === "number" && status !== "LIVE" && progressPercent < 100 && (
         <div className="mb-4">
           <div className="mb-2 flex items-center justify-between text-[11px] font-black uppercase tracking-wide text-muted-foreground">
             <span>{t("apps.completion", { defaultValue: "Completion" })}</span>
