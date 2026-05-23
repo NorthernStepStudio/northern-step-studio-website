@@ -249,6 +249,20 @@
                 "2": "Suggerimenti guidati e supporto all'accessibilità",
                 "3": "Diari dei progressi e sistema di ricompense"
             }
+        },
+        "scanscribe": {
+            "name": "ScanScribe",
+            "tagline": "Trasforma gli Appunti Autografi in Documenti Digitali Puliti",
+            "description": "Scansiona, trascrivi, modifica ed esporta le tue note cartacee da qualsiasi browser mobile.",
+            "fullDescription": "ScanScribe è una semplice app web che trasforma gli appunti autografi su carta in documenti digitali puliti. Carica o scansiona una pagina, rivedi il testo estratto, modificalo e salvalo o condivilo come documento finito.",
+            "open_cta": "Apri ScanScribe",
+            "features": {
+                "0": "Scansiona o carica note autografe",
+                "1": "Converti la calligrafia in testo modificabile",
+                "2": "Pulisci e formatta le note grezze",
+                "3": "Salva, copia, condividi o esporta documenti",
+                "4": "Funziona da browser mobile"
+            }
         }
     },
     "stats": {

@@ -272,6 +272,20 @@
                 "2": "Indicaciones guiadas y soporte de accesibilidad",
                 "3": "Diarios de progreso y sistema de recompensas"
             }
+        },
+        "scanscribe": {
+            "name": "ScanScribe",
+            "tagline": "Convierta Notas Manuscríticas en Documentos Digitales Limpios",
+            "description": "Escanee, transcriba, edite y exporte sus notas en papel desde cualquier navegador móvil.",
+            "fullDescription": "ScanScribe es una aplicación web sencilla que convierte notas manuscritas en papel en documentos digitales limpios. Suba o escanee una página, revise el texto extraído, límpielo y guárdelo o compártalo como un documento pulido.",
+            "open_cta": "Abrir ScanScribe",
+            "features": {
+                "0": "Escanee o suba notas manuscritas",
+                "1": "Convierta manuscritos en texto editable",
+                "2": "Limpie y dé formato a notas en bruto",
+                "3": "Guarde, copie, comparta o exporte documentos",
+                "4": "Funciona desde navegadores móviles"
+            }
         }
     },
     "stats": {

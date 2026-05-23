@@ -210,7 +210,9 @@ export default function ProductDetail() {
 
   if (app.status === "LIVE") {
     const displayDescription = translatedDescription || app.fullDescription || app.description;
-    const buttonText = app.slug === "doomed" ? "Play Now" : t("apps.open", { defaultValue: "Open" });
+    const buttonText = app.slug === "doomed"
+      ? "Play Now"
+      : t(`apps_data.${app.slug}.open_cta`, { defaultValue: t("apps.open", { defaultValue: "Open" }) });
     const ctaUrl = app.slug === "doomed" ? "/games/nexus-roguelike/" : (app.cta_url || "#");
 
     return (

@@ -273,6 +273,20 @@
                 "2": "Guided prompts and accessibility support",
                 "3": "Progress journals and rewards systems"
             }
+        },
+        "scanscribe": {
+            "name": "ScanScribe",
+            "tagline": "Turn Handwritten Notes Into Clean Digital Documents",
+            "description": "Scan, transcribe, edit, and export your paper notes from any mobile browser.",
+            "fullDescription": "ScanScribe is a simple web app that turns handwritten paper notes into clean digital documents. Upload or scan a page, review the extracted text, clean it up, and save or share it as a polished document.",
+            "open_cta": "Open ScanScribe",
+            "features": {
+                "0": "Scan or upload handwritten notes",
+                "1": "Convert handwriting into editable text",
+                "2": "Clean and format rough notes",
+                "3": "Save, copy, share, or export documents",
+                "4": "Works from mobile browser"
+            }
         }
     },
     "stats": {
