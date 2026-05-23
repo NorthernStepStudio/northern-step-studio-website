@@ -212,7 +212,7 @@ export const CATALOG_APPS: CatalogApp[] = [
       { text: "Local-first data storage", completed: true },
       { text: "Document review and formatting", completed: true },
     ],
-    logo: null,
+    logo: "/brand/scanscribe-logo.png",
     screenshots: [],
     cta_url: "/scanscribe/",
     video_url: null,
