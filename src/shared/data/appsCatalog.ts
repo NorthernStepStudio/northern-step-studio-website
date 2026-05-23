@@ -197,6 +197,37 @@ export const CATALOG_APPS: CatalogApp[] = [
   },
   {
     id: 1007,
+    name: "DOOMED",
+    slug: "doomed",
+    tagline: "A Very Silly Dungeon",
+    description: "A browser-playable roguelike game with meta upgrades and doom corruption.",
+    fullDescription: "A browser-playable roguelike game with meta upgrades and doom corruption. Choose your doomed hero and survive as long as you can.",
+    category: "GAME",
+    status: "LIVE",
+    statusLabel: "Live",
+    targetDate: null,
+    techStack: ["HTML5 Canvas", "Vanilla JS"],
+    progress: [
+      { text: "Infinite dungeon generation", completed: true },
+      { text: "Meta upgrades system", completed: true },
+      { text: "Web deployment", completed: true }
+    ],
+    logo: "/games/nexus-roguelike/assets/doomed_logo.png",
+    screenshots: ["/games/nexus-roguelike/assets/doomed_logo.png"],
+    cta_url: "/games/doomed",
+    video_url: null,
+    features: [
+      "Pick Your Doomed Hero",
+      "Meta Upgrades & Doom Shards",
+      "Infinite floors"
+    ],
+    platform: "web",
+    visibility: "published",
+    progressPercent: 100,
+    monetization: "Free",
+  },
+  {
+    id: 1008,
     name: "ScanScribe",
     slug: "scanscribe",
     tagline: "Turn Handwritten Notes Into Clean Digital Documents",
