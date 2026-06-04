@@ -366,6 +366,7 @@ export default function ProductDetail() {
               app.cta_url.startsWith("/") ? (
                 <Link
                   to={app.cta_url}
+                  reloadDocument
                   className="btn-pill-primary inline-flex items-center justify-center gap-3 text-sm animate-neon-pulse min-w-[200px]"
                 >
                   <Download className="w-5 h-5" />
@@ -493,6 +494,7 @@ export default function ProductDetail() {
             {app.cta_url.startsWith("/") ? (
               <Link
                 to={app.cta_url}
+                reloadDocument
                 className="btn-pill-primary w-full flex items-center justify-center gap-3 text-sm py-4"
               >
                 <Download className="w-5 h-5" />
