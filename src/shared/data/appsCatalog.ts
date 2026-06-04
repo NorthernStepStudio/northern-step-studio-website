@@ -259,6 +259,40 @@ export const CATALOG_APPS: CatalogApp[] = [
     progressPercent: 100,
     monetization: "Free",
   },
+  {
+    id: 1009,
+    name: "SignaTempu",
+    slug: "signatempu",
+    tagline: "Simple time tracking for field crews.",
+    description:
+      "A lightweight web app that lets field workers clock in and out from their phone with GPS verification, while managers track hours, assign projects, and run payroll-ready reports.",
+    fullDescription:
+      "SignaTempu is a web-based time tracking tool built for construction companies, landscapers, and any business with workers in the field. Workers clock in from their phone with automatic GPS capture, select their assigned project, and clock out when the day is done. Managers get a real-time dashboard showing who's on the clock, time entry history, project-level hour breakdowns, and exportable reports. The app supports English and Spanish out of the box, with a clean mobile-first interface designed for crews who need something fast and simple — no training required.",
+    category: "PRODUCTIVITY",
+    status: "LIVE",
+    statusLabel: "Live",
+    targetDate: null,
+    techStack: [],
+    progress: [],
+    logo: "/brand/signatempu-logo.png",
+    screenshots: [],
+    cta_url: "/signatempu/",
+    video_url: null,
+    features: [
+      "GPS clock-in and clock-out",
+      "Project-based hour tracking",
+      "Real-time crew dashboard",
+      "Time entry history and edits",
+      "Payroll-ready report exports",
+      "Team invites and role management",
+      "English and Spanish support",
+      "Works on any phone browser",
+    ],
+    platform: "web",
+    visibility: "published",
+    progressPercent: 0,
+    monetization: "Free",
+  },
 ];
 
 export function getCatalogApp(slug: string) {

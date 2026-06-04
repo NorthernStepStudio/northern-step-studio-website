@@ -12,7 +12,7 @@ import NStepBrand from "@/react-app/components/NStepBrand";
 
 
 
-export default function Login() {
+export default function Login({ mode }: { mode?: string } = {}) {
   const { t } = useTranslation();
   const { user, isPending, loginWithPassword } = useAuth();
   const navigate = useNavigate();

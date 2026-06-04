@@ -245,6 +245,7 @@ export default function ProductDetail() {
         </div>
 
         {/* Build Progress Card - Main Feature */}
+        {(progressPercent > 0 || progress.length > 0) && (
         <div className="card-dark-wise mb-6 border-2 border-accent/20">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl sm:text-2xl font-black uppercase flex items-center gap-3">
@@ -348,6 +349,7 @@ export default function ProductDetail() {
             </div>
           )}
         </div>
+        )}
 
         {/* CTA Section */}
         <div className="card-dark-wise mb-6">
@@ -449,7 +451,7 @@ export default function ProductDetail() {
             {t("product.features")}
           </h2>
           {features.length > 0 ? (
-            <div className="space-y-4">
+            <div className="grid gap-x-8 gap-y-4 sm:grid-cols-2">
               {features.map((feature: string, index: number) => {
                 // Parse feature format "Title: Description"
                 const colonIndex = feature.indexOf(":");
@@ -460,18 +462,16 @@ export default function ProductDetail() {
                 return (
                   <div 
                     key={index} 
-                    className="p-5 rounded-2xl bg-gradient-to-br from-secondary to-secondary/50 border border-border hover:border-accent/30 transition-all group"
+                    className="flex items-start gap-3 p-3 rounded-xl hover:bg-secondary/35 transition-colors group"
                   >
-                    <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0 group-hover:bg-accent/20 transition-colors">
-                        <Check className="w-5 h-5 text-accent" />
-                      </div>
-                      <div className="flex-1">
-                        {title && (
-                          <h3 className="font-black uppercase text-sm mb-1.5 text-accent">{title}</h3>
-                        )}
-                        <p className="text-sm font-normal text-muted-foreground leading-relaxed">{description}</p>
-                      </div>
+                    <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-accent/20 transition-colors">
+                      <Check className="w-4 h-4 text-accent" />
+                    </div>
+                    <div className="flex-1">
+                      {title && (
+                        <h3 className="font-black uppercase text-xs mb-1.5 text-accent tracking-wider">{title}</h3>
+                      )}
+                      <p className="text-sm font-normal text-muted-foreground leading-relaxed">{description}</p>
                     </div>
                   </div>
                 );
