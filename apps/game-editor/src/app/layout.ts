@@ -8,17 +8,18 @@ export const MAIN_LAYOUT = `
           <button id="btn-nav-cutter" class="nav-btn">Cutter</button>
         </nav>
       </div>
-      
+
       <div class="header-actions">
         <div class="header-group">
           <span class="group-label">Project</span>
           <button id="btn-proj-new">New</button>
           <button id="btn-load-json">Load</button>
           <button id="btn-proj-save" class="primary">Save</button>
+          <span id="project-name" contenteditable="true" title="Click to rename project">New Project</span>
           <span id="autosave-status"></span>
         </div>
         <div class="header-group">
-          <span class="group-label">Library</span>
+          <span class="group-label">Samples</span>
           <select id="hero-select">
             <option value="">-- Heroes --</option>
             <option value="warrior">Warrior</option>
@@ -50,17 +51,13 @@ export const MAIN_LAYOUT = `
       <div class="canvas-container">
         <canvas id="main-canvas" width="800" height="600"></canvas>
       </div>
-      <div class="floating-controls" id="anim-controls-container"></div>
     </main>
 
     <aside class="panel right-panel">
       <div class="panel-header">Properties</div>
       <div class="panel-content" id="inspector-container"></div>
       <div class="panel-header" style="border-top:1px solid var(--border)">Asset Library</div>
-      <div class="panel-content" style="max-height: 200px;">
-         <div id="assets-list-container"></div>
-         <button id="btn-add-asset" style="width:100%; margin-top:10px;">+ Add Image</button>
-         <input type="file" id="file-asset" style="display:none" accept="image/*">
+      <div class="panel-content" id="assets-list-container" style="max-height: 200px; overflow-y: auto; padding: 10px;">
       </div>
     </aside>
 
@@ -74,7 +71,7 @@ export const MAIN_LAYOUT = `
   </div>
 
   <div id="cutter-page" class="app-page" style="display:none;"></div>
-  
+
   <dialog id="dlg-load" class="modal">
     <div class="modal-content">
       <h3>Load Project</h3>

@@ -4,26 +4,26 @@
   --bg-panel: #12141d;
   --bg-surface: #1c1f2e;
   --bg-surface-hover: #2a2e45;
-  
+
   --accent: #7aa2f7;
   --accent-glow: rgba(122, 162, 247, 0.4);
   --accent-hover: #bb9af7; /* Purple shift for hover */
-  
+
   --text-main: #c0caf5;
   --text-muted: #565f89;
   --text-bright: #ffffff;
-  
+
   --border: rgba(255, 255, 255, 0.08);
   --border-active: rgba(122, 162, 247, 0.5);
-  
+
   --danger: #f7768e;
   --success: #9ece6a;
   --warning: #e0af68;
-  
+
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
-  
+
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
   --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.7);
@@ -52,7 +52,7 @@ body {
 .app-page {
   display: grid;
   grid-template-columns: 200px 1fr 260px;
-  grid-template-rows: 48px 1fr 220px;
+  grid-template-rows: 48px minmax(0, 1fr) clamp(220px, 28vh, 320px);
   height: 100vh;
   background-color: var(--bg-dark);
 }
@@ -241,6 +241,7 @@ button.primary:hover {
   background-color: var(--bg-panel);
   display: flex;
   flex-direction: column;
+  min-height: 0;
   overflow: hidden;
   border-right: 1px solid var(--border);
 }
@@ -278,6 +279,7 @@ button.primary:hover {
   background: radial-gradient(circle at center, #1a1c2e 0%, var(--bg-dark) 100%);
   display: flex;
   flex-direction: column;
+  min-height: 0;
   position: relative;
 }
 
@@ -286,6 +288,8 @@ button.primary:hover {
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 0;
+  padding: 12px;
   overflow: hidden;
 }
 
@@ -294,6 +298,10 @@ canvas {
   border: 1px solid var(--border);
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
 }
 
 .preview-controls {
@@ -386,6 +394,12 @@ canvas {
 .bottom-panel {
   grid-column: 1 / -1;
   grid-row: 3;
+  min-height: 0;
+}
+
+.bottom-panel .panel-content {
+  min-height: 0;
+  padding: 0;
 }
 
 .controllers-grid {
@@ -780,10 +794,15 @@ canvas {
 }
 
 #assets-list-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
-  gap: 8px;
+  display: block;
   padding: 4px;
+}
+
+.assets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
 .asset-item {
@@ -826,5 +845,54 @@ canvas {
 .btn-anim-tab.active {
   background: var(--accent);
   color: var(--bg-dark);
+}
+
+#project-name {
+  color: var(--text-bright);
+  font-weight: 600;
+  padding: 2px 6px;
+  border-bottom: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  outline: none;
+  cursor: text;
+  transition: all 0.2s ease;
+  margin-left: 10px;
+}
+
+#project-name:hover, #project-name:focus {
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom-color: var(--accent);
+}
+
+.save-flash {
+  animation: saveFlashAnim 2s ease-out;
+}
+
+@keyframes saveFlashAnim {
+  0% {
+    color: var(--success);
+    text-shadow: 0 0 8px rgba(158, 206, 106, 0.6);
+  }
+  30% {
+    color: var(--success);
+    text-shadow: 0 0 8px rgba(158, 206, 106, 0.6);
+  }
+  100% {
+    color: var(--text-muted);
+    text-shadow: none;
+  }
+}
+
+.asset-item {
+  transition: all 0.2s ease;
+}
+
+.asset-item:hover .asset-actions {
+  display: flex !important;
+}
+
+.asset-item.selected {
+  box-shadow: 0 0 10px var(--accent-glow);
+  transform: scale(1.05);
 }
 

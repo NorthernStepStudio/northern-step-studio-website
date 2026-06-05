@@ -2,6 +2,7 @@ import { CharacterProject } from '../../../../../packages/nstep-motion-core/src/
 
 export const crabProject: CharacterProject = {
   id: 'crab', name: 'Sample Crab',
+  assets: [],
   animations: [{
     id: 'idle', name: 'Idle', duration: 1, loop: true,
     controllers: [
@@ -25,6 +26,7 @@ export const crabProject: CharacterProject = {
 
 export const owlProject: CharacterProject = {
   id: 'owl', name: 'Sample Owl',
+  assets: [],
   animations: [{
     id: 'idle', name: 'Idle', duration: 1, loop: true,
     controllers: [

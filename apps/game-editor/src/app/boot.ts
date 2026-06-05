@@ -1,4 +1,5 @@
 import { ProjectState } from '../state/projectState';
+import { SelectionState } from '../state/selectionState';
 import { SaveManager } from '../persistence/saveManager';
 import { setupAutosave, triggerAutosave } from '../persistence/autosave';
 import { DirtyState } from '../state/dirtyState';
@@ -7,7 +8,6 @@ import { MotionCanvasRenderer } from '../motion-editor/canvas/MotionCanvasRender
 import { preloadAssets } from '../motion-editor/canvas/imageCache';
 import { setupUI, renderUI } from '../motion-editor/motionEditorUi';
 import { setupRouter, navigate } from './router';
-import { STORAGE_KEYS } from '../persistence/storageKeys';
 
 import { setupCutterUI } from '../sprite-cutter/spriteCutterUi';
 import { MAIN_LAYOUT } from './layout';
@@ -27,12 +27,18 @@ export function bootApp() {
   // 1. Setup Persistence & Load Project
   setupAutosave();
   DirtyState.onChange = () => triggerAutosave();
-  
-  const lastId = localStorage.getItem(STORAGE_KEYS.LAST_PROJECT_ID);
+
+  const lastId = SaveManager.getLastProjectId();
   if (lastId) {
     const saved = SaveManager.getProject(lastId);
     if (saved) {
       ProjectState.setProject(saved);
+      if (saved.lastSelectedPartId) {
+        SelectionState.activePartId = saved.lastSelectedPartId;
+      }
+      if (saved.lastSelectedAnimId) {
+        SelectionState.activeAnimId = saved.lastSelectedAnimId;
+      }
     }
   }
 
@@ -44,10 +50,11 @@ export function bootApp() {
   renderer.rebuildTree(ProjectState.project);
 
   // 3. Setup UI
-  const refreshRenderer = () => {
+  const refreshRenderer = (skipInspector = false, skipTimeline = false) => {
     renderer.rebuildTree(ProjectState.project);
-    renderUI();
+    renderUI(skipInspector, skipTimeline);
   };
+  renderer.onUpdate = () => refreshRenderer();
 
   setupUI(refreshRenderer);
   setupCutterUI((page) => {
@@ -64,6 +71,6 @@ export function bootApp() {
 
   // Initial Render
   refreshRenderer();
-  
+
   console.log('NStep Code Motion Editor: Boot Complete.');
 }

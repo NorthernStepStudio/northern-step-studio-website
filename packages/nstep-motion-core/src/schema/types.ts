@@ -14,10 +14,11 @@ export interface CharacterProject {
   name: string;
   parts: CharacterPart[];
   animations: AnimationState[];
-  assets?: Asset[];
+  assets: Asset[];
   renderQuality?: 'pixel' | 'smooth';
   lastSelectedAnimId?: string;
   lastSelectedPartId?: string;
+  version?: number;
 }
 
 export interface CharacterPart {
@@ -31,7 +32,7 @@ export interface CharacterPart {
   baseScaleX: number;
   baseScaleY: number;
   zIndex: number;
-  
+
   // Render options
   renderMode?: RenderMode;
   shapeType?: string; // rect, roundedRect, circle, ellipse, line, polygon, sword, dagger, staff, hammer, shield, cape
@@ -48,6 +49,10 @@ export interface CharacterPart {
   flipY?: boolean;
   useChromaKey?: boolean;
   chromaColor?: string; // e.g. '#FF00FF'
+  visible?: boolean;
+  locked?: boolean;
+  inheritTransform?: boolean;
+  editChildrenTogether?: boolean;
 }
 
 export interface AnimationState {
