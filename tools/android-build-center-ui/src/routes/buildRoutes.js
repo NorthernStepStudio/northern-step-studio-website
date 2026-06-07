@@ -117,10 +117,7 @@ router.post('/start', (req, res) => {
         return res.status(500).json({ error: `Build script not found: ${scriptPath}`, step: 1 });
     }
 
-    const result = startBuild(appName, buildType, scriptPath, {
-        ...process.env,
-        EXPO_USE_METRO_WORKSPACE_ROOT: '1'
-    }, broadcastHandler);
+    const result = startBuild(appName, buildType, scriptPath, process.env, broadcastHandler);
 
     if (result.error) return res.status(400).json({ ...result, step: result.step || 1 });
     res.json({ message: 'Build started', app: appName, type: buildType });

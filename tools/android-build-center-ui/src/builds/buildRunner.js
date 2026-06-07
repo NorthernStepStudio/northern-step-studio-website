@@ -2,12 +2,12 @@ const { spawn, exec } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 const { LOGS_DIR, WORKSPACE_ROOT, APPS_JSON_PATH } = require('../config/paths');
-const { resolveAppVersion } = require('../utils/versionResolver');
+const { resolveAppVersion, updateAppVersion } = require('../utils/versionResolver');
 const { getPlayVersions, addBuildToHistory } = require('../metadata/buildMetadata');
 const { resolveAndValidateCredentials } = require('../credentials/credentialService');
 const { getCredential } = require('../credentials/sessionVault');
 const { readJson } = require('../utils/jsonUtils');
-const { validateBuildVersion } = require('../utils/versionRules');
+const { validateBuildVersion, getNextVersionCode, bumpPatchVersionName } = require('../utils/versionRules');
 
 let buildStatus = {
     running: false,
@@ -202,18 +202,36 @@ function startBuild(appName, buildType, scriptPath, env, broadcast) {
         return failBuild('Resolve Version', currentVersion.versionError, broadcast, 2);
     }
 
-    const playVersions = getPlayVersions();
-    const lastPlayCode = playVersions[appName]?.versionCode || null;
-    const requirePlayCode = buildType === 'aab' && Boolean(appConfig.alreadyOnGooglePlay || appConfig.isProduction);
-    const versionCheck = validateBuildVersion({
-        localVersionCode: currentVersion.versionCode,
-        lastPlayCode,
-        requirePlayCode
-    });
-    if (!versionCheck.valid) {
-        return failBuild('Resolve Version', versionCheck.error, broadcast, 2);
+    if (buildType === 'apk') {
+        // APK builds are for local testing, so skip Play Store version checks.
+        addLogLine(`Version resolved: ${currentVersion.versionName || 'unknown'} (code ${currentVersion.versionCode || 'none'}) - APK build, skipping Play Store check.`, 'system', broadcast);
+    } else {
+        // AAB builds target Google Play, so validate and auto-bump if needed.
+        const playVersions = getPlayVersions();
+        const lastPlayCode = playVersions[appName]?.versionCode || null;
+        const requirePlayCode = Boolean(appConfig.alreadyOnGooglePlay || appConfig.isProduction);
+        const versionCheck = validateBuildVersion({
+            localVersionCode: currentVersion.versionCode,
+            lastPlayCode,
+            requirePlayCode
+        });
+
+        if (!versionCheck.valid) {
+            // Auto-bump instead of failing
+            const nextCode = getNextVersionCode(currentVersion.versionCode, lastPlayCode);
+            const nextName = bumpPatchVersionName(currentVersion.versionName);
+            addLogLine(`Version needs bump: ${versionCheck.error}`, 'system', broadcast);
+            addLogLine(`Auto-bumping to ${nextName} (code ${nextCode})...`, 'system', broadcast);
+
+            const bumpResult = updateAppVersion(absoluteAppRoot, nextName, nextCode);
+            if (!bumpResult.success) {
+                return failBuild('Resolve Version', `Auto-bump failed: ${bumpResult.error}`, broadcast, 2);
+            }
+            addLogLine(`Version bumped in ${bumpResult.file}: ${nextName} (code ${nextCode})`, 'system', broadcast);
+        } else {
+            addLogLine(`Version resolved: ${currentVersion.versionName || 'unknown'} (code ${versionCheck.localVersionCode})`, 'system', broadcast);
+        }
     }
-    addLogLine(`Version resolved: ${currentVersion.versionName || 'unknown'} (${versionCheck.localVersionCode})`, 'system', broadcast);
 
     updatePhase('Resolve Credentials', broadcast);
     const credentialReport = resolveAndValidateCredentials(appName, absoluteAppRoot, { updateConfig: true });
@@ -245,8 +263,7 @@ function startBuild(appName, buildType, scriptPath, env, broadcast) {
         APP_ROOT: appConfig.path,
         NSTEP_KEYSTORE_PASSWORD: creds.keystorePassword,
         NSTEP_KEY_PASSWORD: creds.keyPassword || creds.keystorePassword,
-        NSTEP_KEY_ALIAS: creds.keyAlias || credentialReport.keyAlias,
-        EXPO_USE_METRO_WORKSPACE_ROOT: '1'
+        NSTEP_KEY_ALIAS: creds.keyAlias || credentialReport.keyAlias
     };
 
     const args = [

@@ -1,333 +1,400 @@
-import { CharacterProject } from '../../schema/types';
+import type { CharacterProject } from '../../schema/types.js';
 
-export function exportToCanvas2D(project: CharacterProject): { json: string, code: string } {
-  const json = JSON.stringify(project, null, 2);
-  
-  const code = `// NStep Code Motion - Canvas 2D Runtime
-// Usage: 
-// const runtime = new CharacterRuntime(projectData);
-// runtime.setAnimation('idle');
-// 
-// function loop(time) {
-//    ctx.clearRect(0,0,width,height);
-//    runtime.update(time);
-//    runtime.draw(ctx);
-//    requestAnimationFrame(loop);
-// }
+export interface Canvas2DExport {
+  code: string;
+}
 
-export class CharacterRuntime {
-  constructor(projectData) {
-    this.project = projectData;
-    this.currentAnimation = null;
-    this.time = 0;
-    this.speedMultiplier = 1.0;
-    
-    this.parts = new Map();
-    this.children = new Map();
-    this.project.parts.forEach(p => {
-      this.parts.set(p.id, p);
-      if (!this.children.has(p.parentId)) {
-        this.children.set(p.parentId, []);
-      }
-      this.children.get(p.parentId).push(p.id);
-    });
-    
-    this.rootParts = this.project.parts.filter(p => !p.parentId).map(p => p.id);
-    
-    this.imageCache = new Map();
-    if (this.project.assets) {
-      this.project.assets.forEach(a => {
-         if (a.type.startsWith('image/')) {
-            const img = new Image();
-            img.src = a.dataUrl;
-            this.imageCache.set(a.id, img);
-         }
-      });
+// ── Self-contained runtime template ──────────────────────────────────────────
+
+const RUNTIME_JS = `
+// ─── NStep Code Motion — Canvas2D Runtime ────────────────────────────────────
+// Self-contained, no dependencies. Drop into any HTML page.
+// Usage: const player = new NStepPlayer(canvas, PROJECT_DATA); player.start();
+
+const TAU = Math.PI * 2;
+
+function smoothstep(x) {
+  const t = Math.max(0, Math.min(1, x));
+  return t * t * (3 - 2 * t);
+}
+
+function easeInOut(t) {
+  return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+}
+
+function interpolateKeyframes(keyframes, time, duration) {
+  if (!keyframes || keyframes.length === 0) return 0;
+  const sorted = [...keyframes].sort((a, b) => a.time - b.time);
+  if (time <= sorted[0].time) return sorted[0].value;
+  if (time >= sorted[sorted.length - 1].time) return sorted[sorted.length - 1].value;
+  let lo = sorted[0], hi = sorted[sorted.length - 1];
+  for (let i = 0; i < sorted.length - 1; i++) {
+    if (sorted[i].time <= time && sorted[i + 1].time >= time) { lo = sorted[i]; hi = sorted[i + 1]; break; }
+  }
+  const span = hi.time - lo.time;
+  if (span <= 0) return lo.value;
+  const t = (time - lo.time) / span;
+  switch (lo.easing) {
+    case 'step':      return t < 1 ? lo.value : hi.value;
+    case 'easeInOut': return lo.value + (hi.value - lo.value) * easeInOut(t);
+    case 'spring': {
+      const s = lo.value + (hi.value - lo.value) * t;
+      const bounce = Math.sin(t * Math.PI * 3) * Math.exp(-t * 4) * (hi.value - lo.value) * 0.15;
+      return s + bounce;
     }
-  }
-
-  evaluateController(c, time, animDuration) {
-    const p = c.params;
-    const t = time * p.speed * Math.PI * 2 + p.phase;
-    let val = 0;
-
-    switch (c.formulaPreset) {
-      case 'breathingY':
-      case 'walkCycle':
-      case 'legCycle':
-        val = Math.sin(t) * p.amplitude + p.offset;
-        break;
-      case 'runCycle':
-        val = (Math.sin(t) + Math.sin(t * 2.0) * 0.5) * p.amplitude + p.offset;
-        break;
-      case 'weaponSwing': {
-        const progress = (time % animDuration) / animDuration;
-        let swing = 0;
-        if (progress < 0.2) swing = -Math.sin(progress * Math.PI * 2.5) * 0.3;
-        else if (progress < 0.5) swing = Math.sin((progress - 0.2) * Math.PI * 3.33);
-        else swing = Math.cos((progress - 0.5) * Math.PI);
-        val = swing * p.amplitude + p.offset;
-        break;
-      }
-      case 'recoil':
-        val = Math.sin(time * 20.0) * Math.exp(-time * 10.0) * p.amplitude + p.offset;
-        break;
-      case 'impactShake':
-        val = (Math.random() * 2.0 - 1.0) * Math.exp(-time * 8.0) * p.amplitude + p.offset;
-        break;
-      case 'capeLag':
-        val = Math.sin(t - 0.5) * p.amplitude + p.offset;
-        break;
-      case 'staffSway':
-        val = Math.sin(t - 0.3) * p.amplitude + p.offset;
-        break;
-      case 'shieldBrace':
-        val = (time < 0.3 ? (time / 0.3) : 1.0) * p.amplitude + p.offset;
-        break;
-      case 'deathFall':
-        val = Math.min(1.0, time / animDuration) * p.amplitude + p.offset;
-        break;
-      case 'blinkScale':
-        val = (Math.sin(t) < -0.8 ? -p.amplitude : 0) + p.offset;
-        break;
-      case 'hoverFloat':
-        val = Math.sin(t * 0.5) * p.amplitude + p.offset;
-        break;
-      case 'runLean':
-        val = p.offset;
-        break;
-      case 'attackStrike':
-        val = Math.sin(t) * Math.exp(-time * 2.0) * p.amplitude + p.offset;
-        break;
-      case 'hurtShake':
-        val = Math.sin(time * 30.0) * Math.exp(-time * 5.0) * p.amplitude + p.offset;
-        break;
-      case 'deathCollapse':
-        val = (time / animDuration) * p.amplitude + p.offset;
-        break;
-      default:
-        val = Math.sin(t) * p.amplitude + p.offset;
-        break;
-    }
-    return val;
-  }
-
-  setAnimation(animId) {
-    this.currentAnimation = this.project.animations.find(a => a.id === animId) || null;
-    this.time = 0;
-  }
-  
-  playAnimation(animId) {
-    this.setAnimation(animId);
-  }
-
-  update(dt) {
-    if (this.currentAnimation) {
-      this.time += dt * this.speedMultiplier;
-      if (!this.currentAnimation.loop && this.time > this.currentAnimation.duration) {
-        this.time = this.currentAnimation.duration;
-      } else if (this.currentAnimation.loop && this.currentAnimation.duration > 0) {
-        // Optional wrap, though sine handles infinite
-        // this.time = this.time % this.currentAnimation.duration;
-      }
-    }
-    
-    this.currentTransforms = new Map();
-    
-    this.project.parts.forEach(p => {
-      this.currentTransforms.set(p.id, {
-        x: p.baseX,
-        y: p.baseY,
-        rotation: p.baseRotation, // in degrees
-        scaleX: p.baseScaleX,
-        scaleY: p.baseScaleY
-      });
-    });
-
-    if (this.currentAnimation) {
-      const animDur = this.currentAnimation.duration || 1;
-      this.currentAnimation.controllers.forEach(c => {
-        if (!c.enabled) return;
-        
-        const transform = this.currentTransforms.get(c.targetPartId);
-        if (!transform) return;
-
-        const p = c.params;
-        const val = this.evaluateController(c, this.time, animDur);
-        
-        let targetVal = transform[c.property] + val;
-        
-        if (p.min !== p.max) {
-           targetVal = Math.max(transform[c.property] + p.min, Math.min(transform[c.property] + p.max, targetVal));
-        }
-
-        transform[c.property] = targetVal;
-      });
-    }
-  }
-
-  draw(ctx, offsetX = 0, offsetY = 0) {
-    ctx.save();
-    ctx.translate(offsetX, offsetY);
-    
-    const matrices = new Map();
-    
-    const computeMatrix = (partId, parentMatrix) => {
-      const part = this.parts.get(partId);
-      const t = this.currentTransforms.get(partId);
-      
-      // We assume DOMMatrix is available in browser
-      const m = new DOMMatrix(parentMatrix);
-      m.translateSelf(t.x, t.y);
-      m.rotateSelf(t.rotation);
-      m.scaleSelf(t.scaleX, t.scaleY);
-      
-      matrices.set(partId, m);
-      
-      const kids = this.children.get(partId) || [];
-      kids.forEach(k => computeMatrix(k, m));
-    };
-
-    this.rootParts.forEach(root => {
-      computeMatrix(root, new DOMMatrix());
-    });
-
-    const sortedParts = [...this.project.parts].sort((a, b) => a.zIndex - b.zIndex);
-
-    sortedParts.forEach(part => {
-      const m = matrices.get(part.id);
-      if (!m) return;
-      
-      ctx.save();
-      ctx.setTransform(m.a, m.b, m.c, m.d, m.e, m.f);
-      
-      if (this.project.renderQuality !== 'pixel') {
-         ctx.imageSmoothingEnabled = true;
-      } else {
-         ctx.imageSmoothingEnabled = false;
-      }
-      
-      if (part.opacity !== undefined) {
-         ctx.globalAlpha = part.opacity;
-      }
-      
-      if (part.flipX || part.flipY) {
-         ctx.scale(part.flipX ? -1 : 1, part.flipY ? -1 : 1);
-      }
-      
-      ctx.translate(-part.origin.x, -part.origin.y);
-      
-      const width = part.origin.x * 2 || 20;
-      const height = part.origin.y * 2 || 20;
-
-      if (part.renderMode === 'image' && part.imageAssetId) {
-         const img = this.imageCache.get(part.imageAssetId);
-         if (img && img.complete) {
-            ctx.drawImage(img, 0, 0, width, height);
-         } else {
-            ctx.fillStyle = 'rgba(255, 0, 255, 0.5)';
-            ctx.fillRect(0, 0, width, height);
-         }
-      } else {
-         ctx.fillStyle = part.color || 'gray';
-         ctx.beginPath();
-         const st = part.shapeType || 'rect';
-         if (st === 'rect') {
-            ctx.rect(0, 0, width, height);
-         } else if (st === 'roundedRect') {
-            if (ctx.roundRect) ctx.roundRect(0, 0, width, height, 8);
-            else ctx.rect(0, 0, width, height);
-         } else if (st === 'circle' || st === 'ellipse') {
-            ctx.ellipse(width/2, height/2, width/2, height/2, 0, 0, Math.PI * 2);
-         } else if (st === 'sword' || st === 'dagger') {
-            ctx.moveTo(width/2, 0); ctx.lineTo(width, height * 0.2); ctx.lineTo(width * 0.6, height); ctx.lineTo(width * 0.4, height); ctx.lineTo(0, height * 0.2); ctx.closePath();
-         } else if (st === 'staff' || st === 'line') {
-            if (ctx.roundRect) ctx.roundRect(width * 0.4, 0, width * 0.2, height, 4);
-            else ctx.fillRect(width * 0.4, 0, width * 0.2, height);
-         } else if (st === 'hammer') {
-            if (ctx.roundRect) {
-              ctx.roundRect(width * 0.4, height * 0.2, width * 0.2, height * 0.8, 2);
-              ctx.roundRect(0, 0, width, height * 0.2, 4);
-            } else {
-              ctx.fillRect(width * 0.4, height * 0.2, width * 0.2, height * 0.8);
-              ctx.fillRect(0, 0, width, height * 0.2);
-            }
-         } else if (st === 'shield') {
-            ctx.moveTo(0, 0); ctx.lineTo(width, 0); ctx.quadraticCurveTo(width, height, width/2, height); ctx.quadraticCurveTo(0, height, 0, 0);
-         } else if (st === 'cape' || st === 'polygon') {
-            ctx.moveTo(width * 0.2, 0); ctx.lineTo(width * 0.8, 0); ctx.lineTo(width, height); ctx.lineTo(0, height); ctx.closePath();
-         } else {
-            ctx.fillRect(0, 0, width, height);
-         }
-         ctx.fill();
-      }
-      
-      ctx.globalAlpha = 1.0;
-      ctx.restore();
-    });
-    
-    ctx.restore();
+    default: return lo.value + (hi.value - lo.value) * t;
   }
 }
+
+function evaluateController(c, time, duration) {
+  if (c.mode === 'keyframe' && c.keyframes && c.keyframes.length > 0) {
+    return interpolateKeyframes(c.keyframes, time, duration);
+  }
+  const { speed, amplitude, phase, offset } = c.params;
+  const preset = c.formulaPreset;
+  const t = time * speed + phase;
+  const n = ((t % 1) + 1) % 1;
+
+  switch (preset) {
+    case 'sine': return Math.sin(t * TAU) * amplitude + offset;
+    case 'breathingY':
+    case 'swayRotation':
+    case 'walkCycle':
+    case 'legCycle':
+    case 'armSwing':
+    case 'capeLag':
+    case 'tailWag':
+    case 'idleShift':
+    case 'staffSway':
+    case 'hoverFloat':
+      return Math.sin(t * TAU) * amplitude + offset;
+    case 'headBob': return -Math.abs(Math.sin(t * TAU)) * amplitude + offset;
+    case 'bobPosition': return (Math.abs(Math.sin(t * Math.PI)) * 2 - 1) * amplitude + offset;
+    case 'runLean': return offset || amplitude * 0.12;
+    case 'runCycle': {
+      const s = Math.sin(t * TAU);
+      return Math.sign(s) * Math.pow(Math.abs(s), 0.7) * amplitude + offset;
+    }
+    case 'blinkScale':
+      if (n > 0.9 && n < 0.93) return 0;
+      if (n >= 0.93 && n < 0.96) return (n - 0.93) / 0.03;
+      return 1;
+    case 'breathScale': return 1 + ((Math.sin(t * TAU) + 1) / 2) * amplitude + offset;
+    case 'squashStretch': return 1 + Math.sin(t * TAU) * amplitude + offset;
+    case 'pulse': return (1 - amplitude) + ((Math.sin(t * TAU) + 1) / 2) * amplitude + offset;
+    case 'spring': return Math.cos(t * TAU * 2) * amplitude * (1 - Math.exp(-n * 1.5)) + offset;
+    case 'easeInOut': return (easeInOut((Math.sin(t * TAU) + 1) / 2) * 2 - 1) * amplitude + offset;
+    case 'noise': {
+      const s1 = Math.sin(t * 1.3) * 43758.5453123;
+      const s2 = Math.sin(t * 2.7) * 17341.9274632;
+      const s3 = Math.sin(t * 0.9) * 28496.2847523;
+      return (((s1-Math.floor(s1)) + (s2-Math.floor(s2)) + (s3-Math.floor(s3))) / 3 * 2 - 1) * amplitude + offset;
+    }
+    case 'recoil': {
+      if (n < 0.12) return -amplitude * smoothstep(n / 0.12) + offset;
+      if (n < 0.45) return -amplitude * (1 - smoothstep((n - 0.12) / 0.33)) + offset;
+      return offset;
+    }
+    case 'impactShake': return Math.sin(t * TAU * 7) * amplitude * Math.exp(-n * 5) + offset;
+    case 'weaponSwing': {
+      if (n < 0.3) return -amplitude + (amplitude * 2) * (n / 0.3) + offset;
+      if (n < 0.5) return amplitude - amplitude * ((n - 0.3) / 0.2) + offset;
+      return -amplitude * 0.5 + amplitude * 0.5 * ((n - 0.5) / 0.5) + offset;
+    }
+    case 'deathFall': { const dn = Math.min(n * 1.5, 1); return (1 - Math.pow(1 - dn, 3)) * amplitude + offset; }
+    case 'jumpArc': return -4 * n * (1 - n) * amplitude + offset;
+    case 'jumpRise': {
+      if (n < 0.35) return -smoothstep(n / 0.35) * amplitude + offset;
+      return -(1 - smoothstep((n - 0.35) / 0.65)) * amplitude + offset;
+    }
+    case 'landSquash': {
+      if (n < 0.08) return 1 - amplitude * smoothstep(n / 0.08) + offset;
+      if (n < 0.20) return 1 - amplitude * (1 - smoothstep((n - 0.08) / 0.12)) + offset;
+      if (n < 0.30) return 1 + amplitude * 0.5 * Math.sin((n - 0.2) / 0.1 * Math.PI) + offset;
+      return 1 + offset;
+    }
+    case 'jumpLegExtend': {
+      if (n < 0.5) return amplitude * smoothstep(n / 0.5) + offset;
+      return amplitude * (1 - Math.sin((n - 0.5) / 0.5 * Math.PI)) + offset;
+    }
+    case 'hitKnockback': return Math.sin(n * TAU * 0.5) * amplitude * Math.exp(-n * 6) + offset;
+    case 'hitFlash': {
+      if (n < 0.05) return offset;
+      if (n < 0.12 || (n >= 0.18 && n < 0.25)) return 1 + offset;
+      if (n < 0.18) return offset;
+      return 1 + offset * (1 - (n - 0.25) / 0.75);
+    }
+    case 'hitStagger': return Math.sin(t * TAU * 5) * amplitude * Math.exp(-n * 4) + offset;
+    case 'hitRebound': return Math.exp(-n * 5) * Math.cos(t * TAU * 2) * amplitude + offset;
+    case 'deathSlump': return easeInOut(Math.min(n * 2, 1)) * amplitude + offset;
+    case 'deathDrop': return n * n * amplitude + offset;
+    case 'deathFade': return (1 - smoothstep(n)) * amplitude + offset;
+    case 'deathTwitch': {
+      if (n > 0.6) return offset;
+      return Math.sin(t * TAU * 8) * Math.exp(-n * 5) * amplitude + offset;
+    }
+    case 'idleShift': return (Math.sin(t * TAU) * 0.4 + Math.sin(t * TAU * 0.37 + 1.1) * 0.6) * amplitude + offset;
+    case 'wobbleOut': return Math.exp(-n * 4) * Math.cos(t * TAU * 3) * amplitude + offset;
+    default: return Math.sin(t * TAU) * amplitude + offset;
+  }
+}
+
+class NStepPlayer {
+  constructor(canvas, projectData, options = {}) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.project = projectData;
+    this.animIndex = options.animIndex ?? 0;
+    this.time = 0;
+    this.playing = false;
+    this.speedMult = options.speed ?? 1;
+    this._raf = null;
+    this._lastT = null;
+    this._images = {};
+    this._preloadImages();
+  }
+
+  _preloadImages() {
+    (this.project.assets || []).forEach(asset => {
+      if (!asset.dataUrl) return;
+      const img = new Image();
+      img.src = asset.dataUrl;
+      this._images[asset.id] = img;
+    });
+  }
+
+  get anim() {
+    return this.project.animations[this.animIndex] || this.project.animations[0];
+  }
+
+  start() { this.playing = true; this._loop(performance.now()); return this; }
+  stop()  { this.playing = false; if (this._raf) cancelAnimationFrame(this._raf); return this; }
+  pause() { this.playing = false; return this; }
+  resume(){ this.playing = true; this._lastT = null; this._loop(performance.now()); return this; }
+  seekTo(t) { this.time = t; this.render(); return this; }
+  setAnim(idx) { this.animIndex = idx; this.time = 0; return this; }
+
+  _loop(now) {
+    if (!this.playing) return;
+    if (this._lastT !== null) {
+      const dt = (now - this._lastT) / 1000 * this.speedMult;
+      const anim = this.anim;
+      if (anim) {
+        this.time += dt;
+        const dur = anim.duration || 1;
+        if (anim.loop) {
+          if (this.time > dur) this.time = this.time % dur;
+        } else if (this.time > dur) {
+          this.time = dur;
+          this.playing = false;
+        }
+      }
+    }
+    this._lastT = now;
+    this.render();
+    this._raf = requestAnimationFrame(t => this._loop(t));
+  }
+
+  render() {
+    const { ctx, canvas, project } = this;
+    const anim = this.anim;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (!anim) return;
+    const dur = anim.duration || 1;
+    const t = anim.loop ? ((this.time % dur) + dur) % dur : Math.max(0, Math.min(dur, this.time));
+
+    // Compute transforms
+    const transforms = {};
+    project.parts.forEach(p => {
+      transforms[p.id] = {
+        x: p.baseX ?? 0, y: p.baseY ?? 0,
+        rotation: p.baseRotation ?? 0,
+        scaleX: p.baseScaleX ?? 1, scaleY: p.baseScaleY ?? 1,
+        opacity: p.opacity ?? 1,
+      };
+    });
+    (anim.controllers || []).forEach(c => {
+      if (!c.enabled) return;
+      const tf = transforms[c.targetPartId];
+      if (!tf) return;
+      const val = evaluateController(c, t, dur);
+      tf[c.property] = (tf[c.property] ?? 0) + val;
+    });
+
+    // Build hierarchy
+    const partsMap = {}, childrenMap = {}, roots = [];
+    project.parts.forEach(p => {
+      partsMap[p.id] = p;
+      if (!p.parentId) roots.push(p.id);
+      else { (childrenMap[p.parentId] = childrenMap[p.parentId] || []).push(p.id); }
+    });
+
+    // Compute world matrices
+    const matrices = {};
+    const cx = canvas.width / 2, cy = canvas.height / 2;
+    const rootMat = new DOMMatrix().translate(cx, cy);
+
+    function computeMatrix(id, parent) {
+      const tf = transforms[id];
+      if (!tf) return;
+      const m = DOMMatrix.fromMatrix(parent);
+      m.translateSelf(tf.x, tf.y);
+      m.rotateSelf(tf.rotation);
+      m.scaleSelf(tf.scaleX, tf.scaleY);
+      matrices[id] = m;
+      (childrenMap[id] || []).forEach(k => computeMatrix(k, m));
+    }
+    roots.forEach(r => computeMatrix(r, rootMat));
+
+    // Draw parts sorted by zIndex
+    const sorted = [...project.parts].sort((a, b) => (a.zIndex || 0) - (b.zIndex || 0));
+    sorted.forEach(part => {
+      if (part.visible === false) return;
+      const m = matrices[part.id];
+      if (!m) return;
+      const tf = transforms[part.id];
+      const asset = (project.assets || []).find(a => a.id === part.imageAssetId);
+
+      ctx.save();
+      ctx.setTransform(m.a, m.b, m.c, m.d, m.e, m.f);
+      ctx.globalAlpha = Math.max(0, Math.min(1, tf.opacity ?? 1));
+      if (part.flipX || part.flipY) ctx.scale(part.flipX ? -1 : 1, part.flipY ? -1 : 1);
+
+      // Frame animation
+      let srcRect = part.sourceRect || null;
+      const fa = part.frameAnimation;
+      if (fa && fa.frameCount && fa.fps && fa.frameWidth && fa.frameHeight) {
+        const frame = Math.floor(t * fa.fps + (fa.startFrame || 0)) % fa.frameCount;
+        const col = frame % (fa.columns || 1);
+        const row = Math.floor(frame / (fa.columns || 1));
+        srcRect = { x: col * fa.frameWidth, y: row * fa.frameHeight, width: fa.frameWidth, height: fa.frameHeight };
+      }
+
+      const ox = part.origin?.x ?? 0;
+      const oy = part.origin?.y ?? 0;
+
+      if (part.renderMode === 'image' && asset) {
+        const img = this._images[asset.id];
+        const w = srcRect ? srcRect.width  : asset.width;
+        const h = srcRect ? srcRect.height : asset.height;
+        ctx.translate(-ox, -oy);
+        if (img && img.complete && img.naturalWidth > 0) {
+          if (srcRect) ctx.drawImage(img, srcRect.x, srcRect.y, srcRect.width, srcRect.height, 0, 0, w, h);
+          else ctx.drawImage(img, 0, 0, w, h);
+        } else {
+          ctx.fillStyle = part.color || '#4c8ef5';
+          ctx.fillRect(0, 0, w, h);
+        }
+      } else {
+        const w = (part.origin?.x ?? 20) * 2 || 40;
+        const h = (part.origin?.y ?? 20) * 2 || 40;
+        ctx.translate(-ox, -oy);
+        ctx.fillStyle = part.color || '#4c8ef5';
+        ctx.beginPath();
+        if (part.shapeType === 'circle' || part.shapeType === 'ellipse') {
+          ctx.ellipse(w/2, h/2, w/2, h/2, 0, 0, Math.PI * 2);
+        } else {
+          const r = Math.min(6, w * 0.15, h * 0.15);
+          ctx.roundRect ? ctx.roundRect(0, 0, w, h, r) : ctx.rect(0, 0, w, h);
+        }
+        ctx.fill();
+      }
+      ctx.restore();
+    });
+  }
+}
+
+// ─── Exports ──────────────────────────────────────────────────────────────────
+if (typeof module !== 'undefined' && module.exports) module.exports = { NStepPlayer, evaluateController };
+else if (typeof window !== 'undefined') window.NStepPlayer = NStepPlayer;
+`.trim();
+
+export function exportToCanvas2D(project: CharacterProject): Canvas2DExport {
+  const json = JSON.stringify(project, null, 2);
+
+  const code = `${RUNTIME_JS}
+
+// ─── Project data ─────────────────────────────────────────────────────────────
+const PROJECT_DATA = ${json};
+
+// ─── Auto-start (if in browser context) ──────────────────────────────────────
+// Uncomment below to auto-play when the script loads:
+// const canvas = document.getElementById('nstep-canvas');
+// if (canvas) new NStepPlayer(canvas, PROJECT_DATA).start();
 `;
-  return { json, code };
+
+  return { code };
 }
 
 export function exportStandaloneHTML(project: CharacterProject, runtimeCode: string): string {
-  const json = JSON.stringify(project);
+  const anim = project.animations[0];
+  const dur  = anim?.duration ?? 1;
+
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${project.name} - NStep Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${project.name} — NStep Motion Preview</title>
   <style>
-    body { background: #111; color: #fff; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-    canvas { background: #222; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
-    .controls { margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-    button { background: #444; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
-    button:hover { background: #666; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #0b0d14; display: flex; flex-direction: column; align-items: center;
+           justify-content: center; min-height: 100vh; font-family: system-ui, sans-serif; color: #b8c5e0; }
+    canvas { background: #111520; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); max-width: 100vw; }
+    .controls { display: flex; gap: 10px; align-items: center; margin-top: 14px; }
+    button { padding: 6px 16px; background: rgba(76,142,245,0.15); border: 1px solid rgba(76,142,245,0.4);
+             color: #4c8ef5; border-radius: 6px; cursor: pointer; font-size: 13px; }
+    button:hover { background: rgba(76,142,245,0.28); }
+    select { padding: 5px 8px; background: #181d2e; border: 1px solid rgba(255,255,255,0.1);
+             color: #b8c5e0; border-radius: 6px; font-size: 13px; }
+    .time { font-size: 12px; font-family: monospace; color: #4d5b78; min-width: 90px; text-align: center; }
+    h2 { font-size: 14px; font-weight: 600; color: #edf2ff; margin-bottom: 10px; letter-spacing: 0.04em; }
   </style>
 </head>
 <body>
-  <canvas id="demo-canvas" width="600" height="600"></canvas>
-  <div class="controls" id="btn-container"></div>
+  <h2>${project.name}</h2>
+  <canvas id="nstep-canvas" width="600" height="500"></canvas>
+  <div class="controls">
+    <button id="btn-play">▶ Play</button>
+    <button id="btn-stop">⏹ Stop</button>
+    <select id="anim-select">
+      ${project.animations.map((a, i) => `<option value="${i}">${a.name}</option>`).join('')}
+    </select>
+    <label style="font-size:12px; color:#4d5b78;">Speed
+      <input type="range" id="speed" min="0.1" max="3" step="0.1" value="1" style="width:70px; vertical-align:middle;">
+      <span id="speed-label">1.0×</span>
+    </label>
+    <span class="time" id="time-display">0.00 / ${dur.toFixed(2)}s</span>
+  </div>
+
   <script>
-    // Inlined Runtime
-    ${runtimeCode.replace(/export class/, 'class')}
-    
-    const projectData = ${json};
-    const runtime = new CharacterRuntime(projectData);
-    
-    // Set initial anim
-    if (projectData.animations.length > 0) {
-      runtime.setAnimation(projectData.animations[0].id);
-    }
-    
-    const btnContainer = document.getElementById('btn-container');
-    projectData.animations.forEach(anim => {
-       const btn = document.createElement('button');
-       btn.textContent = anim.name;
-       btn.onclick = () => runtime.playAnimation(anim.id);
-       btnContainer.appendChild(btn);
-    });
-    
-    const canvas = document.getElementById('demo-canvas');
-    const ctx = canvas.getContext('2d');
-    
-    let lastTime = performance.now();
-    function loop(now) {
-      const dt = (now - lastTime) / 1000;
-      lastTime = now;
-      
-      runtime.update(dt);
-      
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      runtime.draw(ctx, canvas.width / 2, canvas.height / 2);
-      
-      requestAnimationFrame(loop);
-    }
-    requestAnimationFrame(loop);
+${runtimeCode}
+
+  const canvas = document.getElementById('nstep-canvas');
+  const player = new NStepPlayer(canvas, PROJECT_DATA);
+
+  document.getElementById('btn-play').onclick = () => player.resume();
+  document.getElementById('btn-stop').onclick = () => { player.stop(); player.time = 0; player.render(); };
+
+  document.getElementById('anim-select').onchange = (e) => {
+    player.setAnim(+e.target.value);
+    player.resume();
+  };
+
+  const speedRange = document.getElementById('speed');
+  const speedLabel = document.getElementById('speed-label');
+  speedRange.oninput = () => { player.speedMult = +speedRange.value; speedLabel.textContent = speedRange.value + '×'; };
+
+  const timeEl = document.getElementById('time-display');
+  const origLoop = player._loop.bind(player);
+  player._loop = function(now) {
+    origLoop(now);
+    const a = player.anim;
+    if (a) timeEl.textContent = player.time.toFixed(2) + ' / ' + a.duration.toFixed(2) + 's';
+  };
+
+  player.start();
   </script>
 </body>
 </html>`;

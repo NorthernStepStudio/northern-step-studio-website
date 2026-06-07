@@ -195,6 +195,31 @@ app.all("/api/nexus/*", async (c) => {
   }
 });
 
+app.all("/api/signatempu/*", async (c) => {
+  const backendUrl = c.env.SIGNATEMPU_API_URL || "https://signatempu-api.northernstepstudio.com";
+  const url = new URL(c.req.url);
+  const targetPath = url.pathname.replace("/api/signatempu", "/api");
+  const targetUrl = `${backendUrl}${targetPath}${url.search}`;
+
+  try {
+    const headers = new Headers(c.req.header());
+    headers.set("host", new URL(backendUrl).hostname);
+
+    const response = await fetch(targetUrl, {
+      method: c.req.method,
+      headers: headers,
+      body: c.req.method !== "GET" && c.req.method !== "HEAD" ? await c.req.raw.blob() : undefined,
+    });
+
+    const proxyResponse = new Response(response.body, response);
+    proxyResponse.headers.set("X-Proxied-By", "Northern Step Studio Worker");
+    proxyResponse.headers.set("X-Proxy-Target", targetUrl);
+    return proxyResponse;
+  } catch (error) {
+    return c.json({ error: "SignaTempu Backend Unavailable", detail: error instanceof Error ? error.message : String(error) }, 502);
+  }
+});
+
 // (Routes moved to end of file for diagnostic visibility)
 
 // Global Error Handler (Ensures all errors return JSON to the frontend)
@@ -3704,6 +3729,29 @@ app.notFound(async (c) => {
   // Handle SPA routing and static assets
   if (c.req.method === "GET" || c.req.method === "HEAD") {
     if (c.env.ASSETS && typeof c.env.ASSETS.fetch === "function") {
+      // Intercept SignaTempu SPA routes (anything starting with /signatempu that is NOT a static file)
+      const isSignaTempu = path === "/signatempu" || path.startsWith("/signatempu/");
+      const isStaticAsset = path.includes("/assets/") || 
+                            path.includes("/icons/") || 
+                            path.endsWith("/favicon.svg") || 
+                            path.endsWith("/manifest.json") || 
+                            path.endsWith("/opengraph.jpg") || 
+                            path.endsWith("/robots.txt") || 
+                            path.endsWith("/sw.js");
+      
+      if (isSignaTempu && !isStaticAsset) {
+        console.log(`[Worker NotFound] Intercepted SignaTempu SPA route: ${path}`);
+        const signaTempuIndexRequest = new Request(new URL("/signatempu/index.html", c.req.url).toString(), c.req.raw);
+        const signaTempuIndexResponse = await c.env.ASSETS.fetch(signaTempuIndexRequest);
+        if (signaTempuIndexResponse && signaTempuIndexResponse.status !== 404) {
+          const finalResponse = new Response(signaTempuIndexResponse.body, signaTempuIndexResponse);
+          finalResponse.headers.set("Cache-Control", "no-cache, no-store, must-revalidate");
+          finalResponse.headers.set("Pragma", "no-cache");
+          finalResponse.headers.set("Expires", "0");
+          return finalResponse;
+        }
+      }
+
       const response = await c.env.ASSETS.fetch(c.req.raw);
       
       // If it's a known static asset (hashed by Vite), let it be cached long-term

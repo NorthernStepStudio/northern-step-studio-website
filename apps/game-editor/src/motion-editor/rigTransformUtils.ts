@@ -14,7 +14,7 @@ export function getChildrenMap(parts: CharacterPart[]): Map<string, string[]> {
 export function getDescendantPartIds(parts: CharacterPart[], partId: string): string[] {
   const childrenMap = getChildrenMap(parts);
   const descendants: string[] = [];
-
+  
   const recurse = (id: string) => {
     const kids = childrenMap.get(id) || [];
     kids.forEach(k => {
@@ -22,7 +22,7 @@ export function getDescendantPartIds(parts: CharacterPart[], partId: string): st
       recurse(k);
     });
   };
-
+  
   recurse(partId);
   return descendants;
 }
@@ -53,7 +53,7 @@ export function computeAllWorldMatrices(parts: CharacterPart[], canvasWidth: num
     m.translateSelf(part.baseX ?? 0, part.baseY ?? 0);
     m.rotateSelf(part.baseRotation ?? 0);
     m.scaleSelf(part.baseScaleX ?? 1, part.baseScaleY ?? 1);
-
+    
     matrices.set(partId, m);
 
     const kids = childrenMap.get(partId) || [];
@@ -74,7 +74,7 @@ export function decomposeMatrix2D(m: DOMMatrix): { x: number; y: number; rotatio
 
   const scaleX = Math.sqrt(a * a + b * b);
   const scaleY = Math.sqrt(c * c + d * d);
-
+  
   // Rotation in degrees
   const rotation = Math.atan2(b, a) * 180 / Math.PI;
 

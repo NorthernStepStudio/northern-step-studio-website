@@ -15,7 +15,7 @@ export function newProject(onUpdate: () => void): void {
   const defaultProj = createDefaultProject();
   ProjectState.setProject(defaultProj);
   DirtyState.markClean();
-
+  
   // Clear selections
   SelectionState.activePartId = null;
   if (defaultProj.animations.length > 0) {
@@ -23,7 +23,7 @@ export function newProject(onUpdate: () => void): void {
   } else {
     SelectionState.activeAnimId = null;
   }
-
+  
   onUpdate();
 }
 
@@ -33,11 +33,11 @@ export function loadProject(id: string, onUpdate: () => void): void {
     alert('Failed to load project: not found.');
     return;
   }
-
+  
   ProjectState.setProject(p);
   preloadAssets(p);
   DirtyState.markClean();
-
+  
   // Restore selections
   if (p.lastSelectedPartId) {
     SelectionState.activePartId = p.lastSelectedPartId;
@@ -51,13 +51,13 @@ export function loadProject(id: string, onUpdate: () => void): void {
   } else {
     SelectionState.activeAnimId = null;
   }
-
+  
   onUpdate();
 }
 
 export function saveProject(): void {
   SaveManager.saveProject(ProjectState.project);
-
+  
   // Provide user feedback with a flash
   const status = document.getElementById('autosave-status');
   if (status) {
@@ -65,7 +65,7 @@ export function saveProject(): void {
     status.classList.remove('save-flash');
     void status.offsetWidth; // Trigger reflow to restart animation
     status.classList.add('save-flash');
-
+    
     // Reset to "All changes saved" after the flash animation (approx 2s)
     setTimeout(() => {
       if (!DirtyState.isDirty && status.textContent === 'Saved ✓') {
@@ -84,17 +84,17 @@ export async function importProject(file: File, onUpdate: () => void): Promise<v
         const text = e.target?.result as string;
         const parsed = JSON.parse(text);
         const normalized = normalizeProject(parsed);
-
+        
         // Ensure new ID or keep old one? Let's check: normally import project gets a new ID so it doesn't overwrite existing unless intended,
         // but let's keep the project ID so it updates if they modified it, or generate one if missing.
         if (!normalized.id) {
           normalized.id = 'proj-' + Date.now();
         }
-
+        
         ProjectState.setProject(normalized);
         preloadAssets(normalized);
         DirtyState.markDirty(); // Mark dirty so it gets saved to local projects list
-
+        
         // Restore selections
         if (normalized.lastSelectedPartId) {
           SelectionState.activePartId = normalized.lastSelectedPartId;
@@ -108,7 +108,7 @@ export async function importProject(file: File, onUpdate: () => void): Promise<v
         } else {
           SelectionState.activeAnimId = null;
         }
-
+        
         onUpdate();
         resolve();
       } catch (err) {

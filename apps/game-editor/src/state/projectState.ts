@@ -5,7 +5,7 @@ import { DirtyState } from './dirtyState';
 
 export const ProjectState = {
   project: createDefaultProject(),
-
+  
   setProject(p: CharacterProject) {
     this.project = JSON.parse(JSON.stringify(p)); // Deep copy
     if (this.project.animations.length > 0) {

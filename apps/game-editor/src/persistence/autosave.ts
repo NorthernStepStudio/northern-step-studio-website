@@ -6,7 +6,7 @@ let saveTimeout: ReturnType<typeof setTimeout> | null = null;
 
 export function triggerAutosave() {
   if (!DirtyState.isDirty) return;
-
+  
   if (saveTimeout) clearTimeout(saveTimeout);
   saveTimeout = setTimeout(() => {
     SaveManager.saveProject(ProjectState.project);

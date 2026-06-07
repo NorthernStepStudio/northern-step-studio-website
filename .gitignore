@@ -35,20 +35,44 @@ Thumbs.db
 .nstep-workspace-ai-server-port.json
 apps/*.worktrees/
 apps/nstep-publish/
+apps/NStep Audio Engine app/
 
 # Workspace hygiene
 test-results/
+.tmp/
+.tmp*/
+.start-test.txt
 .tmp-chrome-delete-account/
 archive/*
 !archive/*/
 !archive/*/MANIFEST.md
 *.log
+*.pid
 *.tmp
+*.tsbuildinfo
 *backup_*.html
+build-artifacts/
+b/
+b-cxx/
+eslint-errors.json
+eslint-report*.json
+build_aab_log*.txt
+build_apk_log*.txt
+build_output*.txt
+build_error.log
+build_final_error.log
+apps/**/apk_extract/
 apps/**/scratch/
 apps/**/.expo-export-smoke/
 apps/**/.gradle/
+apps/**/android/build/
+apps/**/android/.cxx/
+apps/**/android/build_log*.txt
 apps/**/tmp_*.json
+packages/**/out/
+packages/**/.smoke-*/
+packages/**/.tmp-*/
+tools/android-build-center-ui/tmp/scan-cache.json
 
 # Android Build Center Keys
 private-keys/

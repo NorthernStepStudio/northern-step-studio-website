@@ -1,75 +1,19 @@
-export type RenderMode = "shape" | "image";
-
-export interface Asset {
-  id: string;
-  name: string;
-  type: string; // 'image/png', 'image/webp', etc.
-  dataUrl: string;
+export interface SourceRect {
+  x: number;
+  y: number;
   width: number;
   height: number;
 }
 
-export interface CharacterProject {
-  id: string;
-  name: string;
-  parts: CharacterPart[];
-  animations: AnimationState[];
-  assets: Asset[];
-  renderQuality?: 'pixel' | 'smooth';
-  lastSelectedAnimId?: string;
-  lastSelectedPartId?: string;
-  version?: number;
+export interface Origin {
+  x: number;
+  y: number;
 }
 
-export interface CharacterPart {
-  id: string;
-  name: string;
-  parentId: string | null;
-  origin: { x: number; y: number };
-  baseX: number;
-  baseY: number;
-  baseRotation: number; // in degrees
-  baseScaleX: number;
-  baseScaleY: number;
-  zIndex: number;
-
-  // Render options
-  renderMode?: RenderMode;
-  shapeType?: string; // rect, roundedRect, circle, ellipse, line, polygon, sword, dagger, staff, hammer, shield, cape
-  color?: string; // For placeholder/shape mode
-  imageAssetId?: string; // Reference to Asset id
-  sourceRect?: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
-  opacity?: number;
-  flipX?: boolean;
-  flipY?: boolean;
-  useChromaKey?: boolean;
-  chromaColor?: string; // e.g. '#FF00FF'
-  visible?: boolean;
-  locked?: boolean;
-  inheritTransform?: boolean;
-  editChildrenTogether?: boolean;
-}
-
-export interface AnimationState {
-  id: string;
-  name: string;
-  duration: number;
-  loop: boolean;
-  controllers: MotionController[];
-}
-
-export interface MotionController {
-  id: string;
-  targetPartId: string;
-  property: 'x' | 'y' | 'rotation' | 'scaleX' | 'scaleY' | 'opacity';
-  formulaPreset: string;
-  params: ControllerParams;
-  enabled: boolean;
+export interface Keyframe {
+  time: number;
+  value: number;
+  easing: 'linear' | 'easeInOut' | 'step' | 'spring';
 }
 
 export interface ControllerParams {
@@ -81,15 +25,99 @@ export interface ControllerParams {
   max: number;
 }
 
-export interface FormulaPreset {
+export interface AnimationController {
+  id: string;
+  targetPartId: string;
+  property: 'x' | 'y' | 'rotation' | 'scaleX' | 'scaleY' | 'opacity';
+  formulaPreset: string;
+  enabled: boolean;
+  params: ControllerParams;
+  mode?: 'formula' | 'keyframe';
+  keyframes?: Keyframe[];
+}
+
+export interface CharacterAnimation {
   id: string;
   name: string;
-  description: string;
+  duration: number;
+  loop: boolean;
+  controllers: AnimationController[];
+}
+
+export interface CharacterAsset {
+  id: string;
+  name: string;
+  type: string;
+  dataUrl: string;
+  width: number;
+  height: number;
+}
+
+export interface Constraint {
+  type: 'lookAt' | 'copyRotation' | 'limitRotation';
+  targetPartId: string;
+  influence: number;
+  offset: number;
+  min?: number;
+  max?: number;
+}
+
+export interface FrameAnimation {
+  frameCount: number;
+  fps: number;
+  startFrame: number;
+  columns: number;
+  frameWidth: number;
+  frameHeight: number;
+}
+
+export interface IKChain {
+  targetPartId: string;
+  chainLength: number;
+  bendDirection: number;
+}
+
+export interface CharacterPart {
+  id: string;
+  name: string;
+  parentId: string | null;
+  baseX: number;
+  baseY: number;
+  baseRotation: number;
+  baseScaleX: number;
+  baseScaleY: number;
+  origin: Origin;
+  zIndex: number;
+  color?: string;
+  renderMode?: 'image' | 'shape';
+  shapeType?: string;
+  imageAssetId?: string;
+  sourceRect?: SourceRect;
+  visible?: boolean;
+  locked?: boolean;
+  opacity?: number;
+  flipX?: boolean;
+  flipY?: boolean;
+  inheritTransform?: boolean;
+  constraint?: Constraint;
+  ikChain?: IKChain;
+  frameAnimation?: FrameAnimation;
+}
+
+export interface CharacterProject {
+  id: string;
+  name: string;
+  assets: CharacterAsset[];
+  animations: CharacterAnimation[];
+  parts: CharacterPart[];
+  renderQuality?: 'pixel' | 'smooth';
+  lastSelectedAnimId?: string;
+  lastSelectedPartId?: string;
 }
 
 export interface SpriteSheetSource {
-  id: string;
-  name: string;
+  id?: string;
+  name?: string;
   dataUrl: string;
   width: number;
   height: number;
@@ -97,28 +125,19 @@ export interface SpriteSheetSource {
   frameHeight: number;
   columns: number;
   rows: number;
-  spacingX: number;
-  spacingY: number;
   marginX: number;
   marginY: number;
+  spacingX: number;
+  spacingY: number;
 }
 
 export interface ExtractedSpritePart {
   id: string;
   name: string;
   sourceFrameIndex: number;
-  sourceRect: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
-  pivot: {
-    x: number;
-    y: number;
-  };
+  sourceRect: SourceRect;
+  pivot: Origin;
   dataUrl: string;
   width: number;
   height: number;
 }
-

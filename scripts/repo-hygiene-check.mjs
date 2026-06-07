@@ -15,28 +15,50 @@ function toLines(text) {
 }
 
 const trackedPatterns = [
+  { label: "tracked root temp file", regex: /^\.tmp/i },
+  { label: "tracked start-test marker", regex: /^\.start-test\.txt$/i },
   { label: "tracked temp chrome profile", regex: /^\.tmp-chrome-delete-account\//i },
   { label: "tracked test artifacts", regex: /^test-results\//i },
-  { label: "tracked dev logs", regex: /(^|\/)(dev-server.*\.log|build_log\.txt|\.vite-dev\..*\.log)$/i },
+  { label: "tracked dev logs", regex: /(^|\/)(dev-server.*\.log|dev-\d+\.(err|out)\.log|build_log.*\.txt|\.vite-dev\..*\.log)$/i },
   { label: "tracked scratch folder", regex: /^apps\/[^/]+\/scratch\//i },
   { label: "tracked mobile export cache", regex: /\.expo-export-smoke\//i },
   { label: "tracked gradle cache", regex: /\.gradle\//i },
+  { label: "tracked Android build output", regex: /^b\//i },
+  { label: "tracked CMake build output", regex: /^b-cxx\//i },
+  { label: "tracked release artifact output", regex: /^build-artifacts\//i },
+  { label: "tracked extracted APK output", regex: /^apps\/nexusbuild\/apk_extract\//i },
+  { label: "tracked package build output", regex: /^packages\/[^/]+\/out\//i },
+  { label: "tracked TypeScript build info", regex: /\.tsbuildinfo$/i },
+  { label: "tracked generated lint report", regex: /^eslint-(errors|report.*)\.json$/i },
+  { label: "tracked generated build report", regex: /(^|\/)(build_(aab|apk|output|error|final).*|npm_ls_output)\.(txt|log)$/i },
   { label: "tracked codex scratch files", regex: /(^|\/)\.codex_.*\.txt$/i },
   { label: "tracked local backup dir", regex: /^_local_backup_apps\//i },
   { label: "tracked backup app dir", regex: /^apps\/.*backup\//i },
+  { label: "tracked smoke runtime data", regex: /^packages\/[^/]+\/\.(smoke|tmp)-/i },
 ];
 
 const untrackedPatterns = [
+  { label: "untracked root temp file", regex: /^\.tmp/i },
+  { label: "untracked start-test marker", regex: /^\.start-test\.txt$/i },
   { label: "untracked temp chrome profile", regex: /^\.tmp-chrome-delete-account\/?$/i },
   { label: "untracked test artifacts", regex: /^test-results\/?$/i },
-  { label: "untracked dev logs", regex: /(^|\/)(dev-server.*\.log|build_log\.txt|\.vite-dev\..*\.log)$/i },
+  { label: "untracked dev logs", regex: /(^|\/)(dev-server.*\.log|dev-\d+\.(err|out)\.log|build_log.*\.txt|\.vite-dev\..*\.log)$/i },
   { label: "untracked scratch folder", regex: /^apps\/[^/]+\/scratch\/?$/i },
   { label: "untracked mobile export cache", regex: /\.expo-export-smoke\/?$/i },
   { label: "untracked gradle cache", regex: /\.gradle\/?$/i },
+  { label: "untracked Android build output", regex: /^b\/?$/i },
+  { label: "untracked CMake build output", regex: /^b-cxx\/?$/i },
+  { label: "untracked release artifact output", regex: /^build-artifacts\/?$/i },
+  { label: "untracked extracted APK output", regex: /^apps\/nexusbuild\/apk_extract\/?$/i },
+  { label: "untracked package build output", regex: /^packages\/[^/]+\/out\/?$/i },
+  { label: "untracked TypeScript build info", regex: /\.tsbuildinfo$/i },
+  { label: "untracked generated lint report", regex: /^eslint-(errors|report.*)\.json$/i },
+  { label: "untracked generated build report", regex: /(^|\/)(build_(aab|apk|output|error|final).*|npm_ls_output)\.(txt|log)$/i },
   { label: "untracked codex scratch files", regex: /(^|\/)\.codex_.*\.txt$/i },
+  { label: "untracked smoke runtime data", regex: /^packages\/[^/]+\/\.(smoke|tmp)-/i },
 ];
 
-const trackedFiles = toLines(run("git ls-files")).filter((file) => existsSync(file));
+const trackedFiles = toLines(run("git ls-files")).filter((file) => existsSync(file) && !file.startsWith("archive/"));
 const statusLines = toLines(run("git status --porcelain=v1"));
 const untrackedPaths = statusLines
   .filter((line) => line.startsWith("?? "))

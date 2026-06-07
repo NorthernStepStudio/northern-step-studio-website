@@ -45,14 +45,14 @@ export class SaveManager {
         entry.updatedAt = Date.now();
       }
       this.saveIndex(index);
-
+      
       // Persist current selection metadata
       p.lastSelectedAnimId = SelectionState.activeAnimId || undefined;
       p.lastSelectedPartId = SelectionState.activePartId || undefined;
-
+      
       localStorage.setItem(STORAGE_KEYS.PROJECT_PREFIX + p.id, JSON.stringify(p));
       localStorage.setItem(STORAGE_KEYS.LAST_PROJECT_ID, p.id);
-
+      
       DirtyState.markClean();
     } catch (e) {
       console.error('Save failed:', e);

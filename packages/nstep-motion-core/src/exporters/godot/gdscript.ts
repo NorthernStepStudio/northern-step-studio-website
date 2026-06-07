@@ -1,196 +1,297 @@
-import { CharacterProject } from '../../schema/types';
+import type { CharacterProject } from '../../schema/types.js';
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+function animVarName(name: string): string {
+  return name.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '').toLowerCase() || 'anim';
+}
+
+function partVarName(name: string): string {
+  return name.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '').toLowerCase().replace(/^(\d)/, '_$1') || 'part';
+}
+
+function formulaToGD(preset: string, params: any, tVar: string): string {
+  const s   = params.speed?.toFixed(4)     ?? '1.0';
+  const a   = params.amplitude?.toFixed(4) ?? '0.0';
+  const ph  = params.phase?.toFixed(4)     ?? '0.0';
+  const off = params.offset?.toFixed(4)    ?? '0.0';
+  const t   = `(${tVar} * ${s} + ${ph})`;
+
+  switch (preset) {
+    case 'sine':
+    case 'breathingY':
+    case 'swayRotation':
+    case 'walkCycle':
+    case 'runCycle':
+    case 'legCycle':
+    case 'armSwing':
+    case 'capeLag':
+    case 'tailWag':
+    case 'idleShift':
+    case 'hoverFloat':
+    case 'easeInOut':
+    case 'staffSway':
+      return `sin(${t} * TAU) * ${a} + ${off}`;
+
+    case 'headBob':
+      return `-abs(sin(${t} * TAU)) * ${a} + ${off}`;
+
+    case 'bobPosition':
+      return `(abs(sin(${t} * PI)) * 2.0 - 1.0) * ${a} + ${off}`;
+
+    case 'runLean':
+      return off;
+
+    case 'squashStretch':
+    case 'breathScale':
+    case 'blinkScale':
+      return `1.0 + sin(${t} * TAU) * ${a} + ${off}`;
+
+    case 'impactShake':
+      return `sin(${t} * TAU * 7.0) * ${a} * exp(-fmod(${t}, 1.0) * 5.0) + ${off}`;
+
+    case 'spring':
+      return `cos(${t} * TAU * 2.0) * ${a} * exp(-fmod(${t}, 1.0) * 1.5) + ${off}`;
+
+    case 'noise':
+      return `(sin(${t} * 1.3) * 0.5 + sin(${t} * 2.7) * 0.3 + sin(${t} * 0.9) * 0.2) * ${a} + ${off}`;
+
+    case 'jumpArc': {
+      const n = `fmod(${t}, 1.0)`;
+      return `(-4.0 * ${n} * (1.0 - ${n})) * ${a} + ${off}`;
+    }
+
+    case 'jumpRise': {
+      const n = `fmod(${t}, 1.0)`;
+      return `(-(1.0 - ${n}) * step(${n}, 0.35) - (${n} - 0.35) / 0.65 * step(0.35, ${n})) * ${a} + ${off}`;
+    }
+
+    case 'landSquash': {
+      const n = `fmod(${t}, 1.0)`;
+      return `(1.0 - clamp(${n} / 0.08, 0.0, 1.0) * ${a}) + ${off}`;
+    }
+
+    case 'hitKnockback': {
+      const n = `fmod(${t}, 1.0)`;
+      return `sin(${n} * TAU * 0.5) * ${a} * exp(-${n} * 6.0) + ${off}`;
+    }
+
+    case 'hitFlash':
+      return `(1.0 - step(fmod(${t}, 1.0), 0.05) + step(fmod(${t}, 1.0), 0.12)) * ${a} + ${off}`;
+
+    case 'hitStagger': {
+      const n = `fmod(${t}, 1.0)`;
+      return `sin(${t} * TAU * 5.0) * ${a} * exp(-${n} * 4.0) + ${off}`;
+    }
+
+    case 'hitRebound': {
+      const n = `fmod(${t}, 1.0)`;
+      return `exp(-${n} * 5.0) * cos(${t} * TAU * 2.0) * ${a} + ${off}`;
+    }
+
+    case 'deathSlump': {
+      const n = `min(fmod(${t}, 1.0) * 2.0, 1.0)`;
+      return `(${n} * ${n} * (3.0 - 2.0 * ${n})) * ${a} + ${off}`;
+    }
+
+    case 'deathDrop': {
+      const n = `min(fmod(${t}, 1.0), 1.0)`;
+      return `${n} * ${n} * ${a} + ${off}`;
+    }
+
+    case 'deathFade': {
+      const n = `min(fmod(${t}, 1.0), 1.0)`;
+      return `(1.0 - ${n} * ${n} * (3.0 - 2.0 * ${n})) * ${a} + ${off}`;
+    }
+
+    case 'deathFall': {
+      const n = `min(fmod(${t}, 1.0) * 1.5, 1.0)`;
+      return `(1.0 - pow(1.0 - ${n}, 3.0)) * ${a} + ${off}`;
+    }
+
+    case 'deathTwitch': {
+      const n = `fmod(${t}, 1.0)`;
+      return `sin(${t} * TAU * 8.0) * ${a} * exp(-${n} * 5.0) * step(${n}, 0.6) + ${off}`;
+    }
+
+    case 'wobbleOut': {
+      const n = `min(fmod(${t}, 1.0) * 2.0, 1.0)`;
+      return `exp(-${n} * 4.0) * cos(${t} * TAU * 3.0) * ${a} + ${off}`;
+    }
+
+    case 'pulse':
+      return `((sin(${t} * TAU) + 1.0) * 0.5) * ${a} + ${off}`;
+
+    default:
+      return `sin(${t} * TAU) * ${a} + ${off}`;
+  }
+}
+
+function keyframesToGD(keyframes: any[], tVar: string): string {
+  if (!keyframes || keyframes.length === 0) return '0.0';
+  if (keyframes.length === 1) return keyframes[0].value.toFixed(4);
+  const sorted = [...keyframes].sort((a, b) => a.time - b.time);
+  const arr = sorted.map(k => `[${k.time.toFixed(4)}, ${k.value.toFixed(4)}]`).join(', ');
+  return `_kf_lerp([${arr}], ${tVar})`;
+}
+
+// ── Main exporter ─────────────────────────────────────────────────────────────
 
 export function exportToGDScript(project: CharacterProject): string {
-  let lines: string[] = [];
-  lines.push(`extends Node2D`);
-  lines.push(``);
-  lines.push(`# NStep Code Motion - Generated GDScript`);
-  lines.push(`# Project: ${project.name}`);
-  lines.push(`# Note: Ensure your Godot scene nodes are named to match the sanitized part names.`);
-  lines.push(`# Sanitization: Only a-z, A-Z, 0-9, and _ are kept.`);
-  lines.push(``);
-  
-  // Create variables for base values
-  lines.push(`var time: float = 0.0`);
-  lines.push(`var speed_multiplier: float = 1.0`);
-  lines.push(`var current_animation: String = "${project.animations[0]?.id || ''}"`);
-  lines.push(``);
-  
-  lines.push(`@onready var parts = {}`);
-  lines.push(`var base_transforms = {}`);
-  lines.push(``);
+  const lines: string[] = [
+    `# Generated by NStep Code Motion`,
+    `# Project: ${project.name}`,
+    `# Export includes: ${project.animations.length} animation(s), ${project.parts.length} part(s)`,
+    `extends Node2D`,
+    ``,
+    `const TAU := PI * 2.0`,
+    ``,
+  ];
 
-  lines.push(`func _ready():`);
-  project.parts.forEach(p => {
-    // Sanitize node name
-    const nodeName = p.name.replace(/[^a-zA-Z0-9_]/g, '');
-    lines.push(`  var node_${p.id} = get_node_or_null("${nodeName}")`);
-    lines.push(`  if node_${p.id}:`);
-    lines.push(`    parts["${p.id}"] = node_${p.id}`);
-    lines.push(`    base_transforms["${p.id}"] = {`);
-    lines.push(`      "position": node_${p.id}.position,`);
-    lines.push(`      "rotation": node_${p.id}.rotation,`);
-    lines.push(`      "scale": node_${p.id}.scale`);
-    lines.push(`    }`);
-    lines.push(`  else:`);
-    lines.push(`    push_warning("NStep Code Motion: Missing child node '${nodeName}' for part '${p.name}'.")`);
+  // Per-animation timer variables
+  project.animations.forEach(anim => {
+    const vn = animVarName(anim.name);
+    lines.push(`var ${vn}_time: float = 0.0`);
+    lines.push(`var ${vn}_playing: bool = ${anim.loop ? 'true' : 'false'}`);
   });
-  lines.push(``);
-  
-  lines.push(`func play_animation(anim_id: String):`);
-  lines.push(`  current_animation = anim_id`);
-  lines.push(`  time = 0.0`);
-  lines.push(``);
+  lines.push('');
 
-  lines.push(`func _process(delta: float):`);
-  lines.push(`  time += delta * speed_multiplier`);
-  lines.push(`  var anim_loop = true`);
-  lines.push(`  var anim_duration = 1.0`);
-  lines.push(`  match current_animation:`);
-  project.animations.forEach(a => {
-    lines.push(`    "${a.id}":`);
-    lines.push(`      anim_loop = ${a.loop ? 'true' : 'false'}`);
-    lines.push(`      anim_duration = ${a.duration}`);
+  // _ready
+  lines.push(`func _ready() -> void:`);
+  project.animations.forEach(anim => {
+    if (!anim.loop) {
+      const vn = animVarName(anim.name);
+      lines.push(`\t# Call play_${vn}() to trigger this one-shot animation`);
+    }
   });
-  lines.push(`  `);
-  lines.push(`  if not anim_loop and time > anim_duration:`);
-  lines.push(`    time = anim_duration`);
-  lines.push(`  `);
-  lines.push(`  match current_animation:`);
-  
-  if (project.animations.length === 0) {
-     lines.push(`    _: pass`);
-  }
+  if (project.animations.every(a => !a.loop)) lines.push(`\tpass`);
+  lines.push('');
 
-  for (const anim of project.animations) {
-    lines.push(`    "${anim.id}":`);
-    
-    // Group controllers by part
-    const controllersByPart = new Map<string, any[]>();
-    for (const c of anim.controllers) {
-      if (!c.enabled) continue;
-      if (!controllersByPart.has(c.targetPartId)) {
-        controllersByPart.set(c.targetPartId, []);
-      }
-      controllersByPart.get(c.targetPartId)!.push(c);
+  // _process
+  lines.push(`func _process(delta: float) -> void:`);
+  project.animations.forEach(anim => {
+    const vn = animVarName(anim.name);
+    lines.push(`\tif ${vn}_playing:`);
+    lines.push(`\t\t_apply_${vn}(delta)`);
+  });
+  lines.push('');
+
+  // Play helpers for one-shot anims
+  project.animations.filter(a => !a.loop).forEach(anim => {
+    const vn = animVarName(anim.name);
+    lines.push(`func play_${vn}() -> void:`);
+    lines.push(`\t${vn}_time = 0.0`);
+    lines.push(`\t${vn}_playing = true`);
+    lines.push('');
+  });
+
+  // Per-animation apply functions
+  project.animations.forEach(anim => {
+    const vn  = animVarName(anim.name);
+    const dur = (anim.duration || 1).toFixed(4);
+
+    lines.push(`func _apply_${vn}(delta: float) -> void:`);
+    if (anim.loop) {
+      lines.push(`\t${vn}_time = fmod(${vn}_time + delta, ${dur})`);
+    } else {
+      lines.push(`\t${vn}_time += delta`);
+      lines.push(`\tif ${vn}_time >= ${dur}:`);
+      lines.push(`\t\t${vn}_time = ${dur}`);
+      lines.push(`\t\t${vn}_playing = false`);
+    }
+    lines.push(`\tvar t: float = ${vn}_time`);
+    lines.push('');
+
+    // Group enabled controllers by part
+    const byPart = new Map<string, any[]>();
+    (anim.controllers as any[]).forEach(c => {
+      if (!c.enabled) return;
+      if (!byPart.has(c.targetPartId)) byPart.set(c.targetPartId, []);
+      byPart.get(c.targetPartId)!.push(c);
+    });
+
+    if (byPart.size === 0) {
+      lines.push(`\tpass`);
     }
 
-    if (controllersByPart.size === 0) {
-      lines.push(`      pass`);
-      continue;
-    }
-
-    for (const [partId, controllers] of controllersByPart.entries()) {
+    byPart.forEach((ctrls, partId) => {
       const part = project.parts.find(p => p.id === partId);
-      if (!part) continue;
+      if (!part) return;
+      const pv = partVarName(part.name);
 
-      lines.push(`      # Part: ${part.name}`);
-      lines.push(`      if parts.has("${partId}"):`);
-      lines.push(`        var base_${partId} = base_transforms["${partId}"]`);
-      
-      lines.push(`        var cur_x_${partId} = base_${partId}.position.x`);
-      lines.push(`        var cur_y_${partId} = base_${partId}.position.y`);
-      lines.push(`        var cur_rot_${partId} = base_${partId}.rotation`);
-      lines.push(`        var cur_scale_x_${partId} = base_${partId}.scale.x`);
-      lines.push(`        var cur_scale_y_${partId} = base_${partId}.scale.y`);
-      
-      lines.push(`        var anim_dur = ${anim.duration || 1.0}`);
-      
-      for (const c of controllers) {
-        const p = c.params;
-        const t = `(time * ${p.speed} * PI * 2 + ${p.phase})`;
-        
-        let expr = '';
-        switch (c.formulaPreset) {
-          case 'breathingY':
-            expr = `(sin(${t}) * ${p.amplitude}) + ${p.offset}`;
-            break;
-          case 'walkCycle':
-          case 'legCycle':
-            expr = `(sin(${t}) * ${p.amplitude}) + ${p.offset}`;
-            break;
-          case 'runCycle':
-            expr = `((sin(${t}) + sin(${t} * 2.0) * 0.5) * ${p.amplitude}) + ${p.offset}`;
-            break;
-          case 'weaponSwing':
-            expr = `((${p.amplitude} * (-sin(fmod(time, anim_dur)/anim_dur * PI * 2.5) * 0.3 if fmod(time, anim_dur)/anim_dur < 0.2 else sin((fmod(time, anim_dur)/anim_dur - 0.2) * PI * 3.33) if fmod(time, anim_dur)/anim_dur < 0.5 else cos((fmod(time, anim_dur)/anim_dur - 0.5) * PI))) + ${p.offset})`;
-            break;
-          case 'recoil':
-            expr = `(sin(time * 20.0) * exp(-time * 10.0) * ${p.amplitude}) + ${p.offset}`;
-            break;
-          case 'impactShake':
-            expr = `((randf() * 2.0 - 1.0) * exp(-time * 8.0) * ${p.amplitude}) + ${p.offset}`;
-            break;
-          case 'capeLag':
-            expr = `(sin(${t} - 0.5) * ${p.amplitude}) + ${p.offset}`;
-            break;
-          case 'staffSway':
-            expr = `(sin(${t} - 0.3) * ${p.amplitude}) + ${p.offset}`;
-            break;
-          case 'shieldBrace':
-            expr = `((${p.amplitude} * (time / 0.3) if time < 0.3 else ${p.amplitude}) + ${p.offset})`;
-            break;
-          case 'deathFall':
-            expr = `(min(1.0, time / anim_dur) * ${p.amplitude}) + ${p.offset}`;
-            break;
-          case 'blinkScale':
-            expr = `(-${p.amplitude} if sin(${t}) < -0.8 else 0.0) + ${p.offset}`;
-            break;
-          case 'hoverFloat':
-            expr = `(sin(${t} * 0.5) * ${p.amplitude}) + ${p.offset}`;
-            break;
-          case 'runLean':
-            expr = `${p.offset}`;
-            break;
-          case 'attackStrike':
-            expr = `(sin(${t}) * exp(-time * 2.0) * ${p.amplitude}) + ${p.offset}`;
-            break;
-          case 'hurtShake':
-            expr = `(sin(time * 30.0) * exp(-time * 5.0) * ${p.amplitude}) + ${p.offset}`;
-            break;
-          case 'deathCollapse':
-            expr = `((time / anim_dur) * ${p.amplitude}) + ${p.offset}`;
-            break;
-          default:
-            expr = `(sin(${t}) * ${p.amplitude}) + ${p.offset}`;
+      lines.push(`\tvar ${pv} := get_node_or_null("${part.name}")`);
+      lines.push(`\tif ${pv}:`);
+
+      ctrls.forEach(c => {
+        let expr: string;
+        if (c.mode === 'keyframe' && c.keyframes?.length > 0) {
+          expr = keyframesToGD(c.keyframes, 't');
+        } else {
+          expr = formulaToGD(c.formulaPreset, c.params, 't');
         }
-        
-        if (c.property === 'x') lines.push(`        cur_x_${partId} += ${expr}`);
-        if (c.property === 'y') lines.push(`        cur_y_${partId} += ${expr}`);
-        if (c.property === 'rotation') lines.push(`        cur_rot_${partId} += deg_to_rad(${expr})`);
-        if (c.property === 'scaleX') lines.push(`        cur_scale_x_${partId} += ${expr}`);
-        if (c.property === 'scaleY') lines.push(`        cur_scale_y_${partId} += ${expr}`);
-      }
-      
-      for (const c of controllers) {
-          if (c.params.min !== c.params.max) {
-             const p = c.property;
-             let varName = '';
-             if (p === 'x') varName = `cur_x_${partId}`;
-             if (p === 'y') varName = `cur_y_${partId}`;
-             if (p === 'rotation') varName = `cur_rot_${partId}`;
-             if (p === 'scaleX') varName = `cur_scale_x_${partId}`;
-             if (p === 'scaleY') varName = `cur_scale_y_${partId}`;
-             
-             if (varName) {
-               if (p === 'rotation') {
-                   lines.push(`        ${varName} = clamp(${varName}, deg_to_rad(${c.params.min} + rad_to_deg(base_${partId}.rotation)), deg_to_rad(${c.params.max} + rad_to_deg(base_${partId}.rotation)))`);
-               } else {
-                   let baseStr = `base_${partId}.position.x`;
-                   if(p == 'y') baseStr = `base_${partId}.position.y`;
-                   if(p == 'scaleX') baseStr = `base_${partId}.scale.x`;
-                   if(p == 'scaleY') baseStr = `base_${partId}.scale.y`;
-                   lines.push(`        ${varName} = clamp(${varName}, ${c.params.min} + ${baseStr}, ${c.params.max} + ${baseStr})`);
-               }
-             }
-          }
+
+        const base = (
+          c.property === 'x'       ? (part.baseX ?? 0) :
+          c.property === 'y'       ? (part.baseY ?? 0) :
+          c.property === 'rotation'? (part.baseRotation ?? 0) :
+          c.property === 'scaleX'  ? (part.baseScaleX ?? 1) :
+          c.property === 'scaleY'  ? (part.baseScaleY ?? 1) :
+          /* opacity */               (part.opacity ?? 1)
+        ).toFixed(4);
+
+        switch (c.property) {
+          case 'x':        lines.push(`\t\t${pv}.position.x = ${base} + (${expr})`); break;
+          case 'y':        lines.push(`\t\t${pv}.position.y = ${base} + (${expr})`); break;
+          case 'rotation': lines.push(`\t\t${pv}.rotation_degrees = ${base} + (${expr})`); break;
+          case 'scaleX':   lines.push(`\t\t${pv}.scale.x = ${base} + (${expr})`); break;
+          case 'scaleY':   lines.push(`\t\t${pv}.scale.y = ${base} + (${expr})`); break;
+          case 'opacity':  lines.push(`\t\t${pv}.modulate.a = clamp(${base} + (${expr}), 0.0, 1.0)`); break;
+        }
+      });
+
+      // Frame animation
+      const fa = (part as any).frameAnimation;
+      if (fa?.frameCount) {
+        lines.push(`\t\t# Frame animation`);
+        lines.push(`\t\tif ${pv} is AnimatedSprite2D:`);
+        lines.push(`\t\t\t${pv}.frame = (int(t * ${fa.fps}.0) + ${fa.startFrame ?? 0}) % ${fa.frameCount}`);
       }
 
-      lines.push(`        parts["${partId}"].position = Vector2(cur_x_${partId}, cur_y_${partId})`);
-      lines.push(`        parts["${partId}"].rotation = cur_rot_${partId}`);
-      lines.push(`        parts["${partId}"].scale = Vector2(cur_scale_x_${partId}, cur_scale_y_${partId})`);
-      lines.push(``);
-    }
+      // IK chain note
+      const ik = (part as any).ikChain;
+      if (ik?.targetPartId) {
+        const tp = project.parts.find(p => p.id === ik.targetPartId);
+        lines.push(`\t\t# IK: Use SkeletonModification2DTwoBoneIK targeting "${tp?.name ?? 'target'}"`);
+      }
+
+      // Constraint note
+      const con = (part as any).constraint;
+      if (con?.type && con.type !== 'none') {
+        lines.push(`\t\t# Constraint (${con.type}): Use SkeletonModification2DLookAt or LimitRotation`);
+      }
+
+      lines.push('');
+    });
+
+    lines.push('');
+  });
+
+  // Keyframe lerp helper (always included, only used when needed)
+  const hasKeyframes = project.animations.some(a =>
+    (a.controllers as any[]).some(c => c.mode === 'keyframe' && c.keyframes?.length > 0)
+  );
+
+  if (hasKeyframes) {
+    lines.push(`# Keyframe interpolation helper`);
+    lines.push(`func _kf_lerp(keyframes: Array, time: float) -> float:`);
+    lines.push(`\tif keyframes.is_empty(): return 0.0`);
+    lines.push(`\tif time <= keyframes[0][0]: return keyframes[0][1]`);
+    lines.push(`\tif time >= keyframes[-1][0]: return keyframes[-1][1]`);
+    lines.push(`\tfor i in range(keyframes.size() - 1):`);
+    lines.push(`\t\tif time >= keyframes[i][0] and time <= keyframes[i + 1][0]:`);
+    lines.push(`\t\t\tvar tt: float = (time - keyframes[i][0]) / (keyframes[i + 1][0] - keyframes[i][0])`);
+    lines.push(`\t\t\treturn lerp(keyframes[i][1], keyframes[i + 1][1], tt)`);
+    lines.push(`\treturn keyframes[-1][1]`);
   }
 
   return lines.join('\n');

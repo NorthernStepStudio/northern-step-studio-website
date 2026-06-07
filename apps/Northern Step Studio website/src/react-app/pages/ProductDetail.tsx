@@ -53,6 +53,9 @@ export default function ProductDetail() {
   const translatedName = useMemo(() => t(`apps_data.${slug}.name`, { defaultValue: app?.name }), [t, slug, app?.name]);
   const translatedTagline = useMemo(() => t(`apps_data.${slug}.tagline`, { defaultValue: app?.tagline }), [t, slug, app?.tagline]);
   const translatedDescription = useMemo(() => t(`apps_data.${slug}.description`, { defaultValue: app?.description }), [t, slug, app?.description]);
+  const displayDescription = useMemo(() => {
+    return translatedDescription || app?.fullDescription || app?.description || "";
+  }, [translatedDescription, app]);
 
   const features = useMemo(() => {
     if (!app) return [];
@@ -197,8 +200,8 @@ export default function ProductDetail() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": translatedName,
-    "description": translatedDescription,
+    "name": translatedName || app.name,
+    "description": displayDescription || app.description,
     "applicationCategory": app.category,
     "operatingSystem": app.platform === "mobile" ? "iOS, Android" : "Web",
     "offers": {
@@ -208,93 +211,15 @@ export default function ProductDetail() {
     }
   };
 
-  if (app.status === "LIVE") {
-    const displayDescription = translatedDescription || app.fullDescription || app.description;
-    const buttonText = app.slug === "doomed"
-      ? "Play Now"
-      : t(`apps_data.${app.slug}.open_cta`, { defaultValue: t("apps.open", { defaultValue: "Open" }) });
-    const ctaUrl = app.slug === "doomed" ? "/games/nexus-roguelike/" : (app.cta_url || "#");
 
-    return (
-      <div className="min-h-screen pt-20 sm:pt-24 px-4 sm:px-6 pb-16">
-        <SEO
-          title={translatedName || app.name}
-          description={displayDescription}
-          canonicalUrl={`/apps/${app.slug}`}
-          ogImage={appLogo || undefined}
-        />
-        <div className="container mx-auto max-w-2xl mt-8 sm:mt-12">
-          {/* Back Link */}
-          <div className="text-left mb-8">
-            <Link to="/apps" className="inline-flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors font-black uppercase text-sm group">
-              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-              {t("product.back")}
-            </Link>
-          </div>
-
-          <div className="text-center">
-            {/* App Icon */}
-            <div className="w-32 h-32 sm:w-48 sm:h-48 rounded-3xl mx-auto mb-8 bg-gradient-to-br from-background to-secondary/80 flex items-center justify-center overflow-hidden border-2 border-accent/20 shadow-xl shadow-accent/10">
-              {appLogo ? (
-                <img src={appLogo} alt={app.name} className="w-full h-full object-contain p-4" />
-              ) : (
-                <Zap className="w-16 h-16 text-accent" />
-              )}
-            </div>
-
-            {/* Title with Glitch */}
-            <h1 className="text-4xl sm:text-6xl font-black uppercase tracking-tighter mb-4">
-              <GlitchedText text={translatedName || app.name} duration={600} />
-            </h1>
-
-            {/* Tagline */}
-            {translatedTagline && (
-              <p className="text-accent font-bold text-sm sm:text-base uppercase tracking-wide mb-6">
-                {translatedTagline}
-              </p>
-            )}
-
-            {/* Description */}
-            <p className="text-lg sm:text-xl text-muted-foreground font-normal leading-relaxed mb-10 max-w-xl mx-auto">
-              {displayDescription}
-            </p>
-
-            {/* CTA Button */}
-            {ctaUrl.startsWith("/") ? (
-              <Link
-                to={ctaUrl}
-                className="btn-pill-primary inline-flex items-center justify-center gap-3 text-lg py-4 px-10 animate-neon-pulse font-black uppercase"
-              >
-                <Play className="w-6 h-6" />
-                {buttonText}
-                <ArrowRight className="w-6 h-6" />
-              </Link>
-            ) : (
-              <a
-                href={ctaUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={trackDownload}
-                className="btn-pill-primary inline-flex items-center justify-center gap-3 text-lg py-4 px-10 animate-neon-pulse font-black uppercase"
-              >
-                <Play className="w-6 h-6" />
-                {buttonText}
-                <ArrowRight className="w-6 h-6" />
-              </a>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  }
 
 
   return (
     <div className="min-h-screen pt-20 sm:pt-24 px-4 sm:px-6 pb-16">
       <SEO
-        title={app.name}
-        description={app.description}
-        keywords={`${app.name}, ${app.category}, ${app.platform} app, ${app.techStack?.join(", ") || ""}`}
+        title={translatedName || app.name}
+        description={displayDescription || app.description}
+        keywords={`${translatedName || app.name}, ${app.category}, ${app.platform} app, ${app.techStack?.join(", ") || ""}`}
         canonicalUrl={`/apps/${app.slug}`}
         ogImage={appLogo || undefined}
         ogType="website"
@@ -352,7 +277,7 @@ export default function ProductDetail() {
                 </p>
 
                 <p className="text-sm sm:text-base text-muted-foreground font-normal leading-relaxed max-w-2xl">
-                  {translatedDescription}
+                  {displayDescription}
                 </p>
               </div>
             </div>
@@ -560,53 +485,49 @@ export default function ProductDetail() {
         )}
 
         {/* Features Grid */}
-        {app.status !== "LIVE" && (
-          <div className="card-dark-wise">
-            <h2 className="text-xl sm:text-2xl font-black uppercase mb-6 flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
-                <Zap className="w-5 h-5 text-accent" />
-              </div>
-              {t("product.features")}
-            </h2>
-            {features.length > 0 ? (
-              <div className="space-y-4">
-                {features.map((feature: string, index: number) => {
-                  // Parse feature format "Title: Description"
-                  const colonIndex = feature.indexOf(":");
-                  const hasTitle = colonIndex > 0 && colonIndex < 80;
-                  const title = hasTitle ? feature.substring(0, colonIndex).trim() : null;
-                  const description = hasTitle ? feature.substring(colonIndex + 1).trim() : feature;
+        <div className="card-dark-wise">
+          <h2 className="text-xl sm:text-2xl font-black uppercase mb-6 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+              <Zap className="w-5 h-5 text-accent" />
+            </div>
+            {t("product.features")}
+          </h2>
+          {features.length > 0 ? (
+            <div className="grid gap-x-8 gap-y-4 sm:grid-cols-2">
+              {features.map((feature: string, index: number) => {
+                // Parse feature format "Title: Description"
+                const colonIndex = feature.indexOf(":");
+                const hasTitle = colonIndex > 0 && colonIndex < 80;
+                const title = hasTitle ? feature.substring(0, colonIndex).trim() : null;
+                const description = hasTitle ? feature.substring(colonIndex + 1).trim() : feature;
 
-                  return (
-                    <div
-                      key={index}
-                      className="p-5 rounded-2xl bg-gradient-to-br from-secondary to-secondary/50 border border-border hover:border-accent/30 transition-all group"
-                    >
-                      <div className="flex items-start gap-4">
-                        <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0 group-hover:bg-accent/20 transition-colors">
-                          <Check className="w-5 h-5 text-accent" />
-                        </div>
-                        <div className="flex-1">
-                          {title && (
-                            <h3 className="font-black uppercase text-sm mb-1.5 text-accent">{title}</h3>
-                          )}
-                          <p className="text-sm font-normal text-muted-foreground leading-relaxed">{description}</p>
-                        </div>
-                      </div>
+                return (
+                  <div
+                    key={index}
+                    className="flex items-start gap-3 p-3 rounded-xl hover:bg-secondary/35 transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-accent/20 transition-colors">
+                      <Check className="w-4 h-4 text-accent" />
                     </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="text-center py-12 rounded-2xl bg-secondary/50 border border-border border-dashed">
-                <Star className="w-10 h-10 text-muted-foreground/30 mx-auto mb-4" />
-                <p className="text-muted-foreground font-normal text-sm">
-                  {t("product.features_soon")}
-                </p>
-              </div>
-            )}
-          </div>
-        )}
+                    <div className="flex-1">
+                      {title && (
+                        <h3 className="font-black uppercase text-xs mb-1.5 text-accent tracking-wider">{title}</h3>
+                      )}
+                      <p className="text-sm font-normal text-muted-foreground leading-relaxed">{description}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="text-center py-12 rounded-2xl bg-secondary/50 border border-border border-dashed">
+              <Star className="w-10 h-10 text-muted-foreground/30 mx-auto mb-4" />
+              <p className="text-muted-foreground font-normal text-sm">
+                {t("product.features_soon")}
+              </p>
+            </div>
+          )}
+        </div>
 
         {/* Bottom CTA - Sticky on mobile */}
         {app.cta_url && (
