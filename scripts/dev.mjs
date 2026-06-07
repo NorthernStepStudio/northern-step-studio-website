@@ -4,13 +4,13 @@ import { fileURLToPath } from "node:url";
 
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const npmCmd = process.platform === "win32" ? "npm.cmd" : "npm";
-const nodeCmd = process.execPath;
+const nodeCmd = `"${process.execPath}"`;
 
 function runBlocking(command, args, label) {
   const result = spawnSync(command, args, {
     cwd: rootDir,
     stdio: "inherit",
-    shell: false,
+    shell: true,
   });
 
   if (result.error) {
@@ -28,7 +28,7 @@ function startChild(label, command, args, options = {}) {
     cwd: options.cwd ?? rootDir,
     env: { ...process.env, ...(options.env ?? {}) },
     stdio: ["ignore", "pipe", "pipe"],
-    shell: false,
+    shell: true,
   });
 
   child.stdout.on("data", (chunk) => {

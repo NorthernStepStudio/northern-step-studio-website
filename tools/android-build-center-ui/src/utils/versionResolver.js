@@ -72,6 +72,8 @@ function updateAppVersion(appRoot, newVersionName, newVersionCode) {
         parsedVersionCode = parsed.value;
     }
 
+    const writes = [];
+
     const appJsonPath = path.join(appRoot, 'app.json');
     if (fs.existsSync(appJsonPath)) {
         try {
@@ -82,8 +84,7 @@ function updateAppVersion(appRoot, newVersionName, newVersionCode) {
                     if (!appJson.expo.android) appJson.expo.android = {};
                     appJson.expo.android.versionCode = parsedVersionCode;
                 }
-                fs.writeFileSync(appJsonPath, JSON.stringify(appJson, null, 2));
-                return { success: true, file: 'app.json' };
+                writes.push({ path: appJsonPath, label: 'app.json', content: JSON.stringify(appJson, null, 2) });
             }
         } catch (e) {}
     }
@@ -102,14 +103,22 @@ function updateAppVersion(appRoot, newVersionName, newVersionCode) {
                 updated = true;
             }
             if (newVersionName) {
-                content = content.replace(/(versionName\s+)["'][^"']+["']/, `$1"${newVersionName}"`);
+                const nextContent = content.replace(/(versionName\s+)["'][^"']+["']/, `$1"${newVersionName}"`);
+                if (nextContent === content) {
+                    return { success: false, error: 'No versionName entry found in build.gradle.' };
+                }
+                content = nextContent;
                 updated = true;
             }
             if (updated) {
-                fs.writeFileSync(gradlePath, content);
-                return { success: true, file: 'build.gradle' };
+                writes.push({ path: gradlePath, label: 'build.gradle', content });
             }
         } catch (e) {}
+    }
+
+    if (writes.length > 0) {
+        writes.forEach(write => fs.writeFileSync(write.path, write.content));
+        return { success: true, file: writes.map(write => write.label).join(', ') };
     }
 
     return { success: false, error: 'No suitable version source found to update.' };

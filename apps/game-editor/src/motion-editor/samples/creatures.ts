@@ -2,6 +2,7 @@ import { CharacterProject } from '../../../../../packages/nstep-motion-core/src/
 
 export const crabProject: CharacterProject = {
   id: 'crab', name: 'Sample Crab',
+  assets: [],
   animations: [{
     id: 'idle', name: 'Idle', duration: 1, loop: true,
     controllers: [
@@ -9,7 +10,7 @@ export const crabProject: CharacterProject = {
       { id: 'c2', targetPartId: 'claw-l', property: 'rotation', formulaPreset: 'swayRotation', enabled: true, params: { speed: 2, amplitude: 10, phase: 0, offset: 0, min: 0, max: 0 }},
       { id: 'c3', targetPartId: 'claw-r', property: 'rotation', formulaPreset: 'swayRotation', enabled: true, params: { speed: 2, amplitude: -10, phase: 1, offset: 0, min: 0, max: 0 }},
       { id: 'c4', targetPartId: 'leg-l', property: 'rotation', formulaPreset: 'legCycle', enabled: true, params: { speed: 1, amplitude: 15, phase: 0, offset: 0, min: 0, max: 0 }},
-      { id: 'c5', targetPartId: 'leg-r', property: 'rotation', formulaPreset: 'legCycle', enabled: true, params: { speed: 1, amplitude: -15, phase: 3.14, offset: 0, min: 0, max: 0 }},
+      { id: 'c5', targetPartId: 'leg-r', property: 'rotation', formulaPreset: 'legCycle', enabled: true, params: { speed: 1, amplitude: 15, phase: 0.5, offset: 0, min: 0, max: 0 }},
     ]
   }],
   parts: [
@@ -25,6 +26,7 @@ export const crabProject: CharacterProject = {
 
 export const owlProject: CharacterProject = {
   id: 'owl', name: 'Sample Owl',
+  assets: [],
   animations: [{
     id: 'idle', name: 'Idle', duration: 1, loop: true,
     controllers: [

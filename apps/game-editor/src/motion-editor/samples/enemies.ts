@@ -3,6 +3,7 @@ import { CharacterProject } from '../../../../../packages/nstep-motion-core/src/
 export const DOOMED_RIGS = {
   rotRat: {
     id: 'rotrat', name: 'Rot Rat',
+    assets: [],
     animations: [
       { id: 'idle', name: 'Idle', duration: 1, loop: true, controllers: [
           { id: 'rr-c1', targetPartId: 'body', property: 'y', formulaPreset: 'breathingY', enabled: true, params: { speed: 2, amplitude: 3, phase: 0, offset: 0, min: 0, max: 0 }}
@@ -10,7 +11,7 @@ export const DOOMED_RIGS = {
       { id: 'walk', name: 'Walk', duration: 1, loop: true, controllers: [
           { id: 'rr-c2', targetPartId: 'body', property: 'y', formulaPreset: 'bobPosition', enabled: true, params: { speed: 4, amplitude: 5, phase: 0, offset: 0, min: 0, max: 0 }},
           { id: 'rr-c3', targetPartId: 'leg-f', property: 'rotation', formulaPreset: 'legCycle', enabled: true, params: { speed: 4, amplitude: 25, phase: 0, offset: 0, min: 0, max: 0 }},
-          { id: 'rr-c4', targetPartId: 'leg-b', property: 'rotation', formulaPreset: 'legCycle', enabled: true, params: { speed: 4, amplitude: 25, phase: 3.14, offset: 0, min: 0, max: 0 }}
+          { id: 'rr-c4', targetPartId: 'leg-b', property: 'rotation', formulaPreset: 'legCycle', enabled: true, params: { speed: 4, amplitude: 25, phase: 0.5, offset: 0, min: 0, max: 0 }}
       ]},
       { id: 'attack', name: 'Attack', duration: 1, loop: false, controllers: [
           { id: 'rr-c5', targetPartId: 'head', property: 'rotation', formulaPreset: 'clawTwitch', enabled: true, params: { speed: 10, amplitude: 30, phase: 0, offset: -20, min: 0, max: 0 }}
@@ -33,6 +34,7 @@ export const DOOMED_RIGS = {
   } as CharacterProject,
   boneWalker: {
     id: 'bonewalker', name: 'Bone Walker',
+    assets: [],
     animations: [
       { id: 'idle', name: 'Idle', duration: 1, loop: true, controllers: [
           { id: 'bw-1', targetPartId: 'torso', property: 'y', formulaPreset: 'breathingY', enabled: true, params: { speed: 0.8, amplitude: 2, phase: 0, offset: 0, min: 0, max: 0 }},
@@ -40,7 +42,7 @@ export const DOOMED_RIGS = {
       ]},
       { id: 'walk', name: 'Walk', duration: 1, loop: true, controllers: [
           { id: 'bw-3', targetPartId: 'leg-l', property: 'rotation', formulaPreset: 'legCycle', enabled: true, params: { speed: 1.5, amplitude: 30, phase: 0, offset: 0, min: 0, max: 0 }},
-          { id: 'bw-4', targetPartId: 'leg-r', property: 'rotation', formulaPreset: 'legCycle', enabled: true, params: { speed: 1.5, amplitude: -30, phase: 3.14, offset: 0, min: 0, max: 0 }}
+          { id: 'bw-4', targetPartId: 'leg-r', property: 'rotation', formulaPreset: 'legCycle', enabled: true, params: { speed: 1.5, amplitude: 30, phase: 0.5, offset: 0, min: 0, max: 0 }}
       ]},
       { id: 'attack', name: 'Attack', duration: 1, loop: false, controllers: []},
       { id: 'hurt', name: 'Hurt', duration: 0.5, loop: false, controllers: []},
@@ -55,8 +57,8 @@ export const DOOMED_RIGS = {
       { id: 'leg-r', name: 'Right Leg', parentId: 'torso', color: '#9ca3af', baseX: 10, baseY: 20, baseRotation: 0, baseScaleX: 1, baseScaleY: 1, origin: { x: 5, y: 5 }, zIndex: 9 },
     ]
   } as CharacterProject,
-  graveGhoul: { id: 'graveghoul', name: 'Grave Ghoul', animations: [{id: 'idle', name: 'Idle', duration:1, loop:true, controllers: []}, {id: 'walk', name: 'Walk', duration:1, loop:true, controllers: []}, {id: 'attack', name: 'Attack', duration:1, loop:false, controllers: []}, {id: 'hurt', name: 'Hurt', duration:1, loop:false, controllers: []}, {id: 'death', name: 'Death', duration:1, loop:false, controllers: []}], parts: [] } as CharacterProject,
-  bladeImp: { id: 'bladeimp', name: 'Blade Imp', animations: [{id: 'idle', name: 'Idle', duration:1, loop:true, controllers: []}, {id: 'walk', name: 'Walk', duration:1, loop:true, controllers: []}, {id: 'attack', name: 'Attack', duration:1, loop:false, controllers: []}, {id: 'hurt', name: 'Hurt', duration:1, loop:false, controllers: []}, {id: 'death', name: 'Death', duration:1, loop:false, controllers: []}], parts: [] } as CharacterProject,
-  shieldHusk: { id: 'shieldhusk', name: 'Shield Husk', animations: [{id: 'idle', name: 'Idle', duration:1, loop:true, controllers: []}, {id: 'walk', name: 'Walk', duration:1, loop:true, controllers: []}, {id: 'attack', name: 'Attack', duration:1, loop:false, controllers: []}, {id: 'hurt', name: 'Hurt', duration:1, loop:false, controllers: []}, {id: 'death', name: 'Death', duration:1, loop:false, controllers: []}], parts: [] } as CharacterProject,
-  ashCultist: { id: 'ashcultist', name: 'Ash Cultist', animations: [{id: 'idle', name: 'Idle', duration:1, loop:true, controllers: []}, {id: 'walk', name: 'Walk', duration:1, loop:true, controllers: []}, {id: 'attack', name: 'Attack', duration:1, loop:false, controllers: []}, {id: 'hurt', name: 'Hurt', duration:1, loop:false, controllers: []}, {id: 'death', name: 'Death', duration:1, loop:false, controllers: []}], parts: [] } as CharacterProject,
+  graveGhoul: { id: 'graveghoul', name: 'Grave Ghoul', assets: [], animations: [{id: 'idle', name: 'Idle', duration:1, loop:true, controllers: []}, {id: 'walk', name: 'Walk', duration:1, loop:true, controllers: []}, {id: 'attack', name: 'Attack', duration:1, loop:false, controllers: []}, {id: 'hurt', name: 'Hurt', duration:1, loop:false, controllers: []}, {id: 'death', name: 'Death', duration:1, loop:false, controllers: []}], parts: [] } as CharacterProject,
+  bladeImp: { id: 'bladeimp', name: 'Blade Imp', assets: [], animations: [{id: 'idle', name: 'Idle', duration:1, loop:true, controllers: []}, {id: 'walk', name: 'Walk', duration:1, loop:true, controllers: []}, {id: 'attack', name: 'Attack', duration:1, loop:false, controllers: []}, {id: 'hurt', name: 'Hurt', duration:1, loop:false, controllers: []}, {id: 'death', name: 'Death', duration:1, loop:false, controllers: []}], parts: [] } as CharacterProject,
+  shieldHusk: { id: 'shieldhusk', name: 'Shield Husk', assets: [], animations: [{id: 'idle', name: 'Idle', duration:1, loop:true, controllers: []}, {id: 'walk', name: 'Walk', duration:1, loop:true, controllers: []}, {id: 'attack', name: 'Attack', duration:1, loop:false, controllers: []}, {id: 'hurt', name: 'Hurt', duration:1, loop:false, controllers: []}, {id: 'death', name: 'Death', duration:1, loop:false, controllers: []}], parts: [] } as CharacterProject,
+  ashCultist: { id: 'ashcultist', name: 'Ash Cultist', assets: [], animations: [{id: 'idle', name: 'Idle', duration:1, loop:true, controllers: []}, {id: 'walk', name: 'Walk', duration:1, loop:true, controllers: []}, {id: 'attack', name: 'Attack', duration:1, loop:false, controllers: []}, {id: 'hurt', name: 'Hurt', duration:1, loop:false, controllers: []}, {id: 'death', name: 'Death', duration:1, loop:false, controllers: []}], parts: [] } as CharacterProject,
 };

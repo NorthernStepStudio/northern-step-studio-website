@@ -22,7 +22,7 @@ function Remove-BuildCopyGeneratedState {
 
   $FullBuildRoot = [System.IO.Path]::GetFullPath($BuildRoot).TrimEnd('\')
   $GeneratedDirs = @()
-  foreach ($RelPath in @("android\.gradle", "android\build", "android\app\build")) {
+  foreach ($RelPath in @("android\.gradle", "android\app\.gradle", "android\build", "android\app\build")) {
     $Candidate = Join-Path $BuildRoot $RelPath
     if (Test-Path -LiteralPath $Candidate) {
       $GeneratedDirs += Get-Item -LiteralPath $Candidate -Force
@@ -45,6 +45,40 @@ function Remove-BuildCopyGeneratedState {
   }
 }
 
+function Get-AppVersionName {
+  param(
+    [Parameter(Mandatory=$true)]
+    [string]$SourceAppPath,
+    [Parameter(Mandatory=$true)]
+    [string]$AndroidPath
+  )
+
+  $AppJsonPath = Join-Path $SourceAppPath "app.json"
+  if (Test-Path -LiteralPath $AppJsonPath) {
+    try {
+      $AppJson = Get-Content -LiteralPath $AppJsonPath -Raw | ConvertFrom-Json
+      if ($AppJson.expo.version) { return [string]$AppJson.expo.version }
+    } catch {}
+  }
+
+  $GradlePath = Join-Path $AndroidPath "app\build.gradle"
+  if (Test-Path -LiteralPath $GradlePath) {
+    $GradleContent = Get-Content -LiteralPath $GradlePath -Raw
+    $VersionMatch = [regex]::Match($GradleContent, 'versionName\s+["'']([^"'']+)["'']')
+    if ($VersionMatch.Success) { return $VersionMatch.Groups[1].Value }
+  }
+
+  $PkgPath = Join-Path $SourceAppPath "package.json"
+  if (Test-Path -LiteralPath $PkgPath) {
+    try {
+      $Pkg = Get-Content -LiteralPath $PkgPath -Raw | ConvertFrom-Json
+      if ($Pkg.version) { return [string]$Pkg.version }
+    } catch {}
+  }
+
+  return "1.0.0"
+}
+
 if (-not $Config.$AppName) {
   throw "Unknown app '$AppName'. Check tools/android-build-center/apps.json"
 }
@@ -62,7 +96,9 @@ if (!(Test-Path $AppPath)) {
   throw "App folder not found: $AppPath"
 }
 
+$UsingBuildCopy = $false
 if ($App.useBuildCopy -eq $true) {
+  $UsingBuildCopy = $true
   $BuildCopyRoot = Join-Path ([System.IO.Path]::GetPathRoot($Root)) "nbw"
   $BuildAppPath = Join-Path $BuildCopyRoot $AppName
   $FullBuildCopyRoot = [System.IO.Path]::GetFullPath($BuildCopyRoot).TrimEnd('\')
@@ -92,6 +128,7 @@ if ($App.useBuildCopy -eq $true) {
     ".expo",
     "credentials",
     "android\.gradle",
+    "android\app\.gradle",
     "android\build",
     "android\app\build",
     ".cxx",
@@ -118,6 +155,21 @@ Write-Host "Android path: $AndroidPath"
 Push-Location $BuildAppPath
 $env:SENTRY_DISABLE_AUTO_UPLOAD = "true"
 $env:NODE_ENV = "production"
+# Set NODE_PATH to root node_modules so hoisted monorepo packages (like react-native) can resolve in the build copy
+$env:NODE_PATH = Join-Path $Root "node_modules"
+# Keep React Native/Expo autolinking pointed at the source app root so native
+# module discovery matches normal repo builds while outputs stay in the short copy.
+$env:NSTEP_AUTOLINKING_PROJECT_ROOT = $AppPath
+if ($UsingBuildCopy) {
+  # Keep Metro's workspace root inside the short build copy. Without this, the
+  # copied app can resolve ../../ to the drive root and Gradle may snapshot
+  # unreadable folders as JS bundle inputs.
+  $env:NSTEP_REACT_ROOT = $BuildAppPath
+  $env:NSTEP_METRO_WORKSPACE_ROOT = $BuildAppPath
+} else {
+  Remove-Item Env:NSTEP_REACT_ROOT -ErrorAction SilentlyContinue
+  Remove-Item Env:NSTEP_METRO_WORKSPACE_ROOT -ErrorAction SilentlyContinue
+}
 try {
     if (!(Test-Path $AndroidPath)) {
       Write-Host "android/ folder missing. Running expo prebuild..." -ForegroundColor Yellow
@@ -222,13 +274,7 @@ MYAPP_UPLOAD_KEY_PASSWORD=$KeyPassword
 
         if ($FoundAab) {
           Write-Host "Found artifact: $($FoundAab.Name) ($($FoundAab.Length / 1MB) MB)" -ForegroundColor Gray
-          # Get Version from package.json
-          $PkgPath = Join-Path $AppPath "package.json"
-          $Version = "1.0.0"
-          if (Test-Path $PkgPath) {
-            $Pkg = Get-Content $PkgPath | ConvertFrom-Json
-            if ($Pkg.version) { $Version = $Pkg.version }
-          }
+          $Version = Get-AppVersionName -SourceAppPath $AppPath -AndroidPath $AndroidPath
 
           $FinalName = "$AppName-v$Version.aab"
           $FinalPath = Join-Path $ArtifactsRoot $FinalName
@@ -267,12 +313,7 @@ MYAPP_UPLOAD_KEY_PASSWORD=$KeyPassword
 
           if ($DeepFound) {
             Write-Host "Deep Search success: Found at $($DeepFound.FullName)" -ForegroundColor Green
-            $PkgPath = Join-Path $AppPath "package.json"
-            $Version = "1.0.0"
-            if (Test-Path $PkgPath) {
-              $Pkg = Get-Content $PkgPath | ConvertFrom-Json
-              if ($Pkg.version) { $Version = $Pkg.version }
-            }
+            $Version = Get-AppVersionName -SourceAppPath $AppPath -AndroidPath $AndroidPath
             $FinalName = "$AppName-v$Version.aab"
             $FinalPath = Join-Path $ArtifactsRoot $FinalName
             if (Test-Path $FinalPath) {

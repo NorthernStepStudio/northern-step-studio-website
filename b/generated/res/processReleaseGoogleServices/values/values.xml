@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="gcm_defaultSenderId" translatable="false">978738051320</string>
-    <string name="google_api_key" translatable="false">AIzaSyC9oU1XRu7U9JjEyBASWGH36aCbefk_p0</string>
-    <string name="google_app_id" translatable="false">1:978738051320:android:9f0dadea6fa972e8b0e30d</string>
-    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyC9oU1XRu7U9JjEyBASWGH36aCbefk_p0</string>
-    <string name="google_storage_bucket" translatable="false">nexusbuild-21c80.firebasestorage.app</string>
-    <string name="project_id" translatable="false">nexusbuild-21c80</string>
-</resources>

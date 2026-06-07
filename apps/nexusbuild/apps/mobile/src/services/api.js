@@ -481,6 +481,28 @@ export const authAPI = {
     }
   },
 
+  loginWithGoogle: async (idToken) => {
+    try {
+      const response = await api.post("/auth/google", { id_token: idToken });
+      return {
+        ...response.data,
+        user: normalizeUser(response.data.user),
+      };
+    } catch (e) {
+      if (!FEATURES.MOCK_ALL_APIS) throw e;
+      console.warn("Google login failed, using mock user:", e.message);
+      const mockUser = normalizeUser({
+        ...MOCK_USER,
+        id: `mock-${Date.now()}`,
+        email: "googleuser@nexus.com",
+        username: "googleuser",
+        role: "user",
+      });
+      const token = `mock-google-token-${Date.now()}`;
+      return { token, user: mockUser };
+    }
+  },
+
   logout: async () => {
     // Handled by Context
   },

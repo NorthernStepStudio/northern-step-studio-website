@@ -235,6 +235,32 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const loginWithGoogle = async (idToken) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const data = await authAPI.loginWithGoogle(idToken);
+      if (data?.token) {
+        await AsyncStorage.setItem("authToken", data.token);
+        await AsyncStorage.setItem("user", JSON.stringify(data.user));
+        setUser(data.user);
+        const baseUrl = getApiBaseUrl();
+        if (baseUrl) {
+          syncPendingReports(baseUrl).catch(() => {});
+        }
+        return { success: true };
+      }
+      return { success: false, error: data?.error || "Google login failed" };
+    } catch (err) {
+      const errorMessage = err.response?.data?.message || err.message || "Google login failed";
+      setError(errorMessage);
+      return { success: false, error: errorMessage };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const logout = async () => {
     try {
       await initPurchases(null);

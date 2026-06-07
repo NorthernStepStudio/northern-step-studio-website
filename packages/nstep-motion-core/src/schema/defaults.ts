@@ -1,13 +1,21 @@
-import { CharacterProject, CharacterPart, AnimationState, MotionController } from './types';
+import type { CharacterProject, CharacterPart, AnimationController } from './types.js';
 
 export function createDefaultProject(): CharacterProject {
+  const id = 'proj-' + Math.random().toString(36).substr(2, 9);
   return {
-    id: 'proj-' + Date.now(),
+    id,
     name: 'New Project',
-    parts: [],
-    animations: [createDefaultAnimation('anim-1', 'Idle')],
     assets: [],
-    renderQuality: 'smooth'
+    animations: [
+      {
+        id: 'anim-idle',
+        name: 'Idle',
+        duration: 1.5,
+        loop: true,
+        controllers: []
+      }
+    ],
+    parts: []
   };
 }
 
@@ -16,40 +24,29 @@ export function createDefaultPart(id: string, name: string): CharacterPart {
     id,
     name,
     parentId: null,
-    origin: { x: 20, y: 20 },
     baseX: 0,
     baseY: 0,
     baseRotation: 0,
     baseScaleX: 1,
     baseScaleY: 1,
+    origin: { x: 20, y: 20 },
     zIndex: 10,
+    color: '#4b5563',
     renderMode: 'shape',
-    shapeType: 'roundedRect',
-    color: '#7aa2f7',
-    opacity: 1
+    shapeType: 'roundedRect'
   };
 }
 
-export function createDefaultAnimation(id: string, name: string): AnimationState {
+export function createDefaultController(targetPartId: string): AnimationController {
   return {
-    id,
-    name,
-    duration: 1.0,
-    loop: true,
-    controllers: []
-  };
-}
-
-export function createDefaultController(partId: string): MotionController {
-  return {
-    id: 'ctrl-' + Date.now(),
-    targetPartId: partId,
+    id: 'ctrl-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5),
+    targetPartId,
     property: 'y',
     formulaPreset: 'breathingY',
     enabled: true,
     params: {
       speed: 1,
-      amplitude: 10,
+      amplitude: 5,
       phase: 0,
       offset: 0,
       min: 0,

@@ -14,6 +14,10 @@ import {
 
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
+import * as WebBrowser from "expo-web-browser";
+import * as AuthSession from "expo-auth-session";
+import * as Google from "expo-auth-session/providers/google";
+import Constants from "expo-constants";
 import { useAuth } from "../contexts/AuthContext";
 import GlassCard from "../components/GlassCard";
 import Layout from "../components/Layout";
@@ -22,10 +26,11 @@ import { useAdminSettings } from "../contexts/AdminSettingsContext";
 
 export default function LoginScreen({ navigation, route }) {
   const { theme } = useTheme();
-  const { login, loading } = useAuth();
+  const { login, loading, loginWithGoogle } = useAuth();
   const { isMaintenanceMode } = useAdminSettings();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const prefillEmail = route?.params?.email;
 
@@ -34,6 +39,62 @@ export default function LoginScreen({ navigation, route }) {
       setEmail(prefillEmail.trim());
     }
   }, [prefillEmail]);
+
+  WebBrowser.maybeCompleteAuthSession();
+
+  const redirectUri = AuthSession.makeRedirectUri({ useProxy: true });
+
+  const [googleRequest, googleResponse, promptGoogleAuth] = Google.useIdTokenAuthRequest({
+    clientId: process.env.EXPO_PUBLIC_GOOGLE_EXPO_CLIENT_ID || process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
+    iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
+    androidClientId: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID,
+    webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
+    redirectUri,
+    responseType: AuthSession.ResponseType.IdToken,
+    shouldAutoExchangeCode: false,
+  });
+
+  useEffect(() => {
+    if (!googleResponse) return;
+    if (googleResponse.type === "error") {
+      Alert.alert("Google sign-in failed", (googleResponse.error && googleResponse.error.message) || (googleResponse.params && (googleResponse.params.error_description || googleResponse.params.error)) || "Google sign-in failed");
+      return;
+    }
+
+    if (googleResponse.type !== "success") return;
+
+    const tokenFromParams = (googleResponse.params && googleResponse.params.id_token) || null;
+    const tokenFromAuth = googleResponse.authentication && googleResponse.authentication.idToken;
+    const idToken = tokenFromParams || tokenFromAuth;
+    if (!idToken) {
+      Alert.alert("Google sign-in failed", "No ID token returned from Google");
+      return;
+    }
+
+    (async () => {
+      try {
+        setGoogleLoading(true);
+        const result = await loginWithGoogle(idToken);
+        if (result.success) {
+          if (!isMaintenanceMode) {
+            try {
+              navigation.reset({ index: 0, routes: [{ name: "ProfileMain" }] });
+              const parent = navigation.getParent();
+              if (parent) parent.navigate("HomeTab");
+            } catch (e) {
+              // ignore navigation errors
+            }
+          }
+        } else {
+          Alert.alert("Google sign-in failed", result.error || "Please try again");
+        }
+      } catch (e) {
+        Alert.alert("Google sign-in failed", e?.message || "An error occurred");
+      } finally {
+        setGoogleLoading(false);
+      }
+    })();
+  }, [googleResponse]);
 
   const handleLogin = async () => {
     // Pass actual entered values (or defaults for quick dev login)
@@ -310,6 +371,37 @@ export default function LoginScreen({ navigation, route }) {
                 )}
               </LinearGradient>
             </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.btnSecondary,
+                  {
+                    marginTop: theme.spacing.sm,
+                    borderRadius: theme.borderRadius.full,
+                    borderWidth: 1,
+                    borderColor: theme.colors.glassBorder,
+                    backgroundColor: theme.colors.glassBg,
+                  },
+                ]}
+                onPress={() => {
+                  if (!promptGoogleAuth) {
+                    Alert.alert("Google Sign-In", "Google sign-in is not configured for this build.");
+                    return;
+                  }
+                  promptGoogleAuth();
+                }}
+                disabled={googleLoading || loading}
+              >
+                {googleLoading ? (
+                  <ActivityIndicator />
+                ) : (
+                  <>
+                    <Ionicons name="logo-google" size={20} color={theme.colors.textPrimary} />
+                    <Text style={[styles.btnSecondaryText, { marginLeft: theme.spacing.sm, color: theme.colors.textPrimary }]}>
+                      Continue with Google
+                    </Text>
+                  </>
+                )}
+              </TouchableOpacity>
           </GlassCard>
 
           {/* Register Link */}
@@ -407,6 +499,15 @@ const styles = StyleSheet.create({
   },
   footerText: {},
   footerLink: {
+    fontWeight: "600",
+  },
+  btnSecondary: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+  },
+  btnSecondaryText: {
     fontWeight: "600",
   },
 });

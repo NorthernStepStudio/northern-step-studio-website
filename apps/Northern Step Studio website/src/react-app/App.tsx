@@ -54,6 +54,43 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/react-app/lib/auth";
 import { isElevatedRole } from "@/shared/auth";
 
+function getSignaTempuResetUrl() {
+  const { search, hash } = window.location;
+  return `/signatempu/reset-password${search}${hash}`;
+}
+
+// If a recovery link lands on the public site first, hand it off to SignaTempu.
+function SignaTempuRecoveryBridge() {
+  useEffect(() => {
+    const { pathname, search, hash } = window.location;
+
+    if (pathname !== "/") {
+      return;
+    }
+
+    const recoveryHints = `${search}${hash}`;
+    const hasRecoverySignal =
+      recoveryHints.includes("type=recovery") ||
+      recoveryHints.includes("access_token=") ||
+      recoveryHints.includes("token_hash=") ||
+      search.includes("code=");
+
+    if (hasRecoverySignal) {
+      window.location.replace(getSignaTempuResetUrl());
+    }
+  }, []);
+
+  return null;
+}
+
+function SignaTempuResetRedirect() {
+  useEffect(() => {
+    window.location.replace(getSignaTempuResetUrl());
+  }, []);
+
+  return null;
+}
+
 function MaintenanceCheck({ children }: { children: React.ReactNode }) {
   const { user } = useAuth();
   const [maintenanceActive, setMaintenanceActive] = useState(false);
@@ -106,6 +143,7 @@ function MaintenanceCheck({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <AuthProvider>
+      <SignaTempuRecoveryBridge />
       <BrandAccentizer />
       <MaintenanceCheck>
         <Router>
@@ -146,6 +184,7 @@ export default function App() {
             {/* Auth */}
             <Route path="/login" element={<Login />} />
             <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/reset-password" element={<SignaTempuResetRedirect />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
             {/* <Route path="/lead-recovery" element={<AdminLayout />}>
               <Route index element={<LeadRecovery />} />

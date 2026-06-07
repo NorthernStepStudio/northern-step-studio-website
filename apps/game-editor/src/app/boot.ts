@@ -1,15 +1,17 @@
 import { ProjectState } from '../state/projectState';
+import { SelectionState } from '../state/selectionState';
 import { SaveManager } from '../persistence/saveManager';
 import { setupAutosave, triggerAutosave } from '../persistence/autosave';
 import { DirtyState } from '../state/dirtyState';
 import { setupKeyboardShortcuts } from '../input/keyboardShortcuts';
 import { MotionCanvasRenderer } from '../motion-editor/canvas/MotionCanvasRenderer';
 import { preloadAssets } from '../motion-editor/canvas/imageCache';
-import { setupUI, renderUI } from '../motion-editor/motionEditorUi';
+import { setupUI, renderUI, setRenderer } from '../motion-editor/motionEditorUi';
 import { setupRouter, navigate } from './router';
-import { STORAGE_KEYS } from '../persistence/storageKeys';
 
 import { setupCutterUI } from '../sprite-cutter/spriteCutterUi';
+import { setupRiggingUI, renderRiggingUI, setRiggingActive } from '../rigging/riggingUi';
+import { AppState } from '../state/appState';
 import { MAIN_LAYOUT } from './layout';
 
 export function bootApp() {
@@ -28,11 +30,17 @@ export function bootApp() {
   setupAutosave();
   DirtyState.onChange = () => triggerAutosave();
   
-  const lastId = localStorage.getItem(STORAGE_KEYS.LAST_PROJECT_ID);
+  const lastId = SaveManager.getLastProjectId();
   if (lastId) {
     const saved = SaveManager.getProject(lastId);
     if (saved) {
       ProjectState.setProject(saved);
+      if (saved.lastSelectedPartId) {
+        SelectionState.activePartId = saved.lastSelectedPartId;
+      }
+      if (saved.lastSelectedAnimId) {
+        SelectionState.activeAnimId = saved.lastSelectedAnimId;
+      }
     }
   }
 
@@ -44,26 +52,47 @@ export function bootApp() {
   renderer.rebuildTree(ProjectState.project);
 
   // 3. Setup UI
-  const refreshRenderer = () => {
+  setRenderer(renderer);
+  const refreshRenderer = (skipInspector = false, skipTimeline = false) => {
     renderer.rebuildTree(ProjectState.project);
-    renderUI();
+    renderUI(skipInspector, skipTimeline);
+  };
+  renderer.onUpdate = () => refreshRenderer();
+
+  // Keep exactly one renderer loop driving shared global state at a time.
+  const applyPageActivation = (page: string) => {
+    renderer.setActive(page === 'editor');
+    setRiggingActive(page === 'rigging');
   };
 
   setupUI(refreshRenderer);
   setupCutterUI((page) => {
+    AppState.currentPage = page as any;
     navigate(page);
+    applyPageActivation(page);
     refreshRenderer();
   });
+  setupRiggingUI(
+    () => {
+      AppState.currentPage = 'editor';
+      navigate('editor');
+      applyPageActivation('editor');
+      refreshRenderer();
+    },
+    () => refreshRenderer(),
+  );
   setupKeyboardShortcuts(refreshRenderer);
 
   // 4. Setup Router
   setupRouter((page) => {
     navigate(page);
-    refreshRenderer();
+    applyPageActivation(page);
+    if (page === 'rigging') renderRiggingUI();
+    else refreshRenderer();
   });
 
   // Initial Render
   refreshRenderer();
-  
+
   console.log('NStep Code Motion Editor: Boot Complete.');
 }

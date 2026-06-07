@@ -1,3 +1,16 @@
+// Centralized unregistration of any active service workers to prevent cross-project cached bundles on localhost:5173
+if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then((registrations) => {
+    for (const registration of registrations) {
+      registration.unregister().then((success) => {
+        if (success) {
+          console.log('Stale service worker cleared successfully.');
+        }
+      });
+    }
+  });
+}
+
 import { bootApp } from './app/boot';
 
 // Entry point for the NStep Code Motion Editor

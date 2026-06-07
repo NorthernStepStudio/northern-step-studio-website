@@ -82,7 +82,7 @@ function findApps(dir, results = [], options = {}) {
                 const st = fs.statSync(fullPath);
                 if (st.isDirectory()) {
                     // Heuristic: avoid recursing into very deep or large paths during quick scan
-                    recurse(fullPath, depth + 1, fullScan ? 50 : Math.max(3, 6 - depth));
+                    recurse(fullPath, depth + 1, maxDepth);
                     if (results.length >= maxResults) return;
                 }
             } catch (e) {
@@ -105,11 +105,7 @@ function findApps(dir, results = [], options = {}) {
 
     // Walk prioritized candidates shallow-first
     for (const c of candidates) {
-        recurse(c, 0, fullScan ? 50 : 4);
-        if (!fullScan && results.length > 0) {
-            // If quick scan found apps, return early
-            return results;
-        }
+        recurse(c, 0, fullScan ? 50 : 5);
     }
 
     // If quick scan didn't find anything or fullScan requested, perform broader search from root

@@ -1,0 +1,37 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: false
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      metro-runtime:
+        specifier: ^0.83.3
+        version: 0.83.7
+
+packages:
+
+  '@babel/runtime@7.29.7':
+    resolution: {integrity: sha512-Nq8OhGWiZIZGV6hLHoyAKLLcJihP/xFeBMGJoUrxTX2psI8dCifzLhZISFb+VWS3wFMRDmCGw5R+dOySCqPLhw==}
+    engines: {node: '>=6.9.0'}
+
+  flow-enums-runtime@0.0.6:
+    resolution: {integrity: sha512-3PYnM29RFXwvAN6Pc/scUfkI7RwhQ/xqyLUyPNlXUp9S40zI8nup9tUSrTLSVnWGBN38FNiGWbwZOB6uR4OGdw==}
+
+  metro-runtime@0.83.7:
+    resolution: {integrity: sha512-9GKkJURaB2iyYoEExKnedzAHzxmKtSi+k0tsZUvMoU27tBZJElchYt7JH/Ai/XzYAI9lCAaV7u5HZSI8J5Z+wQ==}
+    engines: {node: '>=20.19.4'}
+
+snapshots:
+
+  '@babel/runtime@7.29.7': {}
+
+  flow-enums-runtime@0.0.6: {}
+
+  metro-runtime@0.83.7:
+    dependencies:
+      '@babel/runtime': 7.29.7
+      flow-enums-runtime: 0.0.6
